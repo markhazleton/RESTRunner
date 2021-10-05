@@ -4,6 +4,7 @@
     {
         public static int GetDeterministicHashCode(this string str)
         {
+            if (str == null) return -1;
             unchecked
             {
                 var hash1 = (5381 << 16) + 5381;

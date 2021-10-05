@@ -17,7 +17,6 @@ namespace RESTRunner.Services
         {
             runner = therunner;
         }
-
         private async Task<CompareResults> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user)
         {
             var client = new RestClient() { Timeout = -1 };
@@ -38,41 +37,30 @@ namespace RESTRunner.Services
                 }
             }
 
-            if (req.Body?.Properties?.Count > 0)
+            if (req?.Body?.Raw is not null)
             {
-                var x = req.Body.Properties.Select(s => new { key = s.Key, value = s.Value });
-                var y = JsonConvert.SerializeObject(x);
-
+                req.BodyTemplate = req.Body.Raw;
             }
+
+            if (req?.BodyTemplate is not null)
+            {
+                foreach (var prop in user.Properties)
+                {
+                    req.BodyTemplate = req.BodyTemplate.Replace($"{{{prop.Key}}}", prop.Value);
+                }
+            }
+
             // TODO: Is Token Still Valid 
             // TODO: Polly to Check 
 
             return await client.GetResponse(env, req, runner.SessionId);
         }
-        private async Task GetTokenForEachInstance()
-        {
-            var user = runner.Users.FirstOrDefault();
-            if (user == null)
-            {
-                user = new CompareUser();
-            }
-
-            foreach (var inst in runner.Instances)
-            {
-                var client = new RestClient() { Timeout = -1 };
-                inst.UserToken = await client.GetUserToken(runner.SessionId, user.UserName, user.Password);
-                inst.ClientToken = await client.GetClientToken(runner.SessionId, user.UserName, user.Password);
-            }
-        }
-
         /// <summary>
         /// Execute a RESTRunner and Returns Results
         /// </summary>
         /// <returns></returns>
         public async Task<IEnumerable<CompareResults>> ExecuteRunnerAsync()
         {
-          //  await GetTokenForEachInstance();
-
             var tasks = new List<Task>();
             foreach (var user in runner.Users)
             {
