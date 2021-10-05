@@ -3,10 +3,12 @@ using Newtonsoft.Json;
 using RESTRunner.Domain.Models;
 using RESTRunner.Extensions;
 using RESTRunner.Services;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace RESTRunner
@@ -15,6 +17,7 @@ namespace RESTRunner
     {
         static async Task Main()
         {
+
             var myRunner = new CompareRunner(new StoreResultsService());
             myRunner.InitializeCompareRunner();
             var import = new PostmanImport(myRunner);
@@ -25,7 +28,7 @@ namespace RESTRunner
 
             var myResults = JsonConvert.SerializeObject(results);
 
-            foreach (var result in results.ToList().Where(w => w.Success == true).OrderBy(o => o.Instance).ThenBy(o => o.Request))
+            foreach (var result in results.ToList().OrderBy(o => o.Instance).ThenBy(o => o.Request))
             {
                 Console.WriteLine(result.ToString());
             }
@@ -43,9 +46,15 @@ namespace RESTRunner
             {
                 Directory.CreateDirectory(dirPath);
             }
-            //File location, where the .csv goes and gets stored.
-            string filePath = Path.Combine(dirPath, "RESTRunner" + ".csv");
-            engine.WriteFile(filePath, results);
+            try
+            {
+                //File location, where the .csv goes and gets stored.
+                string filePath = Path.Combine(dirPath, "RESTRunner" + ".csv");
+                engine.WriteFile(filePath, results);
+            }
+            catch
+            {
+            }
         }
     }
 }

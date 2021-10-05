@@ -6,6 +6,164 @@
 	},
 	"item": [
 		{
+			"name": "Survey",
+			"item": [
+				{
+					"name": "GetSurveys",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/survey",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"survey"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSurvey",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/survey/18",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"survey",
+								"18"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "GetEmployees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/employee",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmployeeByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/employee/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"employee",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteEmployeeById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/employee/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"employee",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddEmployee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"age\": 55,\r\n  \"country\": \"USA\",\r\n  \"department\": 4,\r\n  \"id\": 0,\r\n  \"name\": \"Monte Warden\",\r\n  \"state\": \"TX\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/employee",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"age\": 22,\r\n  \"country\": \"USA\",\r\n  \"department\": 4,\r\n  \"id\": 1,\r\n  \"name\": \"Monte Warden\",\r\n  \"state\": \"TX\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/employee/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"employee",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "GetStatus",
 			"request": {
 				"method": "GET",
@@ -17,117 +175,6 @@
 					],
 					"path": [
 						"status"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetEmployees",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/api/employee",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"employee"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetEmployeeByID",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/api/employee/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"employee",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DeleteEmployeeById",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/api/employee/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"employee",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddEmployee",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"age\": 55,\r\n  \"country\": \"USA\",\r\n  \"department\": 4,\r\n  \"id\": 0,\r\n  \"name\": \"Monte Warden\",\r\n  \"state\": \"TX\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/employee",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"employee"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Update Employee",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"age\": 22,\r\n  \"country\": \"USA\",\r\n  \"department\": 4,\r\n  \"id\": 1,\r\n  \"name\": \"Monte Warden\",\r\n  \"state\": \"TX\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/api/employee/1",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"employee",
-						"1"
 					]
 				}
 			},

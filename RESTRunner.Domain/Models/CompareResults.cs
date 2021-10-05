@@ -1,6 +1,5 @@
 ﻿using FileHelpers;
 using System;
-using System.Collections.Generic;
 
 namespace RESTRunner.Domain.Models
 {
@@ -13,7 +12,7 @@ namespace RESTRunner.Domain.Models
         public bool Success;
         public string ResultCode;
         public long Duration;
-        public DateTime LastRunDate;
+        public string LastRunDate;
         public int Hash;
         public string Request;
         public string StatusDescription;

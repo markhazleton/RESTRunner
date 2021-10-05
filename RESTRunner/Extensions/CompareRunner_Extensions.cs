@@ -9,13 +9,15 @@ namespace RESTRunner.Extensions
         {
             return new List<CompareInstance>
             {
-                new CompareInstance() {Name="CRUD", BaseUrl="https://mwhemployeemvccrud.azurewebsites.net/"},
+                new CompareInstance() {Name="AZ", BaseUrl="https://mwhemployeemvccrud.azurewebsites.net/"},
+                new CompareInstance() {Name="CO", BaseUrl="https://employeemvccrud.controlorigins.com/"}
             };
         }
         private static List<CompareRequest> GetCompareRequests()
         {
             return new List<CompareRequest>
             {
+                new CompareRequest() { Path="status", RequestMethod = HttpVerb.GET, RequiresClientToken=false }
             };
         }
 #pragma warning disable CRRSP06 // A misspelled word has been found
