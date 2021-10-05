@@ -17,8 +17,8 @@ namespace RESTRunner
         {
             var myRunner = new CompareRunner(new StoreResultsService());
             myRunner.InitializeCompareRunner();
-           // var import = new PostmanImport(myRunner);
-           // import.LoadFromPostman("collection.json");
+            var import = new PostmanImport(myRunner);
+            import.LoadFromPostman("collection.json");
 
             var ExecuteRunner = new ExecuteRunnerService(myRunner);
             var results = await ExecuteRunner.ExecuteRunnerAsync();
@@ -38,7 +38,7 @@ namespace RESTRunner
         {
             var engine = new FileHelperEngine<CompareResults>();
             engine.HeaderText = engine.GetFileHeader();
-            string dirPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string dirPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             if (!Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);

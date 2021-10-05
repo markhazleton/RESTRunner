@@ -9,20 +9,14 @@ namespace RESTRunner.Extensions
         {
             return new List<CompareInstance>
             {
-                new CompareInstance() {Name="TEXECON", BaseUrl= "https://mwhtexeconwebcore.azurewebsites.net/" },
+                new CompareInstance() {Name="CRUD", BaseUrl="https://mwhemployeemvccrud.azurewebsites.net/"},
             };
         }
         private static List<CompareRequest> GetCompareRequests()
         {
             return new List<CompareRequest>
             {
-                new CompareRequest() {RequestMethod=HttpVerb.GET,Path="api/Domain" },
-                new CompareRequest() {RequestMethod=HttpVerb.GET,Path="api/Menu" },
             };
-
-            // JsonConvert.SerializeObject(new {})
-
-
         }
 #pragma warning disable CRRSP06 // A misspelled word has been found
         private static List<CompareUser> GetCompareUsers()
@@ -30,18 +24,14 @@ namespace RESTRunner.Extensions
             var list = new List<CompareUser>();
             var user = new CompareUser()
             {
-                UserName = "callieone",
-                Password = "Model123"
+                UserName = "markhazleton",
+                Password = "password"
             };
             user.Properties.Add("username", user.UserName);
-            user.Properties.Add("user_patientId", "Z87");
-            user.Properties.Add("user_patientIdType", "External");
-            user.Properties.Add("user_myChartId", "callieone");
-            user.Properties.Add("user_dob", "08-22-1988");
-            user.Properties.Add("user_firstname", "Perry");
-            user.Properties.Add("user_lastname", "Marie");
-            user.Properties.Add("user_zipcode", "76504");
-            user.Properties.Add("user_email", "techma20qa@gmail.com");
+            user.Properties.Add("user_firstname", "Mark");
+            user.Properties.Add("user_lastname", "Hazleton");
+            user.Properties.Add("user_zipcode", "76262");
+            user.Properties.Add("user_email", "mark.hazleton@gmail.com");
             user.Properties.Add("today", "2021-10-01");
             user.Properties.Add("today5", "2021-10-05");
             user.Properties.Add("today15", "2021-10-15");

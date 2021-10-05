@@ -4,6 +4,7 @@ using RESTRunner.Postman.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace RESTRunner
 {
@@ -19,10 +20,17 @@ namespace RESTRunner
         private static CompareBody Create(Body body)
         {
             if (body == null) return null;
-            var cbody = new CompareBody
+            var cbody = new CompareBody() { Mode="raw"};
+
+            if (body.Mode == "raw")
             {
-                Properties = Create(body.Urlencoded)
-            };
+                cbody.Raw = body.Raw;
+            }
+            else
+            {
+                cbody.Properties = Create(body.Urlencoded);
+                cbody.Raw = JsonConvert.SerializeObject(cbody.Properties.Select(s => new { key = s.Key, value = s.Value }));
+            }
             return cbody;
         }
 
@@ -98,12 +106,12 @@ namespace RESTRunner
         {
             if (ParentItem is null) return;
 
+            if (ParentItem.Request is not null) myRunner.Requests.Add(GetRequest(ParentItem.Request));
+
             if (ParentItem.Item is null) return;
 
             foreach (var childItem in ParentItem.Item)
             {
-                if (childItem.Request is not null) myRunner.Requests.Add(GetRequest(childItem.Request));
-
                 LookForRequests(childItem);
             }
         }
