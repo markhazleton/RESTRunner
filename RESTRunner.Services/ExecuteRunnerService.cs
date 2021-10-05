@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RESTRunner.Domain.Interfaces;
+﻿using RESTRunner.Domain.Interfaces;
 using RESTRunner.Domain.Models;
 using RESTRunner.Extensions;
 using RestSharp;
@@ -20,6 +19,7 @@ namespace RESTRunner.Services
         private async Task<CompareResults> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user)
         {
             var client = new RestClient() { Timeout = -1 };
+
             if (!string.IsNullOrEmpty(req.BodyTemplate))
             {
                 foreach (var prop in user.Properties)
@@ -53,7 +53,7 @@ namespace RESTRunner.Services
             // TODO: Is Token Still Valid 
             // TODO: Polly to Check 
 
-            return await client.GetResponse(env, req, runner.SessionId);
+            return await client.GetResponse(env, req);
         }
         /// <summary>
         /// Execute a RESTRunner and Returns Results
