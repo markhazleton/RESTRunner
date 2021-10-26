@@ -93,7 +93,7 @@ namespace RESTRunner.Domain.Extensions
         }
         public string GetJson()
         {
-            string str_json = "";
+            string str_json = string.Empty;
             DataContractJsonSerializerSettings setting =
                 new DataContractJsonSerializerSettings()
                 {

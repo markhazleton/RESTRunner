@@ -17,7 +17,7 @@ namespace RESTRunner.Domain.Tests.Extensions
             var result = str.GetDeterministicHashCode();
 
             // Assert
-            Assert.AreEqual(result,-1);
+            Assert.AreEqual(result, -1);
         }
         [TestMethod]
         public void GetDeterministicHashCode_SMALL()

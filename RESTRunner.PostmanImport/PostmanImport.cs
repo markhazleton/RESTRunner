@@ -20,7 +20,7 @@ namespace RESTRunner.Postman
         private static CompareBody Create(Body body)
         {
             if (body == null) return null;
-            var cbody = new CompareBody() { Mode="raw"};
+            var cbody = new CompareBody() { Mode = "raw" };
 
             if (body.Mode == "raw")
             {
@@ -73,7 +73,7 @@ namespace RESTRunner.Postman
             if (request.Method == "PUT")
                 req.RequestMethod = HttpVerb.PUT;
 
-            
+
             req.Headers.AddRange(Create(request.Header));
             return req;
         }
