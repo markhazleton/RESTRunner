@@ -10,6 +10,6 @@ namespace RESTRunner.Domain.Models
         }
         public string UserName;
         public string Password;
-        public Dictionary<string,string> Properties;
+        public Dictionary<string, string> Properties;
     }
 }

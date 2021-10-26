@@ -4,12 +4,10 @@ using RESTRunner.Domain.Models;
 using RESTRunner.Extensions;
 using RESTRunner.Postman;
 using RESTRunner.Services;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace RESTRunner
