@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace RESTRunner
+namespace RESTRunner.Postman
 {
     public class PostmanImport
     {
