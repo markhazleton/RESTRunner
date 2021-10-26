@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RESTRunner.Domain\RESTRunner.Domain.csproj" />
+    <ProjectReference Include="..\RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj" />
     <ProjectReference Include="..\RESTRunner.Services\RESTRunner.Services.csproj" />
   </ItemGroup>
 

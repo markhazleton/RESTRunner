@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using RESTRunner.Domain.Models;
 using RESTRunner.Extensions;
+using RESTRunner.Postman;
 using RESTRunner.Services;
 using RestSharp;
 using System;
