@@ -6,6 +6,6 @@ namespace RESTRunner.Domain.Interfaces
 {
     public interface IExecuteRunner
     {
-        public Task<IEnumerable<CompareResults>> ExecuteRunnerAsync();
+        public Task<IEnumerable<CompareResult>> ExecuteRunnerAsync();
     }
 }

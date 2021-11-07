@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace RESTRunner.Domain.Models
 {
+    [Serializable]
     public class CompareRunner
     {
         public List<CompareInstance> Instances;
@@ -11,7 +12,6 @@ namespace RESTRunner.Domain.Models
         public List<CompareRequest> Requests;
         public string SessionId;
         public List<CompareUser> Users;
-        public IStoreResults StoreResults;
 
         public CompareRunner(IStoreResults results)
         {
@@ -20,7 +20,6 @@ namespace RESTRunner.Domain.Models
             Users = new List<CompareUser>();
             SessionId = $"RESTRunner-{DateTime.Now.ToShortDateString()}";
             LastRunTime = DateTime.Now;
-            StoreResults = results;
         }
     }
 }

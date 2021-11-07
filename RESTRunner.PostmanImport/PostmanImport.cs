@@ -57,9 +57,11 @@ namespace RESTRunner.Postman
 
         private static CompareRequest GetCompareRequestFromRequest(Request request)
         {
+            if(request == null) return new CompareRequest();    
+
             var req = new CompareRequest
             {
-                Path = request?.Url?.Raw?.Replace("{{url}}/", String.Empty),
+                Path = request?.Url?.Raw?.Replace("{{url}}/", String.Empty).Replace("{{api-url}}/",String.Empty),
                 BodyTemplate = string.Empty,
                 Body = Create(request.Body),
             };
@@ -72,6 +74,9 @@ namespace RESTRunner.Postman
 
             if (request.Method == "PUT")
                 req.RequestMethod = HttpVerb.PUT;
+
+            if (request.Method == "DELETE")
+                req.RequestMethod = HttpVerb.DELETE;
 
 
             req.Headers.AddRange(Create(request.Header));

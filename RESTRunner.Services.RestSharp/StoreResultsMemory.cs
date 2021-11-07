@@ -6,12 +6,12 @@ namespace RESTRunner.Services
 {
     public class StoreResultsService : IStoreResults
     {
-        private readonly List<CompareResults> results = new();
-        public void Add(CompareResults compareResults)
+        private readonly List<CompareResult> results = new();
+        public void Add(CompareResult compareResults)
         {
             results.Add(compareResults);
         }
-        public IEnumerable<CompareResults> Results()
+        public IEnumerable<CompareResult> Results()
         {
             return results;
         }

@@ -6,48 +6,6 @@
 	},
 	"item": [
 		{
-			"name": "Survey",
-			"item": [
-				{
-					"name": "GetSurveys",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/survey",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"survey"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetSurvey",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/api/survey/18",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"survey",
-								"18"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Employee",
 			"item": [
 				{
@@ -56,9 +14,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/employee",
+							"raw": "{{api-url}}/api/employee",
 							"host": [
-								"{{url}}"
+								"{{api-url}}"
 							],
 							"path": [
 								"api",
@@ -74,9 +32,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/employee/1",
+							"raw": "{{api-url}}/api/employee/1",
 							"host": [
-								"{{url}}"
+								"{{api-url}}"
 							],
 							"path": [
 								"api",
@@ -93,9 +51,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/employee/1",
+							"raw": "{{api-url}}/api/employee/1",
 							"host": [
-								"{{url}}"
+								"{{api-url}}"
 							],
 							"path": [
 								"api",
@@ -113,7 +71,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"age\": 55,\r\n  \"country\": \"USA\",\r\n  \"department\": 4,\r\n  \"id\": 0,\r\n  \"name\": \"Monte Warden\",\r\n  \"state\": \"TX\"\r\n}",
+							"raw": "{\r\n  \"age\": 55,\r\n  \"country\": \"USA\",\r\n  \"department\": 4,\r\n  \"id\": 1,\r\n  \"name\": \"Monte Warden\",\r\n  \"state\": \"TX\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -121,9 +79,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/employee",
+							"raw": "{{api-url}}/api/employee",
 							"host": [
-								"{{url}}"
+								"{{api-url}}"
 							],
 							"path": [
 								"api",
@@ -148,14 +106,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/employee/1",
+							"raw": "{{api-url}}/api/employee/2",
 							"host": [
-								"{{url}}"
+								"{{api-url}}"
 							],
 							"path": [
 								"api",
 								"employee",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -169,9 +127,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/status",
+					"raw": "{{api-url}}/status",
 					"host": [
-						"{{url}}"
+						"{{api-url}}"
 					],
 					"path": [
 						"status"

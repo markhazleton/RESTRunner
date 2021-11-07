@@ -5,7 +5,7 @@ namespace RESTRunner.Domain.Interfaces
 {
     public interface IStoreResults
     {
-        public void Add(CompareResults compareResults);
-        public IEnumerable<CompareResults> Results();
+        public void Add(CompareResult compareResults);
+        public IEnumerable<CompareResult> Results();
     }
 }
