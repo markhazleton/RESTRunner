@@ -20,7 +20,6 @@ namespace RESTRunner.Extensions
                 new CompareRequest() { Path="status", RequestMethod = HttpVerb.GET, RequiresClientToken=false }
             };
         }
-#pragma warning disable CRRSP06 // A misspelled word has been found
         private static List<CompareUser> GetCompareUsers()
         {
             var list = new List<CompareUser>();
@@ -40,8 +39,6 @@ namespace RESTRunner.Extensions
             list.Add(user);
             return list;
         }
-#pragma warning restore CRRSP06 // A misspelled word has been found
-
 
         public static void InitializeCompareRunner(this CompareRunner runner)
         {

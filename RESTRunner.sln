@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner", "RESTRunner\RE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.Domain", "RESTRunner.Domain\RESTRunner.Domain.csproj", "{C1FD2D44-88A8-49DA-8282-F49E337F6BE4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.Services", "RESTRunner.Services\RESTRunner.Services.csproj", "{2897C336-1921-4666-B8EB-C7276BE22893}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.Domain.Tests", "RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj", "{AA49F77C-B25B-415C-BA01-FAF985C76283}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{455BFBB1-D17C-4340-A3F3-62C8E7EEE6C0}"
@@ -16,7 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RESTRunner.PostmanImport", "RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj", "{9C191072-4C1F-4219-8A38-A0B08C2C0BF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.PostmanImport", "RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj", "{9C191072-4C1F-4219-8A38-A0B08C2C0BF5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.Services.RestSharp", "RESTRunner.Services.RestSharp\RESTRunner.Services.RestSharp.csproj", "{CC8A4BD4-84C2-44B8-872F-41DAF0B4785C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,10 +32,6 @@ Global
 		{C1FD2D44-88A8-49DA-8282-F49E337F6BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1FD2D44-88A8-49DA-8282-F49E337F6BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1FD2D44-88A8-49DA-8282-F49E337F6BE4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2897C336-1921-4666-B8EB-C7276BE22893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2897C336-1921-4666-B8EB-C7276BE22893}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2897C336-1921-4666-B8EB-C7276BE22893}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2897C336-1921-4666-B8EB-C7276BE22893}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA49F77C-B25B-415C-BA01-FAF985C76283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA49F77C-B25B-415C-BA01-FAF985C76283}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA49F77C-B25B-415C-BA01-FAF985C76283}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,6 +40,10 @@ Global
 		{9C191072-4C1F-4219-8A38-A0B08C2C0BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C191072-4C1F-4219-8A38-A0B08C2C0BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C191072-4C1F-4219-8A38-A0B08C2C0BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC8A4BD4-84C2-44B8-872F-41DAF0B4785C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC8A4BD4-84C2-44B8-872F-41DAF0B4785C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC8A4BD4-84C2-44B8-872F-41DAF0B4785C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC8A4BD4-84C2-44B8-872F-41DAF0B4785C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

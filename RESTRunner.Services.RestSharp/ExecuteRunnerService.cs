@@ -3,7 +3,7 @@ using RESTRunner.Domain.Models;
 using RESTRunner.Extensions;
 using RestSharp;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RESTRunner.Services
@@ -16,7 +16,8 @@ namespace RESTRunner.Services
         {
             runner = therunner;
         }
-        private async Task<CompareResults> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user)
+
+        private static CompareResult GetResponse(CompareInstance env, CompareRequest req, CompareUser user)
         {
             var client = new RestClient() { Timeout = -1 };
 
@@ -53,26 +54,38 @@ namespace RESTRunner.Services
             // TODO: Is Token Still Valid 
             // TODO: Polly to Check 
 
-            return await client.GetResponse(env, req);
+            return client.GetResponse(env, req,user);
         }
+
         /// <summary>
         /// Execute a RESTRunner and Returns Results
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<CompareResults>> ExecuteRunnerAsync()
+        public async Task<IEnumerable<CompareResult>> ExecuteRunnerAsync()
         {
+            var storeResults = new StoreResultsService();
             var tasks = new List<Task>();
+            var throttler = new SemaphoreSlim(initialCount: 1);
+
             foreach (var user in runner.Users)
             {
                 foreach (var req in runner.Requests)
                 {
                     foreach (var env in runner.Instances)
                     {
-                        tasks.Add(
-                            Task.Run(
-                                async () =>
+                        await throttler.WaitAsync();
+
+                        tasks.Add(Task.Run(() =>
                                 {
-                                    runner.StoreResults.Add(await GetResponseAsync(env, req, user));
+                                    try
+                                    {
+                                        storeResults.Add(GetResponse(env, req, user));
+
+                                    }
+                                    finally
+                                    {
+                                        throttler.Release();
+                                    }
                                 }));
                     }
                 }
@@ -88,7 +101,7 @@ namespace RESTRunner.Services
                 {
                 }
             }
-            return runner.StoreResults.Results();
+            return storeResults.Results();
         }
     }
 }

@@ -6,6 +6,7 @@
         public string Name;
         public string UserToken;
         public string ClientToken;
+        public string SessionId;
 
         public override string ToString() { return $"{Name}:{BaseUrl}"; }
     }

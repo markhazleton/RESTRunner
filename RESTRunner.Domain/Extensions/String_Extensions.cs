@@ -1,7 +1,14 @@
-﻿namespace RESTRunner.Domain.Extensions
+﻿using System;
+
+namespace RESTRunner.Domain.Extensions
 {
     public static class String_Extensions
     {
+        public static bool CaseInsensitiveContains(this string text, string value, StringComparison stringComparison = StringComparison.CurrentCultureIgnoreCase)
+        { 
+            return text.Contains(value, stringComparison);
+        }
+
         public static int GetDeterministicHashCode(this string str)
         {
             if (str == null) return -1;
