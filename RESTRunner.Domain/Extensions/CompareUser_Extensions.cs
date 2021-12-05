@@ -1,25 +1,22 @@
-﻿using RESTRunner.Domain.Models;
+﻿namespace RESTRunner.Domain.Extensions;
 
-namespace RESTRunner.Domain.Extensions
+public static class CompareUser_Extensions
 {
-    public static class CompareUser_Extensions
+    public static string GetMergedString(this CompareUser user, string StringToMerge)
     {
-        public static string GetMergedString(this CompareUser user, string StringToMerge)
+        if (!string.IsNullOrEmpty(StringToMerge))
         {
-            if (!string.IsNullOrEmpty(StringToMerge))
+            StringToMerge = StringToMerge.Trim();
+            StringToMerge = StringToMerge.Replace(@"{{encoded_user_name}}", user.UserName);
+            StringToMerge = StringToMerge.Replace(@"{{username}}", user.UserName);
+            StringToMerge = StringToMerge.Replace(@"{{UserName}}", user.UserName);
+            StringToMerge = StringToMerge.Replace(@"{{password}}", user.Password);
+            foreach (var prop in user.Properties)
             {
-                StringToMerge = StringToMerge.Trim();
-                StringToMerge = StringToMerge.Replace(@"{{encoded_user_name}}", user.UserName);
-                StringToMerge = StringToMerge.Replace(@"{{username}}", user.UserName);
-                StringToMerge = StringToMerge.Replace(@"{{UserName}}", user.UserName);
-                StringToMerge = StringToMerge.Replace(@"{{password}}", user.Password);
-                foreach (var prop in user.Properties)
-                {
-                    StringToMerge = StringToMerge.Replace($"{{{{{prop.Key}}}", prop.Value);
-                }
-
+                StringToMerge = StringToMerge.Replace($"{{{{{prop.Key}}}", prop.Value);
             }
-            return StringToMerge;
+
         }
+        return StringToMerge;
     }
 }

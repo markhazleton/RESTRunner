@@ -1,25 +1,47 @@
-﻿using RESTRunner.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿namespace RESTRunner.Domain.Models;
 
-namespace RESTRunner.Domain.Models
+/// <summary>
+/// The Runner main class
+/// </summary>
+[Serializable]
+public class CompareRunner
 {
-    [Serializable]
-    public class CompareRunner
-    {
-        public List<CompareInstance> Instances;
-        public DateTime LastRunTime;
-        public List<CompareRequest> Requests;
-        public string SessionId;
-        public List<CompareUser> Users;
+    /// <summary>
+    /// List of all instances to be hit during the REST Runner execution
+    /// </summary>
+    public List<CompareInstance> Instances;
+    /// <summary>
+    /// The last Run Time
+    /// </summary>
+    public DateTime LastRunTime;
+    /// <summary>
+    /// List of Requests to use during the REST Runner execution
+    /// </summary>
+    public List<CompareRequest> Requests;
+    /// <summary>
+    /// Session ID to add to request headers and results for tracking
+    /// </summary>
+    public string SessionId;
+    /// <summary>
+    /// List of users to use during the REST Runner execution
+    /// </summary>
+    public List<CompareUser> Users;
+    /// <summary>
+    /// Service to store the results
+    /// </summary>
+    public IStoreResults Results;
 
-        public CompareRunner(IStoreResults results)
-        {
-            Instances = new List<CompareInstance>();
-            Requests = new List<CompareRequest>();
-            Users = new List<CompareUser>();
-            SessionId = $"RESTRunner-{DateTime.Now.ToShortDateString()}";
-            LastRunTime = DateTime.Now;
-        }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="results"></param>
+    public CompareRunner(IStoreResults results)
+    {
+        Results = results;
+        Instances = new List<CompareInstance>();
+        Requests = new List<CompareRequest>();
+        Users = new List<CompareUser>();
+        SessionId = $"RESTRunner-{DateTime.Now.ToShortDateString()}";
+        LastRunTime = DateTime.Now;
     }
 }

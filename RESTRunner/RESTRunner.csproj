@@ -1,28 +1,41 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<Company>Mark Hazleton</Company>
+		<Authors>Mark Hazleton</Authors>
+		<Description>The main console application for the RESTRunner project</Description>
+		<ApplicationIcon>favicon.ico</ApplicationIcon>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Extensions\ICompareRunner_Extensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="collection.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="27.2.1" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
-  </ItemGroup>
+	<PropertyGroup>
+		<Deterministic>false</Deterministic>
+		<SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
+		<AssemblyVersion>6.$([System.DateTime]::UtcNow.ToString(yyMM)).$([System.DateTime]::UtcNow.ToString(ddHH)).$([System.DateTime]::UtcNow.ToString(mmss))</AssemblyVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\RESTRunner.Domain\RESTRunner.Domain.csproj" />
-    <ProjectReference Include="..\RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj" />
-    <ProjectReference Include="..\RESTRunner.Services.RestSharp\RESTRunner.Services.RestSharp.csproj" />
-    <ProjectReference Include="..\RESTRunner.Services.StoreResults.Memory\RESTRunner.Services.StoreResults.Memory.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Extensions\ICompareRunner_Extensions.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="collection.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CsvHelper" Version="27.2.1" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RESTRunner.Domain\RESTRunner.Domain.csproj" />
+		<ProjectReference Include="..\RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj" />
+		<ProjectReference Include="..\RESTRunner.Services.RestSharp\RESTRunner.Services.RestSharp.csproj" />
+		<ProjectReference Include="..\RESTRunner.Services.StoreResults.Memory\RESTRunner.Services.StoreResults.Memory.csproj" />
+	</ItemGroup>
 
 </Project>

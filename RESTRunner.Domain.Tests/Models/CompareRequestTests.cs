@@ -1,21 +1,23 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RESTRunner.Domain.Models;
+﻿namespace RESTRunner.Domain.Tests.Models;
 
-namespace RESTRunner.Domain.Tests.Models
+/// <summary>
+/// 
+/// </summary>
+[TestClass]
+public class CompareRequestTests
 {
-    [TestClass]
-    public class CompareRequestTests
+    /// <summary>
+    /// 
+    /// </summary>
+    [TestMethod]
+    public void CompareRequest_Test()
     {
-        [TestMethod]
-        public void CompareRequest_Test()
-        {
-            // Arrange
-            var compareRequest = new CompareRequest();
+        // Arrange
+        var compareRequest = new CompareRequest();
 
-            // Act
+        // Act
 
-            // Assert
-            Assert.IsNotNull(compareRequest);
-        }
+        // Assert
+        Assert.IsNotNull(compareRequest);
     }
 }
