@@ -16,7 +16,6 @@ namespace RESTRunner.Services
         {
             runner = therunner;
         }
-
         private static CompareResult GetResponse(CompareInstance env, CompareRequest req, CompareUser user)
         {
             var client = new RestClient() { Timeout = -1 };
@@ -28,7 +27,6 @@ namespace RESTRunner.Services
                     req.BodyTemplate = req.BodyTemplate.Replace($"{{{prop.Key}}}", prop.Value);
                 }
             }
-
             if (!string.IsNullOrEmpty(req.Path))
             {
                 req.Path = req.Path.Replace(@"{{encoded_user_name}}", user.UserName);
@@ -37,12 +35,10 @@ namespace RESTRunner.Services
                     req.Path = req.Path.Replace($"{{{prop.Key}}}", prop.Value);
                 }
             }
-
             if (req?.Body?.Raw is not null)
             {
                 req.BodyTemplate = req.Body.Raw;
             }
-
             if (req?.BodyTemplate is not null)
             {
                 foreach (var prop in user.Properties)
@@ -50,11 +46,9 @@ namespace RESTRunner.Services
                     req.BodyTemplate = req.BodyTemplate.Replace($"{{{prop.Key}}}", prop.Value);
                 }
             }
-
             // TODO: Is Token Still Valid 
             // TODO: Polly to Check 
-
-            return client.GetResponse(env, req,user);
+            return client.GetResponse(env, req, user);
         }
 
         /// <summary>
@@ -63,45 +57,46 @@ namespace RESTRunner.Services
         /// <returns></returns>
         public async Task<IEnumerable<CompareResult>> ExecuteRunnerAsync()
         {
-            var storeResults = new StoreResultsService();
+            var storeResults = new List<CompareResult>();
             var tasks = new List<Task>();
-            var throttler = new SemaphoreSlim(initialCount: 1);
-
-            foreach (var user in runner.Users)
+            var throttler = new SemaphoreSlim(initialCount: 31);
+            for (int i = 0; i < 100; i++)
             {
-                foreach (var req in runner.Requests)
+                foreach (var user in runner.Users)
                 {
-                    foreach (var env in runner.Instances)
+                    foreach (var req in runner.Requests)
                     {
-                        await throttler.WaitAsync();
+                        foreach (var env in runner.Instances)
+                        {
+                            await throttler.WaitAsync();
 
-                        tasks.Add(Task.Run(() =>
-                                {
-                                    try
+                            tasks.Add(Task.Run(() =>
                                     {
-                                        storeResults.Add(GetResponse(env, req, user));
-
-                                    }
-                                    finally
-                                    {
-                                        throttler.Release();
-                                    }
-                                }));
+                                        try
+                                        {
+                                            storeResults.Add(GetResponse(env, req, user));
+                                        }
+                                        finally
+                                        {
+                                            throttler.Release();
+                                        }
+                                    }));
+                        }
+                    }
+                    Task t = Task.WhenAll(tasks.ToArray());
+                    try
+                    {
+                        await t;
+                    }
+                    catch
+                    {
+                    }
+                    if (t.Status == TaskStatus.RanToCompletion)
+                    {
                     }
                 }
-                Task t = Task.WhenAll(tasks.ToArray());
-                try
-                {
-                    await t;
-                }
-                catch
-                {
-                }
-                if (t.Status == TaskStatus.RanToCompletion)
-                {
-                }
             }
-            return storeResults.Results();
+            return storeResults;
         }
     }
 }

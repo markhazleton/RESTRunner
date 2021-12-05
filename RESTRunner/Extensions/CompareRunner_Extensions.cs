@@ -9,7 +9,7 @@ namespace RESTRunner.Extensions
         {
             return new List<CompareInstance>
             {
-                new CompareInstance() {Name="AZ", BaseUrl="https://mwhemployeemvccrud.azurewebsites.net/"},
+                new CompareInstance() {Name="AZ", BaseUrl="https://app-samplemvccrudweb.azurewebsites.net/"},
                 new CompareInstance() {Name="CO", BaseUrl="https://employeemvccrud.controlorigins.com/"}
             };
         }
