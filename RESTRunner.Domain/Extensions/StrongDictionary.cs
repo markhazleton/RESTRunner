@@ -22,7 +22,7 @@ public sealed class StrongDictionary<TKey, TValue>
     /// </summary>
 
     /// <summary>
-    /// Gets or sets the <see cref="TValue"/> with the specified key.
+    /// 
     /// </summary>
     /// <param name="key">The key.</param>
     /// <returns>TValue.</returns>

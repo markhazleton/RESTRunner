@@ -28,6 +28,6 @@ public class CompareRequest
     /// <summary>
     /// The body of the Request
     /// </summary>
-    public CompareBody Body = new();
+    public CompareBody? Body = new();
 }
 

@@ -1,124 +1,136 @@
-﻿using Newtonsoft.Json;
-using RESTRunner.Domain.Models;
-using RESTRunner.Postman.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿
+namespace RESTRunner.Postman;
 
-namespace RESTRunner.Postman
+/// <summary>
+/// Import Postman Collection into REST Runner model
+/// </summary>
+public class PostmanImport
 {
-    public class PostmanImport
+    private readonly CompareRunner myRunner;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="myRunner"></param>
+    public PostmanImport(CompareRunner myRunner)
     {
-        private readonly CompareRunner myRunner;
+        this.myRunner = myRunner;
+    }
 
-        public PostmanImport(CompareRunner myRunner)
+    private static CompareBody? Create(Body? body)
+    {
+        if (body == null) return null;
+        var cbody = new CompareBody() { Mode = "raw" };
+
+        if (body.Mode == "raw")
         {
-            this.myRunner = myRunner;
+            cbody.Raw = body.Raw;
         }
-
-        private static CompareBody Create(Body body)
+        else
         {
-            if (body == null) return null;
-            var cbody = new CompareBody() { Mode = "raw" };
+            cbody.Properties = Create(body.Urlencoded);
+            cbody.Raw = JsonConvert.SerializeObject(cbody.Properties.Select(s => new { key = s.Key, value = s.Value }));
+        }
+        return cbody;
+    }
 
-            if (body.Mode == "raw")
+    private static List<CompareProperty> Create(List<Urlencoded> encodeList)
+    {
+        var list = new List<CompareProperty>();
+        if (encodeList != null)
+            foreach (var encode in encodeList)
             {
-                cbody.Raw = body.Raw;
+                list.Add(new CompareProperty(key: encode.Key, value: encode.Value, type: encode.Type, name: encode.Description, description: encode.Description));
             }
-            else
-            {
-                cbody.Properties = Create(body.Urlencoded);
-                cbody.Raw = JsonConvert.SerializeObject(cbody.Properties.Select(s => new { key = s.Key, value = s.Value }));
-            }
-            return cbody;
-        }
+        return list;
+    }
 
-        private static List<CompareProperty> Create(List<Urlencoded> encodeList)
+    private static IEnumerable<CompareProperty> Create(List<Header>? header)
+    {
+        var list = new List<CompareProperty>();
+        foreach (var headerItem in header ?? new List<Header>())
         {
-            var list = new List<CompareProperty>();
-            if (encodeList != null)
-                foreach (var encode in encodeList)
-                {
-                    list.Add(new CompareProperty(key: encode.Key, value: encode.Value, type: encode.Type, name: encode.Description, description: encode.Description));
-                }
-            return list;
+            list.Add(new CompareProperty(headerItem.Key, headerItem.Value, headerItem.Type, headerItem.Name));
         }
+        return list;
+    }
 
-        private static IEnumerable<CompareProperty> Create(List<Header> header)
+    private static CompareRequest GetCompareRequestFromRequest(Request request)
+    {
+        if (request == null) return new CompareRequest();
+
+        var req = new CompareRequest
         {
-            var list = new List<CompareProperty>();
-            foreach (var headerItem in header)
-            {
-                list.Add(new CompareProperty(headerItem.Key, headerItem.Value, headerItem.Type, headerItem.Name));
-            }
-            return list;
+            Path = request?.Url?.Raw?.Replace("{{url}}/", String.Empty).Replace("{{api-url}}/", String.Empty),
+            BodyTemplate = string.Empty,
+            Body = Create(request?.Body),
+        };
+
+        if (request?.Method == "GET")
+            req.RequestMethod = HttpVerb.GET;
+
+        if (request?.Method == "POST")
+            req.RequestMethod = HttpVerb.POST;
+
+        if (request?.Method == "PUT")
+            req.RequestMethod = HttpVerb.PUT;
+
+        if (request?.Method == "DELETE")
+            req.RequestMethod = HttpVerb.DELETE;
+
+
+        req.Headers.AddRange(Create(request?.Header));
+        return req;
+    }
+    private void LookForRequests(PostmanItem ParentItem)
+    {
+        if (ParentItem is null) return;
+
+        if (ParentItem.Request is not null) myRunner.Requests.Add(GetRequest(ParentItem.Request));
+
+        if (ParentItem.Item is null) return;
+
+        foreach (var childItem in ParentItem.Item)
+        {
+            LookForRequests(childItem);
         }
+    }
 
-        private static CompareRequest GetCompareRequestFromRequest(Request request)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public static CompareRequest GetRequest(Request request)
+    {
+        if (request is null) return new CompareRequest();
+        return GetCompareRequestFromRequest(request);
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="requests"></param>
+    /// <returns></returns>
+    public static IEnumerable<CompareRequest> GetRequests(IEnumerable<Request> requests)
+    {
+        var list = new List<CompareRequest>();
+        if (requests is null) return list;
+        foreach (var request in requests)
         {
-            if (request == null) return new CompareRequest();
-
-            var req = new CompareRequest
-            {
-                Path = request?.Url?.Raw?.Replace("{{url}}/", String.Empty).Replace("{{api-url}}/", String.Empty),
-                BodyTemplate = string.Empty,
-                Body = Create(request.Body),
-            };
-
-            if (request.Method == "GET")
-                req.RequestMethod = HttpVerb.GET;
-
-            if (request.Method == "POST")
-                req.RequestMethod = HttpVerb.POST;
-
-            if (request.Method == "PUT")
-                req.RequestMethod = HttpVerb.PUT;
-
-            if (request.Method == "DELETE")
-                req.RequestMethod = HttpVerb.DELETE;
-
-
-            req.Headers.AddRange(Create(request.Header));
-            return req;
+            list.Add(GetCompareRequestFromRequest(request));
         }
-
-        public static CompareRequest GetRequest(Request request)
+        return list;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="CollectionJSONFile"></param>
+    public void LoadFromPostman(string CollectionJSONFile)
+    {
+        var jsonText = File.ReadAllText(CollectionJSONFile);
+        foreach (var item in JsonConvert.DeserializeObject<Root>(jsonText)?.Item ?? Enumerable.Empty<PostmanItem>())
         {
-            if (request is null) return null;
-            return GetCompareRequestFromRequest(request);
-        }
-        public static IEnumerable<CompareRequest> GetRequests(IEnumerable<Request> requests)
-        {
-            var list = new List<CompareRequest>();
-            if (requests is null) return list;
-            foreach (var request in requests)
-            {
-                list.Add(GetCompareRequestFromRequest(request));
-            }
-            return list;
-        }
-        public void LoadFromPostman(string CollectionJSONFile)
-        {
-            var jsonText = File.ReadAllText(CollectionJSONFile);
-            var myDeserializedClass = JsonConvert.DeserializeObject<Root>(jsonText);
-            foreach (var item1 in myDeserializedClass.Item)
-            {
-                LookForRequests(item1);
-            }
-        }
-        private void LookForRequests(PostmanItem ParentItem)
-        {
-            if (ParentItem is null) return;
-
-            if (ParentItem.Request is not null) myRunner.Requests.Add(GetRequest(ParentItem.Request));
-
-            if (ParentItem.Item is null) return;
-
-            foreach (var childItem in ParentItem.Item)
-            {
-                LookForRequests(childItem);
-            }
+            LookForRequests(item);
         }
     }
 }
