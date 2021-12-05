@@ -1,5 +1,8 @@
 ﻿
 namespace RESTRunner.Extensions;
+/// <summary>
+/// Extension Methods for Compare Runner
+/// </summary>
 public static class CompareRunner_Extensions
 {
     private static List<CompareInstance> GetCompareInstances()
@@ -39,6 +42,10 @@ public static class CompareRunner_Extensions
 #pragma warning restore CRRSP06 // A misspelled word has been found
     }
 
+    /// <summary>
+    /// Initialize the Compare Runner
+    /// </summary>
+    /// <param name="runner"></param>
     public static void InitializeCompareRunner(this CompareRunner runner)
     {
         runner.Requests = GetCompareRequests();
