@@ -2,11 +2,8 @@
 using RESTRunner.Domain.Extensions;
 using RESTRunner.Domain.Models;
 using RestSharp;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Authentication;
-using System.Threading.Tasks;
 
 namespace RESTRunner.Extensions
 {
@@ -99,7 +96,7 @@ namespace RESTRunner.Extensions
             stopw.Start();
             var response = client.Execute(client.GetRequest(env, req, user));
             stopw.Stop();
-            Console.WriteLine($"{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod.ToString()}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
+            Console.WriteLine($"{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
             return GetResult(response, env, req, user, stopw.ElapsedMilliseconds);
         }
 

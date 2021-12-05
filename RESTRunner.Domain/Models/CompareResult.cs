@@ -1,21 +1,56 @@
-﻿namespace RESTRunner.Domain.Models
+﻿namespace RESTRunner.Domain.Models;
+
+/// <summary>
+/// CompareResult
+/// </summary>
+public record CompareResult
 {
     /// <summary>
-    /// CompareResult
+    /// The content returned from the response (usually JSON string)
     /// </summary>
-    public record CompareResult
-    {
-        public string SessionId { get; set; }
-        public string UserName { get; set; }
-        public string Verb { get; set; }
-        public string Instance { get; set; }
-        public bool Success { get; set; }
-        public string ResultCode { get; set; }
-        public long Duration { get; set; }
-        public string LastRunDate { get; set; }
-        public int Hash { get; set; }
-        public string Request { get; set; }
-        public string StatusDescription { get; set; }
-        public string Content { get; set; }
-    }
+    public string? Content { get; set; }
+    /// <summary>
+    /// How long did it take for the request to come back?
+    /// </summary>
+    public long Duration { get; set; }
+    /// <summary>
+    /// A deterministic HASH for the content returned from the request
+    /// </summary>
+    public int Hash { get; set; }
+    /// <summary>
+    /// Name of Instance used for request
+    /// </summary>
+    public string? Instance { get; set; }
+    /// <summary>
+    /// When was the run completed?
+    /// </summary>
+    public string? LastRunDate { get; set; }
+    /// <summary>
+    /// The path for the request
+    /// </summary>
+    public string? Request { get; set; }
+    /// <summary>
+    /// Code from the request response (i.e. 200 for OK)
+    /// </summary>
+    public string? ResultCode { get; set; }
+    /// <summary>
+    /// Session value for tracking
+    /// </summary>
+    public string? SessionId { get; set; }
+    /// <summary>
+    /// The description of the status from the request response
+    /// </summary>
+    public string? StatusDescription { get; set; }
+    /// <summary>
+    /// Was the request successful
+    /// </summary>
+    public bool Success { get; set; }
+    /// <summary>
+    /// User Name
+    /// </summary>
+    public string? UserName { get; set; }
+    /// <summary>
+    /// HttpVerb (GET/POST/DELETE/PUT)
+    /// </summary>
+    public string? Verb { get; set; }
 }

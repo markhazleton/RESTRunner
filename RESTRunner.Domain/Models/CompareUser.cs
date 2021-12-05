@@ -1,15 +1,28 @@
-﻿using System.Collections.Generic;
+﻿namespace RESTRunner.Domain.Models;
 
-namespace RESTRunner.Domain.Models
+/// <summary>
+///  The User to use for the Request
+/// </summary>
+public class CompareUser
 {
-    public class CompareUser
+    /// <summary>
+    /// 
+    /// </summary>
+    public string? Password;
+    /// <summary>
+    /// 
+    /// </summary>
+    public Dictionary<string, string> Properties;
+    /// <summary>
+    /// 
+    /// </summary>
+    public string? UserName;
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    public CompareUser()
     {
-        public CompareUser()
-        {
-            Properties = new Dictionary<string, string>();
-        }
-        public string UserName;
-        public string Password;
-        public Dictionary<string, string> Properties;
+        Properties = new Dictionary<string, string>();
     }
 }
