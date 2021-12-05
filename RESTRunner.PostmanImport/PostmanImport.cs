@@ -57,11 +57,11 @@ namespace RESTRunner.Postman
 
         private static CompareRequest GetCompareRequestFromRequest(Request request)
         {
-            if(request == null) return new CompareRequest();    
+            if (request == null) return new CompareRequest();
 
             var req = new CompareRequest
             {
-                Path = request?.Url?.Raw?.Replace("{{url}}/", String.Empty).Replace("{{api-url}}/",String.Empty),
+                Path = request?.Url?.Raw?.Replace("{{url}}/", String.Empty).Replace("{{api-url}}/", String.Empty),
                 BodyTemplate = string.Empty,
                 Body = Create(request.Body),
             };

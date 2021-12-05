@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,16 +14,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="27.1.1" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="CsvHelper" Version="27.2.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RESTRunner.Domain\RESTRunner.Domain.csproj" />
     <ProjectReference Include="..\RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj" />
     <ProjectReference Include="..\RESTRunner.Services.RestSharp\RESTRunner.Services.RestSharp.csproj" />
+    <ProjectReference Include="..\RESTRunner.Services.StoreResults.Memory\RESTRunner.Services.StoreResults.Memory.csproj" />
   </ItemGroup>
 
 </Project>

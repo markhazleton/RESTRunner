@@ -2,7 +2,7 @@
 using RESTRunner.Domain.Models;
 using System.Collections.Generic;
 
-namespace RESTRunner.Services
+namespace RESTRunner.Services.StoreResults.Memory
 {
     public class StoreResultsService : IStoreResults
     {

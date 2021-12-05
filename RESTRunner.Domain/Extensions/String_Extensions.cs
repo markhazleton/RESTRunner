@@ -5,7 +5,7 @@ namespace RESTRunner.Domain.Extensions
     public static class String_Extensions
     {
         public static bool CaseInsensitiveContains(this string text, string value, StringComparison stringComparison = StringComparison.CurrentCultureIgnoreCase)
-        { 
+        {
             return text.Contains(value, stringComparison);
         }
 
