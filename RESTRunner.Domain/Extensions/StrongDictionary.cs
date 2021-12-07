@@ -85,6 +85,10 @@ public sealed class StrongDictionary<TKey, TValue>
         }
         return list;
     }
+    /// <summary>
+    /// Get Json string of dictionary
+    /// </summary>
+    /// <returns></returns>
     public string GetJson()
     {
         string str_json = string.Empty;
