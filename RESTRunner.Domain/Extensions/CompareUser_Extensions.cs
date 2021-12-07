@@ -1,8 +1,17 @@
 ﻿namespace RESTRunner.Domain.Extensions;
 
+/// <summary>
+/// 
+/// </summary>
 public static class CompareUser_Extensions
 {
-    public static string GetMergedString(this CompareUser user, string StringToMerge)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="StringToMerge"></param>
+    /// <returns></returns>
+    public static string GetMergedString(this CompareUser user, string? StringToMerge)
     {
         if (!string.IsNullOrEmpty(StringToMerge))
         {
@@ -15,8 +24,7 @@ public static class CompareUser_Extensions
             {
                 StringToMerge = StringToMerge.Replace($"{{{{{prop.Key}}}", prop.Value);
             }
-
         }
-        return StringToMerge;
+        return StringToMerge??String.Empty;
     }
 }

@@ -1,12 +1,27 @@
 ﻿namespace RESTRunner.Domain.Extensions;
 
+/// <summary>
+/// String_Extensions
+/// </summary>
 public static class String_Extensions
 {
+    /// <summary>
+    /// CaseInsensitiveContains
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="value"></param>
+    /// <param name="stringComparison"></param>
+    /// <returns></returns>
     public static bool CaseInsensitiveContains(this string text, string value, StringComparison stringComparison = StringComparison.CurrentCultureIgnoreCase)
     {
         return text.Contains(value, stringComparison);
     }
 
+    /// <summary>
+    /// GetDeterministicHashCode
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
     public static int GetDeterministicHashCode(this string str)
     {
         if (str == null) return -1;

@@ -1,7 +1,14 @@
 ﻿namespace RESTRunner.Domain.Extensions;
 
+/// <summary>
+/// CompareRunner_Extensions
+/// </summary>
 public static class CompareRunner_Extensions
 {
+    /// <summary>
+    /// Save to File
+    /// </summary>
+    /// <param name="runner"></param>
     public static void SaveToFile(this CompareRunner runner)
     {
         string dirPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -20,13 +27,10 @@ public static class CompareRunner_Extensions
             sr.Close();
             msObj.Close();
             File.WriteAllText(Path.Combine(dirPath, "CompareRunner.json"), json);
-
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
-
     }
-
 }

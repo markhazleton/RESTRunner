@@ -1,11 +1,4 @@
-﻿using Newtonsoft.Json;
-using RESTRunner.Domain.Extensions;
-using RESTRunner.Domain.Models;
-using RestSharp;
-using System.Diagnostics;
-using System.Security.Authentication;
-
-namespace RESTRunner.Extensions;
+﻿namespace RESTRunner.Extensions;
 
 /// <summary>
 /// 
@@ -35,12 +28,12 @@ public static class RestClient_Extensions
         }
         if (req.RequestMethod != HttpVerb.GET)
         {
-            string reqBody = req?.BodyTemplate;
+            string? reqBody = req?.BodyTemplate;
             if (req?.Body?.Raw is not null)
             {
                 reqBody = req.Body.Raw;
             }
-            reqBody = user.GetMergedString(reqBody);
+            reqBody = user.GetMergedString(reqBody ?? String.Empty);
             request.AddParameter("application/json", reqBody, ParameterType.RequestBody);
         }
         return request;
@@ -48,7 +41,7 @@ public static class RestClient_Extensions
 
     private static CompareResult GetResult(IRestResponse response, CompareInstance env, CompareRequest req, CompareUser user, long elapsedMilliseconds)
     {
-        string shortPath = response?.ResponseUri?.LocalPath;
+        string? shortPath = response?.ResponseUri?.LocalPath;
         if (string.IsNullOrEmpty(shortPath)) shortPath = req.Path;
         return new CompareResult()
         {
@@ -57,25 +50,26 @@ public static class RestClient_Extensions
             Instance = env.Name,
             Verb = req.RequestMethod.ToString(),
             Request = shortPath,
-            Success = response.IsSuccessful,
-            ResultCode = ((int)response.StatusCode).ToString(),
+            Success = response?.IsSuccessful ?? false,
+            ResultCode = response?.StatusCode.ToString(),
             StatusDescription = response?.StatusDescription,
-            Hash = response.Content.GetDeterministicHashCode(),
+            Hash = response?.Content.GetDeterministicHashCode(),
             Duration = elapsedMilliseconds,
             LastRunDate = DateTime.Now.ToShortTimeString(),
             Content = response?.Content
         };
     }
 
+
     /// <summary>
-    /// GetClientToken
+    /// 
     /// </summary>
     /// <param name="client"></param>
-    /// <param name="userName"></param>
-    /// <param name="userPassword"></param>
     /// <param name="baseUrl"></param>
     /// <param name="clientId"></param>
+    /// <param name="client_secret"></param>
     /// <returns></returns>
+    /// <exception cref="AuthenticationException"></exception>
     public static async Task<string> GetClientToken(this RestClient client, string baseUrl, string clientId, string client_secret)
     {
         client.BaseUrl = new Uri(baseUrl);
@@ -87,12 +81,20 @@ public static class RestClient_Extensions
         request.AddParameter("client_secret", client_secret);
         IRestResponse response = await client.ExecuteAsync(request);
         var token = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Content)["access_token"].ToString();
-        if (token.Length == 0)
+        if (token?.Length == 0)
         {
             throw new AuthenticationException("API authentication failed.");
         }
-        return token;
+        return token ?? string.Empty;
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="env"></param>
+    /// <param name="req"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public static CompareResult GetResponse(this RestClient client, CompareInstance env, CompareRequest req, CompareUser user)
     {
         Stopwatch stopw = new();
@@ -103,6 +105,17 @@ public static class RestClient_Extensions
         return GetResult(response, env, req, user, stopw.ElapsedMilliseconds);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="userName"></param>
+    /// <param name="userPassword"></param>
+    /// <param name="baseUrl"></param>
+    /// <param name="client_id"></param>
+    /// <param name="client_secret"></param>
+    /// <returns></returns>
+    /// <exception cref="AuthenticationException"></exception>
     public static async Task<string> GetUserToken(this RestClient client, string userName, string userPassword, string baseUrl, string client_id, string client_secret)
     {
         client.BaseUrl = new Uri(baseUrl);
@@ -116,10 +129,10 @@ public static class RestClient_Extensions
         request.AddParameter("client_secret", client_secret);
         IRestResponse response = await client.ExecuteAsync(request);
         var token = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Content)["access_token"].ToString();
-        if (token.Length == 0)
+        if (token?.Length == 0)
         {
             throw new AuthenticationException("API authentication failed.");
         }
-        return token;
+        return token ?? string.Empty;
     }
 }

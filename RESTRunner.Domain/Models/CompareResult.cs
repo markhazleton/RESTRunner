@@ -6,17 +6,13 @@
 public record CompareResult
 {
     /// <summary>
-    /// The content returned from the response (usually JSON string)
-    /// </summary>
-    public string? Content { get; set; }
-    /// <summary>
     /// How long did it take for the request to come back?
     /// </summary>
     public long Duration { get; set; }
     /// <summary>
     /// A deterministic HASH for the content returned from the request
     /// </summary>
-    public int Hash { get; set; }
+    public int? Hash { get; set; }
     /// <summary>
     /// Name of Instance used for request
     /// </summary>
@@ -53,4 +49,8 @@ public record CompareResult
     /// HttpVerb (GET/POST/DELETE/PUT)
     /// </summary>
     public string? Verb { get; set; }
+    /// <summary>
+    /// The content returned from the response (usually JSON string)
+    /// </summary>
+    public string? Content { get; set; }
 }
