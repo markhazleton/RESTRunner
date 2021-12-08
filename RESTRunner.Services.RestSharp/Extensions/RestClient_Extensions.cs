@@ -48,7 +48,7 @@ public static class RestClient_Extensions
 
     private static CompareResult GetResult(IRestResponse response, CompareInstance env, CompareRequest req, CompareUser user, long elapsedMilliseconds)
     {
-        string shortPath = response?.ResponseUri?.LocalPath;
+        string? shortPath = response?.ResponseUri?.LocalPath;
         if (string.IsNullOrEmpty(shortPath)) shortPath = req.Path;
         return new CompareResult()
         {
@@ -57,7 +57,7 @@ public static class RestClient_Extensions
             Instance = env.Name,
             Verb = req.RequestMethod.ToString(),
             Request = shortPath,
-            Success = response.IsSuccessful,
+            Success = response?.IsSuccessful??default,
             ResultCode = ((int)response.StatusCode).ToString(),
             StatusDescription = response?.StatusDescription,
             Hash = response.Content.GetDeterministicHashCode(),
@@ -71,11 +71,11 @@ public static class RestClient_Extensions
     /// GetClientToken
     /// </summary>
     /// <param name="client"></param>
-    /// <param name="userName"></param>
-    /// <param name="userPassword"></param>
     /// <param name="baseUrl"></param>
     /// <param name="clientId"></param>
+    /// <param name="client_secret"></param>
     /// <returns></returns>
+    /// <exception cref="AuthenticationException"></exception>
     public static async Task<string> GetClientToken(this RestClient client, string baseUrl, string clientId, string client_secret)
     {
         client.BaseUrl = new Uri(baseUrl);
