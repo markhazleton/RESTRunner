@@ -6,7 +6,7 @@ namespace RESTRunner.Services.StoreResults.Memory;
 /// <summary>
 /// Store Results Service
 /// </summary>
-public class StoreResultsService : IStoreResults
+public class MemoryStoreResultsService : IStoreResults
 {
     private readonly List<CompareResult> results = new();
     /// <summary>

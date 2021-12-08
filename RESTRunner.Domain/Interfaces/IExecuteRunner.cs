@@ -2,5 +2,5 @@
 
 public interface IExecuteRunner
 {
-    public Task<IEnumerable<CompareResult>> ExecuteRunnerAsync();
+    public Task<IEnumerable<CompareResult>> ExecuteRunnerAsync(IStoreResults storeResults);
 }

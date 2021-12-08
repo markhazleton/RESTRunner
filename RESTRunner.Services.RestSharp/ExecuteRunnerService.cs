@@ -2,9 +2,6 @@
 using RESTRunner.Domain.Models;
 using RESTRunner.Extensions;
 using RestSharp;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace RESTRunner.Services
 {
@@ -55,12 +52,12 @@ namespace RESTRunner.Services
         /// Execute a RESTRunner and Returns Results
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<CompareResult>> ExecuteRunnerAsync()
+        public async Task<IEnumerable<CompareResult>> ExecuteRunnerAsync(IStoreResults storeResults)
         {
-            var storeResults = new List<CompareResult>();
+            int requestCount = 0;
             var tasks = new List<Task>();
-            var throttler = new SemaphoreSlim(initialCount: 31);
-            for (int i = 0; i < 100; i++)
+            var semaphore = new SemaphoreSlim(initialCount: 100);
+            for (int i = 0; i < 10; i++)
             {
                 foreach (var user in runner.Users)
                 {
@@ -68,35 +65,40 @@ namespace RESTRunner.Services
                     {
                         foreach (var env in runner.Instances)
                         {
-                            await throttler.WaitAsync();
+                            requestCount++;
+                            Console.WriteLine($"Request QUEUE request #{requestCount}  semaphore:{semaphore.CurrentCount}");
+                            await semaphore.WaitAsync();
 
                             tasks.Add(Task.Run(() =>
                                     {
                                         try
                                         {
+                                            Console.WriteLine($"Request START request #{requestCount}  semaphore:{semaphore.CurrentCount}");
                                             storeResults.Add(GetResponse(env, req, user));
                                         }
                                         finally
                                         {
-                                            throttler.Release();
+                                            semaphore.Release();
+                                            Console.WriteLine($"Semaphore RELEASED request #{requestCount}  semaphore:{semaphore.CurrentCount}");
                                         }
                                     }));
                         }
                     }
-                    Task t = Task.WhenAll(tasks.ToArray());
-                    try
-                    {
-                        await t;
-                    }
-                    catch
-                    {
-                    }
-                    if (t.Status == TaskStatus.RanToCompletion)
-                    {
-                    }
                 }
             }
-            return storeResults;
+            Task t = Task.WhenAll(tasks.ToArray());
+            try
+            {
+                await t;
+            }
+            catch
+            {
+            }
+            if (t.Status == TaskStatus.RanToCompletion)
+            {
+            }
+            Console.WriteLine($"Total requestCount:{requestCount}");
+            return storeResults.Results().ToList();
         }
     }
 }
