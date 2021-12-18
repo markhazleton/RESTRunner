@@ -9,5 +9,5 @@ public interface IExecuteRunner
     /// 
     /// </summary>
     /// <returns></returns>
-    public Task<IEnumerable<CompareResult>> ExecuteRunnerAsync();
+    public Task ExecuteRunnerAsync(IOutput output);
 }

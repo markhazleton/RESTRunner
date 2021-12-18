@@ -2,9 +2,8 @@
 global using CsvHelper.Configuration;
 global using RESTRunner.Domain.Extensions;
 global using RESTRunner.Domain.Models;
+global using RESTRunner.Domain.Outputs;
 global using RESTRunner.Extensions;
-global using RESTRunner.Infrastructure;
 global using RESTRunner.Postman;
 global using RESTRunner.Services;
-global using RESTRunner.Services.StoreResults.Memory;
 global using System.Globalization;

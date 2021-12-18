@@ -1,100 +1,109 @@
-﻿namespace RESTRunner.Services;
+﻿using RESTRunner.Domain.Interfaces;
+using RESTRunner.Domain.Models;
+using RESTRunner.Extensions;
+using RestSharp;
 
-/// <summary>
-/// ExecuteRunnerService 
-/// </summary>
-public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunner
+namespace RESTRunner.Services
 {
-    private readonly CompareRunner runner;
-
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="therunner"></param>
-    public ExecuteRunnerService(CompareRunner therunner) : base(therunner)
+    public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunner
     {
-        runner = therunner;
-    }
-    private static CompareResult GetResponse(CompareInstance env, CompareRequest req, CompareUser user)
-    {
-        var client = new RestClient() { Timeout = -1 };
+        private readonly CompareRunner runner;
 
-        if (!string.IsNullOrEmpty(req.BodyTemplate))
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="therunner"></param>
+        public ExecuteRunnerService(CompareRunner therunner) : base(therunner)
         {
-            foreach (var prop in user.Properties)
-            {
-                req.BodyTemplate = req.BodyTemplate.Replace($"{{{prop.Key}}}", prop.Value);
-            }
+            runner = therunner;
         }
-        if (!string.IsNullOrEmpty(req.Path))
+        private static CompareResult GetResponse(CompareInstance env, CompareRequest req, CompareUser user)
         {
-            req.Path = req.Path.Replace(@"{{encoded_user_name}}", user.UserName);
-            foreach (var prop in user.Properties)
-            {
-                req.Path = req.Path.Replace($"{{{prop.Key}}}", prop.Value);
-            }
-        }
-        if (req?.Body?.Raw is not null)
-        {
-            req.BodyTemplate = req.Body.Raw;
-        }
-        if (req?.BodyTemplate is not null)
-        {
-            foreach (var prop in user.Properties)
-            {
-                req.BodyTemplate = req.BodyTemplate.Replace($"{{{prop.Key}}}", prop.Value);
-            }
-        }
-        // TODO: Is Token Still Valid 
-        // TODO: Polly to Check 
-        return client.GetResponse(env, req, user);
-    }
+            var client = new RestClient() { Timeout = -1 };
 
-    /// <summary>
-    /// Execute a RESTRunner and Returns Results
-    /// </summary>
-    /// <returns></returns>
-    public async Task<IEnumerable<CompareResult>> ExecuteRunnerAsync()
-    {
-        var storeResults = new List<CompareResult>();
-        var tasks = new List<Task>();
-        var throttler = new SemaphoreSlim(initialCount: 30);
-        for (int i = 0; i < 2000; i++)
-        {
-            foreach (var user in runner.Users)
+            if (!string.IsNullOrEmpty(req.BodyTemplate))
             {
-                foreach (var req in runner.Requests)
+                foreach (var prop in user.Properties)
                 {
-                    foreach (var env in runner.Instances)
-                    {
-                        await throttler.WaitAsync();
+                    req.BodyTemplate = req.BodyTemplate.Replace($"{{{prop.Key}}}", prop.Value);
+                }
+            }
+            if (!string.IsNullOrEmpty(req.Path))
+            {
+                req.Path = req.Path.Replace(@"{{encoded_user_name}}", user.UserName);
+                foreach (var prop in user.Properties)
+                {
+                    req.Path = req.Path.Replace($"{{{prop.Key}}}", prop.Value);
+                }
+            }
+            if (req?.Body?.Raw is not null)
+            {
+                req.BodyTemplate = req.Body.Raw;
+            }
+            if (req?.BodyTemplate is not null)
+            {
+                foreach (var prop in user.Properties)
+                {
+                    req.BodyTemplate = req.BodyTemplate.Replace($"{{{prop.Key}}}", prop.Value);
+                }
+            }
+            // TODO: Is Token Still Valid 
+            // TODO: Polly to Check 
+            return client.GetResponse(env, req, user);
+        }
 
-                        tasks.Add(Task.Run(() =>
+        /// <summary>
+        /// Execute a RESTRunner and Returns Results
+        /// </summary>
+        /// <returns></returns>
+        public async Task ExecuteRunnerAsync(IOutput output)
+        {
+            int requestCount = 0;
+            var tasks = new List<Task>();
+            var semaphore = new SemaphoreSlim(initialCount: 100);
+            for (int i = 0; i < 10; i++)
+            {
+                foreach (var env in runner.Instances)
+                {
+                    foreach (var user in runner.Users)
+                    {
+                        foreach (var req in runner.Requests)
+                        {
+                            requestCount++;
+                            await semaphore.WaitAsync();
+                            
+                            tasks.Add(Task.Run(() =>
+                            {
+                                try
                                 {
-                                    try
-                                    {
-                                        storeResults.Add(GetResponse(env, req, user));
-                                    }
-                                    finally
-                                    {
-                                        throttler.Release();
-                                    }
-                                }));
+                                    var result = GetResponse(env, req, user);
+                                    output.WriteInfo(result);
+                                }
+                                finally
+                                {
+                                    semaphore.Release();
+                                }
+                            }));
+                        }
                     }
                 }
-                Task t = Task.WhenAll(tasks.ToArray());
-                try
-                {
-                    await t;
-                }
-                catch
-                {
-                }
-                if (t.Status == TaskStatus.RanToCompletion)
-                {
-                }
             }
+            Task t = Task.WhenAll(tasks.ToArray());
+            try
+            {
+                await t;
+            }
+            catch
+            {
+            }
+            if (t.Status == TaskStatus.RanToCompletion)
+            {
+            }
+            Console.WriteLine($"Total requestCount:{requestCount}");
+            return;
         }
-        return storeResults;
     }
 }
