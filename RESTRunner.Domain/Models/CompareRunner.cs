@@ -27,17 +27,13 @@ public class CompareRunner
     /// </summary>
     public List<CompareUser> Users;
     /// <summary>
-    /// Service to store the results
+    /// 
     /// </summary>
-    public IStoreResults Results;
-
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="results"></param>
-    public CompareRunner(IStoreResults results)
+    public CompareRunner()
     {
-        Results = results;
         Instances = new List<CompareInstance>();
         Requests = new List<CompareRequest>();
         Users = new List<CompareUser>();
