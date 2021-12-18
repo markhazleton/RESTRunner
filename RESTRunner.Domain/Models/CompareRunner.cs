@@ -26,7 +26,9 @@ public class CompareRunner
     /// List of users to use during the REST Runner execution
     /// </summary>
     public List<CompareUser> Users;
-
+    /// <summary>
+    /// 
+    /// </summary>
     /// <summary>
     /// 
     /// </summary>

@@ -5,10 +5,17 @@ using RestSharp;
 
 namespace RESTRunner.Services
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunner
     {
         private readonly CompareRunner runner;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="therunner"></param>
         public ExecuteRunnerService(CompareRunner therunner) : base(therunner)
         {
             runner = therunner;
@@ -52,36 +59,34 @@ namespace RESTRunner.Services
         /// Execute a RESTRunner and Returns Results
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<CompareResult>> ExecuteRunnerAsync(IStoreResults storeResults)
+        public async Task ExecuteRunnerAsync(IOutput output)
         {
             int requestCount = 0;
             var tasks = new List<Task>();
             var semaphore = new SemaphoreSlim(initialCount: 100);
             for (int i = 0; i < 10; i++)
             {
-                foreach (var user in runner.Users)
+                foreach (var env in runner.Instances)
                 {
-                    foreach (var req in runner.Requests)
+                    foreach (var user in runner.Users)
                     {
-                        foreach (var env in runner.Instances)
+                        foreach (var req in runner.Requests)
                         {
                             requestCount++;
-                            Console.WriteLine($"Request QUEUE request #{requestCount}  semaphore:{semaphore.CurrentCount}");
                             await semaphore.WaitAsync();
-
+                            
                             tasks.Add(Task.Run(() =>
-                                    {
-                                        try
-                                        {
-                                            Console.WriteLine($"Request START request #{requestCount}  semaphore:{semaphore.CurrentCount}");
-                                            storeResults.Add(GetResponse(env, req, user));
-                                        }
-                                        finally
-                                        {
-                                            semaphore.Release();
-                                            Console.WriteLine($"Semaphore RELEASED request #{requestCount}  semaphore:{semaphore.CurrentCount}");
-                                        }
-                                    }));
+                            {
+                                try
+                                {
+                                    var result = GetResponse(env, req, user);
+                                    output.WriteInfo(result);
+                                }
+                                finally
+                                {
+                                    semaphore.Release();
+                                }
+                            }));
                         }
                     }
                 }
@@ -98,7 +103,7 @@ namespace RESTRunner.Services
             {
             }
             Console.WriteLine($"Total requestCount:{requestCount}");
-            return storeResults.Results().ToList();
+            return;
         }
     }
 }
