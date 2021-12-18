@@ -58,9 +58,9 @@ public static class RestClient_Extensions
             Verb = req.RequestMethod.ToString(),
             Request = shortPath,
             Success = response?.IsSuccessful??default,
-            ResultCode = ((int)response.StatusCode).ToString(),
+            ResultCode = response == null ? string.Empty : ((int)response.StatusCode).ToString(),
             StatusDescription = response?.StatusDescription,
-            Hash = response.Content.GetDeterministicHashCode(),
+            Hash = response==null?0:response.Content.GetDeterministicHashCode(),
             Duration = elapsedMilliseconds,
             LastRunDate = DateTime.Now.ToShortTimeString(),
             Content = response?.Content
@@ -93,6 +93,14 @@ public static class RestClient_Extensions
         }
         return token;
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="env"></param>
+    /// <param name="req"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public static CompareResult GetResponse(this RestClient client, CompareInstance env, CompareRequest req, CompareUser user)
     {
         Stopwatch stopw = new();
@@ -103,6 +111,17 @@ public static class RestClient_Extensions
         return GetResult(response, env, req, user, stopw.ElapsedMilliseconds);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="userName"></param>
+    /// <param name="userPassword"></param>
+    /// <param name="baseUrl"></param>
+    /// <param name="client_id"></param>
+    /// <param name="client_secret"></param>
+    /// <returns></returns>
+    /// <exception cref="AuthenticationException"></exception>
     public static async Task<string> GetUserToken(this RestClient client, string userName, string userPassword, string baseUrl, string client_id, string client_secret)
     {
         client.BaseUrl = new Uri(baseUrl);

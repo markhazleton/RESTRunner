@@ -1,6 +1,13 @@
 ﻿namespace RESTRunner.Domain.Interfaces;
 
+/// <summary>
+/// 
+/// </summary>
 public interface IExecuteRunner
 {
-    public Task<IEnumerable<CompareResult>> ExecuteRunnerAsync(IStoreResults storeResults);
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public Task ExecuteRunnerAsync(IOutput output);
 }

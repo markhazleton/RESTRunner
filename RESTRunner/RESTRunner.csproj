@@ -35,7 +35,6 @@
 		<ProjectReference Include="..\RESTRunner.Domain\RESTRunner.Domain.csproj" />
 		<ProjectReference Include="..\RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj" />
 		<ProjectReference Include="..\RESTRunner.Services.RestSharp\RESTRunner.Services.RestSharp.csproj" />
-		<ProjectReference Include="..\RESTRunner.Services.StoreResults.Memory\RESTRunner.Services.StoreResults.Memory.csproj" />
 	</ItemGroup>
 
 </Project>
