@@ -16,8 +16,14 @@ public class CsvOutput : IOutput, IDisposable
     /// </summary>
     public CsvOutput()
     {
-        var fileMode = FileMode.Create;
-        var file = new FileStream($"c:\\test\\RESTRunner.csv", fileMode, FileAccess.Write);
+        string curFile = $"c:\\test\\RESTRunner.csv";
+        var fileMode = FileMode.Append;
+        if (!File.Exists(curFile))
+        {
+            fileMode = FileMode.Create;
+        }
+
+        var file = new FileStream(curFile, fileMode, FileAccess.Write);
         var streamWriter = new StreamWriter(file) { AutoFlush = true };
         _writer = TextWriter.Synchronized(streamWriter);
         if (fileMode == FileMode.Create)
@@ -43,7 +49,7 @@ public class CsvOutput : IOutput, IDisposable
         return sb.ToString();
     }
 
-    private string GetItemCSVRow(CompareResult item)
+    private static string GetItemCSVRow(CompareResult item)
     {
         var sb = new StringBuilder();
         SetPropertyCSVColumn(sb, item.Verb, true, false);
@@ -67,7 +73,7 @@ public class CsvOutput : IOutput, IDisposable
         return sb.ToString();
     }
 
-    private void SetPropertyCSVColumn(StringBuilder sb, string? value, bool first = false, bool last = false)
+    private static void SetPropertyCSVColumn(StringBuilder sb, string? value, bool first = false, bool last = false)
     {
         if (value == null)
         {
