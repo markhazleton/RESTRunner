@@ -20,7 +20,7 @@ public record CompareResult
     /// <summary>
     /// When was the run completed?
     /// </summary>
-    public string? LastRunDate { get; set; }
+    public DateTime LastRunDate { get; set; }
     /// <summary>
     /// The path for the request
     /// </summary>

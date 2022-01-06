@@ -60,7 +60,7 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
     {
         int requestCount = 0;
         var tasks = new List<Task>();
-        var semaphore = new SemaphoreSlim(initialCount: 100);
+        var semaphore = new SemaphoreSlim(initialCount: 50);
         for (int i = 0; i < 1000; i++)
         {
             foreach (var env in runner.Instances)
