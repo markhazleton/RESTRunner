@@ -1,11 +1,4 @@
-﻿using Newtonsoft.Json;
-using RESTRunner.Domain.Extensions;
-using RESTRunner.Domain.Models;
-using RestSharp;
-using System.Diagnostics;
-using System.Security.Authentication;
-
-namespace RESTRunner.Extensions;
+﻿namespace RESTRunner.Extensions;
 
 /// <summary>
 /// 
@@ -35,7 +28,7 @@ public static class RestClient_Extensions
         }
         if (req.RequestMethod != HttpVerb.GET)
         {
-            string reqBody = req?.BodyTemplate;
+            string reqBody = req?.BodyTemplate ?? string.Empty;
             if (req?.Body?.Raw is not null)
             {
                 reqBody = req.Body.Raw;
@@ -57,12 +50,12 @@ public static class RestClient_Extensions
             Instance = env.Name,
             Verb = req.RequestMethod.ToString(),
             Request = shortPath,
-            Success = response?.IsSuccessful??default,
+            Success = response?.IsSuccessful ?? default,
             ResultCode = response == null ? string.Empty : ((int)response.StatusCode).ToString(),
             StatusDescription = response?.StatusDescription,
-            Hash = response==null?0:response.Content.GetDeterministicHashCode(),
+            Hash = response == null ? 0 : response.Content.GetDeterministicHashCode(),
             Duration = elapsedMilliseconds,
-            LastRunDate = DateTime.Now.ToShortTimeString(),
+            LastRunDate = DateTime.Now,
             Content = response?.Content
         };
     }
@@ -87,11 +80,11 @@ public static class RestClient_Extensions
         request.AddParameter("client_secret", client_secret);
         IRestResponse response = await client.ExecuteAsync(request);
         var token = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Content)["access_token"].ToString();
-        if (token.Length == 0)
+        if (token is null || token?.Length == 0)
         {
             throw new AuthenticationException("API authentication failed.");
         }
-        return token;
+        return token ?? string.Empty;
     }
     /// <summary>
     /// 
@@ -135,10 +128,10 @@ public static class RestClient_Extensions
         request.AddParameter("client_secret", client_secret);
         IRestResponse response = await client.ExecuteAsync(request);
         var token = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Content)["access_token"].ToString();
-        if (token.Length == 0)
+        if (token is null||token?.Length == 0)
         {
             throw new AuthenticationException("API authentication failed.");
         }
-        return token;
+        return token??string.Empty;
     }
 }

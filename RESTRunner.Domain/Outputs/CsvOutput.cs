@@ -54,7 +54,7 @@ public class CsvOutput : IOutput, IDisposable
         var sb = new StringBuilder();
         SetPropertyCSVColumn(sb, item.Verb, true, false);
         SetPropertyCSVColumn(sb, item.Instance, false, false);
-        SetPropertyCSVColumn(sb, item.LastRunDate, false, false);
+        SetPropertyCSVColumn(sb, item.LastRunDate.ToString("MM/dd/yyyy HH:mm:ss"), false, false);
         SetPropertyCSVColumn(sb, item.Duration.ToString(), false, false);
         SetPropertyCSVColumn(sb, item.Request, false, false);
         SetPropertyCSVColumn(sb, item.ResultCode, false, false);
