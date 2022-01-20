@@ -5,5 +5,5 @@ global using RESTRunner.Domain.Models;
 global using RESTRunner.Domain.Outputs;
 global using RESTRunner.Extensions;
 global using RESTRunner.Postman;
-global using RESTRunner.Services;
+global using RESTRunner.Services.HttpClientRunner;
 global using System.Globalization;

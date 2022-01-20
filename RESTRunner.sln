@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.PostmanImport", "RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj", "{9C191072-4C1F-4219-8A38-A0B08C2C0BF5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.Services.RestSharp", "RESTRunner.Services.RestSharp\RESTRunner.Services.RestSharp.csproj", "{CA33BCD4-7324-4698-BA6C-EFCFC3797B0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.Services.HttpClientRunner", "RESTRunner.Services.HttpClient\RESTRunner.Services.HttpClientRunner.csproj", "{164568A4-E8D5-411F-92D2-E44B539A8AFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,10 +40,10 @@ Global
 		{9C191072-4C1F-4219-8A38-A0B08C2C0BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C191072-4C1F-4219-8A38-A0B08C2C0BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C191072-4C1F-4219-8A38-A0B08C2C0BF5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA33BCD4-7324-4698-BA6C-EFCFC3797B0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA33BCD4-7324-4698-BA6C-EFCFC3797B0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA33BCD4-7324-4698-BA6C-EFCFC3797B0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA33BCD4-7324-4698-BA6C-EFCFC3797B0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{164568A4-E8D5-411F-92D2-E44B539A8AFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{164568A4-E8D5-411F-92D2-E44B539A8AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{164568A4-E8D5-411F-92D2-E44B539A8AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{164568A4-E8D5-411F-92D2-E44B539A8AFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
