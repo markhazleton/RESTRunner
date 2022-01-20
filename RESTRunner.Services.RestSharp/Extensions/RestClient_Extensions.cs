@@ -1,5 +1,4 @@
 ﻿namespace RESTRunner.Extensions;
-
 /// <summary>
 /// 
 /// </summary>

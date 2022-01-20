@@ -1,96 +1,123 @@
 {
-	"info": {
-		"_postman_id": "0e97038c-c722-46f1-bb73-c5b4f35e4761",
-		"name": "Employee Sample",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Employee",
-			"item": [
-				{
-					"name": "GetEmployees",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api-url}}/api/employee",
-							"host": [
-								"{{api-url}}"
-							],
-							"path": [
-								"api",
-								"employee"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetEmployeeByID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api-url}}/api/employee/1",
-							"host": [
-								"{{api-url}}"
-							],
-							"path": [
-								"api",
-								"employee",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Employee",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"age\": 22,\r\n  \"country\": \"USA\",\r\n  \"department\": 4,\r\n  \"id\": 1,\r\n  \"name\": \"Monte Warden\",\r\n  \"state\": \"TX\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{api-url}}/api/employee/2",
-							"host": [
-								"{{api-url}}"
-							],
-							"path": [
-								"api",
-								"employee",
-								"2"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "GetStatus",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{api-url}}/status",
-					"host": [
-						"{{api-url}}"
-					],
-					"path": [
-						"status"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "0e97038c-c722-46f1-bb73-c5b4f35e4761",
+    "name": "Employee Sample",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Employee",
+      "item": [
+        {
+          "name": "GetEmployees",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api-url}}/api/employee",
+              "host": [
+                "{{api-url}}"
+              ],
+              "path": [
+                "api",
+                "employee"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetEmployeeByID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{api-url}}/api/employee/1",
+              "host": [
+                "{{api-url}}"
+              ],
+              "path": [
+                "api",
+                "employee",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Employee",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"age\": 22,\r\n  \"country\": \"USA\",\r\n  \"department\": 4,\r\n  \"id\": 1,\r\n  \"name\": \"Monte Warden\",\r\n  \"state\": \"TX\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api-url}}/api/employee",
+              "host": [
+                "{{api-url}}"
+              ],
+              "path": [
+                "api",
+                "employee"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Employee",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"age\": 33,\r\n  \"country\": \"USA\",\r\n  \"department\": 4,\r\n  \"id\": 1,\r\n  \"name\": \"Monte Warden\",\r\n  \"state\": \"TX\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{api-url}}/api/employee/1",
+              "host": [
+                "{{api-url}}"
+              ],
+              "path": [
+                "api",
+                "employee",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "GetStatus",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{api-url}}/status",
+          "host": [
+            "{{api-url}}"
+          ],
+          "path": [
+            "status"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }
