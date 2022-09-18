@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Domain.Extensions;
+﻿
+namespace RESTRunner.Domain.Extensions;
 
 /// <summary>
 /// Special Dictionary for Use with Restful / AJAX Calls

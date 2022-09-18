@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Domain.Extensions;
+﻿
+namespace RESTRunner.Domain.Extensions;
 
 /// <summary>
 /// 
@@ -25,6 +26,6 @@ public static class CompareUser_Extensions
                 StringToMerge = StringToMerge.Replace($"{{{{{prop.Key}}}", prop.Value);
             }
         }
-        return StringToMerge??String.Empty;
+        return StringToMerge ?? String.Empty;
     }
 }

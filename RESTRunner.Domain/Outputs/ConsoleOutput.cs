@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Domain.Outputs;
+﻿
+namespace RESTRunner.Domain.Outputs;
 
 /// <summary>
 /// 

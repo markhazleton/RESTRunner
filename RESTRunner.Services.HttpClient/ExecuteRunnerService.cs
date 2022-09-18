@@ -1,5 +1,4 @@
-﻿
-using System.Text;
+﻿using System.Text;
 
 namespace RESTRunner.Services.HttpClientRunner;
 /// <summary>
@@ -111,7 +110,7 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
         int requestCount = 0;
         var tasks = new List<Task>();
         var semaphore = new SemaphoreSlim(initialCount: 80);
-        for (int i = 0; i < 2000; i++)
+        for (int i = 0; i < 200; i++)
         {
             foreach (var env in runner.Instances)
             {

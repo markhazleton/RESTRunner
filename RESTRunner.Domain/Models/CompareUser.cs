@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Domain.Models;
+﻿
+namespace RESTRunner.Domain.Models;
 
 /// <summary>
 ///  The User to use for the Request

@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Domain.Models;
+﻿
+namespace RESTRunner.Domain.Models;
 
 /// <summary>
 /// The Runner main class

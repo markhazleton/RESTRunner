@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Domain.Models;
+﻿
+namespace RESTRunner.Domain.Models;
 
 /// <summary>
 /// REST Request class
