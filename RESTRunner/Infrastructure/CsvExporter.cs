@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Infrastructure;
+﻿
+namespace RESTRunner.Infrastructure;
 /// <summary>
 /// Extension class to Export CompareResult list to a CSV file
 /// </summary>

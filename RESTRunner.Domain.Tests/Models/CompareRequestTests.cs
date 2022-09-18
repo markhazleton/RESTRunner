@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Domain.Tests.Models;
+﻿
+namespace RESTRunner.Domain.Tests.Models;
 
 /// <summary>
 /// 

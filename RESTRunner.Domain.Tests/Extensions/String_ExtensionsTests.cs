@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Domain.Tests.Extensions;
+﻿
+namespace RESTRunner.Domain.Tests.Extensions;
 
 /// <summary>
 /// 

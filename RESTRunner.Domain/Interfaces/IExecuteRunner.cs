@@ -1,4 +1,5 @@
-﻿namespace RESTRunner.Domain.Interfaces;
+﻿
+namespace RESTRunner.Domain.Interfaces;
 
 /// <summary>
 /// 
