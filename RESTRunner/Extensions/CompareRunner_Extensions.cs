@@ -12,7 +12,6 @@ public static class CompareRunner_Extensions
                 // new CompareInstance() {Name="LO", BaseUrl="https://localhost:7023/"},
                 new CompareInstance() {Name="AZ", BaseUrl="https://mwhsampleweb.azurewebsites.net/"},
                 new CompareInstance() {Name="CO", BaseUrl="https://employeemvccrud.controlorigins.com/"},
-                //new CompareInstance() {Name="CO", BaseUrl="https://markhazletonsampleweb.azurewebsites.net/"}
             };
     }
     private static List<CompareRequest> GetCompareRequests()
