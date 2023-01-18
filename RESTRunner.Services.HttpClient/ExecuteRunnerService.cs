@@ -6,7 +6,9 @@ namespace RESTRunner.Services.HttpClientRunner;
 /// </summary>
 public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunner
 {
+    private readonly Object ConsoleWriterLock = new();
     private readonly CompareRunner runner;
+
 
     /// <summary>
     /// 
@@ -17,7 +19,7 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
         runner = therunner;
     }
 
-    private static async Task<CompareResult?> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user)
+    private async Task<CompareResult?> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user)
     {
         if (!string.IsNullOrEmpty(req.BodyTemplate))
         {
@@ -45,16 +47,17 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
                 req.BodyTemplate = req.BodyTemplate.Replace($"{{{prop.Key}}}", prop.Value);
             }
         }
-        HttpResponseMessage response = new();
-        HttpClient client = new();
+
+        using HttpClient client = HttpClientFactory.Create();
         Stopwatch stopw = new();
+        HttpResponseMessage response;
         if (req?.RequestMethod == HttpVerb.GET)
         {
             stopw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
             response = await client.GetAsync(requestUri);
-            Console.WriteLine($"{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
             stopw.Stop();
+            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
             return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds);
         }
         if (req?.RequestMethod == HttpVerb.POST)
@@ -63,8 +66,8 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
             var content = new StringContent(req.BodyTemplate, Encoding.UTF8, "application/json");
             response = await client.PostAsync(requestUri, content);
-            Console.WriteLine($"{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
             stopw.Stop();
+            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
             return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds);
         }
         if (req?.RequestMethod == HttpVerb.PUT)
@@ -73,8 +76,8 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
             var content = new StringContent(req.BodyTemplate, Encoding.UTF8, "application/json");
             response = await client.PutAsync(requestUri, content);
-            Console.WriteLine($"{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
             stopw.Stop();
+            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
             return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds);
         }
         return null;
@@ -101,6 +104,17 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
         };
     }
 
+
+    private void LogMessage(string message, ConsoleColor consoleColor = ConsoleColor.Green)
+    {
+        lock (ConsoleWriterLock)
+        {
+            Console.ForegroundColor = consoleColor;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+    }
+
     /// <summary>
     /// Execute a RESTRunner and Returns Results
     /// </summary>
@@ -109,13 +123,16 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
     {
         int requestCount = 0;
         var tasks = new List<Task>();
-        var semaphore = new SemaphoreSlim(initialCount: 80);
-        for (int i = 0; i < 2000; i++)
+        var semaphore = new SemaphoreSlim(initialCount: 300);
+        for (int i = 0; i < 3000; i++)
         {
+            LogMessage($"Starting Iteration {i}", ConsoleColor.Yellow);
             foreach (var env in runner.Instances)
             {
+                LogMessage($"Starting {env.Name} with {runner.Users.Count} users", ConsoleColor.Yellow);
                 foreach (var user in runner.Users)
                 {
+                    LogMessage($"Starting {user.UserName} with {runner.Requests.Count} requests", ConsoleColor.Yellow);
                     foreach (var req in runner.Requests)
                     {
                         requestCount++;
@@ -148,7 +165,10 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
         if (t.Status == TaskStatus.RanToCompletion)
         {
         }
-        Console.WriteLine($"Total requestCount:{requestCount}");
+        LogMessage($"Total requestCount:{requestCount}");
         return;
     }
+
+
+
 }

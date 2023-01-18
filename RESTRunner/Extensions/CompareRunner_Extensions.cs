@@ -9,9 +9,10 @@ public static class CompareRunner_Extensions
     {
         return new List<CompareInstance>
             {
-                // new CompareInstance() {Name="LO", BaseUrl="https://localhost:7023/"},
-                new CompareInstance() {Name="AZ", BaseUrl="https://mwhsampleweb.azurewebsites.net/"},
-                new CompareInstance() {Name="CO", BaseUrl="https://employeemvccrud.controlorigins.com/"},
+                new CompareInstance() {Name="LO", BaseUrl="https://localhost:7023/"},
+                new CompareInstance() {Name="CO", BaseUrl="https://markhazletonsamplecrud.controlorigins.com/"},
+                new CompareInstance() {Name="AZ1", BaseUrl="https://mwhsampleweb.azurewebsites.net/"},
+                new CompareInstance() {Name="AZ2", BaseUrl="https://mwhsampleweb.azurewebsites.net/"},
             };
     }
     private static List<CompareRequest> GetCompareRequests()
