@@ -23,7 +23,7 @@ public static class CompareUser_Extensions
             StringToMerge = StringToMerge.Replace(@"{{password}}", user.Password);
             foreach (var prop in user.Properties)
             {
-                StringToMerge = StringToMerge.Replace($"{{{{{prop.Key}}}", prop.Value);
+                StringToMerge = StringToMerge.Replace($"{{{{{prop.Key}}}}}", prop.Value);
             }
         }
         return StringToMerge ?? String.Empty;

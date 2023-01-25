@@ -62,14 +62,6 @@ public class CsvOutput : IOutput, IDisposable
         SetPropertyCSVColumn(sb, item.StatusDescription, false, false);
         SetPropertyCSVColumn(sb, item.Success.ToString(), false, false);
         SetPropertyCSVColumn(sb, item.UserName, false, false);
-        if (item.Success)
-        {
-            SetPropertyCSVColumn(sb, item.Content, false, true);
-        }
-        else
-        {
-            SetPropertyCSVColumn(sb, String.Empty, false, true);
-        }
         return sb.ToString();
     }
 

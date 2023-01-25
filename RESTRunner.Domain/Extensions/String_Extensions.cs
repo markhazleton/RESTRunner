@@ -23,7 +23,7 @@ public static class String_Extensions
     /// </summary>
     /// <param name="str"></param>
     /// <returns></returns>
-    public static int GetDeterministicHashCode(this string str)
+    public static int GetDeterministicHashCode(this string? str)
     {
         if (str == null) return -1;
         unchecked

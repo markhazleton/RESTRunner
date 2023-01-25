@@ -50,8 +50,5 @@ public record CompareResult
     /// HttpVerb (GET/POST/DELETE/PUT)
     /// </summary>
     public string? Verb { get; set; }
-    /// <summary>
-    /// The content returned from the response (usually JSON string)
-    /// </summary>
-    public string? Content { get; set; }
+
 }
