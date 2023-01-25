@@ -49,7 +49,7 @@ public class String_ExtensionsTests
         string? str = null;
 
         // Act
-        var result = str?.GetDeterministicHashCode();
+        var result = str.GetDeterministicHashCode();
 
         // Assert
         Assert.AreEqual(result, -1);

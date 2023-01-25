@@ -99,8 +99,7 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
             StatusDescription = response?.ReasonPhrase,
             Hash = response == null ? 0 : content.GetDeterministicHashCode(),
             Duration = elapsedMilliseconds,
-            LastRunDate = DateTime.Now,
-            Content = content
+            LastRunDate = DateTime.Now
         };
     }
 
