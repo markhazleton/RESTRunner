@@ -27,22 +27,24 @@ public sealed class StrongDictionary<TKey, TValue>
     /// </summary>
     /// <param name="key">The key.</param>
     /// <returns>TValue.</returns>
-    public TValue this[TKey key]
+    public TValue? this[TKey key]
     {
         get
         {
-            _Dictionary.TryGetValue(key, out TValue vOut);
+            _Dictionary.TryGetValue(key, out TValue? vOut);
             return vOut;
         }
         set
         {
-            _Dictionary.TryGetValue(key, out TValue vOut);
-            if (vOut == null)
+            _Dictionary.TryGetValue(key, out TValue? vOut);
+            if (vOut is null)
             {
+                if (value is null) return;
                 _Dictionary.Add(key, value);
             }
             else
             {
+                if (value is null) return;
                 _Dictionary[key] = value;
             }
         }
@@ -120,9 +122,11 @@ public sealed class StrongDictionary<TKey, TValue>
     {
         foreach (TKey key in _Dictionary.Keys)
         {
-            if (key != null)
+            if (key is not null)
             {
-                info.AddValue(key.ToString(), _Dictionary[key]);
+                var theKey = key?.ToString() ?? "unknown";
+
+                info.AddValue(theKey, _Dictionary[key]);
             }
         }
     }

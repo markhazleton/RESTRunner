@@ -1,8 +1,14 @@
 ﻿namespace RESTRunner.Domain.Tests.Models;
 
+/// <summary>
+/// CompareInstanceTests
+/// </summary>
 [TestClass]
 public class CompareInstanceTests
 {
+    /// <summary>
+    /// ToString_StateUnderTest_ExpectedBehavior()
+    /// </summary>
     [TestMethod]
     public void ToString_StateUnderTest_ExpectedBehavior()
     {

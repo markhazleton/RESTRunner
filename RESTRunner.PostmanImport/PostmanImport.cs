@@ -22,7 +22,7 @@ public class PostmanImport
         if (body == null) return null;
         var cbody = new CompareBody() { Mode = "raw" };
 
-        if (body.Mode == "raw")
+        if (string.Compare(body.Mode, "raw", StringComparison.Ordinal) == 0)
         {
             cbody.Raw = body.Raw;
         }
@@ -66,16 +66,16 @@ public class PostmanImport
             Body = Create(request?.Body),
         };
 
-        if (request?.Method == "GET")
+        if (string.Compare(request?.Method, "GET", StringComparison.Ordinal) == 0)
             req.RequestMethod = HttpVerb.GET;
 
-        if (request?.Method == "POST")
+        if (string.Compare(request?.Method, "POST", StringComparison.Ordinal) == 0)
             req.RequestMethod = HttpVerb.POST;
 
-        if (request?.Method == "PUT")
+        if (string.Compare(request?.Method, "PUT", StringComparison.Ordinal) == 0)
             req.RequestMethod = HttpVerb.PUT;
 
-        if (request?.Method == "DELETE")
+        if (string.Compare(request?.Method, "DELETE", StringComparison.Ordinal) == 0)
             req.RequestMethod = HttpVerb.DELETE;
 
 
