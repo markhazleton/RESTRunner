@@ -28,11 +28,11 @@ public class CsvOutput : IOutput, IDisposable
         _writer = TextWriter.Synchronized(streamWriter);
         if (fileMode == FileMode.Create)
         {
-            _writer?.WriteLine(GetItemCSVHeader(null));
+            _writer?.WriteLine(GetItemCSVHeader());
         }
     }
 
-    private string GetItemCSVHeader(CompareResult? item = null)
+    private string GetItemCSVHeader()
     {
         var sb = new StringBuilder();
         SetPropertyCSVColumn(sb, "Verb", true, false);

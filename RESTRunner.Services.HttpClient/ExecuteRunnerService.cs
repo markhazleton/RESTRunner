@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Text;
+﻿using System.Text;
 
 namespace RESTRunner.Services.HttpClientRunner;
 /// <summary>
@@ -20,7 +19,7 @@ public class ExecuteRunnerService : IExecuteRunner
         client = HttpClientFactory.CreateClient();
     }
 
-    private async Task<CompareResult?> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user)
+    private async Task<CompareResult?> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user, CancellationToken ct=default)
     {
         if (!string.IsNullOrEmpty(req.BodyTemplate))
         {
@@ -55,36 +54,36 @@ public class ExecuteRunnerService : IExecuteRunner
         {
             stopw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
-            response = await client.GetAsync(requestUri);
+            response = await client.GetAsync(requestUri, ct);
             stopw.Stop();
             LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
-            return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds);
+            return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds, ct);
         }
         if (req?.RequestMethod == HttpVerb.POST)
         {
             stopw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
             var content = new StringContent(req.BodyTemplate, Encoding.UTF8, "application/json");
-            response = await client.PostAsync(requestUri, content);
+            response = await client.PostAsync(requestUri, content, ct);
             stopw.Stop();
             LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
-            return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds);
+            return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds, ct);
         }
         if (req?.RequestMethod == HttpVerb.PUT)
         {
             stopw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
             var content = new StringContent(req.BodyTemplate, Encoding.UTF8, "application/json");
-            response = await client.PutAsync(requestUri, content);
+            response = await client.PutAsync(requestUri, content, ct);
             stopw.Stop();
             LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
-            return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds);
+            return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds, ct);
         }
         return null;
     }
-    private static async Task<CompareResult> GetResultAsync(HttpResponseMessage response, CompareInstance env, CompareRequest req, CompareUser user, long elapsedMilliseconds)
+    private static async Task<CompareResult> GetResultAsync(HttpResponseMessage response, CompareInstance env, CompareRequest req, CompareUser user, long elapsedMilliseconds, CancellationToken ct=default)
     {
-        string content = await response.Content.ReadAsStringAsync();
+        string content = await response.Content.ReadAsStringAsync(ct);
         string? shortPath = req?.Path;
         if (string.IsNullOrEmpty(shortPath)) shortPath = req.Path;
         return new CompareResult()
@@ -118,11 +117,11 @@ public class ExecuteRunnerService : IExecuteRunner
     /// Execute a RESTRunner and Returns Results
     /// </summary>
     /// <returns></returns>
-    public async Task ExecuteRunnerAsync(IOutput output)
+    public async Task ExecuteRunnerAsync(IOutput output, CancellationToken ct=default)
     {
         int requestCount = 0;
         var tasks = new List<Task>();
-        var semaphore = new SemaphoreSlim(initialCount: 100);
+        var semaphore = new SemaphoreSlim(initialCount: 200);
         for (int i = 0; i < 5; i++)
         {
             LogMessage($"Starting Iteration {i}", ConsoleColor.Yellow);
@@ -135,20 +134,20 @@ public class ExecuteRunnerService : IExecuteRunner
                     foreach (var req in runner.Requests)
                     {
                         requestCount++;
-                        await semaphore.WaitAsync();
+                        await semaphore.WaitAsync(ct);
 
                         tasks.Add(Task.Run(async () =>
                         {
                             try
                             {
-                                var result = await GetResponseAsync(env, req, user);
+                                var result = await GetResponseAsync(env, req, user,ct);
                                 if (result != null) output.WriteInfo(result);
                             }
                             finally
                             {
                                 semaphore.Release();
                             }
-                        }));
+                        }, ct));
                     }
                 }
             }

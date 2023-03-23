@@ -1,9 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace RESTRunner.Postman.Models;
-// Disable Spell check on POSTMAN class member names
-#pragma warning disable CRRSP08 // A misspelled word has been found
-#pragma warning disable CRRSP06 // A misspelled word has been found
 /// <summary>
 /// 
 /// </summary>
@@ -165,6 +162,3 @@ public record Root(
     [property: JsonPropertyName("info")] Info Info,
     [property: JsonPropertyName("item")] List<PostmanItem> Item,
     [property: JsonPropertyName("event")] List<Event> Event);
-
-#pragma warning restore CRRSP08 // A misspelled word has been found
-#pragma warning restore CRRSP06 // A misspelled word has been found

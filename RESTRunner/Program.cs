@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RESTRunner.Domain.Interfaces;
 
 var builder = new HostBuilder()
 .ConfigureServices((hostContext, services) =>
@@ -14,18 +15,16 @@ var builder = new HostBuilder()
         myRunner.SaveToFile();
         return myRunner;
     });
-    services.AddTransient<ExecuteRunnerService>();
+    services.AddSingleton<IExecuteRunner,ExecuteRunnerService>();
 }).UseConsoleLifetime();
 
-
 var host = builder.Build();
-
 using (var serviceScope = host.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
     try
     {
-        var myService = services.GetRequiredService<ExecuteRunnerService>();
+        var myService = services.GetRequiredService<IExecuteRunner>();
         await myService.ExecuteRunnerAsync(new CsvOutput()).ConfigureAwait(false);
     }
     catch (Exception ex)
