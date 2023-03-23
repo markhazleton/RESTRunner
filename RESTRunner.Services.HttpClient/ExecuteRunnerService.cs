@@ -1,22 +1,23 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
 
 namespace RESTRunner.Services.HttpClientRunner;
 /// <summary>
 /// 
 /// </summary>
-public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunner
+public class ExecuteRunnerService : IExecuteRunner
 {
-    private readonly Object ConsoleWriterLock = new();
+    private readonly object ConsoleWriterLock = new();
     private readonly CompareRunner runner;
-
-
+    private readonly HttpClient client;
     /// <summary>
     /// 
     /// </summary>
     /// <param name="therunner"></param>
-    public ExecuteRunnerService(CompareRunner therunner) : base(therunner)
+    public ExecuteRunnerService(CompareRunner therunner, IHttpClientFactory HttpClientFactory) 
     {
         runner = therunner;
+        client = HttpClientFactory.CreateClient();
     }
 
     private async Task<CompareResult?> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user)
@@ -48,7 +49,6 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
             }
         }
 
-        using HttpClient client = HttpClientFactory.Create();
         Stopwatch stopw = new();
         HttpResponseMessage response;
         if (req?.RequestMethod == HttpVerb.GET)
@@ -122,8 +122,8 @@ public class ExecuteRunnerService : MustInitialize<CompareRunner>, IExecuteRunne
     {
         int requestCount = 0;
         var tasks = new List<Task>();
-        var semaphore = new SemaphoreSlim(initialCount: 300);
-        for (int i = 0; i < 3000; i++)
+        var semaphore = new SemaphoreSlim(initialCount: 100);
+        for (int i = 0; i < 5; i++)
         {
             LogMessage($"Starting Iteration {i}", ConsoleColor.Yellow);
             foreach (var env in runner.Instances)
