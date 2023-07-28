@@ -5,7 +5,7 @@ namespace RESTRunner.Domain.Models;
 /// The Runner main class
 /// </summary>
 [Serializable]
-public class CompareRunner 
+public class CompareRunner
 {
     /// <summary>
     /// List of all instances to be hit during the REST Runner execution

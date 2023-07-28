@@ -1,38 +1,23 @@
-﻿
-namespace RESTRunner.Domain.Outputs;
+﻿namespace RESTRunner.Domain.Outputs;
 
-/// <summary>
-/// 
-/// </summary>
 public class CsvOutput : IOutput, IDisposable
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public TextWriter? _writer;
+    private readonly TextWriter _writer;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public CsvOutput()
+    public CsvOutput(string filePath)
     {
-        string curFile = $"c:\\test\\RESTRunner.csv";
-        var fileMode = FileMode.Append;
-        if (!File.Exists(curFile))
-        {
-            fileMode = FileMode.Create;
-        }
-
-        var file = new FileStream(curFile, fileMode, FileAccess.Write);
-        var streamWriter = new StreamWriter(file) { AutoFlush = true };
+        var fileMode = File.Exists(filePath) ? FileMode.Append : FileMode.Create;
+        var fileStream = new FileStream(filePath, fileMode, FileAccess.Write);
+        var streamWriter = new StreamWriter(fileStream, Encoding.UTF8) { AutoFlush = true };
         _writer = TextWriter.Synchronized(streamWriter);
+
         if (fileMode == FileMode.Create)
         {
-            _writer?.WriteLine(GetItemCSVHeader());
+            _writer.WriteLine(GetItemCSVHeader());
         }
     }
 
-    private string GetItemCSVHeader()
+    private static string GetItemCSVHeader()
     {
         var sb = new StringBuilder();
         SetPropertyCSVColumn(sb, "Verb", true, false);
@@ -97,7 +82,7 @@ public class CsvOutput : IOutput, IDisposable
             sb.Append(value.Replace("\"", "\"\""));
 
             if (last)
-                sb.Append("\"");
+                sb.Append('"');
             else
                 sb.Append('\"');
         }
@@ -114,57 +99,35 @@ public class CsvOutput : IOutput, IDisposable
             _writer?.WriteLine($"Exception-{ex.Message}");
         }
     }
+/// <inheritdoc/>
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="disposing"></param>
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            if (_writer != null)
-            {
-                _writer?.Close();
-                _writer?.Dispose();
-            }
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
     public void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="result"></param>
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _writer?.Close();
+            _writer?.Dispose();
+        }
+    }
+
     public void WriteError(CompareResult result)
     {
         Write(result);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="result"></param>
     public void WriteInfo(CompareResult result)
     {
         Write(result);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="Info"></param>
-    public void WriteInfo(String[] Info)
+    public void WriteInfo(string[] Info)
     {
         // Do nothing - string info is only for console
     }
-
-
 }

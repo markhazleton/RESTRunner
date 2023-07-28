@@ -25,11 +25,11 @@ using (var serviceScope = host.Services.CreateScope())
     try
     {
         var myService = services.GetRequiredService<IExecuteRunner>();
-        await myService.ExecuteRunnerAsync(new CsvOutput()).ConfigureAwait(false);
+        await myService.ExecuteRunnerAsync(new CsvOutput($"c:\\test\\RESTRunner.csv")).ConfigureAwait(false);
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error Occured:{ex.Message}");
+        Console.WriteLine($"Error Occurred:{ex.Message}");
     }
 }
 return 0;

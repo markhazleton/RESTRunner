@@ -30,8 +30,4 @@
 		<ProjectReference Include="..\RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Outputs\" />
-	</ItemGroup>
-
 </Project>
