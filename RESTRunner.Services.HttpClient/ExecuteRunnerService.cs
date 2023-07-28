@@ -13,13 +13,13 @@ public class ExecuteRunnerService : IExecuteRunner
     /// 
     /// </summary>
     /// <param name="therunner"></param>
-    public ExecuteRunnerService(CompareRunner therunner, IHttpClientFactory HttpClientFactory) 
+    public ExecuteRunnerService(CompareRunner therunner, IHttpClientFactory HttpClientFactory)
     {
         runner = therunner;
         client = HttpClientFactory.CreateClient();
     }
 
-    private async Task<CompareResult?> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user, CancellationToken ct=default)
+    private async Task<CompareResult?> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user, CancellationToken ct = default)
     {
         if (!string.IsNullOrEmpty(req.BodyTemplate))
         {
@@ -81,7 +81,7 @@ public class ExecuteRunnerService : IExecuteRunner
         }
         return null;
     }
-    private static async Task<CompareResult> GetResultAsync(HttpResponseMessage response, CompareInstance env, CompareRequest req, CompareUser user, long elapsedMilliseconds, CancellationToken ct=default)
+    private static async Task<CompareResult> GetResultAsync(HttpResponseMessage response, CompareInstance env, CompareRequest req, CompareUser user, long elapsedMilliseconds, CancellationToken ct = default)
     {
         string content = await response.Content.ReadAsStringAsync(ct);
         string? shortPath = req?.Path;
@@ -117,7 +117,7 @@ public class ExecuteRunnerService : IExecuteRunner
     /// Execute a RESTRunner and Returns Results
     /// </summary>
     /// <returns></returns>
-    public async Task ExecuteRunnerAsync(IOutput output, CancellationToken ct=default)
+    public async Task ExecuteRunnerAsync(IOutput output, CancellationToken ct = default)
     {
         int requestCount = 0;
         var tasks = new List<Task>();
@@ -140,7 +140,7 @@ public class ExecuteRunnerService : IExecuteRunner
                         {
                             try
                             {
-                                var result = await GetResponseAsync(env, req, user,ct);
+                                var result = await GetResponseAsync(env, req, user, ct);
                                 if (result != null) output.WriteInfo(result);
                             }
                             finally

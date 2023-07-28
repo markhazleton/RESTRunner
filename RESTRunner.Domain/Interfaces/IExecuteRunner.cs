@@ -10,5 +10,5 @@ public interface IExecuteRunner
     /// 
     /// </summary>
     /// <returns></returns>
-    public Task ExecuteRunnerAsync(IOutput output, CancellationToken ct=default);
+    public Task ExecuteRunnerAsync(IOutput output, CancellationToken ct = default);
 }
