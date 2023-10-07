@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.Services.HttpCli
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{35EAF6D9-88BD-4F9B-9496-CDF71BF5AA1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RESTRunner.Web", "RESTRunner.Web\RESTRunner.Web.csproj", "{77A8C0C3-E062-49E4-A453-F28B29BC016F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{164568A4-E8D5-411F-92D2-E44B539A8AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{164568A4-E8D5-411F-92D2-E44B539A8AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{164568A4-E8D5-411F-92D2-E44B539A8AFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77A8C0C3-E062-49E4-A453-F28B29BC016F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77A8C0C3-E062-49E4-A453-F28B29BC016F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77A8C0C3-E062-49E4-A453-F28B29BC016F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77A8C0C3-E062-49E4-A453-F28B29BC016F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
