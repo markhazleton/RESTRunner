@@ -9,17 +9,18 @@ public static class CompareRunner_Extensions
     {
         return new List<CompareInstance>
             {
-                new CompareInstance() {Name="LO", BaseUrl="https://localhost:7023/"},
-                new CompareInstance() {Name="CO", BaseUrl="https://markhazletonsamplecrud.controlorigins.com/"},
-                new CompareInstance() {Name="AZ1", BaseUrl="https://mwhsampleweb.azurewebsites.net/"},
-                new CompareInstance() {Name="AZ2", BaseUrl="https://mwhsampleweb.azurewebsites.net/"},
+                //new CompareInstance() {Name="LO", BaseUrl="https://localhost:7023/"}
+                //,
+                new() {Name="CO", BaseUrl="https://markhazletonsamplecrud.controlorigins.com/"},
+                new() {Name="AZ1", BaseUrl="https://mwhsampleweb.azurewebsites.net/"}
+                // +new() {Name="AZ2", BaseUrl="https://mwhsampleweb.azurewebsites.net/"}
             };
     }
     private static List<CompareRequest> GetCompareRequests()
     {
         return new List<CompareRequest>
             {
-                new CompareRequest() { Path="status", RequestMethod = HttpVerb.GET, RequiresClientToken=false }
+                new() { Path="status", RequestMethod = HttpVerb.GET, RequiresClientToken=false }
             };
     }
     private static List<CompareUser> GetCompareUsers()

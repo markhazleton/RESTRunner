@@ -12,10 +12,10 @@ public class ExecuteRunnerService : IExecuteRunner
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="therunner"></param>
-    public ExecuteRunnerService(CompareRunner therunner, IHttpClientFactory HttpClientFactory)
+    /// <param name="compareRunner"></param>
+    public ExecuteRunnerService(CompareRunner compareRunner, IHttpClientFactory HttpClientFactory)
     {
-        runner = therunner;
+        runner = compareRunner;
         client = HttpClientFactory.CreateClient();
     }
 
@@ -48,36 +48,36 @@ public class ExecuteRunnerService : IExecuteRunner
             }
         }
 
-        Stopwatch stopw = new();
+        Stopwatch sw = new();
         HttpResponseMessage response;
         if (req?.RequestMethod == HttpVerb.GET)
         {
-            stopw.Start();
+            sw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
             response = await client.GetAsync(requestUri, ct);
-            stopw.Stop();
-            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
-            return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds, ct);
+            sw.Stop();
+            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{sw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
+            return await GetResultAsync(response, env, req, user, sw.ElapsedMilliseconds, ct);
         }
         if (req?.RequestMethod == HttpVerb.POST)
         {
-            stopw.Start();
+            sw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
-            var content = new StringContent(req.BodyTemplate, Encoding.UTF8, "application/json");
+            var content = new StringContent(req?.BodyTemplate ?? string.Empty, Encoding.UTF8, "application/json");
             response = await client.PostAsync(requestUri, content, ct);
-            stopw.Stop();
-            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
-            return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds, ct);
+            sw.Stop();
+            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{sw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
+            return await GetResultAsync(response, env, req, user, sw.ElapsedMilliseconds, ct);
         }
         if (req?.RequestMethod == HttpVerb.PUT)
         {
-            stopw.Start();
+            sw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
-            var content = new StringContent(req.BodyTemplate, Encoding.UTF8, "application/json");
+            var content = new StringContent(req?.BodyTemplate ?? string.Empty, Encoding.UTF8, "application/json");
             response = await client.PutAsync(requestUri, content, ct);
-            stopw.Stop();
-            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{stopw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
-            return await GetResultAsync(response, env, req, user, stopw.ElapsedMilliseconds, ct);
+            sw.Stop();
+            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{sw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
+            return await GetResultAsync(response, env, req, user, sw.ElapsedMilliseconds, ct);
         }
         return null;
     }
@@ -121,8 +121,8 @@ public class ExecuteRunnerService : IExecuteRunner
     {
         int requestCount = 0;
         var tasks = new List<Task>();
-        var semaphore = new SemaphoreSlim(initialCount: 200);
-        for (int i = 0; i < 5; i++)
+        var semaphore = new SemaphoreSlim(initialCount: 5);
+        for (int i = 0; i < 100; i++)
         {
             LogMessage($"Starting Iteration {i}", ConsoleColor.Yellow);
             foreach (var env in runner.Instances)
