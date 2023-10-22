@@ -99,7 +99,7 @@ public class CsvOutput : IOutput, IDisposable
             _writer?.WriteLine($"Exception-{ex.Message}");
         }
     }
-/// <inheritdoc/>
+    /// <inheritdoc/>
 
     public void Dispose()
     {

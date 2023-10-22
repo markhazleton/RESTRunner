@@ -4,7 +4,7 @@
     {
         public SampleCRUDService()
         {
-                
+
         }
         public async Task<string> GetEmployeeCount()
         {
@@ -13,7 +13,7 @@
                 BaseAddress = new Uri("https://markhazletonsamplecrud.controlorigins.com/")
             };
             SampleCRUDClient sampleCRUClients = new(client);
-            var employees = await sampleCRUClients.EmployeeAllAsync(1, 5, "1");
+            var employees = await sampleCRUClients.EmployeeAllAsync(1, 15, "1");
             return $"Got {employees.Count} Employees";
         }
 
