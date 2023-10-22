@@ -15,7 +15,7 @@ var builder = new HostBuilder()
         myRunner.SaveToFile();
         return myRunner;
     });
-    services.AddSingleton<IExecuteRunner,ExecuteRunnerService>();
+    services.AddSingleton<IExecuteRunner, ExecuteRunnerService>();
 }).UseConsoleLifetime();
 
 var host = builder.Build();
