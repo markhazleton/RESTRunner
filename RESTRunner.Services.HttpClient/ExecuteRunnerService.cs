@@ -1,23 +1,13 @@
 ﻿using System.Text;
 
 namespace RESTRunner.Services.HttpClientRunner;
-/// <summary>
-/// 
-/// </summary>
-public class ExecuteRunnerService : IExecuteRunner
+
+public class ExecuteRunnerService(
+    CompareRunner compareRunner, 
+    IHttpClientFactory HttpClientFactory) : IExecuteRunner
 {
+    private readonly HttpClient client = HttpClientFactory.CreateClient();
     private readonly object ConsoleWriterLock = new();
-    private readonly CompareRunner runner;
-    private readonly HttpClient client;
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="compareRunner"></param>
-    public ExecuteRunnerService(CompareRunner compareRunner, IHttpClientFactory HttpClientFactory)
-    {
-        runner = compareRunner;
-        client = HttpClientFactory.CreateClient();
-    }
 
     private async Task<CompareResult?> GetResponseAsync(CompareInstance env, CompareRequest req, CompareUser user, CancellationToken ct = default)
     {
@@ -84,7 +74,7 @@ public class ExecuteRunnerService : IExecuteRunner
     private static async Task<CompareResult> GetResultAsync(HttpResponseMessage response, CompareInstance env, CompareRequest req, CompareUser user, long elapsedMilliseconds, CancellationToken ct = default)
     {
         string content = await response.Content.ReadAsStringAsync(ct);
-        string? shortPath = req?.Path;
+        string shortPath = req.Path;
         if (string.IsNullOrEmpty(shortPath)) shortPath = req.Path;
         return new CompareResult()
         {
@@ -121,17 +111,17 @@ public class ExecuteRunnerService : IExecuteRunner
     {
         int requestCount = 0;
         var tasks = new List<Task>();
-        var semaphore = new SemaphoreSlim(initialCount: 5);
+        var semaphore = new SemaphoreSlim(initialCount: 10);
         for (int i = 0; i < 100; i++)
         {
             LogMessage($"Starting Iteration {i}", ConsoleColor.Yellow);
-            foreach (var env in runner.Instances)
+            foreach (var env in compareRunner.Instances)
             {
-                LogMessage($"Starting {env.Name} with {runner.Users.Count} users", ConsoleColor.Yellow);
-                foreach (var user in runner.Users)
+                LogMessage($"Starting {env.Name} with {compareRunner.Users.Count} users", ConsoleColor.Yellow);
+                foreach (var user in compareRunner.Users)
                 {
-                    LogMessage($"Starting {user.UserName} with {runner.Requests.Count} requests", ConsoleColor.Yellow);
-                    foreach (var req in runner.Requests)
+                    LogMessage($"Starting {user.UserName} with {compareRunner.Requests.Count} requests", ConsoleColor.Yellow);
+                    foreach (var req in compareRunner.Requests)
                     {
                         requestCount++;
                         await semaphore.WaitAsync(ct);
@@ -152,7 +142,7 @@ public class ExecuteRunnerService : IExecuteRunner
                 }
             }
         }
-        Task t = Task.WhenAll(tasks.ToArray());
+        Task t = Task.WhenAll([.. tasks]);
         try
         {
             await t;
@@ -166,7 +156,4 @@ public class ExecuteRunnerService : IExecuteRunner
         LogMessage($"Total requestCount:{requestCount}");
         return;
     }
-
-
-
 }

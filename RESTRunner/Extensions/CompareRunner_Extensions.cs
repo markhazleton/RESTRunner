@@ -7,21 +7,18 @@ public static class CompareRunner_Extensions
 {
     private static List<CompareInstance> GetCompareInstances()
     {
-        return new List<CompareInstance>
-            {
-                //new CompareInstance() {Name="LO", BaseUrl="https://localhost:7023/"}
-                //,
-                new() {Name="CO", BaseUrl="https://markhazletonsamplecrud.controlorigins.com/"},
-                new() {Name="AZ1", BaseUrl="https://mwhsampleweb.azurewebsites.net/"}
-                // +new() {Name="AZ2", BaseUrl="https://mwhsampleweb.azurewebsites.net/"}
-            };
+        return
+            [
+                new() {Name="MH", BaseUrl="https://samplecrud.markhazleton.com/"},
+                new() {Name="AZ", BaseUrl="https://samplecrud.azurewebsites.net/"}
+            ];
     }
     private static List<CompareRequest> GetCompareRequests()
     {
-        return new List<CompareRequest>
-            {
+        return
+            [
                 new() { Path="status", RequestMethod = HttpVerb.GET, RequiresClientToken=false }
-            };
+            ];
     }
     private static List<CompareUser> GetCompareUsers()
     {

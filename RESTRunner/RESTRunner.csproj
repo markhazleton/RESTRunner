@@ -12,7 +12,7 @@
 		<UserSecretsId>58dc67bd-5619-43b4-991d-8005e6d5a878</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="CsvHelper" Version="30.0.1" />
+		<PackageReference Include="CsvHelper" Version="33.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
