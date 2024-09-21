@@ -3,7 +3,7 @@
 namespace RESTRunner.Services.HttpClientRunner;
 
 public class ExecuteRunnerService(
-    CompareRunner compareRunner, 
+    CompareRunner compareRunner,
     IHttpClientFactory HttpClientFactory) : IExecuteRunner
 {
     private readonly HttpClient client = HttpClientFactory.CreateClient();
