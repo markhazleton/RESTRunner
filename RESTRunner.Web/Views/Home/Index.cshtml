@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Welcome to RESTRunner";
+}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h1 class="display-4 mb-3 text-primary">RESTRunner</h1>
+                    <p class="lead">A modern ASP.NET Core web application for exploring and testing REST APIs with a beautiful, themeable UI powered by Bootswatch and Bootstrap 5.</p>
+                    <hr />
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item">🔍 <strong>API Explorer:</strong> Browse and test your API endpoints with integrated Swagger UI.</li>
+                        <li class="list-group-item">👥 <strong>Employee & Department CRUD:</strong> Manage employees and departments with easy-to-use REST endpoints.</li>
+                        <li class="list-group-item">🎨 <strong>Theme Switcher:</strong> Instantly switch between Bootswatch themes and light/dark mode using the theme switcher in the navigation bar.</li>
+                        <li class="list-group-item">⚡ <strong>Resilient HTTP:</strong> Built-in support for robust HTTP requests with retry, circuit breaker, and telemetry using WebSpark.HttpClientUtility.</li>
+                        <li class="list-group-item">📊 <strong>Status & Diagnostics:</strong> Check application status and diagnostics endpoints for health and monitoring.</li>
+                    </ul>
+                    <div class="alert alert-info">
+                        <strong>Tip:</strong> Use the theme switcher in the navbar to personalize your experience with different Bootswatch styles!
+                    </div>
+                    <a href="/docs" class="btn btn-primary btn-lg me-2">Open API Explorer</a>
+                    <a href="/api/status" class="btn btn-outline-secondary btn-lg">Check API Status</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
