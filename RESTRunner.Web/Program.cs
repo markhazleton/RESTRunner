@@ -6,7 +6,7 @@ var app = builder.Build();
 app.MapGet("/", async () =>
 {
     var sampleCRUDService = new SampleCRUDService();
-    return await sampleCRUDService.GetEmployeeCount();
+    return await sampleCRUDService.GetEmployeeCount().ConfigureAwait(true);
 });
 
 app.Run();
