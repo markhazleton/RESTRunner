@@ -10,7 +10,7 @@
         {
             HttpClient client = new()
             {
-                BaseAddress = new Uri("https://markhazletonsamplecrud.controlorigins.com/")
+                BaseAddress = new Uri("https://samplecrud.markhazleton.com/")
             };
             SampleCRUDClient sampleCRUClients = new(client);
             var employees = await sampleCRUClients.EmployeeAllAsync(1, 15, "1");
