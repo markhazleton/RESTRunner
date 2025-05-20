@@ -1,10 +1,9 @@
-using RESTRunner.Web.SampleCRUD;
 using Microsoft.OpenApi.Models; // Add for Swagger
+using RESTRunner.Web.SampleCRUD;
 using WebSpark.Bootswatch; // Add for Bootswatch
+using WebSpark.HttpClientUtility.ClientService;
 using WebSpark.HttpClientUtility.RequestResult; // Add for HttpRequestResultService
 using WebSpark.HttpClientUtility.StringConverter;
-using WebSpark.HttpClientUtility.ClientService;
-using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
