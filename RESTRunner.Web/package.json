@@ -1,0 +1,21 @@
+{
+  "name": "rest-runner-web-assets",
+  "version": "1.0.0",
+  "description": "Asset pipeline for RESTRunner.Web using npm, Bootstrap 5, and jQuery.",
+  "scripts": {
+    "build": "npm run clean && npm run copy:jquery && npm run copy:bootstrap:js && npm run copy:bootstrap:css",
+    "clean": "rimraf wwwroot/dist",
+    "copy:jquery": "mkdirp wwwroot/dist/jquery && copyfiles -u 2 node_modules/jquery/dist/jquery.min.js wwwroot/dist/jquery/",
+    "copy:bootstrap:js": "mkdirp wwwroot/dist/bootstrap/js && copyfiles -u 4 node_modules/bootstrap/dist/js/bootstrap.bundle.min.js wwwroot/dist/bootstrap/js/",
+    "copy:bootstrap:css": "mkdirp wwwroot/dist/bootstrap/css && copyfiles -u 3 node_modules/bootstrap/dist/css/bootstrap.min.css wwwroot/dist/bootstrap/css/"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "mkdirp": "^3.0.1",
+    "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.6",
+    "jquery": "^3.7.1"
+  }
+}
