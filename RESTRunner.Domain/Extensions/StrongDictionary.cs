@@ -1,12 +1,11 @@
-﻿
-namespace RESTRunner.Domain.Extensions;
+﻿namespace RESTRunner.Domain.Extensions;
 
 /// <summary>
 /// Special Dictionary for Use with Restful / AJAX Calls
 /// </summary>
-/// <typeparam name="TKey">The type of the t key.</typeparam>
-/// <typeparam name="TValue">The type of the t value.</typeparam>
-public sealed class StrongDictionary<TKey, TValue>
+/// <typeparam name="TKey">The type of the key - must be non-null.</typeparam>
+/// <typeparam name="TValue">The type of the value.</typeparam>
+public sealed class StrongDictionary<TKey, TValue> where TKey : notnull
 {
     /// <summary>
     /// The dictionary
@@ -19,14 +18,10 @@ public sealed class StrongDictionary<TKey, TValue>
     public StrongDictionary() { _Dictionary = new Dictionary<TKey, TValue>(); }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="StrongDictionary{TKey, TValue}"/> class.
-    /// </summary>
-
-    /// <summary>
-    /// 
+    /// Gets or sets the value associated with the specified key.
     /// </summary>
     /// <param name="key">The key.</param>
-    /// <returns>TValue.</returns>
+    /// <returns>The value associated with the key, or default if not found.</returns>
     public TValue? this[TKey key]
     {
         get
@@ -53,7 +48,7 @@ public sealed class StrongDictionary<TKey, TValue>
     /// <summary>
     /// Adds the specified dictionary into the current dictionary
     /// </summary>
-    /// <param name="value">The value.</param>
+    /// <param name="value">The dictionary to add.</param>
     public void Add(Dictionary<TKey, TValue> value)
     {
         foreach (var item in value.Keys)
@@ -63,7 +58,7 @@ public sealed class StrongDictionary<TKey, TValue>
     }
 
     /// <summary>
-    /// Adds the specified key.
+    /// Adds the specified key and value to the dictionary.
     /// </summary>
     /// <param name="key">The key.</param>
     /// <param name="value">The value.</param>
@@ -76,9 +71,9 @@ public sealed class StrongDictionary<TKey, TValue>
     }
 
     /// <summary>
-    /// Gets the list.
+    /// Gets the list of key-value pairs as formatted strings.
     /// </summary>
-    /// <returns>List&lt;System.String&gt;.</returns>
+    /// <returns>List of formatted key-value pair strings.</returns>
     public List<string> GetList()
     {
         List<string> list = new();
@@ -88,10 +83,11 @@ public sealed class StrongDictionary<TKey, TValue>
         }
         return list;
     }
+
     /// <summary>
-    /// Get Json string of dictionary
+    /// Get Json string representation of the dictionary
     /// </summary>
-    /// <returns></returns>
+    /// <returns>JSON string representation of the dictionary.</returns>
     public string GetJson()
     {
         string str_json = string.Empty;
@@ -109,25 +105,21 @@ public sealed class StrongDictionary<TKey, TValue>
             // Serializer the object to the stream.  
             js.WriteObject(ms, _Dictionary);
             str_json = Encoding.Default.GetString(ms.ToArray());
-
         }
         return str_json;
-
     }
+
     /// <summary>
-    /// Gets the object data.
+    /// Gets the object data for serialization.
     /// </summary>
-    /// <param name="info">The information.</param>
+    /// <param name="info">The serialization information.</param>
     public void GetObjectData(SerializationInfo info)
     {
         foreach (TKey key in _Dictionary.Keys)
         {
-            if (key is not null)
-            {
-                var theKey = key?.ToString() ?? "unknown";
-
-                info.AddValue(theKey, _Dictionary[key]);
-            }
+            // Since TKey is constrained to notnull, we don't need the null check
+            var theKey = key.ToString() ?? "unknown";
+            info.AddValue(theKey, _Dictionary[key]);
         }
     }
 }

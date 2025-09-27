@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31717.71
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11018.127 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner", "RESTRunner\RESTRunner.csproj", "{88D1CFB8-A13F-4D78-8833-B9CA50575691}"
 EndProject
@@ -19,6 +19,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{35EAF6D9-88BD-4F9B-9496-CDF71BF5AA1E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RESTRunner.Web", "RESTRunner.Web\RESTRunner.Web.csproj", "{77A8C0C3-E062-49E4-A453-F28B29BC016F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RESTRunner.Domain.Tests", "RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj", "{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,12 +48,16 @@ Global
 		{77A8C0C3-E062-49E4-A453-F28B29BC016F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77A8C0C3-E062-49E4-A453-F28B29BC016F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77A8C0C3-E062-49E4-A453-F28B29BC016F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{AA49F77C-B25B-415C-BA01-FAF985C76283} = {35EAF6D9-88BD-4F9B-9496-CDF71BF5AA1E}
+		{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF} = {35EAF6D9-88BD-4F9B-9496-CDF71BF5AA1E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {84E323A2-B564-4189-88E6-1E3C01042473}

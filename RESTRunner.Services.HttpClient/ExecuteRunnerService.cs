@@ -38,35 +38,39 @@ public class ExecuteRunnerService(
             }
         }
 
+        if (req is null) return null;
+
         Stopwatch sw = new();
         HttpResponseMessage response;
-        if (req?.RequestMethod == HttpVerb.GET)
+        string requestPath = req.Path ?? string.Empty;
+        
+        if (req.RequestMethod == HttpVerb.GET)
         {
             sw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
             response = await client.GetAsync(requestUri, ct);
             sw.Stop();
-            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{sw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
+            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{sw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{requestPath}");
             return await GetResultAsync(response, env, req, user, sw.ElapsedMilliseconds, ct);
         }
-        if (req?.RequestMethod == HttpVerb.POST)
+        if (req.RequestMethod == HttpVerb.POST)
         {
             sw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
-            var content = new StringContent(req?.BodyTemplate ?? string.Empty, Encoding.UTF8, "application/json");
+            var content = new StringContent(req.BodyTemplate ?? string.Empty, Encoding.UTF8, "application/json");
             response = await client.PostAsync(requestUri, content, ct);
             sw.Stop();
-            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{sw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
+            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{sw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{requestPath}");
             return await GetResultAsync(response, env, req, user, sw.ElapsedMilliseconds, ct);
         }
-        if (req?.RequestMethod == HttpVerb.PUT)
+        if (req.RequestMethod == HttpVerb.PUT)
         {
             sw.Start();
             Uri requestUri = new($"{env.BaseUrl}{req.Path}");
-            var content = new StringContent(req?.BodyTemplate ?? string.Empty, Encoding.UTF8, "application/json");
+            var content = new StringContent(req.BodyTemplate ?? string.Empty, Encoding.UTF8, "application/json");
             response = await client.PutAsync(requestUri, content, ct);
             sw.Stop();
-            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{sw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{user.GetMergedString(req.Path)}");
+            LogMessage($"{env.Name}:{(int)response.StatusCode} IN:{sw.ElapsedMilliseconds,7:n0}  FOR: {req.RequestMethod}-{env.BaseUrl}{requestPath}");
             return await GetResultAsync(response, env, req, user, sw.ElapsedMilliseconds, ct);
         }
         return null;
@@ -74,8 +78,9 @@ public class ExecuteRunnerService(
     private static async Task<CompareResult> GetResultAsync(HttpResponseMessage response, CompareInstance env, CompareRequest req, CompareUser user, long elapsedMilliseconds, CancellationToken ct = default)
     {
         string content = await response.Content.ReadAsStringAsync(ct);
-        string shortPath = req.Path;
-        if (string.IsNullOrEmpty(shortPath)) shortPath = req.Path;
+        string shortPath = req.Path ?? string.Empty;
+        if (string.IsNullOrEmpty(shortPath)) 
+            shortPath = req.Path ?? string.Empty;
         return new CompareResult()
         {
             UserName = user.UserName,

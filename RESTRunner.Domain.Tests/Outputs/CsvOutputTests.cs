@@ -2,11 +2,17 @@
 
 namespace RESTRunner.Domain.Tests.Outputs;
 
+/// <summary>
+/// Unit tests for the <see cref="CsvOutput"/> class.
+/// </summary>
 [TestClass]
 public class CsvOutputTests
 {
     private const string TestFilePath = "c:\\test\\UnitTestCsvOutput.csv"; // Update this path with a valid test file path.
 
+    /// <summary>
+    /// Tests that CsvOutput correctly writes data to a CSV file.
+    /// </summary>
     [TestMethod]
     public void CsvOutput_WritesDataToCsvFile()
     {
@@ -38,6 +44,9 @@ public class CsvOutputTests
         StringAssert.Contains(csvContent, "GET,TestInstance", "CSV file does not contain expected data.");
     }
 
+    /// <summary>
+    /// Tests that CsvOutput properly disposes of resources when disposed.
+    /// </summary>
     [TestMethod]
     public void CsvOutput_DisposesCorrectly()
     {
