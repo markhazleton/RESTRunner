@@ -1,46 +1,49 @@
-﻿
-namespace RESTRunner.Domain.Models;
+﻿namespace RESTRunner.Domain.Models;
 
 /// <summary>
-/// Compare Property Class
+/// Compare Property Class for representing key-value pairs with metadata
 /// </summary>
 public class CompareProperty
 {
     /// <summary>
-    /// Key
+    /// The key identifier for the property
     /// </summary>
-    public string Key;
+    public string Key { get; set; }
+    
     /// <summary>
-    /// Value
+    /// The value of the property
     /// </summary>
-    public string Value;
+    public string Value { get; set; }
+    
     /// <summary>
-    /// Type
+    /// The type of the property
     /// </summary>
-    public string Type;
+    public string Type { get; set; }
+    
     /// <summary>
-    /// Name
+    /// The display name of the property
     /// </summary>
-    public string Name;
+    public string Name { get; set; }
+    
     /// <summary>
-    /// Description
+    /// Optional description of the property
     /// </summary>
-    public string Description;
+    public string Description { get; set; }
 
     /// <summary>
-    /// Compare Property Constructor
+    /// Initializes a new instance of the CompareProperty class
     /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <param name="type"></param>
-    /// <param name="name"></param>
-    /// <param name="description"></param>
+    /// <param name="key">The key identifier</param>
+    /// <param name="value">The property value</param>
+    /// <param name="type">The property type</param>
+    /// <param name="name">The display name</param>
+    /// <param name="description">Optional description</param>
     public CompareProperty(string key, string value, string type, string name, string? description = null)
     {
-        Key = key;
-        Value = value;
-        Type = type;
-        Name = name;
+        Key = key ?? throw new ArgumentNullException(nameof(key));
+        Value = value ?? throw new ArgumentNullException(nameof(value));
+        Type = type ?? throw new ArgumentNullException(nameof(type));
+        Name = name ?? throw new ArgumentNullException(nameof(name));
         Description = description ?? string.Empty;
     }
 }
