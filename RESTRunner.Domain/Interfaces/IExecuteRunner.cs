@@ -10,6 +10,6 @@ public interface IExecuteRunner
     /// </summary>
     /// <param name="output">The output handler to write results to</param>
     /// <param name="ct">Cancellation token to cancel the operation</param>
-    /// <returns>A task representing the asynchronous operation</returns>
-    Task ExecuteRunnerAsync(IOutput output, CancellationToken ct = default);
+    /// <returns>A task representing the asynchronous operation with execution statistics</returns>
+    Task<ExecutionStatistics> ExecuteRunnerAsync(IOutput output, CancellationToken ct = default);
 }
