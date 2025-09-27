@@ -1,9 +1,16 @@
 ﻿namespace RESTRunner.Domain.Outputs;
 
+/// <summary>
+/// Provides CSV output functionality for REST runner results
+/// </summary>
 public class CsvOutput : IOutput, IDisposable
 {
     private readonly TextWriter _writer;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CsvOutput"/> class.
+    /// </summary>
+    /// <param name="filePath">The file path where CSV data will be written.</param>
     public CsvOutput(string filePath)
     {
         var fileMode = File.Exists(filePath) ? FileMode.Append : FileMode.Create;
@@ -107,6 +114,10 @@ public class CsvOutput : IOutput, IDisposable
         GC.SuppressFinalize(this);
     }
 
+    /// <summary>
+    /// Releases the unmanaged resources used by the <see cref="CsvOutput"/> and optionally releases the managed resources.
+    /// </summary>
+    /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
         if (disposing)
@@ -116,16 +127,29 @@ public class CsvOutput : IOutput, IDisposable
         }
     }
 
+    /// <summary>
+    /// Writes an error result to the CSV output.
+    /// </summary>
+    /// <param name="result">The compare result containing error information.</param>
     public void WriteError(CompareResult result)
     {
         Write(result);
     }
 
+    /// <summary>
+    /// Writes an information result to the CSV output.
+    /// </summary>
+    /// <param name="result">The compare result containing information.</param>
     public void WriteInfo(CompareResult result)
     {
         Write(result);
     }
 
+    /// <summary>
+    /// Writes information from a string array to the CSV output.
+    /// Note: This method does nothing as string array info is only used for console output.
+    /// </summary>
+    /// <param name="Info">The information array (ignored for CSV output).</param>
     public void WriteInfo(string[] Info)
     {
         // Do nothing - string info is only for console

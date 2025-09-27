@@ -1,6 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RESTRunner.Domain.Interfaces;
+using RESTRunner.Domain.Models;
+using RESTRunner.Domain.Outputs;
+using RESTRunner.Postman;
+using RESTRunner.Services.HttpClientRunner;
+using RESTRunner.Extensions;
 
 var builder = new HostBuilder()
 .ConfigureServices((hostContext, services) =>
