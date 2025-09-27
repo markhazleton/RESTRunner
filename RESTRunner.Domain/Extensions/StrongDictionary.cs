@@ -1,21 +1,47 @@
-﻿namespace RESTRunner.Domain.Extensions;
+﻿using System.Text.Json;
+
+namespace RESTRunner.Domain.Extensions;
 
 /// <summary>
 /// Special Dictionary for Use with Restful / AJAX Calls
+/// Provides null-safe operations and JSON serialization capabilities
 /// </summary>
 /// <typeparam name="TKey">The type of the key - must be non-null.</typeparam>
 /// <typeparam name="TValue">The type of the value.</typeparam>
-public sealed class StrongDictionary<TKey, TValue> where TKey : notnull
+public sealed class StrongDictionary<TKey, TValue> : IDisposable where TKey : notnull
 {
     /// <summary>
     /// The dictionary
     /// </summary>
-    private readonly Dictionary<TKey, TValue> _Dictionary;
+    private readonly Dictionary<TKey, TValue> _dictionary;
+    private bool _disposed;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StrongDictionary{TKey, TValue}"/> class.
     /// </summary>
-    public StrongDictionary() { _Dictionary = new Dictionary<TKey, TValue>(); }
+    public StrongDictionary() 
+    { 
+        _dictionary = new Dictionary<TKey, TValue>(); 
+    }
+
+    /// <summary>
+    /// Initializes a new instance with an initial capacity
+    /// </summary>
+    /// <param name="capacity">Initial capacity of the dictionary</param>
+    public StrongDictionary(int capacity) 
+    { 
+        _dictionary = new Dictionary<TKey, TValue>(capacity); 
+    }
+
+    /// <summary>
+    /// Gets the number of key-value pairs in the dictionary
+    /// </summary>
+    public int Count => _dictionary.Count;
+
+    /// <summary>
+    /// Gets the keys in the dictionary
+    /// </summary>
+    public IEnumerable<TKey> Keys => _dictionary.Keys;
 
     /// <summary>
     /// Gets or sets the value associated with the specified key.
@@ -26,22 +52,22 @@ public sealed class StrongDictionary<TKey, TValue> where TKey : notnull
     {
         get
         {
-            _Dictionary.TryGetValue(key, out TValue? vOut);
-            return vOut;
+            ArgumentNullException.ThrowIfNull(key);
+            ThrowIfDisposed();
+            return _dictionary.TryGetValue(key, out TValue? value) ? value : default;
         }
         set
         {
-            _Dictionary.TryGetValue(key, out TValue? vOut);
-            if (vOut is null)
+            ArgumentNullException.ThrowIfNull(key);
+            ThrowIfDisposed();
+            
+            if (value is null)
             {
-                if (value is null) return;
-                _Dictionary.Add(key, value);
+                _dictionary.Remove(key);
+                return;
             }
-            else
-            {
-                if (value is null) return;
-                _Dictionary[key] = value;
-            }
+            
+            _dictionary[key] = value;
         }
     }
 
@@ -51,9 +77,12 @@ public sealed class StrongDictionary<TKey, TValue> where TKey : notnull
     /// <param name="value">The dictionary to add.</param>
     public void Add(Dictionary<TKey, TValue> value)
     {
-        foreach (var item in value.Keys)
+        ArgumentNullException.ThrowIfNull(value);
+        ThrowIfDisposed();
+        
+        foreach (var (key, val) in value)
         {
-            Add(item, value[item]);
+            Add(key, val);
         }
     }
 
@@ -64,10 +93,45 @@ public sealed class StrongDictionary<TKey, TValue> where TKey : notnull
     /// <param name="value">The value.</param>
     public void Add(TKey key, TValue value)
     {
-        if (_Dictionary.ContainsKey(key))
-            _Dictionary[key] = value;
-        else
-            _Dictionary.Add(key, value);
+        ArgumentNullException.ThrowIfNull(key);
+        ArgumentNullException.ThrowIfNull(value);
+        ThrowIfDisposed();
+        
+        _dictionary[key] = value;
+    }
+
+    /// <summary>
+    /// Tries to get the value associated with the specified key
+    /// </summary>
+    /// <param name="key">The key to search for</param>
+    /// <param name="value">The value if found</param>
+    /// <returns>True if the key was found, false otherwise</returns>
+    public bool TryGetValue(TKey key, out TValue? value)
+    {
+        ArgumentNullException.ThrowIfNull(key);
+        ThrowIfDisposed();
+        return _dictionary.TryGetValue(key, out value);
+    }
+
+    /// <summary>
+    /// Removes the specified key from the dictionary
+    /// </summary>
+    /// <param name="key">The key to remove</param>
+    /// <returns>True if the key was removed, false if it wasn't found</returns>
+    public bool Remove(TKey key)
+    {
+        ArgumentNullException.ThrowIfNull(key);
+        ThrowIfDisposed();
+        return _dictionary.Remove(key);
+    }
+
+    /// <summary>
+    /// Clears all items from the dictionary
+    /// </summary>
+    public void Clear()
+    {
+        ThrowIfDisposed();
+        _dictionary.Clear();
     }
 
     /// <summary>
@@ -76,37 +140,29 @@ public sealed class StrongDictionary<TKey, TValue> where TKey : notnull
     /// <returns>List of formatted key-value pair strings.</returns>
     public List<string> GetList()
     {
-        List<string> list = new();
-        foreach (var item in _Dictionary)
-        {
-            list.Add($"{item.Key} - {item.Value}");
-        }
-        return list;
+        ThrowIfDisposed();
+        return _dictionary.Select(item => $"{item.Key} - {item.Value}").ToList();
     }
 
     /// <summary>
-    /// Get Json string representation of the dictionary
+    /// Get Json string representation of the dictionary using System.Text.Json
     /// </summary>
     /// <returns>JSON string representation of the dictionary.</returns>
     public string GetJson()
     {
-        string str_json = string.Empty;
-        DataContractJsonSerializerSettings setting =
-            new()
-            {
-                UseSimpleDictionaryFormat = true
-            };
-
-        DataContractJsonSerializer js =
-            new(typeof(Dictionary<TKey, TValue>), setting);
-
-        using (MemoryStream ms = new())
+        ThrowIfDisposed();
+        try
         {
-            // Serializer the object to the stream.  
-            js.WriteObject(ms, _Dictionary);
-            str_json = Encoding.Default.GetString(ms.ToArray());
+            return JsonSerializer.Serialize(_dictionary, new JsonSerializerOptions 
+            { 
+                WriteIndented = false,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
         }
-        return str_json;
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException("Failed to serialize dictionary to JSON", ex);
+        }
     }
 
     /// <summary>
@@ -115,11 +171,30 @@ public sealed class StrongDictionary<TKey, TValue> where TKey : notnull
     /// <param name="info">The serialization information.</param>
     public void GetObjectData(SerializationInfo info)
     {
-        foreach (TKey key in _Dictionary.Keys)
+        ArgumentNullException.ThrowIfNull(info);
+        ThrowIfDisposed();
+        
+        foreach (TKey key in _dictionary.Keys)
         {
-            // Since TKey is constrained to notnull, we don't need the null check
-            var theKey = key.ToString() ?? "unknown";
-            info.AddValue(theKey, _Dictionary[key]);
+            var keyString = key.ToString() ?? "unknown";
+            info.AddValue(keyString, _dictionary[key]);
+        }
+    }
+
+    private void ThrowIfDisposed()
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+    }
+
+    /// <summary>
+    /// Disposes the dictionary
+    /// </summary>
+    public void Dispose()
+    {
+        if (!_disposed)
+        {
+            _dictionary.Clear();
+            _disposed = true;
         }
     }
 }

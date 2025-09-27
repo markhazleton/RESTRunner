@@ -1,5 +1,4 @@
-﻿
-namespace RESTRunner.Domain.Models;
+﻿namespace RESTRunner.Domain.Models;
 
 /// <summary>
 ///  The User to use for the Request
@@ -7,23 +6,17 @@ namespace RESTRunner.Domain.Models;
 public class CompareUser
 {
     /// <summary>
-    /// 
+    /// User password for authentication
     /// </summary>
-    public string? Password;
+    public string? Password { get; set; }
+    
     /// <summary>
-    /// 
+    /// Additional user properties
     /// </summary>
-    public Dictionary<string, string> Properties;
+    public Dictionary<string, string> Properties { get; set; } = new();
+    
     /// <summary>
-    /// 
+    /// User name for authentication
     /// </summary>
-    public string? UserName;
-
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    public CompareUser()
-    {
-        Properties = new Dictionary<string, string>();
-    }
+    public string? UserName { get; set; }
 }
