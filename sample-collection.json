@@ -1,0 +1,146 @@
+{
+  "info": {
+    "_postman_id": "12345678-1234-1234-1234-123456789012",
+    "name": "Sample RESTRunner Test Collection",
+    "description": "A sample Postman collection for testing RESTRunner upload functionality",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/status",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "status"
+          ]
+        },
+        "description": "Check if the API is running"
+      }
+    },
+    {
+      "name": "Get All Employees",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "employees"
+          ]
+        },
+        "description": "Retrieve all employees"
+      }
+    },
+    {
+      "name": "Get Employee by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/employees/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "employees",
+            "1"
+          ]
+        },
+        "description": "Retrieve a specific employee by ID"
+      }
+    },
+    {
+      "name": "Create Employee",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"departmentId\": 1\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/employees",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "employees"
+          ]
+        },
+        "description": "Create a new employee"
+      }
+    },
+    {
+      "name": "Update Employee",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": 1,\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"email\": \"jane.smith@example.com\",\n  \"departmentId\": 2\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/employees/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "employees",
+            "1"
+          ]
+        },
+        "description": "Update an existing employee"
+      }
+    },
+    {
+      "name": "Delete Employee",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/employees/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "employees",
+            "1"
+          ]
+        },
+        "description": "Delete an employee"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://localhost:44315",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+@model List<RESTRunner.Web.Models.CollectionMetadata>
+@{
+    ViewData["Title"] = "Collections";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Postman Collections</h1>
+        <div>
+            <a href="/Collection/Upload" class="btn btn-primary">
+                Upload Collection
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Collections List -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0">All Collections (@Model.Count)</h5>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>File</th>
+                                <th>Requests</th>
+                                <th>Size</th>
+                                <th>Uploaded</th>
+                                <th>Status</th>
+                                <th width="200">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var collection in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <strong>@collection.Name</strong>
+                                            @if (collection.Tags.Any())
+                                            {
+                                                <br>
+                                                @foreach (var tag in collection.Tags)
+                                                {
+                                                    <span class="badge bg-light text-dark badge-sm me-1">@tag</span>
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <code>@collection.FileName</code>
+                                        @if (!string.IsNullOrEmpty(collection.Description))
+                                        {
+                                            <br><small class="text-muted">@collection.Description</small>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">@collection.RequestCount</span>
+                                    </td>
+                                    <td>
+                                        <small>@((collection.FileSize / 1024.0).ToString("F1")) KB</small>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">
+                                            @collection.UploadedAt.ToString("MMM dd, yyyy")
+                                            <br>@collection.UploadedAt.ToString("HH:mm")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        @if (collection.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="/Collection/Details/@collection.Id" class="btn btn-outline-info" title="View Details">
+                                                View
+                                            </a>
+                                            <a href="/Collection/View/@collection.Id" class="btn btn-outline-primary" title="View JSON">
+                                                JSON
+                                            </a>
+                                            <a href="/Collection/Download/@collection.Id" class="btn btn-outline-success" title="Download">
+                                                Download
+                                            </a>
+                                            <a href="/Collection/Delete/@collection.Id" class="btn btn-outline-danger" title="Delete">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <h2 class="text-muted mb-3">FOLDER</h2>
+                    <h4 class="text-muted">No Collections Found</h4>
+                    <p class="text-muted">Upload your first Postman collection to get started.</p>
+                    <a href="/Collection/Upload" class="btn btn-primary">
+                        Upload First Collection
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

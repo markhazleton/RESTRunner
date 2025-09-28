@@ -19,4 +19,10 @@
     <PackageReference Include="WebSpark.HttpClientUtility" Version="1.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RESTRunner.Domain\RESTRunner.Domain.csproj" />
+    <ProjectReference Include="..\RESTRunner.Services.HttpClient\RESTRunner.Services.HttpClientRunner.csproj" />
+    <ProjectReference Include="..\RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj" />
+  </ItemGroup>
+
 </Project>

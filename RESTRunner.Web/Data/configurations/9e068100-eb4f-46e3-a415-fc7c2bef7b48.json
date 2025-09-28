@@ -1,0 +1,100 @@
+{
+  "id": "9e068100-eb4f-46e3-a415-fc7c2bef7b48",
+  "name": "Initial RESTRunner Configuration",
+  "description": "Default configuration created automatically using console RESTRunner values (100 iterations, 10 concurrency)",
+  "runner": {
+    "instances": [
+      {
+        "baseUrl": "https://localhost:44315/",
+        "name": "Local",
+        "userToken": null,
+        "clientToken": null,
+        "sessionId": null
+      },
+      {
+        "baseUrl": "https://samplecrud.markhazleton.com/",
+        "name": "Demo",
+        "userToken": null,
+        "clientToken": null,
+        "sessionId": null
+      }
+    ],
+    "lastRunTime": "2025-09-27T18:54:11.730404Z",
+    "requests": [
+      {
+        "path": "api/status",
+        "requestMethod": 0,
+        "bodyTemplate": null,
+        "requiresClientToken": false,
+        "headers": [],
+        "body": null
+      },
+      {
+        "path": "api/employees",
+        "requestMethod": 0,
+        "bodyTemplate": null,
+        "requiresClientToken": false,
+        "headers": [],
+        "body": null
+      },
+      {
+        "path": "api/employees/1",
+        "requestMethod": 0,
+        "bodyTemplate": null,
+        "requiresClientToken": false,
+        "headers": [],
+        "body": null
+      },
+      {
+        "path": "api/employees/count",
+        "requestMethod": 0,
+        "bodyTemplate": null,
+        "requiresClientToken": false,
+        "headers": [],
+        "body": null
+      },
+      {
+        "path": "api/departments",
+        "requestMethod": 0,
+        "bodyTemplate": null,
+        "requiresClientToken": false,
+        "headers": [],
+        "body": null
+      }
+    ],
+    "sessionId": "RESTRunner-2025-09-27",
+    "users": [
+      {
+        "password": "password",
+        "properties": {
+          "email": "test@example.com",
+          "role": "tester",
+          "department": "QA"
+        },
+        "userName": "testuser"
+      },
+      {
+        "password": "admin123",
+        "properties": {
+          "email": "admin@example.com",
+          "role": "administrator",
+          "department": "IT"
+        },
+        "userName": "admin"
+      }
+    ]
+  },
+  "collectionFileName": null,
+  "iterations": 100,
+  "maxConcurrency": 10,
+  "tags": [
+    "initial",
+    "demo",
+    "auto-generated",
+    "console-defaults"
+  ],
+  "createdAt": "2025-09-27T18:54:11.7354307Z",
+  "modifiedAt": "2025-09-27T18:54:11.7354454Z",
+  "createdBy": "System",
+  "isActive": true
+}

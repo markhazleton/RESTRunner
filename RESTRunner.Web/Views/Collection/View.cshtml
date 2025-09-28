@@ -1,0 +1,275 @@
+@{
+    ViewData["Title"] = "View Collection JSON";
+    var collectionName = ViewBag.CollectionName as string ?? "Collection";
+    var collectionId = ViewBag.CollectionId as string;
+    var collectionJson = ViewBag.CollectionJson as string ?? "{}";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">JSON Viewer: @collectionName</h1>
+        <div>
+            <a href="/Collection/Details/@collectionId" class="btn btn-outline-info">Back to Details</a>
+            <a href="/Collection" class="btn btn-outline-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Collection JSON</h5>
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="formatJson">
+                            Format JSON
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-success" id="copyJson">
+                            Copy to Clipboard
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="position-relative">
+                        <textarea id="jsonContent" class="form-control border-0 font-monospace" rows="30" readonly>@collectionJson</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <!-- JSON Statistics -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">JSON Statistics</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted">File Size</small>
+                        <div id="jsonSize">Calculating...</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Line Count</small>
+                        <div id="lineCount">Calculating...</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Character Count</small>
+                        <div id="charCount">Calculating...</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Format Status</small>
+                        <div id="formatStatus">
+                            <span class="badge bg-info">Checking...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/Collection/Download/@collectionId" class="btn btn-success btn-sm">
+                            Download JSON
+                        </a>
+                        <button type="button" class="btn btn-primary btn-sm" id="validateJson">
+                            Validate JSON
+                        </button>
+                        <a href="/Configuration/Create?collectionId=@collectionId" class="btn btn-info btn-sm">
+                            Create Configuration
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Validation Results -->
+            <div class="card" id="validationCard" style="display: none;">
+                <div class="card-header">
+                    <h6 class="mb-0">Validation Results</h6>
+                </div>
+                <div class="card-body" id="validationResults">
+                </div>
+            </div>
+
+            <!-- JSON Structure Preview -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Structure Preview</h6>
+                </div>
+                <div class="card-body">
+                    <div id="structurePreview">
+                        <small class="text-muted">Loading structure...</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Update statistics on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatistics();
+            analyzeStructure();
+        });
+
+        // Update JSON statistics
+        function updateStatistics() {
+            const content = document.getElementById('jsonContent').value;
+            const lines = content.split('\n').length;
+            const chars = content.length;
+            const sizeKB = (chars / 1024).toFixed(2);
+
+            document.getElementById('lineCount').textContent = lines.toLocaleString();
+            document.getElementById('charCount').textContent = chars.toLocaleString();
+            document.getElementById('jsonSize').textContent = `${sizeKB} KB`;
+
+            // Check if JSON is formatted
+            try {
+                const parsed = JSON.parse(content);
+                const formatted = JSON.stringify(parsed, null, 2);
+                const isFormatted = content.trim() === formatted;
+                
+                document.getElementById('formatStatus').innerHTML = isFormatted 
+                    ? '<span class="badge bg-success">Well Formatted</span>'
+                    : '<span class="badge bg-warning">Minified</span>';
+            } catch (e) {
+                document.getElementById('formatStatus').innerHTML = '<span class="badge bg-danger">Invalid JSON</span>';
+            }
+        }
+
+        // Format JSON
+        document.getElementById('formatJson').addEventListener('click', function() {
+            const textarea = document.getElementById('jsonContent');
+            try {
+                const parsed = JSON.parse(textarea.value);
+                textarea.value = JSON.stringify(parsed, null, 2);
+                updateStatistics();
+                this.textContent = 'Formatted!';
+                setTimeout(() => {
+                    this.textContent = 'Format JSON';
+                }, 2000);
+            } catch (e) {
+                alert('Invalid JSON: Cannot format');
+            }
+        });
+
+        // Copy to clipboard
+        document.getElementById('copyJson').addEventListener('click', function() {
+            const textarea = document.getElementById('jsonContent');
+            textarea.select();
+            document.execCommand('copy');
+            
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+                this.textContent = 'Copy to Clipboard';
+            }, 2000);
+        });
+
+        // Validate JSON
+        document.getElementById('validateJson').addEventListener('click', function() {
+            const content = document.getElementById('jsonContent').value;
+            const card = document.getElementById('validationCard');
+            const results = document.getElementById('validationResults');
+            
+            try {
+                const parsed = JSON.parse(content);
+                
+                // Basic Postman collection validation
+                const validations = [];
+                
+                if (parsed.info) {
+                    validations.push({ check: 'Has info section', status: 'success' });
+                    if (parsed.info.name) {
+                        validations.push({ check: `Collection name: "${parsed.info.name}"`, status: 'info' });
+                    }
+                    if (parsed.info.schema) {
+                        validations.push({ check: 'Has schema definition', status: 'success' });
+                    }
+                } else {
+                    validations.push({ check: 'Missing info section', status: 'danger' });
+                }
+                
+                if (parsed.item && Array.isArray(parsed.item)) {
+                    validations.push({ check: `Contains ${parsed.item.length} items`, status: 'success' });
+                } else {
+                    validations.push({ check: 'No items found', status: 'warning' });
+                }
+                
+                // Display results
+                let html = '<div class="list-group list-group-flush">';
+                validations.forEach(v => {
+                    const badgeClass = v.status === 'success' ? 'bg-success' : 
+                                     v.status === 'warning' ? 'bg-warning' : 
+                                     v.status === 'info' ? 'bg-info' : 'bg-danger';
+                    html += `<div class="list-group-item p-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small>${v.check}</small>
+                            <span class="badge ${badgeClass} badge-sm">${v.status.toUpperCase()}</span>
+                        </div>
+                    </div>`;
+                });
+                html += '</div>';
+                
+                results.innerHTML = html;
+                card.style.display = 'block';
+                
+            } catch (e) {
+                results.innerHTML = `<div class="alert alert-danger p-2">
+                    <strong>Invalid JSON:</strong><br>
+                    <small>${e.message}</small>
+                </div>`;
+                card.style.display = 'block';
+            }
+        });
+
+        // Analyze structure
+        function analyzeStructure() {
+            const content = document.getElementById('jsonContent').value;
+            const preview = document.getElementById('structurePreview');
+            
+            try {
+                const parsed = JSON.parse(content);
+                let html = '<ul class="list-unstyled small">';
+                
+                if (parsed.info) {
+                    html += '<li><strong>INFO</strong>';
+                    if (parsed.info.name) html += `<br>&nbsp;&nbsp;• ${parsed.info.name}`;
+                    html += '</li>';
+                }
+                
+                if (parsed.item && Array.isArray(parsed.item)) {
+                    html += `<li><strong>ITEMS (${parsed.item.length})</strong>`;
+                    const preview_items = parsed.item.slice(0, 3);
+                    preview_items.forEach(item => {
+                        if (item.name) {
+                            html += `<br>&nbsp;&nbsp;• ${item.name}`;
+                        }
+                    });
+                    if (parsed.item.length > 3) {
+                        html += `<br>&nbsp;&nbsp;• ... and ${parsed.item.length - 3} more`;
+                    }
+                    html += '</li>';
+                }
+                
+                if (parsed.variable && Array.isArray(parsed.variable)) {
+                    html += `<li><strong>VARIABLES (${parsed.variable.length})</strong></li>`;
+                }
+                
+                html += '</ul>';
+                preview.innerHTML = html;
+                
+            } catch (e) {
+                preview.innerHTML = '<small class="text-danger">Unable to parse JSON structure</small>';
+            }
+        }
+
+        // Auto-resize textarea
+        const textarea = document.getElementById('jsonContent');
+        textarea.style.minHeight = '600px';
+    </script>
+}

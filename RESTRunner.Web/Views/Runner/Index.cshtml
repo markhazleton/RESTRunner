@@ -1,0 +1,366 @@
+@model RESTRunner.Web.Models.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "RESTRunner Dashboard";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">RESTRunner Dashboard</h1>
+        <div>
+            <a href="/Runner/QuickStart" class="btn btn-outline-primary btn-sm">
+                Quick Start
+            </a>
+            <a href="/Configuration/Create" class="btn btn-primary btn-sm">
+                New Configuration
+            </a>
+        </div>
+    </div>
+
+    <!-- System Statistics Row -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">@Model.Statistics.TotalConfigurations</h4>
+                            <small>Total Configurations</small>
+                        </div>
+                        <div class="align-self-center">
+                            <span class="h2">CONF</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">@Model.Statistics.TotalCollections</h4>
+                            <small>Collections Available</small>
+                        </div>
+                        <div class="align-self-center">
+                            <span class="h2">COLL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">@Model.Statistics.TotalExecutions</h4>
+                            <small>Total Executions</small>
+                        </div>
+                        <div class="align-self-center">
+                            <span class="h2">EXEC</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="mb-0">@Model.Statistics.RunningExecutions</h4>
+                            <small>Currently Running</small>
+                        </div>
+                        <div class="align-self-center">
+                            <span class="h2">RUN</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Row -->
+    <div class="row">
+        <!-- Recent Executions -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Executions</h5>
+                    <small class="text-muted">Last 5 executions</small>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentExecutions.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Configuration</th>
+                                        <th>Started</th>
+                                        <th>Duration</th>
+                                        <th>Status</th>
+                                        <th>Success Rate</th>
+                                        <th>Avg Response</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var execution in Model.RecentExecutions)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <strong>@execution.ConfigurationName</strong>
+                                                <br><small class="text-muted">by @execution.ExecutedBy</small>
+                                            </td>
+                                            <td>
+                                                @execution.StartTime.ToString("MMM dd, HH:mm")
+                                            </td>
+                                            <td>
+                                                @if (execution.Duration.HasValue)
+                                                {
+                                                    @execution.Duration.Value.ToString(@"mm\:ss")
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @switch (execution.Status)
+                                                {
+                                                    case RESTRunner.Web.Models.ExecutionStatus.Completed:
+                                                        <span class="badge bg-success">Completed</span>
+                                                        break;
+                                                    case RESTRunner.Web.Models.ExecutionStatus.Running:
+                                                        <span class="badge bg-primary">Running</span>
+                                                        break;
+                                                    case RESTRunner.Web.Models.ExecutionStatus.Failed:
+                                                        <span class="badge bg-danger">Failed</span>
+                                                        break;
+                                                    case RESTRunner.Web.Models.ExecutionStatus.Cancelled:
+                                                        <span class="badge bg-warning">Cancelled</span>
+                                                        break;
+                                                    default:
+                                                        <span class="badge bg-secondary">Pending</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (execution.SuccessRate.HasValue)
+                                                {
+                                                    <span class="@(execution.SuccessRate >= 95 ? "text-success" : execution.SuccessRate >= 90 ? "text-warning" : "text-danger")">
+                                                        @execution.SuccessRate.Value.ToString("F1")%
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (execution.AverageResponseTime.HasValue)
+                                                {
+                                                    <text>@execution.AverageResponseTime.Value.ToString("F0") ms</text>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <h3 class="text-muted mb-3">INFO</h3>
+                            <p class="text-muted">No executions found. <a href="/Configuration/Create">Create a configuration</a> to get started.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-4 mb-4">
+            <!-- Running Executions -->
+            @if (Model.RunningExecutions.Any())
+            {
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">Currently Running</h6>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var execution in Model.RunningExecutions)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <strong>@execution.ConfigurationName</strong>
+                                    <br><small class="text-muted">@execution.CurrentPhase</small>
+                                </div>
+                                <div class="text-end">
+                                    <div class="progress" style="width: 100px; height: 8px;">
+                                        <div class="progress-bar" role="progressbar" style="width: @execution.ProgressPercentage%"></div>
+                                    </div>
+                                    <small>@execution.ProgressPercentage.ToString("F0")%</small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Quick Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/Configuration" class="btn btn-outline-primary btn-sm">
+                            Manage Configurations
+                        </a>
+                        <a href="/Collection" class="btn btn-outline-success btn-sm">
+                            Manage Collections
+                        </a>
+                        <a href="/Collection/Upload" class="btn btn-outline-info btn-sm">
+                            Upload Collection
+                        </a>
+                        <a href="/Runner/Settings" class="btn btn-outline-secondary btn-sm">
+                            Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Info -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">System Information</h6>
+                </div>
+                <div class="card-body">
+                    <small class="text-muted">
+                        <div class="mb-1"><strong>Uptime:</strong> @Model.Statistics.SystemUptime.ToString(@"dd\d\ hh\h\ mm\m")</div>
+                        @if (Model.Statistics.LastExecution.HasValue)
+                        {
+                            <div class="mb-1"><strong>Last Execution:</strong> @Model.Statistics.LastExecution.Value.ToString("MMM dd, HH:mm")</div>
+                        }
+                        <div><strong>Average Success Rate:</strong> @Model.Statistics.AverageSuccessRate.ToString("F1")%</div>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configurations & Collections Row -->
+    <div class="row">
+        <!-- Recent Configurations -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">Recent Configurations</h6>
+                    <a href="/Configuration" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    @if (Model.Configurations.Any())
+                    {
+                        @foreach (var config in Model.Configurations.Take(5))
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                <div>
+                                    <a href="/Configuration/Details/@config.Id" class="text-decoration-none">
+                                        <strong>@config.Name</strong>
+                                    </a>
+                                    @if (!string.IsNullOrEmpty(config.Description))
+                                    {
+                                        <br><small class="text-muted">@config.Description</small>
+                                    }
+                                    <br><small class="text-muted">@config.TotalTestCount test combinations</small>
+                                </div>
+                                <div class="text-end">
+                                    @if (config.IsActive)
+                                    {
+                                        <span class="badge bg-success badge-sm">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary badge-sm">Inactive</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-3">
+                            <p class="text-muted mb-0">No configurations found.</p>
+                            <a href="/Configuration/Create" class="btn btn-sm btn-primary mt-2">Create First Configuration</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Collections -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">Recent Collections</h6>
+                    <a href="/Collection" class="btn btn-sm btn-outline-success">View All</a>
+                </div>
+                <div class="card-body">
+                    @if (Model.Collections.Any())
+                    {
+                        @foreach (var collection in Model.Collections.Take(5))
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                <div>
+                                    <a href="/Collection/Details/@collection.Id" class="text-decoration-none">
+                                        <strong>@collection.Name</strong>
+                                    </a>
+                                    <br><small class="text-muted">@collection.FileName • @collection.RequestCount requests</small>
+                                    <br><small class="text-muted">@((collection.FileSize / 1024.0).ToString("F1")) KB</small>
+                                </div>
+                                <div class="text-end">
+                                    @if (collection.IsActive)
+                                    {
+                                        <span class="badge bg-success badge-sm">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary badge-sm">Inactive</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-3">
+                            <p class="text-muted mb-0">No collections found.</p>
+                            <a href="/Collection/Upload" class="btn btn-sm btn-success mt-2">Upload First Collection</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-refresh running executions every 30 seconds
+        @if (Model.RunningExecutions.Any())
+        {
+            <text>
+            setTimeout(function() {
+                location.reload();
+            }, 30000);
+            </text>
+        }
+    </script>
+}
