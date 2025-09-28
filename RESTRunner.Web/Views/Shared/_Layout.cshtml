@@ -24,6 +24,23 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="restrunnerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                RESTRunner
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="restrunnerDropdown">
+                                <li><a class="dropdown-item" href="/Runner">Dashboard</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/Configuration">Configurations</a></li>
+                                <li><a class="dropdown-item" href="/Collection">Collections</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/Runner/QuickStart">Quick Start</a></li>
+                                <li><a class="dropdown-item" href="/Runner/Settings">Settings</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/docs">API Docs</a>
+                        </li>
                     </ul>
                     @Html.Raw(BootswatchThemeHelper.GetThemeSwitcherHtml(StyleCache, Context))
                 </div>

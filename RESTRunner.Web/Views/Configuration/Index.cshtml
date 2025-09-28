@@ -1,0 +1,212 @@
+@model List<RESTRunner.Web.Models.TestConfiguration>
+@{
+    ViewData["Title"] = "Configurations";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Test Configurations</h1>
+        <div>
+            <a href="/Configuration/Create" class="btn btn-primary">
+                New Configuration
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Configurations List -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0">All Configurations (@Model.Count)</h5>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" placeholder="Search configurations..." id="searchInput">
+                        <button class="btn btn-outline-secondary" type="button">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Test Count</th>
+                                <th>Iterations</th>
+                                <th>Concurrency</th>
+                                <th>Modified</th>
+                                <th>Status</th>
+                                <th width="200">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var config in Model)
+                            {
+                                <tr class="configuration-row" data-name="@config.Name.ToLower()" data-description="@(config.Description?.ToLower() ?? "")">
+                                    <td>
+                                        <div>
+                                            <strong>@config.Name</strong>
+                                            @if (config.Tags.Any())
+                                            {
+                                                <br>
+                                                @foreach (var tag in config.Tags)
+                                                {
+                                                    <span class="badge bg-light text-dark badge-sm me-1">@tag</span>
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(config.Description))
+                                        {
+                                            <span title="@config.Description">
+                                                @(config.Description.Length > 50 ? config.Description.Substring(0, 50) + "..." : config.Description)
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">@config.GetTotalTestCount()</span>
+                                    </td>
+                                    <td>@config.Iterations</td>
+                                    <td>@config.MaxConcurrency</td>
+                                    <td>
+                                        <small class="text-muted">
+                                            @config.ModifiedAt.ToString("MMM dd, yyyy")
+                                            <br>@config.ModifiedAt.ToString("HH:mm")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        @if (config.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="/Configuration/Details/@config.Id" class="btn btn-outline-info" title="View Details">
+                                                View
+                                            </a>
+                                            <a href="/Configuration/Edit/@config.Id" class="btn btn-outline-primary" title="Edit">
+                                                Edit
+                                            </a>
+                                            <a href="/Configuration/Export/@config.Id" class="btn btn-outline-success" title="Export">
+                                                Export
+                                            </a>
+                                            <a href="/Configuration/Delete/@config.Id" class="btn btn-outline-danger" title="Delete">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <h2 class="text-muted mb-3">CONFIG</h2>
+                    <h4 class="text-muted">No Configurations Found</h4>
+                    <p class="text-muted">Get started by creating your first test configuration.</p>
+                    <a href="/Configuration/Create" class="btn btn-primary">
+                        Create First Configuration
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <!-- Summary Statistics -->
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h4>@Model.Count</h4>
+                        <small>Total Configurations</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <h4>@Model.Count(c => c.IsActive)</h4>
+                        <small>Active Configurations</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <h4>@Model.Sum(c => c.GetTotalTestCount())</h4>
+                        <small>Total Test Combinations</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <h4>@Model.SelectMany(c => c.Tags).Distinct().Count()</h4>
+                        <small>Unique Tags</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.configuration-row');
+            
+            rows.forEach(row => {
+                const name = row.getAttribute('data-name');
+                const description = row.getAttribute('data-description');
+                
+                if (name.includes(searchTerm) || description.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+}

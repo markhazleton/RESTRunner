@@ -1,0 +1,283 @@
+@model RESTRunner.Web.Models.ViewModels.ConfigurationViewModel
+@{
+    ViewData["Title"] = "Create Configuration";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Create New Configuration</h1>
+        <a href="/Configuration" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+
+    @if (TempData["Warning"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["Warning"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+        <div class="row">
+            <!-- Basic Information -->
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Basic Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label asp-for="Name" class="form-label">Configuration Name *</label>
+                                    <input asp-for="Name" class="form-control" placeholder="Enter a descriptive name">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="IsActive" class="form-label">Status</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" asp-for="IsActive" id="isActiveSwitch">
+                                        <label class="form-check-label" for="isActiveSwitch">
+                                            Active
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe what this configuration tests"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="TagsString" class="form-label">Tags</label>
+                            <input asp-for="TagsString" class="form-control" placeholder="api, smoke-test, regression">
+                            <div class="form-text">Comma-separated tags for organizing configurations</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Execution Settings -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Execution Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Iterations" class="form-label">Number of Iterations *</label>
+                                    <input asp-for="Iterations" type="number" class="form-control" min="1" max="1000">
+                                    <span asp-validation-for="Iterations" class="text-danger"></span>
+                                    <div class="form-text">How many times to run the complete test suite</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MaxConcurrency" class="form-label">Max Concurrent Requests *</label>
+                                    <input asp-for="MaxConcurrency" type="number" class="form-control" min="1" max="100">
+                                    <span asp-validation-for="MaxConcurrency" class="text-danger"></span>
+                                    <div class="form-text">Maximum number of simultaneous requests</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Test Configuration -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Test Configuration (JSON)</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="InstancesJson" class="form-label">Test Instances</label>
+                            <textarea asp-for="InstancesJson" class="form-control font-monospace" rows="6" placeholder='[{"Name": "Local", "BaseUrl": "https://localhost:5001/"}]'></textarea>
+                            <div class="form-text">JSON array of test instances (servers to test against)</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="UsersJson" class="form-label">Test Users</label>
+                            <textarea asp-for="UsersJson" class="form-control font-monospace" rows="4" placeholder='[{"UserName": "testuser", "Password": "password"}]'></textarea>
+                            <div class="form-text">JSON array of test users</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="RequestsJson" class="form-label">Test Requests</label>
+                            <textarea asp-for="RequestsJson" class="form-control font-monospace" rows="6" placeholder='[{"Path": "api/status", "RequestMethod": "GET"}]'></textarea>
+                            <div class="form-text">JSON array of requests to execute</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Collection Selection -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">Postman Collection</h6>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.AvailableCollections.Any())
+                        {
+                            <div class="mb-3">
+                                <label asp-for="CollectionId" class="form-label">Select Collection</label>
+                                <select asp-for="CollectionId" class="form-select">
+                                    <option value="">-- None Selected --</option>
+                                    @foreach (var collection in Model.AvailableCollections)
+                                    {
+                                        <option value="@collection.Id">@collection.Name (@collection.RequestCount requests)</option>
+                                    }
+                                </select>
+                                <div class="form-text">Optional: Use an existing Postman collection</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No collections available.</p>
+                            <a href="/Collection/Upload" class="btn btn-sm btn-success">Upload Collection</a>
+                        }
+                    </div>
+                </div>
+
+                <!-- JSON Examples -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">JSON Examples</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="jsonExamples">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="instancesExample">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstances">
+                                        Instances Example
+                                    </button>
+                                </h2>
+                                <div id="collapseInstances" class="accordion-collapse collapse" data-bs-parent="#jsonExamples">
+                                    <div class="accordion-body">
+                                        <pre><code>[
+  {
+    "Name": "Local",
+    "BaseUrl": "https://localhost:5001/"
+  },
+  {
+    "Name": "Production", 
+    "BaseUrl": "https://api.example.com/"
+  }
+]</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="usersExample">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUsers">
+                                        Users Example
+                                    </button>
+                                </h2>
+                                <div id="collapseUsers" class="accordion-collapse collapse" data-bs-parent="#jsonExamples">
+                                    <div class="accordion-body">
+                                        <pre><code>[
+  {
+    "UserName": "testuser",
+    "Password": "password",
+    "Properties": {
+      "email": "test@example.com",
+      "role": "admin"
+    }
+  }
+]</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="requestsExample">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRequests">
+                                        Requests Example
+                                    </button>
+                                </h2>
+                                <div id="collapseRequests" class="accordion-collapse collapse" data-bs-parent="#jsonExamples">
+                                    <div class="accordion-body">
+                                        <pre><code>[
+  {
+    "Path": "api/status",
+    "RequestMethod": "GET",
+    "RequiresClientToken": false
+  },
+  {
+    "Path": "api/users",
+    "RequestMethod": "POST",
+    "BodyTemplate": "{\"name\": \"{{username}}\"}",
+    "RequiresClientToken": true
+  }
+]</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                Create Configuration
+                            </button>
+                            <a href="/Configuration" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // JSON validation
+        function validateJson(textareaId) {
+            const textarea = document.getElementById(textareaId);
+            try {
+                if (textarea.value.trim()) {
+                    JSON.parse(textarea.value);
+                    textarea.classList.remove('is-invalid');
+                    textarea.classList.add('is-valid');
+                }
+            } catch (e) {
+                textarea.classList.remove('is-valid');
+                textarea.classList.add('is-invalid');
+            }
+        }
+
+        // Add JSON validation on blur
+        document.querySelectorAll('textarea[id$="Json"]').forEach(textarea => {
+            textarea.addEventListener('blur', function() {
+                validateJson(this.id);
+            });
+        });
+    </script>
+}

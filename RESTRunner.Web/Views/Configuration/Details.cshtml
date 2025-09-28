@@ -1,0 +1,335 @@
+@model RESTRunner.Web.Models.TestConfiguration
+@{
+    ViewData["Title"] = "Configuration Details";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Configuration Details</h1>
+        <div>
+            <a href="/Configuration/Edit/@Model.Id" class="btn btn-primary">
+                Edit
+            </a>
+            <a href="/Configuration" class="btn btn-outline-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Basic Information -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Basic Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Configuration Name</h6>
+                            <p>@Model.Name</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Status</h6>
+                            <p>
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <div class="mb-3">
+                            <h6>Description</h6>
+                            <p>@Model.Description</p>
+                        </div>
+                    }
+
+                    @if (Model.Tags.Any())
+                    {
+                        <div class="mb-3">
+                            <h6>Tags</h6>
+                            <p>
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <span class="badge bg-light text-dark me-1">@tag</span>
+                                }
+                            </p>
+                        </div>
+                    }
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6>Iterations</h6>
+                            <p>@Model.Iterations</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Max Concurrency</h6>
+                            <p>@Model.MaxConcurrency</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Total Test Count</h6>
+                            <p><strong>@Model.GetTotalTestCount()</strong> combinations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Details -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Test Configuration</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Instances -->
+                    <div class="mb-4">
+                        <h6>Test Instances (@Model.Runner.Instances.Count)</h6>
+                        @if (Model.Runner.Instances.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Base URL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var instance in Model.Runner.Instances)
+                                        {
+                                            <tr>
+                                                <td><code>@instance.Name</code></td>
+                                                <td><a href="@instance.BaseUrl" target="_blank">@instance.BaseUrl</a></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No instances configured</p>
+                        }
+                    </div>
+
+                    <!-- Users -->
+                    <div class="mb-4">
+                        <h6>Test Users (@Model.Runner.Users.Count)</h6>
+                        @if (Model.Runner.Users.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Username</th>
+                                            <th>Properties</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var user in Model.Runner.Users)
+                                        {
+                                            <tr>
+                                                <td><code>@user.UserName</code></td>
+                                                <td>
+                                                    @if (user.Properties.Any())
+                                                    {
+                                                        @foreach (var prop in user.Properties.Take(3))
+                                                        {
+                                                            <small class="badge bg-light text-dark me-1">@prop.Key</small>
+                                                        }
+                                                        @if (user.Properties.Count > 3)
+                                                        {
+                                                            <small class="text-muted">+@(user.Properties.Count - 3) more</small>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">No properties</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No users configured</p>
+                        }
+                    </div>
+
+                    <!-- Requests -->
+                    <div class="mb-4">
+                        <h6>Test Requests (@Model.Runner.Requests.Count)</h6>
+                        @if (Model.Runner.Requests.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Method</th>
+                                            <th>Path</th>
+                                            <th>Auth Required</th>
+                                            <th>Body Template</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var request in Model.Runner.Requests)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <span class="badge bg-@(request.RequestMethod.ToString() switch 
+                                                    {
+                                                        "GET" => "success",
+                                                        "POST" => "primary", 
+                                                        "PUT" => "warning",
+                                                        "DELETE" => "danger",
+                                                        _ => "secondary"
+                                                    })">
+                                                        @request.RequestMethod
+                                                    </span>
+                                                </td>
+                                                <td><code>@request.Path</code></td>
+                                                <td>
+                                                    @if (request.RequiresClientToken)
+                                                    {
+                                                        <span class="text-success">[YES]</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">[NO]</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(request.BodyTemplate))
+                                                    {
+                                                        <small class="text-muted">Has body template</small>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">-</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No requests configured</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-success" id="runConfiguration">
+                            Run Configuration
+                        </button>
+                        <a href="/Configuration/Edit/@Model.Id" class="btn btn-primary">
+                            Edit Configuration
+                        </a>
+                        <a href="/Configuration/Export/@Model.Id" class="btn btn-info">
+                            Export JSON
+                        </a>
+                        <button type="button" class="btn btn-outline-warning" id="duplicateConfig">
+                            Duplicate
+                        </button>
+                        <a href="/Configuration/Delete/@Model.Id" class="btn btn-outline-danger">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metadata -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Metadata</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted">Created</small>
+                        <div>@Model.CreatedAt.ToString("MMM dd, yyyy 'at' HH:mm")</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Last Modified</small>
+                        <div>@Model.ModifiedAt.ToString("MMM dd, yyyy 'at' HH:mm")</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Created By</small>
+                        <div>@Model.CreatedBy</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Configuration ID</small>
+                        <div><code class="small">@Model.Id</code></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Test Breakdown</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="h4 text-primary">@Model.Runner.Instances.Count</div>
+                            <small class="text-muted">Instances</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="h4 text-success">@Model.Runner.Requests.Count</div>
+                            <small class="text-muted">Requests</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="h4 text-info">@Model.Runner.Users.Count</div>
+                            <small class="text-muted">Users</small>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <div class="h3 text-warning">@Model.GetTotalTestCount()</div>
+                        <small class="text-muted">Total test combinations<br>(@Model.Iterations iterations)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Run configuration
+        document.getElementById('runConfiguration').addEventListener('click', function() {
+            // In Phase 3, this would actually start execution
+            alert('Execution feature coming in Phase 3! This will start running the configuration.');
+        });
+
+        // Duplicate configuration
+        document.getElementById('duplicateConfig').addEventListener('click', function() {
+            if (confirm('Create a copy of this configuration?')) {
+                // In a real implementation, this would duplicate the config
+                alert('Duplicate feature coming soon! This will create a copy with a new name.');
+            }
+        });
+    </script>
+}

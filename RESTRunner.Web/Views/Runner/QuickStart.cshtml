@@ -1,0 +1,211 @@
+@{
+    ViewData["Title"] = "Quick Start Guide";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="mb-4">
+        <h1 class="h2">Quick Start Guide</h1>
+        <p class="lead">Get up and running with RESTRunner in minutes</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Step-by-step guide -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Getting Started in 3 Steps</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <span class="h5 mb-0">1</span>
+                            </div>
+                            <h5>1. Upload Collection</h5>
+                            <p class="text-muted">Upload your Postman collection JSON file</p>
+                            <a href="/Collection/Upload" class="btn btn-primary btn-sm">Upload Now</a>
+                        </div>
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <span class="h5 mb-0">2</span>
+                            </div>
+                            <h5>2. Create Configuration</h5>
+                            <p class="text-muted">Set up test instances, users, and execution settings</p>
+                            <a href="/Configuration/Create" class="btn btn-success btn-sm">Create Config</a>
+                        </div>
+                        <div class="col-md-4 text-center mb-4">
+                            <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <span class="h5 mb-0">3</span>
+                            </div>
+                            <h5>3. Run Tests</h5>
+                            <p class="text-muted">Execute your configuration and view results</p>
+                            <a href="/Runner" class="btn btn-info btn-sm">View Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Overview -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Key Features</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6><strong>POSTMAN</strong> Integration</h6>
+                            <p class="text-muted">Import and use existing Postman collections for testing</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6><strong>PERF</strong> Testing</h6>
+                            <p class="text-muted">Run load tests with configurable concurrency and iterations</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6><strong>MULTI</strong> Instance Testing</h6>
+                            <p class="text-muted">Test against multiple environments simultaneously</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6><strong>REPORT</strong> Generation</h6>
+                            <p class="text-muted">Export comprehensive test results and statistics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Examples -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Configuration Examples</h5>
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="examplesAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="basicExample">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBasic">
+                                    Basic API Health Check
+                                </button>
+                            </h2>
+                            <div id="collapseBasic" class="accordion-collapse collapse show" data-bs-parent="#examplesAccordion">
+                                <div class="accordion-body">
+                                    <p>A simple configuration to check if your API is responding:</p>
+                                    <pre><code>{
+  "name": "API Health Check",
+  "instances": [
+    {"Name": "Production", "BaseUrl": "https://api.yoursite.com/"}
+  ],
+  "requests": [
+    {"Path": "health", "RequestMethod": "GET"}
+  ],
+  "users": [
+    {"UserName": "healthcheck"}
+  ],
+  "iterations": 10,
+  "maxConcurrency": 5
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="loadExample">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLoad">
+                                    Load Testing Example
+                                </button>
+                            </h2>
+                            <div id="collapseLoad" class="accordion-collapse collapse" data-bs-parent="#examplesAccordion">
+                                <div class="accordion-body">
+                                    <p>Configuration for load testing multiple endpoints:</p>
+                                    <pre><code>{
+  "name": "Load Test",
+  "instances": [
+    {"Name": "Staging", "BaseUrl": "https://staging.yoursite.com/"},
+    {"Name": "Load-Test", "BaseUrl": "https://loadtest.yoursite.com/"}
+  ],
+  "requests": [
+    {"Path": "api/users", "RequestMethod": "GET"},
+    {"Path": "api/products", "RequestMethod": "GET"},
+    {"Path": "api/orders", "RequestMethod": "GET"}
+  ],
+  "users": [
+    {"UserName": "loadtest1"},
+    {"UserName": "loadtest2"}
+  ],
+  "iterations": 100,
+  "maxConcurrency": 50
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Quick Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Quick Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/Collection/Upload" class="btn btn-primary">
+                            Upload Postman Collection
+                        </a>
+                        <a href="/Configuration/Create" class="btn btn-success">
+                            Create New Configuration
+                        </a>
+                        <a href="/Runner" class="btn btn-info">
+                            View Dashboard
+                        </a>
+                        <a href="/docs" class="btn btn-outline-secondary">
+                            API Documentation
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Pro Tips</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <strong>[TIP]</strong> Start with low concurrency and iterations for initial testing
+                        </li>
+                        <li class="mb-2">
+                            <strong>[TIP]</strong> Use environment variables in your Postman collections
+                        </li>
+                        <li class="mb-2">
+                            <strong>[TIP]</strong> Tag your configurations for better organization
+                        </li>
+                        <li class="mb-2">
+                            <strong>[TIP]</strong> Monitor results and adjust settings based on performance
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Help -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Need Help?</h6>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Having trouble getting started?</p>
+                    <div class="d-grid gap-2">
+                        <a href="/docs" class="btn btn-outline-primary btn-sm">
+                            API Documentation
+                        </a>
+                        <a href="/Runner/Settings" class="btn btn-outline-secondary btn-sm">
+                            Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

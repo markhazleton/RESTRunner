@@ -3,24 +3,113 @@
 }
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-10">
             <div class="card shadow-sm border-0">
                 <div class="card-body">
                     <h1 class="display-4 mb-3 text-primary">RESTRunner</h1>
-                    <p class="lead">A modern ASP.NET Core web application for exploring and testing REST APIs with a beautiful, themeable UI powered by Bootswatch and Bootstrap 5.</p>
+                    <p class="lead">A comprehensive REST API testing platform with web-based management, Postman collection integration, and advanced performance analysis.</p>
                     <hr />
-                    <ul class="list-group list-group-flush mb-4">
-                        <li class="list-group-item">🔍 <strong>API Explorer:</strong> Browse and test your API endpoints with integrated Swagger UI.</li>
-                        <li class="list-group-item">👥 <strong>Employee & Department CRUD:</strong> Manage employees and departments with easy-to-use REST endpoints.</li>
-                        <li class="list-group-item">🎨 <strong>Theme Switcher:</strong> Instantly switch between Bootswatch themes and light/dark mode using the theme switcher in the navigation bar.</li>
-                        <li class="list-group-item">⚡ <strong>Resilient HTTP:</strong> Built-in support for robust HTTP requests with retry, circuit breaker, and telemetry using WebSpark.HttpClientUtility.</li>
-                        <li class="list-group-item">📊 <strong>Status & Diagnostics:</strong> Check application status and diagnostics endpoints for health and monitoring.</li>
-                    </ul>
-                    <div class="alert alert-info">
-                        <strong>Tip:</strong> Use the theme switcher in the navbar to personalize your experience with different Bootswatch styles!
+                    
+                    <!-- Key Features -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush mb-4">
+                                <li class="list-group-item"><strong>[WEB]</strong> <strong>Web-based Management:</strong> Create and manage test configurations through an intuitive web interface.</li>
+                                <li class="list-group-item"><strong>[POSTMAN]</strong> <strong>Postman Integration:</strong> Import and execute existing Postman collections seamlessly.</li>
+                                <li class="list-group-item"><strong>[PERF]</strong> <strong>Performance Testing:</strong> Run load tests with configurable concurrency and iterations.</li>
+                                <li class="list-group-item"><strong>[STATS]</strong> <strong>Advanced Analytics:</strong> Detailed statistics with response time percentiles and success rates.</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush mb-4">
+                                <li class="list-group-item"><strong>[MULTI]</strong> <strong>Multi-Instance Testing:</strong> Test against multiple environments simultaneously.</li>
+                                <li class="list-group-item"><strong>[USER]</strong> <strong>User Management:</strong> Configure different test users with custom properties.</li>
+                                <li class="list-group-item"><strong>[LIVE]</strong> <strong>Real-time Monitoring:</strong> Track execution progress and results in real-time.</li>
+                                <li class="list-group-item"><strong>[EXPORT]</strong> <strong>Export Results:</strong> Export comprehensive test results to CSV, JSON, and other formats.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <a href="/docs" class="btn btn-primary btn-lg me-2">Open API Explorer</a>
-                    <a href="/api/status" class="btn btn-outline-secondary btn-lg">Check API Status</a>
+
+                    <!-- Quick Actions -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body">
+                                    <div class="display-4 text-primary mb-3">DASH</div>
+                                    <h5 class="card-title">Dashboard</h5>
+                                    <p class="card-text">View system overview, recent executions, and manage your testing environment.</p>
+                                    <a href="/Runner" class="btn btn-primary">Open Dashboard</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="card h-100 border-success">
+                                <div class="card-body">
+                                    <div class="display-4 text-success mb-3">START</div>
+                                    <h5 class="card-title">Quick Start</h5>
+                                    <p class="card-text">New to RESTRunner? Follow our step-by-step guide to get started.</p>
+                                    <a href="/Runner/QuickStart" class="btn btn-success">Get Started</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <div class="card h-100 border-info">
+                                <div class="card-body">
+                                    <div class="display-4 text-info mb-3">API</div>
+                                    <h5 class="card-title">API Explorer</h5>
+                                    <p class="card-text">Explore the sample API endpoints and test the integrated features.</p>
+                                    <a href="/docs" class="btn btn-info">Explore API</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Features -->
+                    <div class="alert alert-success">
+                        <h6><strong>Auto-Initialization:</strong></h6>
+                        <p class="mb-2">RESTRunner automatically creates sample data on startup:</p>
+                        <ul class="mb-0">
+                            <li><strong>Sample Collection:</strong> Pre-loaded Postman collection with common API endpoints</li>
+                            <li><strong>Initial Configuration:</strong> Ready-to-use test configuration with console app defaults (100 iterations, 10 concurrency)</li>
+                            <li><strong>Test Instances:</strong> Local and demo environments pre-configured for testing</li>
+                            <li><strong>Sample Users:</strong> Test users with different roles and properties</li>
+                        </ul>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <h6><strong>Pro Features:</strong></h6>
+                        <ul class="mb-0">
+                            <li><strong>Theme Switcher:</strong> Personalize your experience with different Bootswatch themes using the theme switcher in the navigation bar</li>
+                            <li><strong>Resilient HTTP:</strong> Built-in support for robust HTTP requests with retry patterns and telemetry</li>
+                            <li><strong>Configuration Management:</strong> Save, organize, and reuse test configurations with tagging and search capabilities</li>
+                            <li><strong>Status & Diagnostics:</strong> Monitor application health and performance with built-in diagnostic endpoints</li>
+                        </ul>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="text-center">
+                        <a href="/Runner" class="btn btn-primary btn-lg me-2">
+                            Open Dashboard
+                        </a>
+                        <a href="/Configuration/Create" class="btn btn-success btn-lg me-2">
+                            Create Configuration
+                        </a>
+                        <a href="/Collection/Upload" class="btn btn-info btn-lg me-2">
+                            Upload Collection
+                        </a>
+                        <a href="/Configuration/EditInitial" class="btn btn-warning btn-lg me-2">
+                            Edit Initial Config
+                        </a>
+                        <a href="/api/debug-configurations" class="btn btn-outline-info btn-lg me-2" target="_blank">
+                            Debug Configs
+                        </a>
+                        <a href="/api/initialization-status" class="btn btn-outline-warning btn-lg me-2" target="_blank">
+                            Check Init Status
+                        </a>
+                        <a href="/api/status" class="btn btn-outline-secondary btn-lg">
+                            Check API Status
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

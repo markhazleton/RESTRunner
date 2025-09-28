@@ -1,0 +1,348 @@
+@model RESTRunner.Web.Models.ViewModels.CollectionDetailsViewModel
+@{
+    ViewData["Title"] = "Collection Details";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Collection Details</h1>
+        <div>
+            <a href="/Collection/Edit/@Model.Metadata.Id" class="btn btn-primary">
+                Edit
+            </a>
+            <a href="/Collection" class="btn btn-outline-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Basic Information -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Collection Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Collection Name</h6>
+                            <p>@Model.Metadata.Name</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Status</h6>
+                            <p>
+                                @if (Model.Metadata.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>File Name</h6>
+                            <p><code>@Model.Metadata.FileName</code></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>File Size</h6>
+                            <p>@((Model.Metadata.FileSize / 1024.0).ToString("F1")) KB</p>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Metadata.Description))
+                    {
+                        <div class="mb-3">
+                            <h6>Description</h6>
+                            <p>@Model.Metadata.Description</p>
+                        </div>
+                    }
+
+                    @if (Model.Metadata.Tags.Any())
+                    {
+                        <div class="mb-3">
+                            <h6>Tags</h6>
+                            <p>
+                                @foreach (var tag in Model.Metadata.Tags)
+                                {
+                                    <span class="badge bg-light text-dark me-1">@tag</span>
+                                }
+                            </p>
+                        </div>
+                    }
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6>Request Count</h6>
+                            <p><strong>@Model.Metadata.RequestCount</strong></p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Postman ID</h6>
+                            <p>
+                                @if (!string.IsNullOrEmpty(Model.Metadata.PostmanId))
+                                {
+                                    <code class="small">@Model.Metadata.PostmanId</code>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Not specified</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Schema Version</h6>
+                            <p>@(Model.Metadata.SchemaVersion ?? "Unknown")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collection Structure -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Collection Structure</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Structure.Requests.Any() || Model.Structure.Folders.Any())
+                    {
+                        <!-- Direct Requests -->
+                        @if (Model.Structure.Requests.Any())
+                        {
+                            <div class="mb-4">
+                                <h6>Root Level Requests (@Model.Structure.Requests.Count)</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Method</th>
+                                                <th>URL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var request in Model.Structure.Requests)
+                                            {
+                                                <tr>
+                                                    <td>@request.Name</td>
+                                                    <td>
+                                                        <span class="badge bg-@(request.Method.ToUpper() switch 
+                                                        {
+                                                            "GET" => "success",
+                                                            "POST" => "primary", 
+                                                            "PUT" => "warning",
+                                                            "DELETE" => "danger",
+                                                            _ => "secondary"
+                                                        })">
+                                                            @request.Method.ToUpper()
+                                                        </span>
+                                                    </td>
+                                                    <td><code class="small">@request.Url</code></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Folders -->
+                        @if (Model.Structure.Folders.Any())
+                        {
+                            <div class="mb-4">
+                                <h6>Folders (@Model.Structure.Folders.Count)</h6>
+                                @foreach (var folder in Model.Structure.Folders)
+                                {
+                                    <div class="card border-light mb-2">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">FOLDER: @folder.Name (@folder.Requests.Count requests)</h6>
+                                        </div>
+                                        @if (folder.Requests.Any())
+                                        {
+                                            <div class="card-body p-2">
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm mb-0">
+                                                        <tbody>
+                                                            @foreach (var request in folder.Requests)
+                                                            {
+                                                                <tr>
+                                                                    <td>@request.Name</td>
+                                                                    <td>
+                                                                        <span class="badge badge-sm bg-@(request.Method.ToUpper() switch 
+                                                                        {
+                                                                            "GET" => "success",
+                                                                            "POST" => "primary", 
+                                                                            "PUT" => "warning",
+                                                                            "DELETE" => "danger",
+                                                                            _ => "secondary"
+                                                                        })">
+                                                                            @request.Method.ToUpper()
+                                                                        </span>
+                                                                    </td>
+                                                                    <td><code class="small">@request.Url</code></td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <p class="text-muted">No collection structure available or unable to parse collection.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Environment Variables -->
+            @if (Model.Metadata.EnvironmentVariables.Any())
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Environment Variables (@Model.Metadata.EnvironmentVariables.Count)</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var variable in Model.Metadata.EnvironmentVariables)
+                            {
+                                <div class="col-md-4 mb-2">
+                                    <code>{{@variable}}</code>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="/Collection/View/@Model.Metadata.Id" class="btn btn-primary">
+                            View JSON
+                        </a>
+                        <a href="/Collection/Download/@Model.Metadata.Id" class="btn btn-success">
+                            Download
+                        </a>
+                        <a href="/Collection/Edit/@Model.Metadata.Id" class="btn btn-info">
+                            Edit Metadata
+                        </a>
+                        <a href="/Configuration/Create?collectionId=@Model.Metadata.Id" class="btn btn-outline-primary">
+                            Create Configuration
+                        </a>
+                        <a href="/Collection/Delete/@Model.Metadata.Id" class="btn btn-outline-danger">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metadata -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Metadata</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted">Uploaded</small>
+                        <div>@Model.Metadata.UploadedAt.ToString("MMM dd, yyyy 'at' HH:mm")</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Uploaded By</small>
+                        <div>@Model.Metadata.UploadedBy</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Collection ID</small>
+                        <div><code class="small">@Model.Metadata.Id</code></div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Metadata.ContentHash))
+                    {
+                        <div class="mb-3">
+                            <small class="text-muted">Content Hash</small>
+                            <div><code class="small">@Model.Metadata.ContentHash[..8]...</code></div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Statistics</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <div class="h4 text-primary">@Model.Metadata.RequestCount</div>
+                            <small class="text-muted">Total Requests</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="h4 text-success">@Model.Structure.Folders.Count</div>
+                            <small class="text-muted">Folders</small>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <div class="h5 text-info">@Model.Metadata.HttpMethods.Count</div>
+                            <small class="text-muted">HTTP Methods</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="h5 text-warning">@Model.Metadata.EnvironmentVariables.Count</div>
+                            <small class="text-muted">Variables</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Used By Configurations -->
+            @if (Model.UsedByConfigurations.Any())
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mb-0">Used By Configurations (@Model.UsedByConfigurations.Count)</h6>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var config in Model.UsedByConfigurations)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                <div>
+                                    <a href="/Configuration/Details/@config.Id" class="text-decoration-none">
+                                        <strong>@config.Name</strong>
+                                    </a>
+                                    <br><small class="text-muted">@config.TotalTestCount tests</small>
+                                </div>
+                                <div>
+                                    @if (config.IsActive)
+                                    {
+                                        <span class="badge bg-success badge-sm">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary badge-sm">Inactive</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
