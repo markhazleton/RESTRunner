@@ -55,7 +55,7 @@ public class ExecutionController : Controller
     /// <summary>
     /// Execution results detail page
     /// </summary>
-    [HttpGet]
+    [HttpGet("Results/{id}")]
     public async Task<IActionResult> Results(string id)
     {
         try
