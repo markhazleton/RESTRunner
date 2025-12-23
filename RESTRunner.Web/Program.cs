@@ -261,6 +261,7 @@ app.MapGet("/api/initialization-status", async (HttpContext context) =>
     }
 }).WithTags("System");
 
+
 // Add debug endpoint to list all configurations
 app.MapGet("/api/debug-configurations", async (HttpContext context) =>
 {
