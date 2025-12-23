@@ -484,20 +484,21 @@ public class RealExecutionService : IExecutionService
         }
     }
 
-    public async Task<TestExecution?> GetExecutionAsync(string executionId)
+    public Task<TestExecution?> GetExecutionAsync(string executionId)
     {
         _runningExecutions.TryGetValue(executionId, out var execution);
-        return execution;
+        return Task.FromResult(execution);
     }
 
-    public async Task<List<TestExecution>> GetRunningExecutionsAsync()
+    public Task<List<TestExecution>> GetRunningExecutionsAsync()
     {
-        return _runningExecutions.Values
+        var runningExecutions = _runningExecutions.Values
             .Where(e => e.Status == ExecutionStatus.Running || e.Status == ExecutionStatus.Pending)
             .ToList();
+        return Task.FromResult(runningExecutions);
     }
 
-    public async Task<bool> CancelExecutionAsync(string executionId, string cancelledBy = "System")
+    public Task<bool> CancelExecutionAsync(string executionId, string cancelledBy = "System")
     {
         if (_runningExecutions.TryGetValue(executionId, out var execution))
         {
@@ -505,13 +506,13 @@ public class RealExecutionService : IExecutionService
             {
                 execution.CancellationTokenSource?.Cancel();
                 _logger.LogInformation("Cancelled execution {ExecutionId} by {CancelledBy}", executionId, cancelledBy);
-                return true;
+                return Task.FromResult(true);
             }
         }
-        return false;
+        return Task.FromResult(false);
     }
 
-    public async Task<List<ExecutionHistory>> GetExecutionHistoryAsync(int pageSize = 50, int pageNumber = 1, string? configurationId = null)
+    public Task<List<ExecutionHistory>> GetExecutionHistoryAsync(int pageSize = 50, int pageNumber = 1, string? configurationId = null)
     {
         var query = _executionHistory.Values.AsEnumerable();
         
@@ -520,20 +521,22 @@ public class RealExecutionService : IExecutionService
             query = query.Where(e => e.ConfigurationId == configurationId);
         }
 
-        return query
+        var result = query
             .OrderByDescending(e => e.StartTime)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
+        
+        return Task.FromResult(result);
     }
 
-    public async Task<ExecutionHistory?> GetExecutionHistoryAsync(string executionId)
+    public Task<ExecutionHistory?> GetExecutionHistoryAsync(string executionId)
     {
         _executionHistory.TryGetValue(executionId, out var history);
-        return history;
+        return Task.FromResult(history);
     }
 
-    public async Task<bool> DeleteExecutionHistoryAsync(string executionId)
+    public Task<bool> DeleteExecutionHistoryAsync(string executionId)
     {
         if (_executionHistory.TryRemove(executionId, out var execution))
         {
@@ -556,20 +559,21 @@ public class RealExecutionService : IExecutionService
                 _logger.LogError(ex, "Failed to delete execution files for {ExecutionId}", executionId);
             }
             
-            return true;
+            return Task.FromResult(true);
         }
-        return false;
+        return Task.FromResult(false);
     }
 
-    public async Task<List<ExecutionHistory>> GetRecentExecutionsAsync(int count = 10)
+    public Task<List<ExecutionHistory>> GetRecentExecutionsAsync(int count = 10)
     {
-        return _executionHistory.Values
+        var recentExecutions = _executionHistory.Values
             .OrderByDescending(e => e.StartTime)
             .Take(count)
             .ToList();
+        return Task.FromResult(recentExecutions);
     }
 
-    public async Task<ExecutionStatistics> GetAggregatedStatisticsAsync(DateTime startDate, DateTime endDate, string? configurationId = null)
+    public Task<ExecutionStatistics> GetAggregatedStatisticsAsync(DateTime startDate, DateTime endDate, string? configurationId = null)
     {
         var executions = _executionHistory.Values.Where(e => 
             e.StartTime >= startDate && 
@@ -579,7 +583,7 @@ public class RealExecutionService : IExecutionService
 
         if (!executions.Any())
         {
-            return new ExecutionStatistics();
+            return Task.FromResult(new ExecutionStatistics());
         }
 
         var stats = new ExecutionStatistics
@@ -612,7 +616,7 @@ public class RealExecutionService : IExecutionService
         }
 
         stats.FinalizeStatistics();
-        return stats;
+        return Task.FromResult(stats);
     }
 
     public async Task<string?> ExportExecutionResultsAsync(string executionId, string format = "csv")

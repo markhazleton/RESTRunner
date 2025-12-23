@@ -18,10 +18,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "RESTRunner API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "RESTRunner API",
+        Version = "v1",
+        Description = "RESTRunner API for testing and benchmarking REST endpoints"
+    });
+
     // Group endpoints by tag (controller-like grouping for minimal APIs)
     c.TagActionsBy(api =>
     {
+        // Check if ActionDescriptor has tags
+        if (api.GroupName != null)
+            return new[] { api.GroupName };
+
         var path = api.RelativePath?.ToLower();
         if (path != null)
         {
@@ -29,11 +39,30 @@ builder.Services.AddSwaggerGen(c =>
                 return new[] { "Employee" };
             if (path.StartsWith("api/departments"))
                 return new[] { "Department" };
+            if (path.StartsWith("api/debug"))
+                return new[] { "Debug" };
+            if (path.StartsWith("api/initialization"))
+                return new[] { "System" };
+            if (path.StartsWith("api/status") || path.StartsWith("api/api-explorer"))
+                return new[] { "System" };
         }
         return new[] { "Other" };
     });
+
     c.DocInclusionPredicate((name, api) => true);
+
+    // Handle polymorphic types and circular references
+    c.UseAllOfToExtendReferenceSchemas();
+
+    // Custom schema IDs to avoid naming conflicts
+    c.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
+
+    // Add support for Newtonsoft.Json attributes in the SampleCRUD client
+    c.SupportNonNullableReferenceTypes();
 });
+
+// Add Newtonsoft.Json support for Swagger (must be called after AddSwaggerGen)
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
@@ -83,6 +112,7 @@ builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IConfigurationService, FileConfigurationService>();
 builder.Services.AddScoped<ICollectionService, FileCollectionService>();
 builder.Services.AddScoped<IExecutionService, RealExecutionService>(); // <-- Changed to RealExecutionService
+builder.Services.AddScoped<SampleCRUDService>(); // <-- Add SampleCRUDService registration
 
 // Add SignalR for real-time execution updates
 builder.Services.AddSignalR(); // <-- Added SignalR service
@@ -152,66 +182,86 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 // Employee Endpoints
-app.MapGet("/api/employees/count", async () =>
+app.MapGet("/api/employees/count", async (SampleCRUDService service) =>
 {
-    var service = new SampleCRUDService();
-    return await service.GetEmployeeCount();
-}).WithTags("Employee");
+    return Results.Ok(await service.GetEmployeeCount());
+})
+.WithTags("Employee")
+.WithName("GetEmployeeCount")
+.Produces<string>(StatusCodes.Status200OK);
 
-app.MapGet("/api/employees", async (int? pageNumber, int? pageSize) =>
+app.MapGet("/api/employees", async (SampleCRUDService service, int? pageNumber, int? pageSize) =>
 {
-    var service = new SampleCRUDService();
-    return await service.GetAllEmployees(pageNumber, pageSize);
-}).WithTags("Employee");
+    return Results.Ok(await service.GetAllEmployees(pageNumber, pageSize));
+})
+.WithTags("Employee")
+.WithName("GetAllEmployees")
+.Produces<ICollection<EmployeeDto>>(StatusCodes.Status200OK);
 
-app.MapGet("/api/employees/{id}", async (int id) =>
+app.MapGet("/api/employees/{id}", async (SampleCRUDService service, int id) =>
 {
-    var service = new SampleCRUDService();
-    return await service.GetEmployeeById(id);
-}).WithTags("Employee");
+    return Results.Ok(await service.GetEmployeeById(id));
+})
+.WithTags("Employee")
+.WithName("GetEmployeeById")
+.Produces<EmployeeDto>(StatusCodes.Status200OK);
 
-app.MapPost("/api/employees", async (EmployeeDto employee) =>
+app.MapPost("/api/employees", async (SampleCRUDService service, EmployeeDto employee) =>
 {
-    var service = new SampleCRUDService();
-    return await service.CreateEmployee(employee);
-}).WithTags("Employee");
+    return Results.Ok(await service.CreateEmployee(employee));
+})
+.WithTags("Employee")
+.WithName("CreateEmployee")
+.Produces<EmployeeDto>(StatusCodes.Status200OK);
 
-app.MapPut("/api/employees/{id}", async (int id, EmployeeDto employee) =>
+app.MapPut("/api/employees/{id}", async (SampleCRUDService service, int id, EmployeeDto employee) =>
 {
-    var service = new SampleCRUDService();
-    return await service.UpdateEmployee(id, employee);
-}).WithTags("Employee");
+    return Results.Ok(await service.UpdateEmployee(id, employee));
+})
+.WithTags("Employee")
+.WithName("UpdateEmployee")
+.Produces<EmployeeDto>(StatusCodes.Status200OK);
 
-app.MapDelete("/api/employees/{id}", async (int id) =>
+app.MapDelete("/api/employees/{id}", async (SampleCRUDService service, int id) =>
 {
-    var service = new SampleCRUDService();
-    return await service.DeleteEmployee(id);
-}).WithTags("Employee");
+    return Results.Ok(await service.DeleteEmployee(id));
+})
+.WithTags("Employee")
+.WithName("DeleteEmployee")
+.Produces<EmployeeDto>(StatusCodes.Status200OK);
 
 // Department Endpoints
-app.MapGet("/api/departments", async (bool? includeEmployees) =>
+app.MapGet("/api/departments", async (SampleCRUDService service, bool? includeEmployees) =>
 {
-    var service = new SampleCRUDService();
-    return await service.GetDepartments(includeEmployees);
-}).WithTags("Department");
+    return Results.Ok(await service.GetDepartments(includeEmployees));
+})
+.WithTags("Department")
+.WithName("GetDepartments")
+.Produces<ICollection<DepartmentDto>>(StatusCodes.Status200OK);
 
-app.MapGet("/api/departments/{id}", async (int id) =>
+app.MapGet("/api/departments/{id}", async (SampleCRUDService service, int id) =>
 {
-    var service = new SampleCRUDService();
-    return await service.GetDepartmentById(id);
-}).WithTags("Department");
+    return Results.Ok(await service.GetDepartmentById(id));
+})
+.WithTags("Department")
+.WithName("GetDepartmentById")
+.Produces<ICollection<DepartmentDto>>(StatusCodes.Status200OK);
 
-app.MapGet("/api/api-explorer", async () =>
+app.MapGet("/api/api-explorer", async (SampleCRUDService service) =>
 {
-    var service = new SampleCRUDService();
-    return await service.GetApiExplorer();
-});
+    return Results.Ok(await service.GetApiExplorer());
+})
+.WithTags("System")
+.WithName("GetApiExplorer")
+.Produces<ICollection<ApiExplorerModel>>(StatusCodes.Status200OK);
 
-app.MapGet("/api/status", async () =>
+app.MapGet("/api/status", async (SampleCRUDService service) =>
 {
-    var service = new SampleCRUDService();
-    return await service.GetStatus();
-});
+    return Results.Ok(await service.GetStatus());
+})
+.WithTags("System")
+.WithName("GetStatus")
+.Produces<ApplicationStatus>(StatusCodes.Status200OK);
 
 // Add initialization status endpoint
 app.MapGet("/api/initialization-status", async (HttpContext context) =>

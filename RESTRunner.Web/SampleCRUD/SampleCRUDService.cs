@@ -6,6 +6,14 @@ public class SampleCRUDService
     private readonly SampleCRUDClient _crudClient;
     private const string ApiVersion = "1";
 
+    public SampleCRUDService(IHttpClientFactory httpClientFactory)
+    {
+        _client = httpClientFactory.CreateClient();
+        _client.BaseAddress = new Uri("https://samplecrud.markhazleton.com/");
+        _crudClient = new SampleCRUDClient(_client);
+    }
+
+    // Keep parameterless constructor for backward compatibility
     public SampleCRUDService()
     {
         _client = new HttpClient
