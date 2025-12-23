@@ -1,17 +1,16 @@
-using Microsoft.OpenApi.Models; // Add for Swagger
 using Microsoft.AspNetCore.Http.Features; // Add for FormOptions
-using Microsoft.AspNetCore.Server.IIS; // Add for IISServerOptions
 using Microsoft.AspNetCore.Server.Kestrel.Core; // Add for KestrelServerOptions
-using System.Text.Json; // Add for JSON serialization
+using Microsoft.OpenApi.Models; // Add for Swagger
+using RESTRunner.Domain.Interfaces;
+using RESTRunner.Domain.Models;
+using RESTRunner.Services.HttpClientRunner;
 using RESTRunner.Web.SampleCRUD;
+using RESTRunner.Web.Services; // Add for our new services
 using WebSpark.Bootswatch; // Add for Bootswatch
+using WebSpark.HttpClientUtility; // Add for HttpClientUtility
 using WebSpark.HttpClientUtility.ClientService;
 using WebSpark.HttpClientUtility.RequestResult; // Add for HttpRequestResultService
 using WebSpark.HttpClientUtility.StringConverter;
-using RESTRunner.Web.Services; // Add for our new services
-using RESTRunner.Domain.Interfaces;
-using RESTRunner.Services.HttpClientRunner;
-using RESTRunner.Domain.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +58,10 @@ builder.Services.Configure<KestrelServerOptions>(options =>
     options.Limits.MaxRequestBodySize = 10 * 1024 * 1024; // 10MB
 });
 
+// Register HttpClientUtility services BEFORE Bootswatch (required dependency)
+builder.Services.AddHttpClientUtility();
+
+// Register Bootswatch theme switcher (depends on HttpClientUtility)
 builder.Services.AddBootswatchThemeSwitcher();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IStringConverter, SystemJsonStringConverter>();
@@ -79,35 +82,38 @@ builder.Services.AddScoped<IHttpRequestResultService>(provider =>
 builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IConfigurationService, FileConfigurationService>();
 builder.Services.AddScoped<ICollectionService, FileCollectionService>();
-builder.Services.AddScoped<IExecutionService, SimpleExecutionService>();
+builder.Services.AddScoped<IExecutionService, RealExecutionService>(); // <-- Changed to RealExecutionService
+
+// Add SignalR for real-time execution updates
+builder.Services.AddSignalR(); // <-- Added SignalR service
 
 // Register CompareRunner as a factory that creates a basic initialized instance
 // For web usage, we'll create configurations dynamically rather than using static initialization
 builder.Services.AddScoped<CompareRunner>(serviceProvider =>
 {
     var runner = new CompareRunner();
-    
+
     // Initialize with basic default configuration
     runner.Instances = new List<CompareInstance>
     {
         new() { Name = "Local", BaseUrl = "https://localhost:7001/" },
         new() { Name = "Demo", BaseUrl = "https://samplecrud.markhazleton.com/" }
     };
-    
+
     runner.Requests = new List<CompareRequest>
     {
         new() { Path = "api/status", RequestMethod = HttpVerb.GET, RequiresClientToken = false }
     };
-    
+
     runner.Users = new List<CompareUser>
     {
-        new() 
-        { 
+        new()
+        {
             UserName = "default",
             Password = "password"
         }
     };
-    
+
     return runner;
 });
 
@@ -121,7 +127,7 @@ using (var scope = app.Services.CreateScope())
 {
     var fileStorage = scope.ServiceProvider.GetRequiredService<IFileStorageService>();
     await fileStorage.InitializeAsync();
-    
+
     // Initialize sample data
     await InitializeSampleDataAsync(scope.ServiceProvider);
 }
@@ -215,13 +221,13 @@ app.MapGet("/api/initialization-status", async (HttpContext context) =>
     {
         var configurationService = serviceProvider.GetRequiredService<IConfigurationService>();
         var collectionService = serviceProvider.GetRequiredService<ICollectionService>();
-        
+
         var configurations = await configurationService.GetAllAsync();
         var collections = await collectionService.GetAllAsync();
-        
+
         var initialConfig = configurations.FirstOrDefault(c => c.Name == "Initial RESTRunner Configuration");
         var sampleCollection = collections.FirstOrDefault(c => c.Name == "Sample RESTRunner Test Collection");
-        
+
         return Results.Ok(new
         {
             timestamp = DateTime.UtcNow,
@@ -270,7 +276,7 @@ app.MapGet("/api/debug-configurations", async (HttpContext context) =>
     {
         var configurationService = serviceProvider.GetRequiredService<IConfigurationService>();
         var configurations = await configurationService.GetAllAsync();
-        
+
         return Results.Ok(new
         {
             timestamp = DateTime.UtcNow,
@@ -301,6 +307,9 @@ app.MapGet("/api/debug-configurations", async (HttpContext context) =>
     }
 }).WithTags("Debug");
 
+// Map SignalR hub for real-time execution updates
+app.MapHub<RESTRunner.Web.Hubs.ExecutionHub>("/hubs/execution");
+
 app.Run();
 
 /// <summary>
@@ -310,19 +319,19 @@ app.Run();
 static async Task InitializeSampleDataAsync(IServiceProvider serviceProvider)
 {
     var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
-    
+
     try
     {
         var configurationService = serviceProvider.GetRequiredService<IConfigurationService>();
-        
+
         // Check if initial configuration exists
         var existingConfigurations = await configurationService.GetAllAsync();
         var initialConfig = existingConfigurations.FirstOrDefault(c => c.Name == "Initial RESTRunner Configuration");
-        
+
         if (initialConfig == null)
         {
             logger.LogInformation("Creating initial configuration based on console RESTRunner defaults...");
-            
+
             // Create initial configuration based on console RESTRunner defaults
             var configuration = new RESTRunner.Web.Models.TestConfiguration
             {
@@ -341,12 +350,12 @@ static async Task InitializeSampleDataAsync(IServiceProvider serviceProvider)
                         new() { Name = "Local", BaseUrl = "https://localhost:44315/" },
                         new() { Name = "Demo", BaseUrl = "https://samplecrud.markhazleton.com/" }
                     },
-                    
+
                     // Set up users (matching console app pattern)
                     Users = new List<CompareUser>
                     {
-                        new() 
-                        { 
+                        new()
+                        {
                             UserName = "testuser",
                             Password = "password",
                             Properties = new Dictionary<string, string>
@@ -356,8 +365,8 @@ static async Task InitializeSampleDataAsync(IServiceProvider serviceProvider)
                                 { "department", "QA" }
                             }
                         },
-                        new() 
-                        { 
+                        new()
+                        {
                             UserName = "admin",
                             Password = "admin123",
                             Properties = new Dictionary<string, string>
@@ -368,53 +377,53 @@ static async Task InitializeSampleDataAsync(IServiceProvider serviceProvider)
                             }
                         }
                     },
-                    
+
                     // Set up requests based on available API endpoints
                     Requests = new List<CompareRequest>
                     {
-                        new() 
-                        { 
-                            Path = "api/status", 
-                            RequestMethod = HttpVerb.GET, 
+                        new()
+                        {
+                            Path = "api/status",
+                            RequestMethod = HttpVerb.GET,
                             RequiresClientToken = false
                         },
-                        new() 
-                        { 
-                            Path = "api/employees", 
-                            RequestMethod = HttpVerb.GET, 
+                        new()
+                        {
+                            Path = "api/employees",
+                            RequestMethod = HttpVerb.GET,
                             RequiresClientToken = false
                         },
-                        new() 
-                        { 
-                            Path = "api/employees/1", 
-                            RequestMethod = HttpVerb.GET, 
+                        new()
+                        {
+                            Path = "api/employees/1",
+                            RequestMethod = HttpVerb.GET,
                             RequiresClientToken = false
                         },
-                        new() 
-                        { 
-                            Path = "api/employees/count", 
-                            RequestMethod = HttpVerb.GET, 
+                        new()
+                        {
+                            Path = "api/employees/count",
+                            RequestMethod = HttpVerb.GET,
                             RequiresClientToken = false
                         },
-                        new() 
-                        { 
-                            Path = "api/departments", 
-                            RequestMethod = HttpVerb.GET, 
+                        new()
+                        {
+                            Path = "api/departments",
+                            RequestMethod = HttpVerb.GET,
                             RequiresClientToken = false
                         }
                     }
                 }
             };
-            
+
             await configurationService.CreateAsync(configuration);
-            logger.LogInformation("Initial configuration created with ID: {ConfigurationId}, Total Tests: {TotalTests}", 
+            logger.LogInformation("Initial configuration created with ID: {ConfigurationId}, Total Tests: {TotalTests}",
                 configuration.Id, configuration.GetTotalTestCount());
         }
         else
         {
             logger.LogInformation("Initial configuration already exists with ID: {ConfigurationId}", initialConfig.Id);
         }
-        
+
         logger.LogInformation("Sample data initialization completed successfully");
     }
     catch (Exception ex)

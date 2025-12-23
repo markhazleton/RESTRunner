@@ -1,0 +1,348 @@
+@model RESTRunner.Web.Models.ExecutionHistory
+@{
+    ViewData["Title"] = "Execution Results";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Execution Results</h1>
+        <div>
+            @if (!string.IsNullOrEmpty(Model.ResultsFilePath))
+            {
+                <a href="/api/execution/@Model.Id/download" class="btn btn-success">
+                    ?? Download CSV
+                </a>
+            }
+            <a href="/Execution" class="btn btn-outline-secondary">Back to History</a>
+        </div>
+    </div>
+
+    <!-- Execution Summary -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Execution Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Configuration</h6>
+                            <p>
+                                <strong>@Model.ConfigurationName</strong><br>
+                                <small class="text-muted">ID: @Model.ConfigurationId</small>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Status</h6>
+                            <p>
+                                @switch (Model.Status)
+                                {
+                                    case ExecutionStatus.Completed:
+                                        <span class="badge bg-success fs-6">? Completed</span>
+                                        break;
+                                    case ExecutionStatus.Failed:
+                                        <span class="badge bg-danger fs-6">? Failed</span>
+                                        break;
+                                    case ExecutionStatus.Cancelled:
+                                        <span class="badge bg-warning fs-6">?? Cancelled</span>
+                                        break;
+                                    default:
+                                        <span class="badge bg-secondary fs-6">@Model.Status</span>
+                                        break;
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <h6>Start Time</h6>
+                            <p>@Model.StartTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>End Time</h6>
+                            <p>
+                                @if (Model.EndTime.HasValue)
+                                {
+                                    @Model.EndTime.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Duration</h6>
+                            <p>
+                                @if (Model.Duration.HasValue)
+                                {
+                                    var duration = Model.Duration.Value;
+                                    if (duration.TotalHours >= 1)
+                                    {
+                                        @duration.ToString(@"hh\:mm\:ss")
+                                    }
+                                    else if (duration.TotalMinutes >= 1)
+                                    {
+                                        @duration.ToString(@"mm\:ss")
+                                    }
+                                    else
+                                    {
+                                        @($"{duration.TotalSeconds:F1}s")
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h6>Executed By</h6>
+                            <p>@Model.ExecutedBy</p>
+                        </div>
+                        @if (Model.Tags.Any())
+                        {
+                            <div class="col-md-6">
+                                <h6>Tags</h6>
+                                <p>
+                                    @foreach (var tag in Model.Tags)
+                                    {
+                                        <span class="badge bg-secondary me-1">@tag</span>
+                                    }
+                                </p>
+                            </div>
+                        }
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger mt-3" role="alert">
+                            <h6>Error</h6>
+                            <p class="mb-0">@Model.ErrorMessage</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats Card -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Stats</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Statistics != null)
+                    {
+                        <div class="text-center mb-3">
+                            <div class="h2 text-primary">@Model.Statistics.TotalRequests</div>
+                            <small class="text-muted">Total Requests</small>
+                        </div>
+                        <hr>
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="h3 text-success">@Model.Statistics.SuccessfulRequests</div>
+                                <small class="text-muted">Successful</small>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="h3 text-danger">@Model.Statistics.FailedRequests</div>
+                                <small class="text-muted">Failed</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <div class="h3">@Model.Statistics.SuccessRate.ToString("F1")%</div>
+                            <small class="text-muted">Success Rate</small>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center text-muted">No statistics available</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Statistics != null)
+    {
+        <!-- Performance Metrics -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Performance Metrics</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.AverageResponseTime.ToString("F1")</div>
+                        <small class="text-muted">Average (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.MinResponseTime</div>
+                        <small class="text-muted">Min (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.MaxResponseTime</div>
+                        <small class="text-muted">Max (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.GetResponseTimePercentile(50)</div>
+                        <small class="text-muted">P50 (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.GetResponseTimePercentile(95)</div>
+                        <small class="text-muted">P95 (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.GetResponseTimePercentile(99)</div>
+                        <small class="text-muted">P99 (ms)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Requests by HTTP Method -->
+        @if (Model.Statistics.RequestsByMethod.Any())
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Requests by HTTP Method</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var method in Model.Statistics.RequestsByMethod.OrderByDescending(x => x.Value))
+                                {
+                                    var percentage = (method.Value / (double)Model.Statistics.TotalRequests) * 100;
+                                    <tr>
+                                        <td><span class="badge bg-info">@method.Key</span></td>
+                                        <td>@method.Value</td>
+                                        <td>
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar" role="progressbar" 
+                                                     style="width: @percentage.ToString("F1")%" 
+                                                     aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+                                                    @percentage.ToString("F1")%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Requests by Status Code -->
+        @if (Model.Statistics.RequestsByStatusCode.Any())
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Requests by Status Code</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Status Code</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var status in Model.Statistics.RequestsByStatusCode.OrderBy(x => x.Key))
+                                {
+                                    var percentage = (status.Value / (double)Model.Statistics.TotalRequests) * 100;
+                                    var badgeClass = status.Key.StartsWith("2") ? "bg-success" : 
+                                                    status.Key.StartsWith("4") ? "bg-warning" : 
+                                                    status.Key.StartsWith("5") ? "bg-danger" : "bg-secondary";
+                                    <tr>
+                                        <td><span class="badge @badgeClass">@status.Key</span></td>
+                                        <td>@status.Value</td>
+                                        <td>
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar @(badgeClass.Replace("bg-", "bg-opacity-75 bg-"))" 
+                                                     role="progressbar" 
+                                                     style="width: @percentage.ToString("F1")%" 
+                                                     aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+                                                    @percentage.ToString("F1")%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Requests by Instance -->
+        @if (Model.Statistics.RequestsByInstance.Any())
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Requests by Instance</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Instance</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var instance in Model.Statistics.RequestsByInstance.OrderByDescending(x => x.Value))
+                                {
+                                    var percentage = (instance.Value / (double)Model.Statistics.TotalRequests) * 100;
+                                    <tr>
+                                        <td>@instance.Key</td>
+                                        <td>@instance.Value</td>
+                                        <td>
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-primary" role="progressbar" 
+                                                     style="width: @percentage.ToString("F1")%" 
+                                                     aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+                                                    @percentage.ToString("F1")%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <h5 class="text-muted">No statistics available for this execution</h5>
+            </div>
+        </div>
+    }
+</div>

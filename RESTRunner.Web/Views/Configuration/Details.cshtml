@@ -317,11 +317,83 @@
 </div>
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@latest/dist/browser/signalr.min.js"></script>
     <script>
+        let connection = null;
+        let currentExecutionId = null;
+
+        // Initialize SignalR connection
+        async function initializeSignalR() {
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("/hubs/execution")
+                .withAutomaticReconnect()
+                .build();
+
+            connection.on("ProgressUpdate", function (execution) {
+                updateProgressUI(execution);
+            });
+
+            connection.on("ExecutionCompleted", function (history) {
+                showCompletionMessage(history);
+                setTimeout(() => {
+                    window.location.href = `/Execution/Results/${history.id}`;
+                }, 2000);
+            });
+
+            connection.on("ExecutionFailed", function (data) {
+                showErrorMessage(data.errorMessage);
+            });
+
+            connection.on("ExecutionCancelled", function (data) {
+                showWarningMessage("Execution was cancelled");
+            });
+
+            try {
+                await connection.start();
+                console.log("SignalR connected");
+            } catch (err) {
+                console.error("SignalR connection error:", err);
+            }
+        }
+
         // Run configuration
-        document.getElementById('runConfiguration').addEventListener('click', function() {
-            // In Phase 3, this would actually start execution
-            alert('Execution feature coming in Phase 3! This will start running the configuration.');
+        document.getElementById('runConfiguration').addEventListener('click', async function() {
+            const configId = '@Model.Id';
+            
+            try {
+                // Start execution
+                const response = await fetch('/api/execution/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        configurationId: configId,
+                        executedBy: 'Web User'
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    showErrorMessage(error.detail || 'Failed to start execution');
+                    return;
+                }
+
+                const execution = await response.json();
+                currentExecutionId = execution.id;
+
+                // Join execution group in SignalR
+                if (connection) {
+                    await connection.invoke("JoinExecution", currentExecutionId);
+                }
+
+                // Show progress modal
+                showProgressModal(execution);
+
+            } catch (error) {
+                console.error('Error starting execution:', error);
+                showErrorMessage('Failed to start execution: ' + error.message);
+            }
         });
 
         // Duplicate configuration
@@ -330,6 +402,126 @@
                 // In a real implementation, this would duplicate the config
                 alert('Duplicate feature coming soon! This will create a copy with a new name.');
             }
+        });
+
+        function showProgressModal(execution) {
+            const modalHtml = `
+                <div class="modal fade" id="executionProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Execution in Progress</h5>
+                            </div>
+                            <div class="modal-body">
+                                <h6 id="currentPhase">${execution.currentPhase}</h6>
+                                <div class="progress mb-3" style="height: 30px;">
+                                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                         role="progressbar" style="width: 0%">0%</div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-3">
+                                        <div class="h4" id="completedRequests">0</div>
+                                        <small class="text-muted">Completed</small>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="h4 text-success" id="successfulRequests">0</div>
+                                        <small class="text-muted">Successful</small>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="h4 text-danger" id="failedRequests">0</div>
+                                        <small class="text-muted">Failed</small>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="h4" id="avgResponseTime">0</div>
+                                        <small class="text-muted">Avg (ms)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" onclick="cancelExecution()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('executionProgressModal'));
+            modal.show();
+        }
+
+        function updateProgressUI(execution) {
+            document.getElementById('currentPhase').textContent = execution.currentPhase;
+            document.getElementById('progressBar').style.width = execution.progressPercentage + '%';
+            document.getElementById('progressBar').textContent = Math.round(execution.progressPercentage) + '%';
+            document.getElementById('completedRequests').textContent = execution.completedRequests;
+            document.getElementById('successfulRequests').textContent = execution.successfulRequests;
+            document.getElementById('failedRequests').textContent = execution.failedRequests;
+            document.getElementById('avgResponseTime').textContent = Math.round(execution.currentAverageResponseTime);
+        }
+
+        async function cancelExecution() {
+            if (!currentExecutionId) return;
+
+            try {
+                const response = await fetch(`/api/execution/${currentExecutionId}/cancel`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cancelledBy: 'Web User'
+                    })
+                });
+
+                if (response.ok) {
+                    showWarningMessage('Execution cancelled');
+                }
+            } catch (error) {
+                console.error('Error cancelling execution:', error);
+            }
+        }
+
+        function showCompletionMessage(history) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('executionProgressModal'));
+            if (modal) modal.hide();
+            
+            showSuccessMessage(`Execution completed! ${history.statistics.successfulRequests} successful, ${history.statistics.failedRequests} failed`);
+        }
+
+        function showSuccessMessage(message) {
+            showToast(message, 'success');
+        }
+
+        function showErrorMessage(message) {
+            showToast(message, 'danger');
+        }
+
+        function showWarningMessage(message) {
+            showToast(message, 'warning');
+        }
+
+        function showToast(message, type) {
+            const toastHtml = `
+                <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                    <div class="toast show bg-${type} text-white" role="alert">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', toastHtml);
+            
+            setTimeout(() => {
+                const toasts = document.querySelectorAll('.toast');
+                toasts.forEach(t => t.remove());
+            }, 3000);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSignalR();
         });
     </script>
 }

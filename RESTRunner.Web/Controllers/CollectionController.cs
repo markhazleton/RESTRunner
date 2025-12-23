@@ -121,39 +121,43 @@ namespace RESTRunner.Web.Controllers
             try
             {
                 // Validate file existence and basic properties
-                if (viewModel.CollectionFile == null)
+                var collectionFile = viewModel.CollectionFile;
+                if (collectionFile == null)
                 {
                     _logger.LogWarning("No file provided in upload request");
                     ModelState.AddModelError("CollectionFile", "Please select a file to upload");
                     return View(viewModel);
                 }
 
-                if (viewModel.CollectionFile.Length == 0)
+                // Now we can safely access collectionFile properties
+                var fileName = collectionFile.FileName;
+
+                if (collectionFile.Length == 0)
                 {
                     _logger.LogWarning("Empty file provided in upload request");
                     ModelState.AddModelError("CollectionFile", "The selected file is empty");
                     return View(viewModel);
                 }
 
-                if (viewModel.CollectionFile.Length > 10 * 1024 * 1024) // 10MB
+                if (collectionFile.Length > 10 * 1024 * 1024) // 10MB
                 {
-                    _logger.LogWarning("File too large: {Size} bytes", viewModel.CollectionFile.Length);
+                    _logger.LogWarning("File too large: {Size} bytes", collectionFile.Length);
                     ModelState.AddModelError("CollectionFile", "File size cannot exceed 10MB");
                     return View(viewModel);
                 }
 
-                if (!viewModel.CollectionFile.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                if (!collectionFile.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
                 {
-                    _logger.LogWarning("Invalid file extension: {FileName}", viewModel.CollectionFile.FileName);
+                    _logger.LogWarning("Invalid file extension: {FileName}", collectionFile.FileName);
                     ModelState.AddModelError("CollectionFile", "Only JSON files are allowed");
                     return View(viewModel);
                 }
 
                 _logger.LogInformation("File validation passed. File: {FileName}, Size: {Size} bytes", 
-                    viewModel.CollectionFile.FileName, viewModel.CollectionFile.Length);
+                    collectionFile.FileName, collectionFile.Length);
 
                 // Validate collection content
-                var validation = await _collectionService.ValidateAsync(viewModel.CollectionFile);
+                var validation = await _collectionService.ValidateAsync(collectionFile);
                 if (!validation.IsValid)
                 {
                     _logger.LogWarning("Collection validation failed. Errors: {Errors}", 
@@ -175,18 +179,18 @@ namespace RESTRunner.Web.Controllers
                 {
                     Name = viewModel.Name,
                     Description = viewModel.Description,
-                    FileName = viewModel.CollectionFile.FileName,
+                    FileName = collectionFile.FileName,
                     Tags = viewModel.GetTags(),
                     PostmanId = validation.PostmanId,
                     SchemaVersion = validation.SchemaVersion,
                     RequestCount = validation.RequestCount,
                     EnvironmentVariables = validation.EnvironmentVariables,
                     HttpMethods = validation.HttpMethods,
-                    FileSize = viewModel.CollectionFile.Length
+                    FileSize = collectionFile.Length
                 };
 
                 // Upload and save
-                var savedMetadata = await _collectionService.UploadAsync(viewModel.CollectionFile, metadata);
+                var savedMetadata = await _collectionService.UploadAsync(collectionFile, metadata);
                 
                 _logger.LogInformation("Collection uploaded successfully: {Name} ({Id})", 
                     savedMetadata.Name, savedMetadata.Id);
@@ -330,7 +334,7 @@ namespace RESTRunner.Web.Controllers
         /// <summary>
         /// View collection structure (JSON viewer)
         /// </summary>
-        public async Task<IActionResult> View(string id)
+        public async Task<IActionResult> ViewCollection(string id)
         {
             if (string.IsNullOrEmpty(id))
                 return NotFound();

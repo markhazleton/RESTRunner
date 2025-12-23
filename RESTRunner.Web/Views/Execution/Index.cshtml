@@ -1,0 +1,238 @@
+@model List<RESTRunner.Web.Models.ExecutionHistory>
+@{
+    ViewData["Title"] = "Execution History";
+    var pageNumber = ViewBag.PageNumber as int? ?? 1;
+    var pageSize = ViewBag.PageSize as int? ?? 50;
+    var configurationId = ViewBag.ConfigurationId as string;
+    var configurations = ViewBag.Configurations as List<RESTRunner.Web.Models.TestConfiguration> ?? new();
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Execution History</h1>
+        <a href="/Runner" class="btn btn-outline-secondary">Back to Dashboard</a>
+    </div>
+
+    <!-- Filters -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-4">
+                    <label for="configurationId" class="form-label">Filter by Configuration</label>
+                    <select name="configurationId" id="configurationId" class="form-select">
+                        <option value="">All Configurations</option>
+                        @foreach (var config in configurations)
+                        {
+                            <option value="@config.Id" @(config.Id == configurationId ? "selected" : "")>
+                                @config.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="pageSize" class="form-label">Page Size</label>
+                    <select name="pageSize" id="pageSize" class="form-select">
+                        <option value="25" @(pageSize == 25 ? "selected" : "")>25</option>
+                        <option value="50" @(pageSize == 50 ? "selected" : "")>50</option>
+                        <option value="100" @(pageSize == 100 ? "selected" : "")>100</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">&nbsp;</label>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                        <a href="/Execution" class="btn btn-outline-secondary">Clear</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Configuration</th>
+                                <th>Start Time</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                                <th>Success</th>
+                                <th>Failed</th>
+                                <th>Success Rate</th>
+                                <th>Avg Response</th>
+                                <th>Executed By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var execution in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@execution.ConfigurationName</strong><br>
+                                        @if (execution.Tags.Any())
+                                        {
+                                            foreach (var tag in execution.Tags.Take(2))
+                                            {
+                                                <span class="badge bg-secondary me-1">@tag</span>
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @execution.StartTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                                    </td>
+                                    <td>
+                                        @if (execution.Duration.HasValue)
+                                        {
+                                            var duration = execution.Duration.Value;
+                                            if (duration.TotalHours >= 1)
+                                            {
+                                                @duration.ToString(@"hh\:mm\:ss")
+                                            }
+                                            else if (duration.TotalMinutes >= 1)
+                                            {
+                                                @duration.ToString(@"mm\:ss")
+                                            }
+                                            else
+                                            {
+                                                @($"{duration.TotalSeconds:F1}s")
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @switch (execution.Status)
+                                        {
+                                            case ExecutionStatus.Completed:
+                                                <span class="badge bg-success">? Completed</span>
+                                                break;
+                                            case ExecutionStatus.Failed:
+                                                <span class="badge bg-danger">? Failed</span>
+                                                break;
+                                            case ExecutionStatus.Cancelled:
+                                                <span class="badge bg-warning">?? Cancelled</span>
+                                                break;
+                                            case ExecutionStatus.Running:
+                                                <span class="badge bg-primary">?? Running</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-secondary">@execution.Status</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>@(execution.Statistics?.TotalRequests ?? 0)</td>
+                                    <td class="text-success">@(execution.Statistics?.SuccessfulRequests ?? 0)</td>
+                                    <td class="text-danger">@(execution.Statistics?.FailedRequests ?? 0)</td>
+                                    <td>
+                                        @if (execution.Statistics != null)
+                                        {
+                                            var successRate = execution.Statistics.SuccessRate;
+                                            var badgeClass = successRate >= 95 ? "bg-success" : successRate >= 80 ? "bg-warning" : "bg-danger";
+                                            <span class="badge @badgeClass">@successRate.ToString("F1")%</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (execution.Statistics != null)
+                                        {
+                                            @($"{execution.Statistics.AverageResponseTime:F1} ms")
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>@execution.ExecutedBy</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="/Execution/Results/@execution.Id" class="btn btn-sm btn-primary" title="View Results">
+                                                ??
+                                            </a>
+                                            @if (!string.IsNullOrEmpty(execution.ResultsFilePath))
+                                            {
+                                                <a href="/api/execution/@execution.Id/download" class="btn btn-sm btn-success" title="Download CSV">
+                                                    ??
+                                                </a>
+                                            }
+                                            <form method="post" action="/Execution/Delete/@execution.Id" style="display:inline;" 
+                                                  onsubmit="return confirm('Delete this execution history?');">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                                    ???
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div>
+                        Showing @Model.Count executions
+                    </div>
+                    <nav>
+                        <ul class="pagination mb-0">
+                            @if (pageNumber > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?pageNumber=@(pageNumber - 1)&pageSize=@pageSize@(string.IsNullOrEmpty(configurationId) ? "" : $"&configurationId={configurationId}")">
+                                        Previous
+                                    </a>
+                                </li>
+                            }
+                            @if (Model.Count == pageSize)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?pageNumber=@(pageNumber + 1)&pageSize=@pageSize@(string.IsNullOrEmpty(configurationId) ? "" : $"&configurationId={configurationId}")">
+                                        Next
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <h5 class="text-muted">No execution history found</h5>
+                <p>Start running configurations to see execution history here.</p>
+                <a href="/Configuration" class="btn btn-primary">View Configurations</a>
+            </div>
+        </div>
+    }
+</div>
