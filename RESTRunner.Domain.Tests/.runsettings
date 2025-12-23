@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <!-- MSTest Configuration -->
+  <MSTest>
+    <!-- Enable test parallelization for better performance -->
+    <Parallelize>
+      <Workers>4</Workers>
+      <Scope>MethodLevel</Scope>
+    </Parallelize>
+  </MSTest>
+  
+  <!-- Test run configuration -->
+  <RunConfiguration>
+    <MaxCpuCount>0</MaxCpuCount>
+    <ResultsDirectory>.\TestResults</ResultsDirectory>
+    <TargetFramework>net10.0</TargetFramework>
+  </RunConfiguration>
+</RunSettings>

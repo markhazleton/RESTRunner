@@ -8,15 +8,14 @@ namespace RESTRunner.Domain.Tests.Outputs;
 [TestClass]
 public class CsvOutputTests
 {
-    private const string TestFilePath = "c:\\test\\UnitTestCsvOutput.csv"; // Update this path with a valid test file path.
-
     /// <summary>
     /// Tests that CsvOutput correctly writes data to a CSV file.
     /// </summary>
     [TestMethod]
     public void CsvOutput_WritesDataToCsvFile()
     {
-        // Arrange
+        // Arrange - Use unique file name to avoid conflicts with parallel tests
+        var testFilePath = $"c:\\test\\UnitTestCsvOutput_{Guid.NewGuid()}.csv";
         var testData = new CompareResult
         {
             Verb = "GET",
@@ -31,17 +30,28 @@ public class CsvOutputTests
             UserName = "testuser",
         };
 
-        // Act
-        using (var csvOutput = new CsvOutput(TestFilePath))
+        try
         {
-            csvOutput.WriteInfo(testData);
+            // Act
+            using (var csvOutput = new CsvOutput(testFilePath))
+            {
+                csvOutput.WriteInfo(testData);
+            }
+
+            // Assert
+            Assert.IsTrue(File.Exists(testFilePath), "CSV file was not created.");
+
+            var csvContent = File.ReadAllText(testFilePath);
+            StringAssert.Contains(csvContent, "GET,TestInstance", "CSV file does not contain expected data.");
         }
-
-        // Assert
-        Assert.IsTrue(File.Exists(TestFilePath), "CSV file was not created.");
-
-        var csvContent = File.ReadAllText(TestFilePath);
-        StringAssert.Contains(csvContent, "GET,TestInstance", "CSV file does not contain expected data.");
+        finally
+        {
+            // Cleanup
+            if (File.Exists(testFilePath))
+            {
+                File.Delete(testFilePath);
+            }
+        }
     }
 
     /// <summary>
@@ -50,7 +60,8 @@ public class CsvOutputTests
     [TestMethod]
     public void CsvOutput_DisposesCorrectly()
     {
-        // Arrange
+        // Arrange - Use unique file name to avoid conflicts with parallel tests
+        var testFilePath = $"c:\\test\\UnitTestCsvOutput_{Guid.NewGuid()}.csv";
         var testData = new CompareResult
         {
             Verb = "POST",
@@ -65,17 +76,25 @@ public class CsvOutputTests
             UserName = "testuser2",
         };
 
-        // Act
-        using (var csvOutput = new CsvOutput(TestFilePath))
+        try
         {
-            csvOutput.WriteInfo(testData);
+            // Act
+            using (var csvOutput = new CsvOutput(testFilePath))
+            {
+                csvOutput.WriteInfo(testData);
+                // Do some additional operations with csvOutput if needed.
+            } // The Dispose method should be called when exiting the using block.
 
-            // Do some additional operations with csvOutput if needed.
-
-
-        } // The Dispose method should be called when exiting the using block.
-
-        // Assert
-        Assert.IsTrue(File.Exists(TestFilePath));
+            // Assert
+            Assert.IsTrue(File.Exists(testFilePath));
+        }
+        finally
+        {
+            // Cleanup
+            if (File.Exists(testFilePath))
+            {
+                File.Delete(testFilePath);
+            }
+        }
     }
 }

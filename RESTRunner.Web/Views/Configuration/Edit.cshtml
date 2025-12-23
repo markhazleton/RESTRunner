@@ -25,11 +25,11 @@
         <summary>Click to show raw JSON data</summary>
         <div class="mt-2">
             <strong>Instances JSON:</strong>
-            <pre class="small">@Model.InstancesJson</pre>
+            <pre class="small">@(Model?.InstancesJson ?? "null")</pre>
             <strong>Users JSON:</strong>
-            <pre class="small">@Model.UsersJson</pre>
+            <pre class="small">@(Model?.UsersJson ?? "null")</pre>
             <strong>Requests JSON:</strong>
-            <pre class="small">@Model.RequestsJson</pre>
+            <pre class="small">@(Model?.RequestsJson ?? "null")</pre>
         </div>
     </details>
     <details>
