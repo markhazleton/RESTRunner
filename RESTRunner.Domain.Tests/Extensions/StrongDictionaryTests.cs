@@ -56,7 +56,7 @@ public class StrongDictionaryTests
         myTest.Add(2, "two");
         var myResult = myTest.GetJson();
         Assert.IsNotNull(myResult);
-        Assert.AreEqual(myResult, @"{""1"":""one"",""2"":""two""}");
+        Assert.AreEqual(@"{""1"":""one"",""2"":""two""}", myResult);
     }
     /// <summary>
     /// Defines the test method GetListTest.
@@ -69,7 +69,7 @@ public class StrongDictionaryTests
         myTest.Add("2", "two");
         var myResult = myTest.GetJson();
         Assert.IsNotNull(myResult);
-        Assert.AreEqual(myResult, @"{""1"":""one"",""2"":""two""}");
+        Assert.AreEqual(@"{""1"":""one"",""2"":""two""}", myResult);
     }
 
     /// <summary>
