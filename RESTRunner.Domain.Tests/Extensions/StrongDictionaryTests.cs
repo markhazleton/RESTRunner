@@ -15,7 +15,7 @@ public class StrongDictionaryTests
     {
         var myTest = new StrongDictionary<int, string>();
         myTest.Add(1, "test");
-        Assert.AreEqual(1, myTest.GetList().Count);
+        Assert.HasCount(1, myTest.GetList());
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class StrongDictionaryTests
         myTest.Add(2, "two");
         var myResult = myTest.GetJson();
         Assert.IsNotNull(myResult);
-        Assert.AreEqual(myResult, @"{""1"":""one"",""2"":""two""}");
+        Assert.AreEqual(@"{""1"":""one"",""2"":""two""}", myResult);
     }
     /// <summary>
     /// Defines the test method GetListTest.
@@ -69,7 +69,7 @@ public class StrongDictionaryTests
         myTest.Add("2", "two");
         var myResult = myTest.GetJson();
         Assert.IsNotNull(myResult);
-        Assert.AreEqual(myResult, @"{""1"":""one"",""2"":""two""}");
+        Assert.AreEqual(@"{""1"":""one"",""2"":""two""}", myResult);
     }
 
     /// <summary>
@@ -97,7 +97,7 @@ public class StrongDictionaryTests
     public void StrongDictionaryTest()
     {
         var myTest = new StrongDictionary<int, string>();
-        Assert.AreNotEqual(null, myTest);
+        Assert.IsNotNull(myTest);
     }
 
     /// <summary>
@@ -107,6 +107,6 @@ public class StrongDictionaryTests
     public void StrongDictionaryTest1()
     {
         var myTest = new StrongDictionary<int, string>();
-        Assert.AreNotEqual(null, myTest);
+        Assert.IsNotNull(myTest);
     }
 }

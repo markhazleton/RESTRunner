@@ -64,7 +64,10 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h2">Edit Configuration</h1>
         <div>
-            <a href="/Configuration/Details/@Model.Id" class="btn btn-outline-info">View Details</a>
+            @if (Model != null)
+            {
+                <a href="/Configuration/Details/@Model.Id" class="btn btn-outline-info">View Details</a>
+            }
             <a href="/Configuration" class="btn btn-outline-secondary">Back to List</a>
         </div>
     </div>
@@ -165,9 +168,9 @@
                             <label asp-for="InstancesJson" class="form-label">Test Instances</label>
                             <textarea asp-for="InstancesJson" class="form-control font-monospace" rows="8" id="instancesJson"></textarea>
                             <div class="form-text">JSON array of test instances (servers to test against)</div>
-                            @if (!string.IsNullOrEmpty(Model.InstancesJson))
+                            @if (!string.IsNullOrEmpty(Model?.InstancesJson))
                             {
-                                <div class="form-text"><small class="text-success">? @Model.InstancesJson.Split('\n').Length lines loaded</small></div>
+                                <div class="form-text"><small class="text-success">? @Model!.InstancesJson.Split('\n').Length lines loaded</small></div>
                             }
                             else
                             {
@@ -179,9 +182,9 @@
                             <label asp-for="UsersJson" class="form-label">Test Users</label>
                             <textarea asp-for="UsersJson" class="form-control font-monospace" rows="6" id="usersJson"></textarea>
                             <div class="form-text">JSON array of test users</div>
-                            @if (!string.IsNullOrEmpty(Model.UsersJson))
+                            @if (!string.IsNullOrEmpty(Model?.UsersJson))
                             {
-                                <div class="form-text"><small class="text-success">? @Model.UsersJson.Split('\n').Length lines loaded</small></div>
+                                <div class="form-text"><small class="text-success">? @Model!.UsersJson.Split('\n').Length lines loaded</small></div>
                             }
                             else
                             {
@@ -193,9 +196,9 @@
                             <label asp-for="RequestsJson" class="form-label">Test Requests</label>
                             <textarea asp-for="RequestsJson" class="form-control font-monospace" rows="8" id="requestsJson"></textarea>
                             <div class="form-text">JSON array of requests to execute</div>
-                            @if (!string.IsNullOrEmpty(Model.RequestsJson))
+                            @if (!string.IsNullOrEmpty(Model?.RequestsJson))
                             {
-                                <div class="form-text"><small class="text-success">? @Model.RequestsJson.Split('\n').Length lines loaded</small></div>
+                                <div class="form-text"><small class="text-success">? @Model!.RequestsJson.Split('\n').Length lines loaded</small></div>
                             }
                             else
                             {
@@ -214,13 +217,13 @@
                         <h6 class="mb-0">Postman Collection</h6>
                     </div>
                     <div class="card-body">
-                        @if (Model.AvailableCollections.Any())
+                        @if (Model?.AvailableCollections?.Any() == true)
                         {
                             <div class="mb-3">
                                 <label asp-for="CollectionId" class="form-label">Select Collection</label>
                                 <select asp-for="CollectionId" class="form-select">
                                     <option value="">-- None Selected --</option>
-                                    @foreach (var collection in Model.AvailableCollections)
+                                    @foreach (var collection in Model!.AvailableCollections)
                                     {
                                         <option value="@collection.Id">@collection.Name (@collection.RequestCount requests)</option>
                                     }
@@ -249,10 +252,13 @@
                             <button type="button" class="btn btn-outline-info" id="formatJson">
                                 Format JSON
                             </button>
-                            <a href="/Configuration/DebugEdit/@Model.Id" class="btn btn-outline-warning btn-sm" target="_blank">
-                                Debug Data
-                            </a>
-                            <a href="/Configuration/Details/@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+                            @if (Model != null)
+                            {
+                                <a href="/Configuration/DebugEdit/@Model.Id" class="btn btn-outline-warning btn-sm" target="_blank">
+                                    Debug Data
+                                </a>
+                            }
+                            <a href="@(Model != null ? $"/Configuration/Details/{Model.Id}" : "/Configuration")" class="btn btn-outline-secondary">Cancel</a>
                         </div>
                     </div>
                 </div>

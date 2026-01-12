@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http.Features; // Add for FormOptions
 using Microsoft.AspNetCore.Server.Kestrel.Core; // Add for KestrelServerOptions
-using Microsoft.OpenApi.Models; // Add for Swagger
+using Microsoft.OpenApi; // Add for Swagger
 using RESTRunner.Domain.Interfaces;
 using RESTRunner.Domain.Models;
 using RESTRunner.Services.HttpClientRunner;
