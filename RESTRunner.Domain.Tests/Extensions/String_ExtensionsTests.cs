@@ -52,7 +52,7 @@ public class String_ExtensionsTests
         var result = str.GetDeterministicHashCode();
 
         // Assert
-        Assert.AreEqual(result, -1);
+        Assert.AreEqual(-1, result);
     }
     /// <summary>
     /// 

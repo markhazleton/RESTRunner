@@ -108,6 +108,12 @@ namespace RESTRunner.Web.Controllers
         [RequestFormLimits(MultipartBodyLengthLimit = 10 * 1024 * 1024)]
         public async Task<IActionResult> Upload(CollectionUploadViewModel viewModel)
         {
+            if (viewModel == null)
+            {
+                _logger.LogWarning("Upload failed because no data was provided.");
+                return BadRequest();
+            }
+
             _logger.LogInformation("Upload attempt started for collection: {Name}", viewModel?.Name ?? "Unknown");
 
             // Check model state first
@@ -121,8 +127,7 @@ namespace RESTRunner.Web.Controllers
             try
             {
                 // Validate file existence and basic properties
-                var collectionFile = viewModel.CollectionFile;
-                if (collectionFile == null)
+                if (viewModel!.CollectionFile is not { } collectionFile)
                 {
                     _logger.LogWarning("No file provided in upload request");
                     ModelState.AddModelError("CollectionFile", "Please select a file to upload");
