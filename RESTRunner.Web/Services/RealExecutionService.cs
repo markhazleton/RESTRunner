@@ -15,7 +15,7 @@ namespace RESTRunner.Web.Services;
 /// </summary>
 public class RealExecutionService : IExecutionService
 {
-    private readonly IConfigurationService _configurationService;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IFileStorageService _fileStorageService;
     private readonly IHubContext<ExecutionHub> _hubContext;
@@ -25,14 +25,14 @@ public class RealExecutionService : IExecutionService
     private readonly ConcurrentDictionary<string, ExecutionHistory> _executionHistory = new();
 
     public RealExecutionService(
-        IConfigurationService configurationService,
+        IServiceScopeFactory scopeFactory,
         IHttpClientFactory httpClientFactory,
         IFileStorageService fileStorageService,
         IHubContext<ExecutionHub> hubContext,
         ILoggerFactory loggerFactory,
         ILogger<RealExecutionService> logger)
     {
-        _configurationService = configurationService;
+        _scopeFactory = scopeFactory;
         _httpClientFactory = httpClientFactory;
         _fileStorageService = fileStorageService;
         _hubContext = hubContext;
@@ -44,8 +44,14 @@ public class RealExecutionService : IExecutionService
     {
         try
         {
-            // Load configuration
-            var config = await _configurationService.GetByIdAsync(configurationId);
+            // Load configuration via a short-lived scope (service is singleton, config service is scoped)
+            TestConfiguration? config;
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var configService = scope.ServiceProvider.GetRequiredService<IConfigurationService>();
+                config = await configService.GetByIdAsync(configurationId);
+            }
+
             if (config == null)
             {
                 throw new InvalidOperationException($"Configuration {configurationId} not found");
@@ -284,7 +290,7 @@ public class RealExecutionService : IExecutionService
                     CompletedRequests = completedTests,
                     SuccessfulRequests = statistics.SuccessfulRequests,
                     FailedRequests = statistics.FailedRequests,
-                    AverageResponseTime = statistics.AverageResponseTime,
+                    AverageResponseTime = statistics.CurrentAverageResponseTime,
                     CurrentPhase = $"Iteration {iteration + 1}/{config.Iterations}"
                 });
 
@@ -324,7 +330,7 @@ public class RealExecutionService : IExecutionService
                                             CompletedRequests = completedTests,
                                             SuccessfulRequests = statistics.SuccessfulRequests,
                                             FailedRequests = statistics.FailedRequests,
-                                            AverageResponseTime = statistics.AverageResponseTime,
+                                            AverageResponseTime = statistics.CurrentAverageResponseTime,
                                             CurrentPhase = $"Iteration {iteration + 1}/{config.Iterations}"
                                         });
                                     }
@@ -355,7 +361,7 @@ public class RealExecutionService : IExecutionService
                 CompletedRequests = completedTests,
                 SuccessfulRequests = statistics.SuccessfulRequests,
                 FailedRequests = statistics.FailedRequests,
-                AverageResponseTime = statistics.AverageResponseTime,
+                AverageResponseTime = statistics.CurrentAverageResponseTime,
                 CurrentPhase = "Finalizing results..."
             });
         }
@@ -530,10 +536,34 @@ public class RealExecutionService : IExecutionService
         return Task.FromResult(result);
     }
 
-    public Task<ExecutionHistory?> GetExecutionHistoryAsync(string executionId)
+    public async Task<ExecutionHistory?> GetExecutionHistoryAsync(string executionId)
     {
-        _executionHistory.TryGetValue(executionId, out var history);
-        return Task.FromResult(history);
+        if (_executionHistory.TryGetValue(executionId, out var history))
+            return history;
+
+        // Fall back to the persisted history file (survives app restarts / scoped-lifetime gaps)
+        var historyFilePath = Path.Combine(
+            _fileStorageService.GetDirectoryPath("logs"),
+            $"history_{executionId}.json");
+
+        var content = await _fileStorageService.ReadFileAsync(historyFilePath);
+        if (content == null) return null;
+
+        try
+        {
+            history = System.Text.Json.JsonSerializer.Deserialize<ExecutionHistory>(
+                content,
+                new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+
+            if (history != null)
+                _executionHistory.TryAdd(executionId, history); // cache for subsequent calls
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to deserialize history file for execution {ExecutionId}", executionId);
+        }
+
+        return history;
     }
 
     public Task<bool> DeleteExecutionHistoryAsync(string executionId)

@@ -12,15 +12,18 @@ public class ExecutionController : Controller
 {
     private readonly IExecutionService _executionService;
     private readonly IConfigurationService _configurationService;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<ExecutionController> _logger;
 
     public ExecutionController(
         IExecutionService executionService,
         IConfigurationService configurationService,
+        IHttpClientFactory httpClientFactory,
         ILogger<ExecutionController> logger)
     {
         _executionService = executionService;
         _configurationService = configurationService;
+        _httpClientFactory = httpClientFactory;
         _logger = logger;
     }
 
@@ -400,6 +403,52 @@ public class ExecutionController : Controller
     }
 
     /// <summary>
+    /// Return parsed CSV rows for an execution, optionally filtered
+    /// </summary>
+    [HttpGet("/api/execution/{executionId}/results/rows")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(List<ExecutionResultRow>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<List<ExecutionResultRow>>> GetResultRows(
+        string executionId,
+        [FromQuery] string? statusCode = null,
+        [FromQuery] string? verb = null,
+        [FromQuery] string? instance = null,
+        [FromQuery] string? path = null)
+    {
+        var history = await _executionService.GetExecutionHistoryAsync(executionId);
+        if (history == null || string.IsNullOrEmpty(history.ResultsFilePath) || !System.IO.File.Exists(history.ResultsFilePath))
+        {
+            return NotFound(new ProblemDetails
+            {
+                Title = "Results Not Found",
+                Detail = $"CSV results for execution '{executionId}' not found",
+                Status = StatusCodes.Status404NotFound
+            });
+        }
+
+        var rows = new List<ExecutionResultRow>();
+        var lines = await System.IO.File.ReadAllLinesAsync(history.ResultsFilePath);
+
+        // Skip header (index 0), parse each data row
+        foreach (var line in lines.Skip(1))
+        {
+            if (string.IsNullOrWhiteSpace(line)) continue;
+            var row = ExecutionResultRow.ParseCsvLine(line);
+            if (row == null) continue;
+
+            if (statusCode != null && row.ResultCode != statusCode) continue;
+            if (verb      != null && !row.Verb.Equals(verb, StringComparison.OrdinalIgnoreCase)) continue;
+            if (instance  != null && !row.Instance.Equals(instance, StringComparison.OrdinalIgnoreCase)) continue;
+            if (path      != null && !row.Request.Contains(path, StringComparison.OrdinalIgnoreCase)) continue;
+
+            rows.Add(row);
+        }
+
+        return Ok(rows.OrderByDescending(r => r.Duration).ToList());
+    }
+
+    /// <summary>
     /// Export execution results
     /// </summary>
     /// <param name="executionId">Execution ID</param>
@@ -430,6 +479,89 @@ public class ExecutionController : Controller
             FilePath = filePath,
             FileName = Path.GetFileName(filePath)
         });
+    }
+
+    /// <summary>
+    /// Execute a single request immediately for quick testing
+    /// </summary>
+    [HttpPost("/api/execution/test-request")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(SingleRequestResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<SingleRequestResult>> TestSingleRequest([FromBody] SingleRequestTestRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.BaseUrl) || string.IsNullOrWhiteSpace(request.Path))
+        {
+            return BadRequest(new ProblemDetails
+            {
+                Title = "Invalid Request",
+                Detail = "BaseUrl and Path are required",
+                Status = StatusCodes.Status400BadRequest
+            });
+        }
+
+        using var client = _httpClientFactory.CreateClient();
+        client.Timeout = TimeSpan.FromSeconds(30);
+
+        if (!string.IsNullOrEmpty(request.BearerToken))
+            client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", request.BearerToken);
+
+        if (request.Headers != null)
+            foreach (var h in request.Headers)
+                client.DefaultRequestHeaders.TryAddWithoutValidation(h.Key, h.Value);
+
+        var baseUrl = request.BaseUrl.TrimEnd('/');
+        var path = (request.Path ?? string.Empty).TrimStart('/');
+        var requestUrl = string.IsNullOrEmpty(path) ? baseUrl : $"{baseUrl}/{path}";
+
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+        try
+        {
+            var uri = new Uri(requestUrl);
+            HttpResponseMessage response = request.Method?.ToUpperInvariant() switch
+            {
+                "GET"    => await client.GetAsync(uri),
+                "DELETE" => await client.DeleteAsync(uri),
+                "POST"   => await client.PostAsync(uri,   new StringContent(request.Body ?? "", System.Text.Encoding.UTF8, "application/json")),
+                "PUT"    => await client.PutAsync(uri,    new StringContent(request.Body ?? "", System.Text.Encoding.UTF8, "application/json")),
+                "PATCH"  => await client.PatchAsync(uri,  new StringContent(request.Body ?? "", System.Text.Encoding.UTF8, "application/json")),
+                _ => throw new ArgumentException($"Unsupported HTTP method: {request.Method}")
+            };
+
+            stopwatch.Stop();
+            var responseBody = await response.Content.ReadAsStringAsync();
+            var headers = response.Headers
+                .Concat(response.Content.Headers)
+                .ToDictionary(h => h.Key, h => string.Join(", ", h.Value));
+
+            return Ok(new SingleRequestResult
+            {
+                Success = response.IsSuccessStatusCode,
+                StatusCode = (int)response.StatusCode,
+                StatusText = response.ReasonPhrase ?? response.StatusCode.ToString(),
+                ResponseBody = responseBody,
+                ResponseHeaders = headers,
+                ResponseTimeMs = stopwatch.ElapsedMilliseconds,
+                RequestUrl = requestUrl
+            });
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+            _logger.LogWarning(ex, "Test request failed: {Url}", requestUrl);
+            return Ok(new SingleRequestResult
+            {
+                Success = false,
+                StatusCode = 0,
+                StatusText = "Connection Error",
+                ResponseBody = string.Empty,
+                ResponseHeaders = new Dictionary<string, string>(),
+                ResponseTimeMs = stopwatch.ElapsedMilliseconds,
+                RequestUrl = requestUrl,
+                ErrorMessage = ex.Message
+            });
+        }
     }
 }
 
@@ -484,4 +616,68 @@ public class ExportResult
     /// File name
     /// </summary>
     public string FileName { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// Request payload for testing a single endpoint
+/// </summary>
+public class SingleRequestTestRequest
+{
+    public string BaseUrl { get; set; } = string.Empty;
+    public string Path { get; set; } = string.Empty;
+    public string Method { get; set; } = "GET";
+    public string? Body { get; set; }
+    public string? BearerToken { get; set; }
+    public Dictionary<string, string>? Headers { get; set; }
+}
+
+/// <summary>
+/// Result of a single test request
+/// </summary>
+public class SingleRequestResult
+{
+    public bool Success { get; set; }
+    public int StatusCode { get; set; }
+    public string StatusText { get; set; } = string.Empty;
+    public string? ResponseBody { get; set; }
+    public Dictionary<string, string> ResponseHeaders { get; set; } = new();
+    public long ResponseTimeMs { get; set; }
+    public string RequestUrl { get; set; } = string.Empty;
+    public string? ErrorMessage { get; set; }
+}
+
+/// <summary>
+/// A single parsed row from the execution CSV results file
+/// CSV columns: Verb,Instance,LastRunDate,Duration,Request,ResultCode,SessionId,StatusDescription,Success,UserName,Content
+/// </summary>
+public class ExecutionResultRow
+{
+    public string Verb { get; set; } = string.Empty;
+    public string Instance { get; set; } = string.Empty;
+    public string LastRunDate { get; set; } = string.Empty;
+    public long Duration { get; set; }
+    public string Request { get; set; } = string.Empty;
+    public string ResultCode { get; set; } = string.Empty;
+    public string StatusDescription { get; set; } = string.Empty;
+    public bool Success { get; set; }
+    public string UserName { get; set; } = string.Empty;
+
+    public static ExecutionResultRow? ParseCsvLine(string line)
+    {
+        // Simple split — values don't contain commas in practice
+        var parts = line.Split(',');
+        if (parts.Length < 10) return null;
+        return new ExecutionResultRow
+        {
+            Verb              = parts[0].Trim(),
+            Instance          = parts[1].Trim(),
+            LastRunDate       = parts[2].Trim(),
+            Duration          = long.TryParse(parts[3].Trim(), out var d) ? d : 0,
+            Request           = parts[4].Trim(),
+            ResultCode        = parts[5].Trim(),
+            StatusDescription = parts[7].Trim(),
+            Success           = bool.TryParse(parts[8].Trim(), out var s) && s,
+            UserName          = parts[9].Trim()
+        };
+    }
 }

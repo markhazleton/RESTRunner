@@ -178,6 +178,7 @@
                                             <th>Path</th>
                                             <th>Auth Required</th>
                                             <th>Body Template</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -185,10 +186,10 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    <span class="badge bg-@(request.RequestMethod.ToString() switch 
+                                                    <span class="badge bg-@(request.RequestMethod.ToString() switch
                                                     {
                                                         "GET" => "success",
-                                                        "POST" => "primary", 
+                                                        "POST" => "primary",
                                                         "PUT" => "warning",
                                                         "DELETE" => "danger",
                                                         _ => "secondary"
@@ -216,6 +217,16 @@
                                                     {
                                                         <span class="text-muted">-</span>
                                                     }
+                                                </td>
+                                                <td>
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-info test-request-btn"
+                                                            data-method="@request.RequestMethod"
+                                                            data-path="@request.Path"
+                                                            data-body="@request.BodyTemplate"
+                                                            data-requires-token="@request.RequiresClientToken.ToString().ToLower()">
+                                                        Test
+                                                    </button>
                                                 </td>
                                             </tr>
                                         }
@@ -311,6 +322,94 @@
                         <small class="text-muted">Total test combinations<br>(@Model.Iterations iterations)</small>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Test Request Modal -->
+<div class="modal fade" id="testRequestModal" tabindex="-1" aria-labelledby="testRequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="testRequestModalLabel">Test Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Configuration -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Instance (Base URL)</label>
+                        <select class="form-select" id="trInstance">
+                            @foreach (var inst in Model.Runner.Instances)
+                            {
+                                <option value="@inst.BaseUrl">@inst.Name — @inst.BaseUrl</option>
+                            }
+                            <option value="">— Custom URL —</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Method</label>
+                        <select class="form-select" id="trMethod">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="PATCH">PATCH</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Path</label>
+                        <input type="text" class="form-control" id="trPath" placeholder="api/endpoint">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Full Request URL</label>
+                    <input type="text" class="form-control bg-light" id="trFullUrl" readonly>
+                </div>
+
+                <div class="mb-3" id="trBearerTokenRow">
+                    <label class="form-label fw-semibold">Bearer Token <small class="text-muted">(required for this endpoint)</small></label>
+                    <input type="text" class="form-control font-monospace" id="trBearerToken" placeholder="Paste token here (without 'Bearer ' prefix)">
+                </div>
+
+                <div class="mb-3" id="trBodyRow">
+                    <label class="form-label fw-semibold">Request Body <small class="text-muted">(JSON)</small></label>
+                    <textarea class="form-control font-monospace" id="trBody" rows="6" placeholder="{}"></textarea>
+                </div>
+
+                <!-- Results -->
+                <div id="trResults" class="d-none">
+                    <hr>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <h6 class="mb-0">Response</h6>
+                        <span id="trStatusBadge" class="badge fs-6"></span>
+                        <span class="text-muted small" id="trResponseTime"></span>
+                        <span class="text-muted small font-monospace" id="trRequestUrlDisplay"></span>
+                    </div>
+                    <div id="trErrorAlert" class="alert alert-danger d-none"></div>
+                    <ul class="nav nav-tabs mb-2" id="trResultTabs">
+                        <li class="nav-item"><button class="nav-link active" data-tab="body">Body</button></li>
+                        <li class="nav-item"><button class="nav-link" data-tab="headers">Headers</button></li>
+                    </ul>
+                    <div id="trBodyTab">
+                        <pre class="bg-light border rounded p-3 mb-0" style="max-height:300px;overflow-y:auto;font-size:.8rem;white-space:pre-wrap;word-break:break-all;" id="trResponseBody"></pre>
+                    </div>
+                    <div id="trHeadersTab" class="d-none">
+                        <table class="table table-sm table-bordered mb-0">
+                            <thead><tr><th>Header</th><th>Value</th></tr></thead>
+                            <tbody id="trHeadersBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="trExecuteBtn">
+                    <span id="trExecuteSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    Execute Request
+                </button>
             </div>
         </div>
     </div>
@@ -518,6 +617,146 @@
                 toasts.forEach(t => t.remove());
             }, 3000);
         }
+
+        // ── Test Request Modal ───────────────────────────────────────────────
+        (function () {
+            const modal = new bootstrap.Modal(document.getElementById('testRequestModal'));
+            const trInstance   = document.getElementById('trInstance');
+            const trMethod     = document.getElementById('trMethod');
+            const trPath       = document.getElementById('trPath');
+            const trFullUrl    = document.getElementById('trFullUrl');
+            const trBearerRow  = document.getElementById('trBearerTokenRow');
+            const trBearerToken= document.getElementById('trBearerToken');
+            const trBodyRow    = document.getElementById('trBodyRow');
+            const trBody       = document.getElementById('trBody');
+            const trResults    = document.getElementById('trResults');
+            const trExecuteBtn = document.getElementById('trExecuteBtn');
+            const trSpinner    = document.getElementById('trExecuteSpinner');
+
+            function updateFullUrl() {
+                const base = (trInstance.value || '').replace(/\/$/, '');
+                const path = (trPath.value  || '').replace(/^\//, '');
+                trFullUrl.value = path ? `${base}/${path}` : base;
+            }
+
+            function toggleBodyVisibility() {
+                const m = trMethod.value;
+                trBodyRow.classList.toggle('d-none', !['POST','PUT','PATCH'].includes(m));
+            }
+
+            trInstance.addEventListener('change', updateFullUrl);
+            trMethod.addEventListener('change', () => { updateFullUrl(); toggleBodyVisibility(); });
+            trPath.addEventListener('input', updateFullUrl);
+
+            // Open modal pre-populated from a Test button
+            document.addEventListener('click', function (e) {
+                const btn = e.target.closest('.test-request-btn');
+                if (!btn) return;
+
+                const method       = btn.dataset.method || 'GET';
+                const path         = btn.dataset.path   || '';
+                const body         = btn.dataset.body   || '';
+                const requiresToken= btn.dataset.requiresToken === 'true';
+
+                trMethod.value = method.toUpperCase();
+                trPath.value   = path;
+                trBody.value   = body || '';
+                trBearerToken.value = '';
+                trBearerRow.classList.toggle('d-none', !requiresToken);
+                toggleBodyVisibility();
+                updateFullUrl();
+
+                // Reset results
+                trResults.classList.add('d-none');
+
+                modal.show();
+            });
+
+            // Tab switching
+            document.querySelectorAll('#trResultTabs button').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('#trResultTabs button').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const tab = this.dataset.tab;
+                    document.getElementById('trBodyTab').classList.toggle('d-none',    tab !== 'body');
+                    document.getElementById('trHeadersTab').classList.toggle('d-none', tab !== 'headers');
+                });
+            });
+
+            // Execute
+            trExecuteBtn.addEventListener('click', async function () {
+                trExecuteBtn.disabled = true;
+                trSpinner.classList.remove('d-none');
+                trResults.classList.add('d-none');
+
+                const payload = {
+                    baseUrl:     trInstance.value,
+                    path:        trPath.value,
+                    method:      trMethod.value,
+                    body:        ['POST','PUT','PATCH'].includes(trMethod.value) ? trBody.value : null,
+                    bearerToken: trBearerToken.value || null,
+                    headers:     null
+                };
+
+                try {
+                    const resp = await fetch('/api/execution/test-request', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await resp.json();
+
+                    // Status badge
+                    const badge = document.getElementById('trStatusBadge');
+                    badge.textContent = result.statusCode
+                        ? `${result.statusCode} ${result.statusText}`
+                        : result.statusText;
+                    badge.className = 'badge fs-6 ' + (result.success ? 'bg-success' : 'bg-danger');
+
+                    document.getElementById('trResponseTime').textContent = `${result.responseTimeMs} ms`;
+                    document.getElementById('trRequestUrlDisplay').textContent = result.requestUrl;
+
+                    // Error alert
+                    const errAlert = document.getElementById('trErrorAlert');
+                    if (result.errorMessage) {
+                        errAlert.textContent = result.errorMessage;
+                        errAlert.classList.remove('d-none');
+                    } else {
+                        errAlert.classList.add('d-none');
+                    }
+
+                    // Body — pretty-print JSON if possible
+                    let bodyText = result.responseBody || '';
+                    try { bodyText = JSON.stringify(JSON.parse(bodyText), null, 2); } catch (_) {}
+                    document.getElementById('trResponseBody').textContent = bodyText;
+
+                    // Headers table
+                    const tbody = document.getElementById('trHeadersBody');
+                    tbody.innerHTML = '';
+                    if (result.responseHeaders) {
+                        Object.entries(result.responseHeaders).forEach(([k, v]) => {
+                            const row = tbody.insertRow();
+                            row.insertCell().textContent = k;
+                            row.insertCell().textContent = v;
+                        });
+                    }
+
+                    // Show body tab by default
+                    document.querySelectorAll('#trResultTabs button').forEach(b => b.classList.remove('active'));
+                    document.querySelector('#trResultTabs button[data-tab="body"]').classList.add('active');
+                    document.getElementById('trBodyTab').classList.remove('d-none');
+                    document.getElementById('trHeadersTab').classList.add('d-none');
+
+                    trResults.classList.remove('d-none');
+                } catch (err) {
+                    showErrorMessage('Request failed: ' + err.message);
+                } finally {
+                    trExecuteBtn.disabled = false;
+                    trSpinner.classList.add('d-none');
+                }
+            });
+        })();
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {

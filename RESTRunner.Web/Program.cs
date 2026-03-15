@@ -35,9 +35,9 @@ builder.Services.AddSwaggerGen(c =>
         var path = api.RelativePath?.ToLower();
         if (path != null)
         {
-            if (path.StartsWith("api/employees"))
+            if (path.StartsWith("api/employee"))
                 return new[] { "Employee" };
-            if (path.StartsWith("api/departments"))
+            if (path.StartsWith("api/department"))
                 return new[] { "Department" };
             if (path.StartsWith("api/debug"))
                 return new[] { "Debug" };
@@ -111,7 +111,7 @@ builder.Services.AddScoped<IHttpRequestResultService>(provider =>
 builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IConfigurationService, FileConfigurationService>();
 builder.Services.AddScoped<ICollectionService, FileCollectionService>();
-builder.Services.AddScoped<IExecutionService, RealExecutionService>(); // <-- Changed to RealExecutionService
+builder.Services.AddSingleton<IExecutionService, RealExecutionService>();
 builder.Services.AddScoped<SampleCRUDService>(); // <-- Add SampleCRUDService registration
 
 // Add SignalR for real-time execution updates
@@ -181,87 +181,100 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Employee Endpoints
-app.MapGet("/api/employees/count", async (SampleCRUDService service) =>
+// Helper: proxy an upstream call and return a proper error response on failure
+static async Task<IResult> Proxy<T>(Func<Task<T>> call)
 {
-    return Results.Ok(await service.GetEmployeeCount());
-})
-.WithTags("Employee")
-.WithName("GetEmployeeCount")
-.Produces<string>(StatusCodes.Status200OK);
+    try
+    {
+        return Results.Ok(await call());
+    }
+    catch (TaskCanceledException)
+    {
+        return Results.Problem("The upstream API did not respond in time.", statusCode: StatusCodes.Status504GatewayTimeout);
+    }
+    catch (HttpRequestException ex)
+    {
+        return Results.Problem($"Upstream request failed: {ex.Message}", statusCode: StatusCodes.Status502BadGateway);
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem($"Unexpected error: {ex.Message}", statusCode: StatusCodes.Status500InternalServerError);
+    }
+}
 
-app.MapGet("/api/employees", async (SampleCRUDService service, int? pageNumber, int? pageSize) =>
-{
-    return Results.Ok(await service.GetAllEmployees(pageNumber, pageSize));
-})
+// Employee Endpoints
+app.MapGet("/api/employee", (SampleCRUDService service, int? pageNumber, int? pageSize) =>
+    Proxy(() => service.GetAllEmployees(pageNumber, pageSize)))
 .WithTags("Employee")
 .WithName("GetAllEmployees")
-.Produces<ICollection<EmployeeDto>>(StatusCodes.Status200OK);
+.Produces<ICollection<EmployeeDto>>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status502BadGateway)
+.ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
-app.MapGet("/api/employees/{id}", async (SampleCRUDService service, int id) =>
-{
-    return Results.Ok(await service.GetEmployeeById(id));
-})
+app.MapGet("/api/employee/{id}", (SampleCRUDService service, int id) =>
+    Proxy(() => service.GetEmployeeById(id)))
 .WithTags("Employee")
 .WithName("GetEmployeeById")
-.Produces<EmployeeDto>(StatusCodes.Status200OK);
+.Produces<EmployeeDto>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status502BadGateway)
+.ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
-app.MapPost("/api/employees", async (SampleCRUDService service, EmployeeDto employee) =>
-{
-    return Results.Ok(await service.CreateEmployee(employee));
-})
+app.MapPost("/api/employee", (SampleCRUDService service, EmployeeDto employee) =>
+    Proxy(() => service.CreateEmployee(employee)))
 .WithTags("Employee")
 .WithName("CreateEmployee")
-.Produces<EmployeeDto>(StatusCodes.Status200OK);
+.Produces<EmployeeDto>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status502BadGateway)
+.ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
-app.MapPut("/api/employees/{id}", async (SampleCRUDService service, int id, EmployeeDto employee) =>
-{
-    return Results.Ok(await service.UpdateEmployee(id, employee));
-})
+app.MapPut("/api/employee/{id}", (SampleCRUDService service, int id, EmployeeDto employee) =>
+    Proxy(() => service.UpdateEmployee(id, employee)))
 .WithTags("Employee")
 .WithName("UpdateEmployee")
-.Produces<EmployeeDto>(StatusCodes.Status200OK);
+.Produces<EmployeeDto>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status502BadGateway)
+.ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
-app.MapDelete("/api/employees/{id}", async (SampleCRUDService service, int id) =>
-{
-    return Results.Ok(await service.DeleteEmployee(id));
-})
+app.MapDelete("/api/employee/{id}", (SampleCRUDService service, int id) =>
+    Proxy(() => service.DeleteEmployee(id)))
 .WithTags("Employee")
 .WithName("DeleteEmployee")
-.Produces<EmployeeDto>(StatusCodes.Status200OK);
+.Produces<EmployeeDto>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status502BadGateway)
+.ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
 // Department Endpoints
-app.MapGet("/api/departments", async (SampleCRUDService service, bool? includeEmployees) =>
-{
-    return Results.Ok(await service.GetDepartments(includeEmployees));
-})
+app.MapGet("/api/department", (SampleCRUDService service, bool? includeEmployees) =>
+    Proxy(() => service.GetDepartments(includeEmployees)))
 .WithTags("Department")
 .WithName("GetDepartments")
-.Produces<ICollection<DepartmentDto>>(StatusCodes.Status200OK);
+.Produces<ICollection<DepartmentDto>>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status502BadGateway)
+.ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
-app.MapGet("/api/departments/{id}", async (SampleCRUDService service, int id) =>
-{
-    return Results.Ok(await service.GetDepartmentById(id));
-})
+app.MapGet("/api/department/{id}", (SampleCRUDService service, int id) =>
+    Proxy(() => service.GetDepartmentById(id)))
 .WithTags("Department")
 .WithName("GetDepartmentById")
-.Produces<ICollection<DepartmentDto>>(StatusCodes.Status200OK);
+.Produces<ICollection<DepartmentDto>>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status502BadGateway)
+.ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
-app.MapGet("/api/api-explorer", async (SampleCRUDService service) =>
-{
-    return Results.Ok(await service.GetApiExplorer());
-})
+app.MapGet("/api/api-explorer", (SampleCRUDService service) =>
+    Proxy(() => service.GetApiExplorer()))
 .WithTags("System")
 .WithName("GetApiExplorer")
-.Produces<ICollection<ApiExplorerModel>>(StatusCodes.Status200OK);
+.Produces<ICollection<ApiExplorerModel>>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status502BadGateway)
+.ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
-app.MapGet("/api/status", async (SampleCRUDService service) =>
-{
-    return Results.Ok(await service.GetStatus());
-})
+app.MapGet("/api/status", (SampleCRUDService service) =>
+    Proxy(() => service.GetStatus()))
 .WithTags("System")
 .WithName("GetStatus")
-.Produces<ApplicationStatus>(StatusCodes.Status200OK);
+.Produces<ApplicationStatus>(StatusCodes.Status200OK)
+.ProducesProblem(StatusCodes.Status502BadGateway)
+.ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
 // Add initialization status endpoint
 app.MapGet("/api/initialization-status", async (HttpContext context) =>
@@ -439,25 +452,19 @@ static async Task InitializeSampleDataAsync(IServiceProvider serviceProvider)
                         },
                         new()
                         {
-                            Path = "api/employees",
+                            Path = "api/employee",
                             RequestMethod = HttpVerb.GET,
                             RequiresClientToken = false
                         },
                         new()
                         {
-                            Path = "api/employees/1",
+                            Path = "api/employee/1",
                             RequestMethod = HttpVerb.GET,
                             RequiresClientToken = false
                         },
                         new()
                         {
-                            Path = "api/employees/count",
-                            RequestMethod = HttpVerb.GET,
-                            RequiresClientToken = false
-                        },
-                        new()
-                        {
-                            Path = "api/departments",
+                            Path = "api/department",
                             RequestMethod = HttpVerb.GET,
                             RequiresClientToken = false
                         }

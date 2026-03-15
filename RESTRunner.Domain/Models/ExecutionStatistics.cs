@@ -13,6 +13,7 @@ public class ExecutionStatistics
     private int _failedRequests;
     private long _minResponseTime = long.MaxValue;
     private long _maxResponseTime;
+    private long _totalResponseTimeMs;
 
     /// <summary>
     /// Total number of requests made
@@ -45,7 +46,13 @@ public class ExecutionStatistics
     public TimeSpan TotalDuration => EndTime - StartTime;
 
     /// <summary>
-    /// Average response time in milliseconds
+    /// Average response time in milliseconds (live, computed from running totals)
+    /// </summary>
+    public double CurrentAverageResponseTime =>
+        _totalRequests > 0 ? (double)_totalResponseTimeMs / _totalRequests : 0;
+
+    /// <summary>
+    /// Average response time in milliseconds (set at finalization)
     /// </summary>
     public double AverageResponseTime { get; set; }
 
@@ -116,6 +123,7 @@ public class ExecutionStatistics
     public void AddResponseTime(long responseTime)
     {
         _responseTimes.Add(responseTime);
+        Interlocked.Add(ref _totalResponseTimeMs, responseTime);
         
         // Update min/max using thread-safe operations
         var currentMin = _minResponseTime;
