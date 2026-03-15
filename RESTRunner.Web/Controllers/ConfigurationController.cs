@@ -463,7 +463,9 @@ namespace RESTRunner.Web.Controllers
                 : new List<CompareRequest>
                 {
                     new() { Path = "api/status", RequestMethod = HttpVerb.GET, RequiresClientToken = false },
-                    new() { Path = "api/employees", RequestMethod = HttpVerb.GET, RequiresClientToken = false }
+                    new() { Path = "api/employee", RequestMethod = HttpVerb.GET, RequiresClientToken = false },
+                    new() { Path = "api/employee/1", RequestMethod = HttpVerb.GET, RequiresClientToken = false },
+                    new() { Path = "api/department", RequestMethod = HttpVerb.GET, RequiresClientToken = false }
                 };
 
             viewModel.InstancesJson = JsonSerializer.Serialize(instances, options);

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace RESTRunner.Web.Models;
 
 /// <summary>
@@ -78,6 +80,7 @@ public class TestExecution
     /// <summary>
     /// Cancellation token source for stopping execution
     /// </summary>
+    [JsonIgnore]
     public CancellationTokenSource? CancellationTokenSource { get; set; }
 
     /// <summary>

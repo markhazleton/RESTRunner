@@ -30,7 +30,7 @@
         "body": null
       },
       {
-        "path": "api/employees",
+        "path": "api/employee",
         "requestMethod": 0,
         "bodyTemplate": null,
         "requiresClientToken": false,
@@ -38,7 +38,7 @@
         "body": null
       },
       {
-        "path": "api/employees/1",
+        "path": "api/employee/1",
         "requestMethod": 0,
         "bodyTemplate": null,
         "requiresClientToken": false,
@@ -46,15 +46,7 @@
         "body": null
       },
       {
-        "path": "api/employees/count",
-        "requestMethod": 0,
-        "bodyTemplate": null,
-        "requiresClientToken": false,
-        "headers": [],
-        "body": null
-      },
-      {
-        "path": "api/departments",
+        "path": "api/department",
         "requestMethod": 0,
         "bodyTemplate": null,
         "requiresClientToken": false,
@@ -85,7 +77,7 @@
     ]
   },
   "collectionFileName": null,
-  "iterations": 100,
+  "iterations": 10,
   "maxConcurrency": 10,
   "tags": [
     "initial",

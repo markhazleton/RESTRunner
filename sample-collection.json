@@ -30,16 +30,16 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{base_url}}/api/employees",
+          "raw": "{{base_url}}/api/employee",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "api",
-            "employees"
+            "employee"
           ]
         },
-        "description": "Retrieve all employees"
+        "description": "Retrieve all employee"
       }
     },
     {
@@ -48,13 +48,13 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "{{base_url}}/api/employees/1",
+          "raw": "{{base_url}}/api/employee/1",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "api",
-            "employees",
+            "employee",
             "1"
           ]
         },
@@ -76,13 +76,13 @@
           "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"departmentId\": 1\n}"
         },
         "url": {
-          "raw": "{{base_url}}/api/employees",
+          "raw": "{{base_url}}/api/employee",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "api",
-            "employees"
+            "employee"
           ]
         },
         "description": "Create a new employee"
@@ -103,13 +103,13 @@
           "raw": "{\n  \"id\": 1,\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"email\": \"jane.smith@example.com\",\n  \"departmentId\": 2\n}"
         },
         "url": {
-          "raw": "{{base_url}}/api/employees/1",
+          "raw": "{{base_url}}/api/employee/1",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "api",
-            "employees",
+            "employee",
             "1"
           ]
         },
@@ -122,13 +122,13 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "{{base_url}}/api/employees/1",
+          "raw": "{{base_url}}/api/employee/1",
           "host": [
             "{{base_url}}"
           ],
           "path": [
             "api",
-            "employees",
+            "employee",
             "1"
           ]
         },
