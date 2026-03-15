@@ -402,75 +402,89 @@ public class FileOpenApiService : IOpenApiService
         {
             // Path-level parameters (shared across all operations)
             var sharedParams = new List<OpenApiParameterInfo>();
-            if (pathItem.Value.TryGetProperty("parameters", out var sharedParamsEl))
-                sharedParams = ParseParameters3(sharedParamsEl);
+            try
+            {
+                if (pathItem.Value.TryGetProperty("parameters", out var sharedParamsEl))
+                    sharedParams = ParseParameters3(sharedParamsEl);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to parse shared parameters for path {Path}", pathItem.Name);
+            }
 
             foreach (var method in SupportedMethods)
             {
                 if (!pathItem.Value.TryGetProperty(method, out var operation)) continue;
 
-                var endpoint = new OpenApiEndpointInfo
+                try
                 {
-                    Path = pathItem.Name,
-                    Method = method.ToUpper(),
-                    OperationId = operation.TryGetProperty("operationId", out var oid) ? oid.GetString() : null,
-                    Summary = operation.TryGetProperty("summary", out var sum) ? sum.GetString() : null,
-                    Description = operation.TryGetProperty("description", out var desc) ? desc.GetString() : null,
-                    IsDeprecated = operation.TryGetProperty("deprecated", out var dep) && dep.GetBoolean()
-                };
-
-                // Tags
-                if (operation.TryGetProperty("tags", out var opTags))
-                    foreach (var tag in opTags.EnumerateArray())
-                        if (tag.GetString() is { } tn) endpoint.Tags.Add(tn);
-
-                // Parameters: merge shared then override with operation-level
-                var opParams = operation.TryGetProperty("parameters", out var opParamsEl)
-                    ? ParseParameters3(opParamsEl)
-                    : new List<OpenApiParameterInfo>();
-
-                // Operation params override shared params by name+in
-                var merged = new List<OpenApiParameterInfo>(sharedParams);
-                foreach (var op in opParams)
-                {
-                    var existing = merged.FirstOrDefault(p => p.Name == op.Name && p.In == op.In);
-                    if (existing is not null) merged.Remove(existing);
-                    merged.Add(op);
-                }
-                endpoint.Parameters = merged;
-
-                // Request body
-                if (operation.TryGetProperty("requestBody", out var rb))
-                    endpoint.RequestBody = ParseRequestBody3(rb);
-
-                // Responses
-                if (operation.TryGetProperty("responses", out var responses))
-                    foreach (var resp in responses.EnumerateObject())
+                    var endpoint = new OpenApiEndpointInfo
                     {
-                        var respDesc = resp.Value.TryGetProperty("description", out var rd) ? rd.GetString() ?? "" : "";
-                        endpoint.Responses[resp.Name] = respDesc;
-                    }
-
-                // Security
-                if (operation.TryGetProperty("security", out var sec))
-                    foreach (var s in sec.EnumerateArray())
-                        foreach (var sp in s.EnumerateObject())
-                            endpoint.SecurityRequirements.Add(sp.Name);
-
-                structure.AllEndpoints.Add(endpoint);
-
-                // Group by first tag (or "Default")
-                var groupName = endpoint.Tags.FirstOrDefault() ?? "Default";
-                if (!tagGroups.TryGetValue(groupName, out var group))
-                {
-                    group = new OpenApiTagGroup
-                    {
-                        Name = groupName,
-                        Description = tagDescriptions.TryGetValue(groupName, out var gd) ? gd : null
+                        Path = pathItem.Name,
+                        Method = method.ToUpper(),
+                        OperationId = operation.TryGetProperty("operationId", out var oid) ? oid.GetString() : null,
+                        Summary = operation.TryGetProperty("summary", out var sum) ? sum.GetString() : null,
+                        Description = operation.TryGetProperty("description", out var desc) ? desc.GetString() : null,
+                        IsDeprecated = operation.TryGetProperty("deprecated", out var dep) && dep.GetBoolean()
                     };
-                    tagGroups[groupName] = group;
+
+                    // Tags
+                    if (operation.TryGetProperty("tags", out var opTags))
+                        foreach (var tag in opTags.EnumerateArray())
+                            if (tag.GetString() is { } tn) endpoint.Tags.Add(tn);
+
+                    // Parameters: merge shared then override with operation-level
+                    var opParams = operation.TryGetProperty("parameters", out var opParamsEl)
+                        ? ParseParameters3(opParamsEl)
+                        : new List<OpenApiParameterInfo>();
+
+                    // Operation params override shared params by name+in
+                    var merged = new List<OpenApiParameterInfo>(sharedParams);
+                    foreach (var op in opParams)
+                    {
+                        var existing = merged.FirstOrDefault(p => p.Name == op.Name && p.In == op.In);
+                        if (existing is not null) merged.Remove(existing);
+                        merged.Add(op);
+                    }
+                    endpoint.Parameters = merged;
+
+                    // Request body
+                    if (operation.TryGetProperty("requestBody", out var rb))
+                        endpoint.RequestBody = ParseRequestBody3(rb);
+
+                    // Responses
+                    if (operation.TryGetProperty("responses", out var responses))
+                        foreach (var resp in responses.EnumerateObject())
+                        {
+                            var respDesc = resp.Value.TryGetProperty("description", out var rd) ? rd.GetString() ?? "" : "";
+                            endpoint.Responses[resp.Name] = respDesc;
+                        }
+
+                    // Security
+                    if (operation.TryGetProperty("security", out var sec))
+                        foreach (var s in sec.EnumerateArray())
+                            foreach (var sp in s.EnumerateObject())
+                                endpoint.SecurityRequirements.Add(sp.Name);
+
+                    structure.AllEndpoints.Add(endpoint);
+
+                    // Group by first tag (or "Default")
+                    var groupName = endpoint.Tags.FirstOrDefault() ?? "Default";
+                    if (!tagGroups.TryGetValue(groupName, out var group))
+                    {
+                        group = new OpenApiTagGroup
+                        {
+                            Name = groupName,
+                            Description = tagDescriptions.TryGetValue(groupName, out var gd) ? gd : null
+                        };
+                        tagGroups[groupName] = group;
+                    }
+                    group.Endpoints.Add(endpoint);
                 }
-                group.Endpoints.Add(endpoint);
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to parse operation {Method} {Path} — skipping", method.ToUpper(), pathItem.Name);
+                }
             }
         }
 
@@ -561,6 +575,29 @@ public class FileOpenApiService : IOpenApiService
 
     // ── Private: parameter parsers ───────────────────────────────────────────
 
+    /// <summary>
+    /// Safely extracts a type string from a JSON Schema "type" property.
+    /// Handles both plain strings ("integer") and OpenAPI 3.1 union arrays (["integer","null"]).
+    /// </summary>
+    private static string ExtractJsonSchemaType(JsonElement? schema)
+    {
+        if (schema is null) return "string";
+        if (!schema.Value.TryGetProperty("type", out var typeEl)) return "string";
+        if (typeEl.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var item in typeEl.EnumerateArray())
+            {
+                if (item.ValueKind == JsonValueKind.String)
+                {
+                    var s = item.GetString();
+                    if (s != null && s != "null") return s;
+                }
+            }
+            return "string";
+        }
+        return typeEl.ValueKind == JsonValueKind.String ? typeEl.GetString() ?? "string" : "string";
+    }
+
     private static List<OpenApiParameterInfo> ParseParameters3(JsonElement paramsEl)
     {
         var list = new List<OpenApiParameterInfo>();
@@ -576,7 +613,7 @@ public class FileOpenApiService : IOpenApiService
                 In = p.TryGetProperty("in", out var i) ? i.GetString() ?? "" : "",
                 Description = p.TryGetProperty("description", out var d) ? d.GetString() : null,
                 Required = p.TryGetProperty("required", out var r) && r.GetBoolean(),
-                Type = schema?.TryGetProperty("type", out var t) == true ? t.GetString() ?? "string" : "string",
+                Type = ExtractJsonSchemaType(schema),
                 Format = schema?.TryGetProperty("format", out var f) == true ? f.GetString() : null,
                 DefaultValue = schema?.TryGetProperty("default", out var dv) == true ? dv.ToString() : null,
                 Example = p.TryGetProperty("example", out var ex) ? ex.ToString()
