@@ -241,6 +241,38 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Execution History -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Execution History</h5>
+                    <a href="/Execution?configurationId=@Model.Id" class="btn btn-sm btn-outline-secondary">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div id="historyLoading" class="text-center py-3 text-muted">
+                        <div class="spinner-border spinner-border-sm me-2" role="status"></div>Loading runs...
+                    </div>
+                    <div id="historyEmpty" class="text-center py-3 text-muted d-none">
+                        No runs yet for this configuration.
+                    </div>
+                    <div id="historyError" class="alert alert-warning m-3 d-none"></div>
+                    <div class="table-responsive d-none" id="historyTable">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Started</th>
+                                    <th>Status</th>
+                                    <th>Duration</th>
+                                    <th class="text-end">Requests</th>
+                                    <th class="text-end">Success %</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Sidebar -->
@@ -761,6 +793,77 @@
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             initializeSignalR();
+            loadExecutionHistory();
         });
+
+        // ── Execution History ────────────────────────────────────────────────
+        async function loadExecutionHistory() {
+            const configId = '@Model.Id';
+            try {
+                const resp = await fetch(`/api/execution/history?configurationId=${configId}&pageSize=10`);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const items = await resp.json();
+
+                document.getElementById('historyLoading').classList.add('d-none');
+
+                if (!items || items.length === 0) {
+                    document.getElementById('historyEmpty').classList.remove('d-none');
+                    return;
+                }
+
+                const tbody = document.getElementById('historyBody');
+                items.forEach(h => {
+                    const dur = h.duration
+                        ? formatDuration(h.duration)
+                        : (h.status === 'Running' ? '<span class="text-primary">running…</span>' : '—');
+
+                    const stats  = h.statistics;
+                    const total  = stats?.totalRequests ?? 0;
+                    const rate   = stats?.successRate != null ? stats.successRate.toFixed(1) + '%' : '—';
+
+                    const statusBadge = {
+                        'Completed': 'bg-success',
+                        'Failed':    'bg-danger',
+                        'Running':   'bg-primary',
+                        'Cancelled': 'bg-warning text-dark',
+                        'Pending':   'bg-secondary'
+                    }[h.status] || 'bg-secondary';
+
+                    const resultsLink = h.isSuccessful
+                        ? `<a href="/Execution/Results/${h.id}" class="btn btn-xs btn-sm btn-outline-info py-0 px-2">Results</a>`
+                        : '';
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="text-nowrap">${new Date(h.startTime).toLocaleString()}</td>
+                        <td><span class="badge ${statusBadge}">${h.status}</span></td>
+                        <td>${dur}</td>
+                        <td class="text-end">${total > 0 ? total.toLocaleString() : '—'}</td>
+                        <td class="text-end">${rate}</td>
+                        <td class="text-end">${resultsLink}</td>`;
+                    tbody.appendChild(row);
+                });
+
+                document.getElementById('historyTable').classList.remove('d-none');
+            } catch (err) {
+                document.getElementById('historyLoading').classList.add('d-none');
+                const errEl = document.getElementById('historyError');
+                errEl.textContent = 'Could not load execution history: ' + err.message;
+                errEl.classList.remove('d-none');
+            }
+        }
+
+        function formatDuration(iso) {
+            // ISO 8601 duration from .NET TimeSpan e.g. "00:01:23.4567890"
+            if (!iso) return '—';
+            const parts = iso.split(':');
+            if (parts.length === 3) {
+                const h = parseInt(parts[0]), m = parseInt(parts[1]), s = parseFloat(parts[2]);
+                if (h > 0) return `${h}h ${m}m`;
+                if (m > 0) return `${m}m ${Math.round(s)}s`;
+                return `${s.toFixed(1)}s`;
+            }
+            return iso;
+        }
     </script>
 }

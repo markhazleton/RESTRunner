@@ -35,6 +35,16 @@ public interface IFileStorageService
     Task<string> SaveCollectionAsync(string fileName, string content);
 
     /// <summary>
+    /// Save an OpenAPI spec file from an upload
+    /// </summary>
+    Task<string> SaveOpenApiAsync(string fileName, IFormFile file);
+
+    /// <summary>
+    /// Save an OpenAPI spec file from content string
+    /// </summary>
+    Task<string> SaveOpenApiAsync(string fileName, string content);
+
+    /// <summary>
     /// Save execution results
     /// </summary>
     /// <param name="fileName">File name</param>
