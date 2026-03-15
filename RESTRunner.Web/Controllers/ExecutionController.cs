@@ -115,7 +115,7 @@ public class ExecutionController : Controller
     /// </summary>
     /// <param name="request">Execution start request</param>
     /// <returns>Created test execution</returns>
-    [HttpPost("api/execution/start")]
+    [HttpPost("/api/execution/start")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(TestExecution), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -174,7 +174,7 @@ public class ExecutionController : Controller
     /// </summary>
     /// <param name="executionId">Execution ID</param>
     /// <returns>Test execution details</returns>
-    [HttpGet("api/execution/{executionId}/status")]
+    [HttpGet("/api/execution/{executionId}/status")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(TestExecution), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -225,7 +225,7 @@ public class ExecutionController : Controller
     /// <param name="executionId">Execution ID</param>
     /// <param name="request">Cancel request</param>
     /// <returns>Cancellation result</returns>
-    [HttpPost("api/execution/{executionId}/cancel")]
+    [HttpPost("/api/execution/{executionId}/cancel")]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -266,7 +266,7 @@ public class ExecutionController : Controller
     /// </summary>
     /// <param name="executionId">Execution ID</param>
     /// <returns>Execution history with results</returns>
-    [HttpGet("api/execution/{executionId}/results")]
+    [HttpGet("/api/execution/{executionId}/results")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(ExecutionHistory), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -292,7 +292,7 @@ public class ExecutionController : Controller
     /// </summary>
     /// <param name="executionId">Execution ID</param>
     /// <returns>CSV file</returns>
-    [HttpGet("api/execution/{executionId}/download")]
+    [HttpGet("/api/execution/{executionId}/download")]
     [Produces("text/csv")]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -330,7 +330,7 @@ public class ExecutionController : Controller
     /// Get all running executions
     /// </summary>
     /// <returns>List of running executions</returns>
-    [HttpGet("api/execution/running")]
+    [HttpGet("/api/execution/running")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<TestExecution>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<TestExecution>>> GetRunningExecutions()
@@ -346,7 +346,7 @@ public class ExecutionController : Controller
     /// <param name="pageNumber">Page number (1-based)</param>
     /// <param name="configurationId">Filter by configuration ID (optional)</param>
     /// <returns>List of execution history records</returns>
-    [HttpGet("api/execution/history")]
+    [HttpGet("/api/execution/history")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<ExecutionHistory>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<ExecutionHistory>>> GetExecutionHistoryApi(
@@ -363,7 +363,7 @@ public class ExecutionController : Controller
     /// </summary>
     /// <param name="count">Number of recent executions to return</param>
     /// <returns>List of recent executions</returns>
-    [HttpGet("api/execution/recent")]
+    [HttpGet("/api/execution/recent")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(List<ExecutionHistory>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<ExecutionHistory>>> GetRecentExecutions([FromQuery] int count = 10)
@@ -377,7 +377,7 @@ public class ExecutionController : Controller
     /// </summary>
     /// <param name="executionId">Execution ID</param>
     /// <returns>Deletion result</returns>
-    [HttpDelete("api/execution/{executionId}")]
+    [HttpDelete("/api/execution/{executionId}")]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -405,7 +405,7 @@ public class ExecutionController : Controller
     /// <param name="executionId">Execution ID</param>
     /// <param name="format">Export format (csv, json)</param>
     /// <returns>Export file path</returns>
-    [HttpPost("api/execution/{executionId}/export")]
+    [HttpPost("/api/execution/{executionId}/export")]
     [Produces("application/json")]
     [ProducesResponseType(typeof(ExportResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

@@ -1,0 +1,434 @@
+﻿Verb,Instance,LastRunDate,Duration,Request,ResultCode,SessionId,StatusDescription,Success,UserName,Content
+GET,Local,03/15/2026 10:43:48,517,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:48,589,api/employees/1,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:49,205,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:49,142,api/employees,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:43:49,873,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:49,717,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:49,209,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:49,167,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:49,109,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:49,94,api/employees/1,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:49,1115,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:49,1114,api/employees,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:49,115,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:49,218,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:49,86,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:49,81,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:49,207,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:49,258,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:49,279,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:49,289,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:50,403,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:50,667,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:50,457,api/departments,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:50,805,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:50,628,api/employees/1,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:50,295,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:50,151,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:50,222,api/employees/1,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:43:50,785,api/employees,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:50,266,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:50,106,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:50,48,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:50,58,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:50,51,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:50,50,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:50,57,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:50,402,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:50,407,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:51,643,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:51,1014,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:51,654,api/employees/1,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:51,232,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:52,205,api/employees,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:43:52,945,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:52,601,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:52,98,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:52,102,api/employees/count,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:43:52,1291,api/employees,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:52,70,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:52,234,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:52,251,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:52,146,api/departments,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:52,316,api/employees/count,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:52,2160,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:52,253,api/status,200,,OK,True,testuser
+GET,Demo,03/15/2026 10:43:52,484,api/employees/1,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:53,605,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:53,671,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:53,649,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:53,429,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:53,624,api/employees/1,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:53,50,api/status,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:43:53,172,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:54,72,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:54,95,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:54,107,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:54,130,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:54,107,api/employees,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:54,3961,api/employees/count,200,,OK,True,testuser
+GET,Demo,03/15/2026 10:43:54,418,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:54,51,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:54,113,api/departments,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:54,156,api/employees/count,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:54,315,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:55,480,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:55,559,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:55,865,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:55,660,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:56,722,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:56,428,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:56,735,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:56,127,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:56,111,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:56,231,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:56,359,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:56,126,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:56,116,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:56,91,api/employees,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:57,859,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:57,293,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:57,117,api/departments,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:57,121,api/employees/count,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:57,186,api/status,200,,OK,True,testuser
+GET,Demo,03/15/2026 10:43:57,363,api/employees/1,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:57,256,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:57,371,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:58,539,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:58,1108,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:58,226,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:58,836,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:58,204,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:43:58,599,api/employees,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:58,107,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:58,104,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:58,96,api/employees/1,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:43:59,527,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:43:59,145,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:59,52,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:43:59,163,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:59,160,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:59,344,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:59,287,api/departments,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:43:59,333,api/employees/count,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:43:59,382,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:43:59,342,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:00,864,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:00,323,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:04,16191,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:04,16294,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:04,16281,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:04,173,api/employees/1,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:04,160,api/status,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:04,311,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:04,296,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:05,201,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:05,226,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:05,323,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:05,47,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:05,44,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:05,81,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:05,364,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:05,432,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:06,1058,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:06,13583,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:06,1150,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:07,1054,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:07,826,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:07,1988,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:07,103,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:07,543,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:08,521,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:08,169,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:08,226,api/employees,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:08,20563,api/departments,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:09,2146,api/employees,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:10,583,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:10,1783,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:10,97,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:10,99,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:10,133,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:10,151,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:11,158,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:11,787,api/employees,200,,OK,True,testuser
+GET,Demo,03/15/2026 10:44:11,3117,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:11,1444,api/employees,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:12,4309,api/departments,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:12,556,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:12,511,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:13,1094,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:13,998,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:13,601,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:13,1649,api/employees/count,200,,OK,True,testuser
+GET,Demo,03/15/2026 10:44:13,529,api/status,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:14,1024,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:14,719,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:14,160,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:14,80,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:14,68,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:14,42,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:14,69,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:14,121,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:14,342,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:14,983,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:14,343,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:14,355,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:15,1222,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:15,1174,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:15,705,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:15,128,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:16,416,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:16,826,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:16,413,api/departments,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:16,967,api/employees/1,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:16,147,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:16,167,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:16,182,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:17,164,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:17,445,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:17,406,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:17,52,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:17,36,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:17,70,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:17,36,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:17,258,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:18,996,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:18,710,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:18,251,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:18,269,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:18,275,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:19,613,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:19,465,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:19,42,api/status,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:19,315,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:19,182,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:19,75,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:19,75,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:19,113,api/employees/count,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:19,2449,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:19,5050,api/employees/count,200,,OK,True,testuser
+GET,Demo,03/15/2026 10:44:19,97,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:19,185,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:20,292,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:20,368,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:20,288,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:20,27387,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:20,273,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:20,117,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:20,239,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:20,661,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:20,578,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:20,694,api/employees,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:21,176,api/status,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:21,405,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:21,1126,api/employees/1,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:21,342,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:21,213,api/employees/count,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:21,880,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:21,135,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:21,117,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:21,106,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:21,763,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:21,56,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:21,56,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:21,57,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:21,107,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:21,106,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:21,81,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:22,191,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:23,1334,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:23,1457,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:23,203,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:23,114,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:23,107,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:24,48,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:24,165,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:24,109,api/departments,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:24,1090,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:24,147,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:24,110,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:24,128,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:24,190,api/employees/count,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:24,212,api/status,200,,OK,True,testuser
+GET,Demo,03/15/2026 10:44:25,357,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:25,344,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:25,3589,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:25,656,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:25,345,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:26,613,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:26,377,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:26,4439,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:26,451,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:26,802,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:26,241,api/departments,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:26,451,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:26,41,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:26,48,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:26,105,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:26,84,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:26,122,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:26,124,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:26,197,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:26,193,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:26,212,api/departments,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:27,446,api/status,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:27,623,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:27,726,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:27,744,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:27,687,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:27,277,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:27,272,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:28,1040,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:28,980,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:28,37,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:28,152,api/employees/1,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:28,955,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:28,177,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:29,176,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:29,97,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:29,58,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:29,47,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:29,41,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:29,42,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:29,367,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:30,860,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:30,571,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:30,403,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:30,487,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:30,10607,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:30,325,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:31,454,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:31,210,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:31,448,api/employees/1,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:31,83,api/status,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:31,367,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:31,291,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:31,235,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:32,247,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:32,547,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:32,219,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:32,287,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:32,1181,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:32,49,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:32,76,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:32,186,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:32,409,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:33,698,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:33,464,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:33,433,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:33,359,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:33,225,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:33,584,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:33,237,api/departments,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:33,269,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:33,94,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:33,105,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:33,156,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:33,281,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:33,170,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:33,59,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:34,42,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:34,46,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:34,91,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:34,60,api/departments,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:34,5192,api/status,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:34,108,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:34,353,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:34,6786,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:34,555,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:35,976,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:35,1185,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:35,1022,api/status,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:35,52,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:35,290,api/employees,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:36,959,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:36,1446,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:36,1050,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:36,245,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:36,578,api/employees/1,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:36,1844,api/employees,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:36,249,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:36,45,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:36,46,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:36,78,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:36,150,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:36,512,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:37,372,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:37,1150,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:37,1268,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:38,364,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:38,1908,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:38,409,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:38,266,api/status,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:38,1123,api/employees,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:38,40,api/employees,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:38,2269,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:38,518,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:38,49,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:39,125,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:39,170,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:39,418,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:39,169,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:39,73,api/departments,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:39,509,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:39,567,api/employees/count,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:40,650,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:40,650,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:40,960,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:40,514,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:40,614,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:40,1405,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:40,367,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:41,323,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:41,145,api/status,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:41,850,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:41,455,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:41,94,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:41,80,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:41,97,api/departments,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:41,118,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:41,37,api/employees,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:41,208,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:41,73,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:41,91,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:41,71,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:41,114,api/status,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:41,483,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:42,685,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:42,835,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:43,1033,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:43,948,api/employees/1,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:43,1352,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:43,432,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:43,255,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:43,48,api/status,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:43,47,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:43,88,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:43,85,api/employees/count,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:43,80,api/departments,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:43,2253,api/employees/1,200,,OK,True,testuser
+GET,Demo,03/15/2026 10:44:43,43,api/employees,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:43,6294,api/status,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:43,89,api/status,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:43,68,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:43,70,api/employees/count,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:43,70,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:44,496,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:44,967,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:44,1171,api/employees,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:44,38557,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:45,1087,api/status,200,,OK,True,admin
+GET,Local,03/15/2026 10:44:46,2468,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:44:46,1478,api/employees,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:46,53,api/status,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:46,1386,api/employees/1,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:46,141,api/employees,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:46,131,api/employees/count,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:46,1397,api/employees/count,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:46,234,api/employees/1,404,,Not Found,False,testuser
+GET,Demo,03/15/2026 10:44:46,179,api/departments,404,,Not Found,False,testuser
+GET,Local,03/15/2026 10:44:46,1171,api/departments,200,,OK,True,admin
+GET,Demo,03/15/2026 10:44:46,98,api/employees/1,404,,Not Found,False,admin
+GET,Demo,03/15/2026 10:44:46,368,api/departments,404,,Not Found,False,admin
+GET,Local,03/15/2026 10:44:47,612,api/status,200,,OK,True,testuser

@@ -1,0 +1,8 @@
+﻿Verb,Instance,LastRunDate,Duration,Request,ResultCode,SessionId,StatusDescription,Success,UserName,Content
+GET,Local,03/15/2026 10:31:38,943,api/employees/1,200,,OK,True,testuser
+GET,Local,03/15/2026 10:31:38,940,api/departments,200,,OK,True,admin
+GET,Local,03/15/2026 10:31:38,940,api/departments,200,,OK,True,testuser
+GET,Local,03/15/2026 10:31:38,732,api/employees/count,200,,OK,True,testuser
+GET,Local,03/15/2026 10:31:38,741,api/employees/count,200,,OK,True,admin
+GET,Local,03/15/2026 10:31:39,964,api/employees,200,,OK,True,admin
+GET,Local,03/15/2026 10:31:39,964,api/employees,200,,OK,True,testuser
