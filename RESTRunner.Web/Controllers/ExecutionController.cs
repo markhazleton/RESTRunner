@@ -428,7 +428,15 @@ public class ExecutionController : Controller
         }
 
         var rows = new List<ExecutionResultRow>();
-        var lines = await System.IO.File.ReadAllLinesAsync(history.ResultsFilePath);
+
+        // Open with FileShare.ReadWrite so we can read while CsvOutput still holds a write lock
+        string[] lines;
+        using (var fs = new FileStream(history.ResultsFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        using (var sr = new StreamReader(fs, System.Text.Encoding.UTF8))
+        {
+            var content = await sr.ReadToEndAsync();
+            lines = content.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        }
 
         // Skip header (index 0), parse each data row
         foreach (var line in lines.Skip(1))

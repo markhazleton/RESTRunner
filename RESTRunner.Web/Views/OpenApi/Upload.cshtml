@@ -1,0 +1,339 @@
+@model RESTRunner.Web.Models.ViewModels.OpenApiUploadViewModel
+@{
+    ViewData["Title"] = "Import OpenAPI Specification";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1 class="h2 mb-1">Import Specification</h1>
+            <p class="text-muted mb-0">Upload an OpenAPI 3.x or Swagger 2.0 JSON file to start testing your API</p>
+        </div>
+        <a href="/OpenApi" class="btn btn-outline-secondary">Back to Specifications</a>
+    </div>
+
+    @if (TempData["Warning"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show">
+            @TempData["Warning"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+        <!-- ── Upload form ─────────────────────────────────────────────── -->
+        <div class="col-lg-7">
+            <form asp-action="Upload" method="post" enctype="multipart/form-data"
+                  class="needs-validation" novalidate id="uploadForm">
+                @Html.AntiForgeryToken()
+
+                <div class="card mb-3">
+                    <div class="card-header fw-semibold">Specification File</div>
+                    <div class="card-body">
+                        <!-- Drop zone -->
+                        <div id="dropZone" class="border rounded p-5 text-center mb-3"
+                             style="border-style:dashed!important;border-width:2px!important;cursor:pointer;transition:background .2s;">
+                            <div id="dropContent">
+                                <div class="fs-1 text-muted mb-2">{ }</div>
+                                <p class="mb-1 fw-semibold">Drag &amp; drop your OpenAPI JSON here</p>
+                                <p class="text-muted small mb-3">or click to browse &mdash; max 10&nbsp;MB &mdash; .json accepted</p>
+                                <input asp-for="SpecFile" type="file" id="SpecFile" accept=".json" class="d-none" required>
+                                <button type="button" class="btn btn-outline-primary"
+                                        onclick="document.getElementById('SpecFile').click()">Choose File</button>
+                            </div>
+                            <div id="fileSelected" class="d-none">
+                                <div class="fs-2 text-success mb-2">&#10003;</div>
+                                <p class="fw-semibold mb-1" id="fileName"></p>
+                                <p class="text-muted small" id="fileSize"></p>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="changeFileBtn">Change file</button>
+                            </div>
+                        </div>
+                        <span asp-validation-for="SpecFile" class="text-danger small"></span>
+                        <div id="parseResult" class="d-none alert alert-success py-2 small mt-2"></div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-header fw-semibold">Metadata</div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-semibold">
+                                Display Title <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Title" class="form-control" id="titleInput"
+                                   placeholder="Auto-filled from spec info.title — edit if needed" required>
+                            <div class="form-text">Taken from the <code>info.title</code> field in your spec. Edit freely.</div>
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-semibold">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="2"
+                                      placeholder="Optional note about this spec (overrides info.description if provided)"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DefaultBaseUrl" class="form-label fw-semibold">Default Base URL</label>
+                            <input asp-for="DefaultBaseUrl" class="form-control font-monospace" id="baseUrlInput"
+                                   placeholder="https://api.example.com/v1">
+                            <div class="form-text">
+                                Auto-detected from <code>servers[0].url</code> (OpenAPI 3.x) or <code>host + basePath</code> (Swagger 2.0).
+                                Override here if you want to test against a different environment (e.g. localhost vs production).
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="TagsString" class="form-label fw-semibold">Your Tags</label>
+                            <input asp-for="TagsString" class="form-control"
+                                   placeholder="internal, v2, payment-team (comma-separated)">
+                            <div class="form-text">
+                                Your own organisational labels &mdash; separate from the <code>tags</code> declared inside the spec.
+                                Useful for filtering in the spec list.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="/OpenApi" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4">Import Specification</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ── Reference sidebar ──────────────────────────────────────── -->
+        <div class="col-lg-5">
+
+            <!-- What RESTRunner does with this file -->
+            <div class="card mb-3 border-primary">
+                <div class="card-header fw-semibold text-primary">What happens when you import?</div>
+                <div class="card-body small">
+                    <p class="mb-2">RESTRunner parses the JSON file entirely in-browser to auto-fill the form, then uploads
+                    it to the server where a full server-side parse extracts:</p>
+                    <ul class="mb-0">
+                        <li><strong>Endpoints</strong> &mdash; every path + HTTP-method combination in <code>paths</code></li>
+                        <li><strong>Parameters</strong> &mdash; path, query, header, and cookie params with types &amp; requirements</li>
+                        <li><strong>Request body schemas</strong> &mdash; JSON examples and schema hints for POST/PUT/PATCH</li>
+                        <li><strong>Servers</strong> &mdash; all declared base URLs so you can pick one during testing</li>
+                        <li><strong>Tags</strong> &mdash; logical endpoint groups shown as sections in the Test Runner</li>
+                        <li><strong>Security schemes</strong> &mdash; Bearer, API Key, Basic, OAuth descriptors</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Format support -->
+            <div class="card mb-3">
+                <div class="card-header fw-semibold">Supported Formats</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-success">OpenAPI 3.x</span>
+                            <span class="badge bg-light text-dark border">Recommended</span>
+                        </div>
+                        <p class="small text-muted mb-1">
+                            The current standard. The spec root contains <code>"openapi": "3.0.x"</code> or <code>"3.1.x"</code>.
+                            Supports <code>servers</code> arrays (multiple environments), <code>requestBody</code> as a
+                            distinct concept, <code>components</code> for reusable schemas, and richer security scheme definitions.
+                        </p>
+                        <p class="small text-muted mb-0">
+                            <strong>3.1</strong> adds full JSON Schema draft 2020-12 alignment and native webhook support.
+                        </p>
+                    </div>
+                    <hr class="my-2">
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="badge bg-info text-dark">Swagger 2.0</span>
+                            <span class="badge bg-secondary">Legacy</span>
+                        </div>
+                        <p class="small text-muted mb-0">
+                            The original format. Root contains <code>"swagger": "2.0"</code>.
+                            Base URL is constructed from <code>host</code>, <code>basePath</code>, and <code>schemes</code>.
+                            Body is expressed as a <code>body</code> parameter rather than a <code>requestBody</code> object.
+                            Still extremely common &mdash; many tools generate this format by default.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Where to find your spec -->
+            <div class="card mb-3">
+                <div class="card-header fw-semibold">Where to find your spec</div>
+                <div class="card-body small">
+                    <div class="mb-3 pb-3 border-bottom">
+                        <strong>ASP.NET Core with Swashbuckle</strong>
+                        <p class="text-muted mb-1">Navigate to your app and append <code>/swagger/v1/swagger.json</code>.
+                        Right-click &rarr; Save As to download the file. You can also click the spec URL shown
+                        at the top of <code>/swagger</code>.</p>
+                    </div>
+                    <div class="mb-3 pb-3 border-bottom">
+                        <strong>Swagger UI (any platform)</strong>
+                        <p class="text-muted mb-1">The spec URL is shown at the top of the Swagger UI page, e.g.
+                        <code>https://api.example.com/v1/openapi.json</code>.
+                        Download it directly from that URL.</p>
+                    </div>
+                    <div class="mb-3 pb-3 border-bottom">
+                        <strong>Postman</strong>
+                        <p class="text-muted mb-1">Open your Collection &rarr; <em>&hellip;</em> menu &rarr; Export &rarr; select
+                        <strong>OpenAPI 3.0</strong>. Save the resulting JSON file.</p>
+                    </div>
+                    <div class="mb-3 pb-3 border-bottom">
+                        <strong>API Gateways (AWS, Azure, Kong)</strong>
+                        <p class="text-muted mb-1">Most gateways have an "Export as OpenAPI" option in their console or CLI.
+                        AWS API Gateway: Stages &rarr; Export &rarr; OpenAPI 3.</p>
+                    </div>
+                    <div>
+                        <strong>Write your own</strong>
+                        <p class="text-muted mb-0">Start from the minimal example on the left panel, or use
+                        the <a href="https://editor.swagger.io/" target="_blank" rel="noopener">Swagger Editor</a>
+                        for a browser-based authoring environment with real-time validation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Annotated minimal spec -->
+            <div class="card">
+                <div class="card-header fw-semibold">Annotated Minimal OpenAPI 3.0</div>
+                <div class="card-body p-0">
+                    <pre class="p-3 mb-0" style="font-size:.7rem;background:var(--bs-tertiary-bg);line-height:1.6"><code>{
+  <span class="text-info">"openapi"</span>: <span class="text-warning">"3.0.3"</span>,        <span class="text-muted">// format identifier</span>
+  <span class="text-info">"info"</span>: {
+    <span class="text-info">"title"</span>: <span class="text-warning">"My API"</span>,
+    <span class="text-info">"version"</span>: <span class="text-warning">"1.0.0"</span>     <span class="text-muted">// your API's version</span>
+  },
+  <span class="text-info">"servers"</span>: [{            <span class="text-muted">// where to call it</span>
+    <span class="text-info">"url"</span>: <span class="text-warning">"https://api.example.com"</span>
+  }],
+  <span class="text-info">"paths"</span>: {
+    <span class="text-info">"/users"</span>: {           <span class="text-muted">// a route</span>
+      <span class="text-info">"get"</span>: {            <span class="text-muted">// an operation</span>
+        <span class="text-info">"summary"</span>: <span class="text-warning">"List users"</span>,
+        <span class="text-info">"tags"</span>: [<span class="text-warning">"Users"</span>],  <span class="text-muted">// groups endpoints</span>
+        <span class="text-info">"parameters"</span>: [{
+          <span class="text-info">"name"</span>: <span class="text-warning">"limit"</span>,
+          <span class="text-info">"in"</span>: <span class="text-warning">"query"</span>,    <span class="text-muted">// ?limit=20</span>
+          <span class="text-info">"schema"</span>: { <span class="text-info">"type"</span>: <span class="text-warning">"integer"</span> }
+        }],
+        <span class="text-info">"responses"</span>: {
+          <span class="text-info">"200"</span>: { <span class="text-info">"description"</span>: <span class="text-warning">"OK"</span> }
+        }
+      },
+      <span class="text-info">"post"</span>: {           <span class="text-muted">// another operation</span>
+        <span class="text-info">"summary"</span>: <span class="text-warning">"Create user"</span>,
+        <span class="text-info">"requestBody"</span>: {   <span class="text-muted">// body for POST</span>
+          <span class="text-info">"required"</span>: true,
+          <span class="text-info">"content"</span>: {
+            <span class="text-info">"application/json"</span>: {
+              <span class="text-info">"schema"</span>: { <span class="text-info">"type"</span>: <span class="text-warning">"object"</span> }
+            }
+          }
+        },
+        <span class="text-info">"responses"</span>: {
+          <span class="text-info">"201"</span>: { <span class="text-info">"description"</span>: <span class="text-warning">"Created"</span> }
+        }
+      }
+    }
+  }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    const dropZone   = document.getElementById('dropZone');
+    const fileInput  = document.getElementById('SpecFile');
+    const dropContent = document.getElementById('dropContent');
+    const fileSelected = document.getElementById('fileSelected');
+    const fileNameEl = document.getElementById('fileName');
+    const fileSizeEl = document.getElementById('fileSize');
+    const titleInput = document.getElementById('titleInput');
+    const baseUrlInput = document.getElementById('baseUrlInput');
+    const changeFileBtn = document.getElementById('changeFileBtn');
+    const parseResult = document.getElementById('parseResult');
+
+    function fmt(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    function showFile(file) {
+        fileNameEl.textContent = file.name;
+        fileSizeEl.textContent = fmt(file.size);
+        dropContent.classList.add('d-none');
+        fileSelected.classList.remove('d-none');
+        parseResult.classList.add('d-none');
+
+        if (!titleInput.value)
+            titleInput.value = file.name.replace(/\.(json|yaml|yml)$/i, '').replace(/[-_]/g, ' ');
+
+        if (file.name.toLowerCase().endsWith('.json')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const spec = JSON.parse(e.target.result);
+                    const detected = [];
+
+                    const title = spec?.info?.title;
+                    if (title && (!titleInput.value || titleInput.value === file.name.replace(/\.json$/i, ''))) {
+                        titleInput.value = title;
+                        detected.push('title: "' + title + '"');
+                    }
+
+                    const version = spec?.info?.version;
+                    if (version) detected.push('version: ' + version);
+
+                    const url = spec?.servers?.[0]?.url
+                        || (spec?.host ? (spec?.schemes?.[0] || 'https') + '://' + spec.host + (spec.basePath || '/') : null);
+                    if (url && !baseUrlInput.value) {
+                        baseUrlInput.value = url;
+                        detected.push('server: ' + url);
+                    }
+
+                    const fmt2 = spec?.openapi ? 'OpenAPI ' + spec.openapi : (spec?.swagger ? 'Swagger ' + spec.swagger : null);
+                    if (fmt2) detected.push('format: ' + fmt2);
+
+                    // count endpoints
+                    const methods = ['get','post','put','delete','patch','head','options','trace'];
+                    let count = 0;
+                    if (spec?.paths) Object.values(spec.paths).forEach(p => methods.forEach(m => { if (p[m]) count++; }));
+                    if (count) detected.push(count + ' endpoint' + (count !== 1 ? 's' : '') + ' found');
+
+                    if (detected.length) {
+                        parseResult.textContent = 'Auto-detected from spec: ' + detected.join(' · ');
+                        parseResult.classList.remove('d-none');
+                    }
+                } catch (_) {
+                    parseResult.textContent = 'Could not pre-parse JSON — the server will validate on import.';
+                    parseResult.className = 'alert alert-warning py-2 small mt-2';
+                    parseResult.classList.remove('d-none');
+                }
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    fileInput.addEventListener('change', function () { if (this.files[0]) showFile(this.files[0]); });
+
+    changeFileBtn.addEventListener('click', function () {
+        fileInput.value = '';
+        dropContent.classList.remove('d-none');
+        fileSelected.classList.add('d-none');
+        parseResult.classList.add('d-none');
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('click', function (e) { if (!e.target.closest('button')) fileInput.click(); });
+    dropZone.addEventListener('dragover', function (e) { e.preventDefault(); dropZone.style.background = 'rgba(13,110,253,.05)'; });
+    dropZone.addEventListener('dragleave', function () { dropZone.style.background = ''; });
+    dropZone.addEventListener('drop', function (e) {
+        e.preventDefault(); dropZone.style.background = '';
+        const file = e.dataTransfer.files[0];
+        if (file) { const dt = new DataTransfer(); dt.items.add(file); fileInput.files = dt.files; showFile(file); }
+    });
+})();
+</script>
+}

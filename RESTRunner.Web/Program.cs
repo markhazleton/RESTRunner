@@ -111,6 +111,7 @@ builder.Services.AddScoped<IHttpRequestResultService>(provider =>
 builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IConfigurationService, FileConfigurationService>();
 builder.Services.AddScoped<ICollectionService, FileCollectionService>();
+builder.Services.AddScoped<IOpenApiService, FileOpenApiService>();
 builder.Services.AddSingleton<IExecutionService, RealExecutionService>();
 builder.Services.AddScoped<SampleCRUDService>(); // <-- Add SampleCRUDService registration
 

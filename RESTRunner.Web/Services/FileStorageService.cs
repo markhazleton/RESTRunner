@@ -23,7 +23,8 @@ public class FileStorageService : IFileStorageService
             var directories = new[]
             {
                 "configurations",
-                "collections", 
+                "collections",
+                "openapi",
                 "results",
                 "logs"
             };
@@ -71,6 +72,23 @@ public class FileStorageService : IFileStorageService
         var filePath = Path.Combine(_dataPath, "collections", fileName);
         await File.WriteAllTextAsync(filePath, content);
         _logger.LogDebug("Saved collection file: {FilePath}", filePath);
+        return filePath;
+    }
+
+    public async Task<string> SaveOpenApiAsync(string fileName, IFormFile file)
+    {
+        var filePath = Path.Combine(_dataPath, "openapi", fileName);
+        using var stream = new FileStream(filePath, FileMode.Create);
+        await file.CopyToAsync(stream);
+        _logger.LogDebug("Saved OpenAPI file: {FilePath}", filePath);
+        return filePath;
+    }
+
+    public async Task<string> SaveOpenApiAsync(string fileName, string content)
+    {
+        var filePath = Path.Combine(_dataPath, "openapi", fileName);
+        await File.WriteAllTextAsync(filePath, content);
+        _logger.LogDebug("Saved OpenAPI file: {FilePath}", filePath);
         return filePath;
     }
 

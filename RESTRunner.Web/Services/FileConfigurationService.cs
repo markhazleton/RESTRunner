@@ -12,13 +12,20 @@ public class FileConfigurationService : IConfigurationService
 {
     private readonly IFileStorageService _fileStorage;
     private readonly ILogger<FileConfigurationService> _logger;
-    private readonly JsonSerializerOptions _jsonOptions;
+    private readonly JsonSerializerOptions _readOptions;
+    private readonly JsonSerializerOptions _writeOptions;
 
     public FileConfigurationService(IFileStorageService fileStorage, ILogger<FileConfigurationService> logger)
     {
         _fileStorage = fileStorage;
         _logger = logger;
-        _jsonOptions = new JsonSerializerOptions
+        // Read: case-insensitive so camelCase JSON keys match PascalCase C# properties
+        _readOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+        // Write: camelCase output for consistency with existing files
+        _writeOptions = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = true
@@ -39,7 +46,7 @@ public class FileConfigurationService : IConfigurationService
                 {
                     try
                     {
-                        var config = JsonSerializer.Deserialize<TestConfiguration>(content, _jsonOptions);
+                        var config = JsonSerializer.Deserialize<TestConfiguration>(content, _readOptions);
                         if (config != null)
                             configurations.Add(config);
                     }
@@ -99,11 +106,11 @@ public class FileConfigurationService : IConfigurationService
 
             _logger.LogInformation("Configuration file content loaded, length: {ContentLength}", content.Length);
             
-            var config = JsonSerializer.Deserialize<TestConfiguration>(content, _jsonOptions);
-            
+            var config = JsonSerializer.Deserialize<TestConfiguration>(content, _readOptions);
+
             if (config != null)
             {
-                _logger.LogInformation("Configuration deserialized successfully: {Name}, Runner instances: {Instances}, users: {Users}, requests: {Requests}", 
+                _logger.LogInformation("Configuration deserialized successfully: {Name}, Runner instances: {Instances}, users: {Users}, requests: {Requests}",
                     config.Name, config.Runner?.Instances?.Count ?? 0, config.Runner?.Users?.Count ?? 0, config.Runner?.Requests?.Count ?? 0);
             }
             
@@ -130,7 +137,7 @@ public class FileConfigurationService : IConfigurationService
             configuration.CreatedAt = DateTime.UtcNow;
             configuration.ModifiedAt = DateTime.UtcNow;
 
-            var json = JsonSerializer.Serialize(configuration, _jsonOptions);
+            var json = JsonSerializer.Serialize(configuration, _writeOptions);
             var fileName = $"{configuration.Id}.json";
             await _fileStorage.SaveConfigurationAsync(fileName, json);
 
@@ -150,7 +157,7 @@ public class FileConfigurationService : IConfigurationService
         {
             configuration.ModifiedAt = DateTime.UtcNow;
 
-            var json = JsonSerializer.Serialize(configuration, _jsonOptions);
+            var json = JsonSerializer.Serialize(configuration, _writeOptions);
             var fileName = $"{configuration.Id}.json";
             await _fileStorage.SaveConfigurationAsync(fileName, json);
 
@@ -206,7 +213,7 @@ public class FileConfigurationService : IConfigurationService
             var config = await GetByIdAsync(id);
             if (config == null) return null;
 
-            return JsonSerializer.Serialize(config, _jsonOptions);
+            return JsonSerializer.Serialize(config, _writeOptions);
         }
         catch (Exception ex)
         {
@@ -219,7 +226,7 @@ public class FileConfigurationService : IConfigurationService
     {
         try
         {
-            var config = JsonSerializer.Deserialize<TestConfiguration>(json, _jsonOptions);
+            var config = JsonSerializer.Deserialize<TestConfiguration>(json, _readOptions);
             if (config == null)
                 throw new ArgumentException("Invalid JSON format");
 

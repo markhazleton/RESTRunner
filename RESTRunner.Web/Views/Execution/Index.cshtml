@@ -24,7 +24,7 @@
                         <option value="">All Configurations</option>
                         @foreach (var config in configurations)
                         {
-                            <option value="@config.Id" @(config.Id == configurationId ? "selected" : "")>
+                            <option value="@config.Id" selected="@(config.Id == configurationId)">
                                 @config.Name
                             </option>
                         }
@@ -33,9 +33,9 @@
                 <div class="col-md-3">
                     <label for="pageSize" class="form-label">Page Size</label>
                     <select name="pageSize" id="pageSize" class="form-select">
-                        <option value="25" @(pageSize == 25 ? "selected" : "")>25</option>
-                        <option value="50" @(pageSize == 50 ? "selected" : "")>50</option>
-                        <option value="100" @(pageSize == 100 ? "selected" : "")>100</option>
+                        <option value="25" selected="@(pageSize == 25)">25</option>
+                        <option value="50" selected="@(pageSize == 50)">50</option>
+                        <option value="100" selected="@(pageSize == 100)">100</option>
                     </select>
                 </div>
                 <div class="col-md-3">
