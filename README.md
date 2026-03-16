@@ -2,7 +2,6 @@
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/10.0)
 [![License](https://img.shields.io/github/license/markhazleton/RESTRunner)](https://github.com/markhazleton/RESTRunner/blob/main/LICENSE)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/markhazleton/RESTRunner/build.yml?branch=main)](https://github.com/markhazleton/RESTRunner/actions)
 [![GitHub Issues](https://img.shields.io/github/issues/markhazleton/RESTRunner)](https://github.com/markhazleton/RESTRunner/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/markhazleton/RESTRunner)](https://github.com/markhazleton/RESTRunner/stargazers)
 [![Release](https://img.shields.io/github/v/release/markhazleton/RESTRunner)](https://github.com/markhazleton/RESTRunner/releases/latest)
@@ -151,6 +150,11 @@ See [CHANGELOG.md](https://github.com/markhazleton/RESTRunner/blob/main/CHANGELO
 
 ## ?? Contributing
 
+Repository engineering rules are defined in `.documentation/memory/constitution.md`.
+Until CI is added, contributors are expected to run `dotnet build` and `dotnet test`
+locally before merging changes. Run `npm run build` when editing
+`RESTRunner.Web` asset-pipeline inputs.
+
 ### Reporting Issues
 
 When reporting issues, please include:
@@ -162,6 +166,7 @@ When reporting issues, please include:
 
 ## ?? Documentation
 
+- **Engineering Constitution**: See [.documentation/memory/constitution.md](.documentation/memory/constitution.md)
 - **Upgrade Guide**: See [.github/upgrades/upgrade-complete-summary.md](.github/upgrades/upgrade-complete-summary.md)
 - **Assessment Report**: [.github/upgrades/assessment.md](.github/upgrades/assessment.md)
 - **Migration Plan**: [.github/upgrades/plan.md](.github/upgrades/plan.md)

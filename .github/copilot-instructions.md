@@ -1,7 +1,9 @@
 # RESTRunner AI Coding Instructions
 
 ## Project Overview
-RESTRunner is a .NET 9.0 API testing, performance benchmarking, and regression testing solution that imports Postman collections and executes them against multiple instances with detailed statistics. The solution includes both a console application for batch testing and a web application (Razor Pages + minimal APIs) for interactive testing.
+RESTRunner is a .NET 10.0 API testing, performance benchmarking, and regression testing solution that imports Postman collections and executes them against multiple instances with detailed statistics. The solution includes both a console application for batch testing and a web application (Razor Pages + minimal APIs) for interactive testing.
+
+Development rules are governed by `.documentation/memory/constitution.md`. Follow it when there is a conflict with older ad hoc guidance.
 
 ## Solution Architecture
 
@@ -49,7 +51,7 @@ global using System.Runtime.Serialization;
 ```
 **Rule**: Add new domain types to GlobalUsings instead of per-file using statements.
 
-### Primary Constructor Pattern (.NET 9)
+### Primary Constructor Pattern (.NET 10)
 Service classes use primary constructors with dependency injection:
 ```csharp
 public class ExecuteRunnerService(
@@ -132,7 +134,7 @@ public void CompareRunner_GetTotalTestCount_ReturnsCorrectValue()
 builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IConfigurationService, FileConfigurationService>();
 builder.Services.AddScoped<ICollectionService, FileCollectionService>();
-builder.Services.AddScoped<IExecutionService, SimpleExecutionService>();
+builder.Services.AddSingleton<IExecutionService, RealExecutionService>();
 ```
 
 ### Minimal API Endpoints
@@ -182,7 +184,7 @@ All projects use deterministic versioning in `.csproj`:
 <AssemblyVersion>6.$([System.DateTime]::UtcNow.ToString(yyMM)).$([System.DateTime]::UtcNow.ToString(ddHH)).$([System.DateTime]::UtcNow.ToString(mmss))</AssemblyVersion>
 ```
 - Format: `6.YYMM.DDHH.MMSS`
-- .NET SDK version locked in `global.json`: `"version": "9.0.305"`
+- SDK selection currently uses `global.json` with `rollForward` set to `latestMajor`
 
 ## Common Tasks
 

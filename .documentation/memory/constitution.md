@@ -1,50 +1,143 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: template -> 1.0.0
+- Modified principles:
+	- Principle slot 1 -> I. Layered Domain-First Architecture
+	- Principle slot 2 -> II. Project-Wide C# Conventions
+	- Principle slot 3 -> III. MSTest Quality Gates
+	- Principle slot 4 -> IV. Contextual Logging And Public Documentation
+	- Principle slot 5 -> V. Boundary Validation And Maintainability
+- Added sections:
+	- Engineering Standards
+	- Delivery Workflow
+- Removed sections:
+	- None
+- Templates requiring updates:
+	- ✅ .documentation/templates/plan-template.md
+	- ✅ .documentation/templates/spec-template.md
+	- ✅ .documentation/templates/tasks-template.md
+	- ✅ README.md
+	- ✅ .github/copilot-instructions.md
+	- ✅ No command templates present under .documentation/templates/commands/
+- Follow-up TODOs:
+	- Add a CI workflow that enforces the build and test quality gates defined here
+-->
+# RESTRunner Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Layered Domain-First Architecture
+RESTRunner MUST preserve the existing domain-first layering of the solution.
+Domain models and contracts belong in RESTRunner.Domain, execution behavior belongs
+behind service interfaces, and console or web entry points MUST compose services
+rather than absorb business logic. This keeps CompareRunner behavior reusable
+across the console runner, web execution flows, and import paths.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+- Domain models and interfaces MUST remain free of UI and transport concerns.
+- Execution behavior MUST be exposed through DI-friendly service boundaries.
+- New features MUST fit the existing project layering unless the plan documents a
+	justified exception.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Project-Wide C# Conventions
+RESTRunner MUST keep the current C# defaults consistent across projects so the
+solution behaves as one codebase rather than a collection of unrelated styles.
+Projects MUST target the active solution framework, MUST enable nullable reference
+types, and MUST enable implicit usings. Shared imports that are broadly used
+within a project SHOULD be added to GlobalUsings.cs instead of repeated locally.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+- Shared project-wide imports SHOULD live in GlobalUsings.cs.
+- Namespace and folder structure SHOULD remain aligned with project boundaries.
+- New cross-project types SHOULD be introduced in the owning project and then
+	surfaced through that project's standard import conventions.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. MSTest Quality Gates
+MSTest is the standard automated test framework for this repository, and quality
+gates MUST include both build and test validation. New domain logic and
+regression-prone behavior MUST include automated coverage. This rule is strict
+because the repository already relies on MSTest conventions in the dedicated test
+project and the public documentation already implies automated validation.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+- Automated tests MUST use MSTest unless the constitution is amended.
+- Domain and regression-prone changes MUST add or update automated tests.
+- Changes MUST be validated with dotnet build and dotnet test before completion.
+- Repository automation MUST enforce build and test checks once CI is added.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Contextual Logging And Public Documentation
+Operational code MUST use the logging and documentation style that matches its
+runtime context. Web and service layers MUST use ILogger with structured message
+templates so failures and execution progress remain diagnosable. Console entry
+points MAY use Console.WriteLine for operator-facing summaries. Public-facing
+controllers, hubs, endpoints, and externally consumed models MUST include XML
+documentation when practical so their contract is discoverable without code
+inspection.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+- Hosted services and controllers MUST log exceptions with relevant context.
+- Web and service code MUST prefer structured ILogger messages.
+- Public-facing surfaces MUST keep XML documentation current when behavior
+	changes.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Boundary Validation And Maintainability
+External input SHOULD be validated at the application boundary before deeper
+processing, using ASP.NET Core validation features, DataAnnotations,
+antiforgery protection, request-size limits, or an approved equivalent. Large,
+multi-responsibility files SHOULD be reduced over time when touched, because the
+web project already contains several oversized files that are harder to review
+and evolve safely. These are SHOULD-level rules because the current repository
+shows partial adoption rather than universal enforcement.
+
+- Public input SHOULD define validation, failure behavior, and size or format
+	constraints when applicable.
+- Unsafe uploads and malformed requests SHOULD fail fast with actionable errors.
+- Oversized files SHOULD be decomposed when a change naturally exposes a clean
+	extraction point.
+
+## Engineering Standards
+
+- File-backed JSON storage under RESTRunner.Web/Data is the default persistence
+	model unless a plan explicitly introduces another store.
+- Shared execution statistics MUST remain thread-safe and continue using safe
+	concurrency primitives such as Interlocked, ConcurrentDictionary, and
+	ConcurrentBag where shared mutation exists.
+- HTTP-facing code SHOULD prefer explicit error responses such as ProblemDetails
+	or equivalent typed failure payloads rather than ad hoc string errors.
+- Auto-generated files MAY remain large when regeneration is the source of truth,
+	but hand-maintained code SHOULD stay focused and cohesive.
+
+## Delivery Workflow
+
+- Specs, plans, and tasks MUST include a constitution check that verifies layer
+	boundaries, testing impact, logging impact, documentation impact, and input
+	validation impact.
+- Feature plans SHOULD map work onto the real solution structure:
+	RESTRunner.Domain, RESTRunner.Services.HttpClient, RESTRunner,
+	RESTRunner.Web, RESTRunner.PostmanImport, and RESTRunner.Domain.Tests.
+- Work that changes web assets SHOULD include npm build validation when the
+	change affects RESTRunner.Web/package.json-managed assets.
+- Pull request reviews SHOULD treat MUST rules as blocking and SHOULD rules as
+	improvement guidance that can be deferred with rationale.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution governs repository-wide engineering decisions and supersedes
+conflicting ad hoc guidance. Amendments MUST be made by updating this file in the
+same change set as any dependent templates or guidance files. The amendment
+process is documented but informal: a change proposal MUST describe the reason,
+the expected repository impact, and any follow-up migration work, but no
+dedicated approval role is currently required beyond normal repository review.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Versioning follows semantic versioning for governance:
+
+- MAJOR: Remove a principle, redefine a principle in a backward-incompatible way,
+	or materially loosen a mandatory rule.
+- MINOR: Add a new principle or materially expand mandatory guidance.
+- PATCH: Clarify wording, fix references, or make non-semantic refinements.
+
+Compliance review expectations:
+
+- Every plan and task set MUST check for constitution alignment.
+- Every implementation review SHOULD confirm testing, layering, logging,
+	documentation, and validation impacts.
+- Temporary exceptions MUST be documented in the relevant plan or pull request
+	with the simpler alternative that was rejected.
+
+**Version**: 1.0.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-15
