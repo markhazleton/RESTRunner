@@ -17,21 +17,27 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: [default: C# / .NET 10, or NEEDS CLARIFICATION]  
+**Primary Dependencies**: [e.g., ASP.NET Core MVC, minimal APIs, SignalR, Swashbuckle, CsvHelper, Newtonsoft.Json, WebSpark libs, or NEEDS CLARIFICATION]  
+**Storage**: [default: file-backed JSON under RESTRunner.Web/Data, or NEEDS CLARIFICATION]  
+**Testing**: [default: MSTest in RESTRunner.Domain.Tests, or NEEDS CLARIFICATION]  
+**Target Platform**: [default: console + ASP.NET Core web app on Windows/Linux/macOS, or NEEDS CLARIFICATION]
+**Project Type**: [default: multi-project .NET solution, or NEEDS CLARIFICATION]  
+**Performance Goals**: [domain-specific, e.g., throughput, latency, concurrency, or NEEDS CLARIFICATION]  
+**Constraints**: [domain-specific, e.g., thread safety, file size limits, layer boundaries, or NEEDS CLARIFICATION]  
+**Scale/Scope**: [domain-specific, e.g., iterations × instances × users × requests, or NEEDS CLARIFICATION]
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Layering preserved: domain, execution, import, console, and web responsibilities stay in the correct project.
+- C# defaults preserved: framework choice, nullable, implicit usings, and project-wide imports remain consistent.
+- Test impact defined: MSTest coverage is added or updated for domain and regression-prone changes.
+- Logging impact defined: web/service changes use ILogger; console reporting stays in entrypoints.
+- Public-surface documentation impact defined: controller, hub, endpoint, and externally consumed model docs are updated when behavior changes.
+- Boundary validation impact defined: external input validation and error behavior are explicit.
+- Validation commands listed: dotnet build, dotnet test, and npm run build when RESTRunner.Web assets change.
 
 ## Project Structure
 
@@ -56,39 +62,37 @@ specs/[###-feature]/
 -->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+RESTRunner.Domain/
+├── Models/
+├── Interfaces/
+├── Extensions/
+├── Constants/
+└── Outputs/
 
-tests/
-├── contract/
-├── integration/
-└── unit/
+RESTRunner.Services.HttpClient/
+└── ExecuteRunnerService.cs
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
+RESTRunner/
+├── Program.cs
+├── Extensions/
+└── Infrastructure/
 
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
+RESTRunner.Web/
+├── Program.cs
+├── Controllers/
+├── Services/
+├── Hubs/
+├── Models/
+├── Views/
+└── wwwroot/
 
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
+RESTRunner.PostmanImport/
+└── Models/
 
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+RESTRunner.Domain.Tests/
+├── Models/
+├── Extensions/
+└── Outputs/
 ```
 
 **Structure Decision**: [Document the selected structure and reference the real
