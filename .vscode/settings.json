@@ -9,6 +9,7 @@
     "chat.tools.terminal.autoApprove": {
         ".documentation/scripts/bash/": true,
         ".documentation/scripts/powershell/": true
-    }
+    },
+    "githubPullRequests.pullRequestDescription": "Copilot"
 }
 
