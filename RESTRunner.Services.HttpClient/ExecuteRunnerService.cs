@@ -1,7 +1,5 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
+﻿using Microsoft.Extensions.Logging;
 using System.Text;
-using Microsoft.Extensions.Logging;
 
 namespace RESTRunner.Services.HttpClientRunner;
 
@@ -47,7 +45,7 @@ public class ExecuteRunnerService(
         HttpResponseMessage? response = null;
         string requestPath = req.Path ?? string.Empty;
         string methodName = req.RequestMethod.ToString();
-        
+
         try
         {
             switch (req.RequestMethod)
@@ -58,7 +56,7 @@ public class ExecuteRunnerService(
                     response = await client.GetAsync(requestUri, ct);
                     sw.Stop();
                     break;
-                    
+
                 case HttpVerb.POST:
                     sw.Start();
                     requestUri = new($"{env.BaseUrl}{req.Path}");
@@ -66,7 +64,7 @@ public class ExecuteRunnerService(
                     response = await client.PostAsync(requestUri, content, ct);
                     sw.Stop();
                     break;
-                    
+
                 case HttpVerb.PUT:
                     sw.Start();
                     requestUri = new($"{env.BaseUrl}{req.Path}");
@@ -74,14 +72,14 @@ public class ExecuteRunnerService(
                     response = await client.PutAsync(requestUri, content, ct);
                     sw.Stop();
                     break;
-                    
+
                 case HttpVerb.DELETE:
                     sw.Start();
                     requestUri = new($"{env.BaseUrl}{req.Path}");
                     response = await client.DeleteAsync(requestUri, ct);
                     sw.Stop();
                     break;
-                    
+
                 case HttpVerb.HEAD:
                     sw.Start();
                     requestUri = new($"{env.BaseUrl}{req.Path}");
@@ -91,7 +89,7 @@ public class ExecuteRunnerService(
                     }
                     sw.Stop();
                     break;
-                    
+
                 case HttpVerb.OPTIONS:
                     sw.Start();
                     requestUri = new($"{env.BaseUrl}{req.Path}");
@@ -101,7 +99,7 @@ public class ExecuteRunnerService(
                     }
                     sw.Stop();
                     break;
-                    
+
                 case HttpVerb.PATCH:
                     sw.Start();
                     requestUri = new($"{env.BaseUrl}{req.Path}");
@@ -112,7 +110,7 @@ public class ExecuteRunnerService(
                     }
                     sw.Stop();
                     break;
-                    
+
                 case HttpVerb.MERGE:
                 case HttpVerb.COPY:
                     // For less common HTTP methods, use SendAsync with custom HttpMethod
@@ -129,7 +127,7 @@ public class ExecuteRunnerService(
                     }
                     sw.Stop();
                     break;
-                    
+
                 default:
                     logger.LogWarning("Unsupported HTTP method: {Method}", req.RequestMethod);
                     return null;
@@ -138,18 +136,18 @@ public class ExecuteRunnerService(
             // Update statistics
             var elapsedMs = sw.ElapsedMilliseconds;
             stats.AddResponseTime(elapsedMs);
-            
+
             // Thread-safe increment operations
             stats.IncrementTotalRequests();
             stats.RequestsByMethod.AddOrUpdate(methodName, 1, (_, count) => count + 1);
             stats.RequestsByInstance.AddOrUpdate(env.Name ?? "Unknown", 1, (_, count) => count + 1);
             stats.RequestsByUser.AddOrUpdate(user.UserName ?? "Unknown", 1, (_, count) => count + 1);
-            
+
             if (response != null)
             {
                 var statusCode = ((int)response.StatusCode).ToString();
                 stats.RequestsByStatusCode.AddOrUpdate(statusCode, 1, (_, count) => count + 1);
-                
+
                 if (response.IsSuccessStatusCode)
                 {
                     stats.IncrementSuccessfulRequests();
@@ -159,7 +157,7 @@ public class ExecuteRunnerService(
                     stats.IncrementFailedRequests();
                 }
 
-                logger.LogInformation("{InstanceName}:{StatusCode} IN:{ElapsedMilliseconds,7:n0}ms FOR: {RequestMethod}-{BaseUrl}{RequestPath}", 
+                logger.LogInformation("{InstanceName}:{StatusCode} IN:{ElapsedMilliseconds,7:n0}ms FOR: {RequestMethod}-{BaseUrl}{RequestPath}",
                     env.Name, (int)response.StatusCode, elapsedMs, req.RequestMethod, env.BaseUrl, requestPath);
             }
 
@@ -174,7 +172,7 @@ public class ExecuteRunnerService(
         {
             sw.Stop();
             var elapsedMs = sw.ElapsedMilliseconds;
-            
+
             // Update statistics for failed request
             stats.IncrementTotalRequests();
             stats.IncrementFailedRequests();
@@ -183,23 +181,23 @@ public class ExecuteRunnerService(
             stats.RequestsByInstance.AddOrUpdate(env.Name ?? "Unknown", 1, (_, count) => count + 1);
             stats.RequestsByUser.AddOrUpdate(user.UserName ?? "Unknown", 1, (_, count) => count + 1);
             stats.RequestsByStatusCode.AddOrUpdate("Error", 1, (_, count) => count + 1);
-            
+
             logger.LogError(ex, "HTTP request failed: {Method} {BaseUrl}{Path}", methodName, env.BaseUrl, requestPath);
-            
+
             // Return error result
             return CompareResult.CreateFailure(
-                env.Name ?? "Unknown", 
-                requestPath, 
-                methodName, 
-                ex.Message, 
-                elapsedMs, 
+                env.Name ?? "Unknown",
+                requestPath,
+                methodName,
+                ex.Message,
+                elapsedMs,
                 env.SessionId);
         }
         catch (Exception ex)
         {
             sw.Stop();
             var elapsedMs = sw.ElapsedMilliseconds;
-            
+
             // Update statistics for failed request
             stats.IncrementTotalRequests();
             stats.IncrementFailedRequests();
@@ -208,16 +206,16 @@ public class ExecuteRunnerService(
             stats.RequestsByInstance.AddOrUpdate(env.Name ?? "Unknown", 1, (_, count) => count + 1);
             stats.RequestsByUser.AddOrUpdate(user.UserName ?? "Unknown", 1, (_, count) => count + 1);
             stats.RequestsByStatusCode.AddOrUpdate("Exception", 1, (_, count) => count + 1);
-            
+
             logger.LogError(ex, "Unexpected error during request: {Method} {BaseUrl}{Path}", methodName, env.BaseUrl, requestPath);
-            
+
             // Return error result
             return CompareResult.CreateFailure(
-                env.Name ?? "Unknown", 
-                requestPath, 
-                methodName, 
-                ex.Message, 
-                elapsedMs, 
+                env.Name ?? "Unknown",
+                requestPath,
+                methodName,
+                ex.Message,
+                elapsedMs,
                 env.SessionId);
         }
         finally
@@ -241,7 +239,7 @@ public class ExecuteRunnerService(
 
         string content = await response.Content.ReadAsStringAsync(ct);
         string shortPath = req.Path ?? string.Empty;
-        
+
         return new CompareResult()
         {
             UserName = user.UserName,
@@ -273,26 +271,26 @@ public class ExecuteRunnerService(
 
         var tasks = new List<Task>();
         var semaphore = new SemaphoreSlim(initialCount: 10);
-        
+
         try
         {
-            logger.LogInformation("Starting REST Runner execution with {InstanceCount} instances, {UserCount} users, {RequestCount} requests", 
+            logger.LogInformation("Starting REST Runner execution with {InstanceCount} instances, {UserCount} users, {RequestCount} requests",
                 compareRunner.Instances.Count, compareRunner.Users.Count, compareRunner.Requests.Count);
 
             for (int i = 0; i < 100; i++)
             {
                 ct.ThrowIfCancellationRequested();
-                
+
                 logger.LogInformation("Starting Iteration {Iteration}", i);
-                
+
                 foreach (var env in compareRunner.Instances)
                 {
                     logger.LogInformation("Starting {InstanceName} with {UserCount} users", env.Name, compareRunner.Users.Count);
-                    
+
                     foreach (var user in compareRunner.Users)
                     {
                         logger.LogInformation("Starting {UserName} with {RequestCount} requests", user.UserName, compareRunner.Requests.Count);
-                        
+
                         foreach (var req in compareRunner.Requests)
                         {
                             await semaphore.WaitAsync(ct);
@@ -313,9 +311,9 @@ public class ExecuteRunnerService(
                                 }
                                 catch (Exception ex)
                                 {
-                                    logger.LogError(ex, "Error processing request for {Instance} - {User} - {Method} {Path}", 
+                                    logger.LogError(ex, "Error processing request for {Instance} - {User} - {Method} {Path}",
                                         env.Name, user.UserName, req.RequestMethod, req.Path);
-                                    
+
                                     // Write error result to output
                                     var errorResult = CompareResult.CreateFailure(
                                         env.Name ?? "Unknown",
@@ -324,7 +322,7 @@ public class ExecuteRunnerService(
                                         ex.Message,
                                         0,
                                         env.SessionId);
-                                    
+
                                     output.WriteError(errorResult);
                                 }
                                 finally
@@ -340,7 +338,7 @@ public class ExecuteRunnerService(
             // Wait for all tasks to complete
             logger.LogInformation("Waiting for {TaskCount} tasks to complete", tasks.Count);
             await Task.WhenAll(tasks);
-            
+
             logger.LogInformation("All tasks completed successfully");
         }
         catch (OperationCanceledException) when (ct.IsCancellationRequested)
@@ -355,10 +353,10 @@ public class ExecuteRunnerService(
         {
             // Finalize statistics
             stats.FinalizeStatistics();
-            
+
             // Log final statistics
             logger.LogInformation("Execution completed. {Statistics}", stats.ToString());
-            logger.LogInformation("Detailed Statistics - P50: {P50}ms, P95: {P95}ms, P99: {P99}ms", 
+            logger.LogInformation("Detailed Statistics - P50: {P50}ms, P95: {P95}ms, P99: {P99}ms",
                 stats.GetResponseTimePercentile(50),
                 stats.GetResponseTimePercentile(95),
                 stats.GetResponseTimePercentile(99));

@@ -19,18 +19,18 @@ public sealed class StrongDictionary<TKey, TValue> : IDisposable where TKey : no
     /// <summary>
     /// Initializes a new instance of the <see cref="StrongDictionary{TKey, TValue}"/> class.
     /// </summary>
-    public StrongDictionary() 
-    { 
-        _dictionary = new Dictionary<TKey, TValue>(); 
+    public StrongDictionary()
+    {
+        _dictionary = new Dictionary<TKey, TValue>();
     }
 
     /// <summary>
     /// Initializes a new instance with an initial capacity
     /// </summary>
     /// <param name="capacity">Initial capacity of the dictionary</param>
-    public StrongDictionary(int capacity) 
-    { 
-        _dictionary = new Dictionary<TKey, TValue>(capacity); 
+    public StrongDictionary(int capacity)
+    {
+        _dictionary = new Dictionary<TKey, TValue>(capacity);
     }
 
     /// <summary>
@@ -60,13 +60,13 @@ public sealed class StrongDictionary<TKey, TValue> : IDisposable where TKey : no
         {
             ArgumentNullException.ThrowIfNull(key);
             ThrowIfDisposed();
-            
+
             if (value is null)
             {
                 _dictionary.Remove(key);
                 return;
             }
-            
+
             _dictionary[key] = value;
         }
     }
@@ -79,7 +79,7 @@ public sealed class StrongDictionary<TKey, TValue> : IDisposable where TKey : no
     {
         ArgumentNullException.ThrowIfNull(value);
         ThrowIfDisposed();
-        
+
         foreach (var (key, val) in value)
         {
             Add(key, val);
@@ -96,7 +96,7 @@ public sealed class StrongDictionary<TKey, TValue> : IDisposable where TKey : no
         ArgumentNullException.ThrowIfNull(key);
         ArgumentNullException.ThrowIfNull(value);
         ThrowIfDisposed();
-        
+
         _dictionary[key] = value;
     }
 
@@ -153,8 +153,8 @@ public sealed class StrongDictionary<TKey, TValue> : IDisposable where TKey : no
         ThrowIfDisposed();
         try
         {
-            return JsonSerializer.Serialize(_dictionary, new JsonSerializerOptions 
-            { 
+            return JsonSerializer.Serialize(_dictionary, new JsonSerializerOptions
+            {
                 WriteIndented = false,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
@@ -173,7 +173,7 @@ public sealed class StrongDictionary<TKey, TValue> : IDisposable where TKey : no
     {
         ArgumentNullException.ThrowIfNull(info);
         ThrowIfDisposed();
-        
+
         foreach (TKey key in _dictionary.Keys)
         {
             var keyString = key.ToString() ?? "unknown";

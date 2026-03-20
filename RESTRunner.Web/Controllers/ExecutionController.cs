@@ -64,7 +64,7 @@ public class ExecutionController : Controller
         try
         {
             var history = await _executionService.GetExecutionHistoryAsync(id);
-            
+
             if (history == null)
             {
                 TempData["Error"] = $"Execution {id} not found";
@@ -91,7 +91,7 @@ public class ExecutionController : Controller
         try
         {
             var deleted = await _executionService.DeleteExecutionHistoryAsync(id);
-            
+
             if (deleted)
             {
                 TempData["Success"] = "Execution history deleted successfully";
@@ -184,7 +184,7 @@ public class ExecutionController : Controller
     public async Task<ActionResult<TestExecution>> GetExecutionStatus(string executionId)
     {
         var execution = await _executionService.GetExecutionAsync(executionId);
-        
+
         if (execution == null)
         {
             // Try history
@@ -449,9 +449,9 @@ public class ExecutionController : Controller
             if (row == null) continue;
 
             if (statusCode != null && row.ResultCode != statusCode) continue;
-            if (verb      != null && !row.Verb.Equals(verb, StringComparison.OrdinalIgnoreCase)) continue;
-            if (instance  != null && !row.Instance.Equals(instance, StringComparison.OrdinalIgnoreCase)) continue;
-            if (path      != null && !row.Request.Contains(path, StringComparison.OrdinalIgnoreCase)) continue;
+            if (verb != null && !row.Verb.Equals(verb, StringComparison.OrdinalIgnoreCase)) continue;
+            if (instance != null && !row.Instance.Equals(instance, StringComparison.OrdinalIgnoreCase)) continue;
+            if (path != null && !row.Request.Contains(path, StringComparison.OrdinalIgnoreCase)) continue;
 
             rows.Add(row);
         }
@@ -532,11 +532,11 @@ public class ExecutionController : Controller
             var uri = new Uri(requestUrl);
             HttpResponseMessage response = request.Method?.ToUpperInvariant() switch
             {
-                "GET"    => await client.GetAsync(uri),
+                "GET" => await client.GetAsync(uri),
                 "DELETE" => await client.DeleteAsync(uri),
-                "POST"   => await client.PostAsync(uri,   new StringContent(request.Body ?? "", System.Text.Encoding.UTF8, "application/json")),
-                "PUT"    => await client.PutAsync(uri,    new StringContent(request.Body ?? "", System.Text.Encoding.UTF8, "application/json")),
-                "PATCH"  => await client.PatchAsync(uri,  new StringContent(request.Body ?? "", System.Text.Encoding.UTF8, "application/json")),
+                "POST" => await client.PostAsync(uri, new StringContent(request.Body ?? string.Empty, System.Text.Encoding.UTF8, "application/json")),
+                "PUT" => await client.PutAsync(uri, new StringContent(request.Body ?? string.Empty, System.Text.Encoding.UTF8, "application/json")),
+                "PATCH" => await client.PatchAsync(uri, new StringContent(request.Body ?? string.Empty, System.Text.Encoding.UTF8, "application/json")),
                 _ => throw new ArgumentException($"Unsupported HTTP method: {request.Method}")
             };
 
@@ -680,15 +680,15 @@ public class ExecutionResultRow
         if (parts.Length < 10) return null;
         return new ExecutionResultRow
         {
-            Verb              = parts[0].Trim(),
-            Instance          = parts[1].Trim(),
-            LastRunDate       = parts[2].Trim(),
-            Duration          = long.TryParse(parts[3].Trim(), out var d) ? d : 0,
-            Request           = parts[4].Trim(),
-            ResultCode        = parts[5].Trim(),
+            Verb = parts[0].Trim(),
+            Instance = parts[1].Trim(),
+            LastRunDate = parts[2].Trim(),
+            Duration = long.TryParse(parts[3].Trim(), out var d) ? d : 0,
+            Request = parts[4].Trim(),
+            ResultCode = parts[5].Trim(),
             StatusDescription = parts[7].Trim(),
-            Success           = bool.TryParse(parts[8].Trim(), out var s) && s,
-            UserName          = parts[9].Trim()
+            Success = bool.TryParse(parts[8].Trim(), out var s) && s,
+            UserName = parts[9].Trim()
         };
     }
 }

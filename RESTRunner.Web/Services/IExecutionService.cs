@@ -1,5 +1,5 @@
-using RESTRunner.Web.Models;
 using RESTRunner.Domain.Models;
+using RESTRunner.Web.Models;
 
 namespace RESTRunner.Web.Services;
 

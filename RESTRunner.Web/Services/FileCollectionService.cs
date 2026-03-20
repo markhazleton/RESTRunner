@@ -1,6 +1,6 @@
-using System.Text.Json;
 using RESTRunner.Web.Models;
 using RESTRunner.Web.Models.ViewModels;
+using System.Text.Json;
 
 namespace RESTRunner.Web.Services;
 
@@ -71,7 +71,7 @@ public class FileCollectionService : ICollectionService
             var fileName = $"{id}_metadata.json";
             var filePath = Path.Combine(_fileStorage.GetDirectoryPath("collections"), fileName);
             var content = await _fileStorage.ReadFileAsync(filePath);
-            
+
             if (content == null) return null;
 
             return JsonSerializer.Deserialize<CollectionMetadata>(content, _jsonOptions);
@@ -189,12 +189,12 @@ public class FileCollectionService : ICollectionService
 
             // Parse the Postman collection and extract structure
             var collection = JsonSerializer.Deserialize<JsonElement>(content);
-            
+
             var structure = new CollectionStructure
             {
-                Name = collection.TryGetProperty("info", out var info) && info.TryGetProperty("name", out var name) 
+                Name = collection.TryGetProperty("info", out var info) && info.TryGetProperty("name", out var name)
                     ? name.GetString() ?? "Unknown" : "Unknown",
-                Description = info.TryGetProperty("description", out var desc) 
+                Description = info.TryGetProperty("description", out var desc)
                     ? desc.GetString() : null
             };
 
@@ -304,7 +304,7 @@ public class FileCollectionService : ICollectionService
     public async Task<List<CollectionMetadata>> SearchAsync(string searchTerm)
     {
         var all = await GetAllAsync();
-        return all.Where(c => 
+        return all.Where(c =>
             c.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
             (c.Description?.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ?? false)
         ).ToList();
@@ -331,11 +331,11 @@ public class FileCollectionService : ICollectionService
                 {
                     if (url.ValueKind == JsonValueKind.String)
                     {
-                        collectionRequest.Url = url.GetString() ?? "";
+                        collectionRequest.Url = url.GetString() ?? string.Empty;
                     }
                     else if (url.TryGetProperty("raw", out var rawUrl))
                     {
-                        collectionRequest.Url = rawUrl.GetString() ?? "";
+                        collectionRequest.Url = rawUrl.GetString() ?? string.Empty;
                     }
                 }
 
@@ -406,8 +406,8 @@ public class FileCollectionService : ICollectionService
                 // Look for environment variables in URL
                 if (request.TryGetProperty("url", out var url))
                 {
-                    var urlString = url.ValueKind == JsonValueKind.String 
-                        ? url.GetString() 
+                    var urlString = url.ValueKind == JsonValueKind.String
+                        ? url.GetString()
                         : url.TryGetProperty("raw", out var rawUrl) ? rawUrl.GetString() : null;
 
                     if (!string.IsNullOrEmpty(urlString))

@@ -1,5 +1,4 @@
 using RESTRunner.Web.Models;
-using RESTRunner.Web.Models.ViewModels;
 
 namespace RESTRunner.Web.Services;
 

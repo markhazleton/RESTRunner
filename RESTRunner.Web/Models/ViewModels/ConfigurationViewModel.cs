@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using RESTRunner.Web.Models;
 
 namespace RESTRunner.Web.Models.ViewModels;
 

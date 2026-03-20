@@ -59,10 +59,10 @@ public class FileStorageService : IFileStorageService
     public async Task<string> SaveCollectionAsync(string fileName, IFormFile file)
     {
         var filePath = Path.Combine(_dataPath, "collections", fileName);
-        
+
         using var stream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(stream);
-        
+
         _logger.LogDebug("Saved collection file: {FilePath}", filePath);
         return filePath;
     }
@@ -168,7 +168,7 @@ public class FileStorageService : IFileStorageService
         try
         {
             var directory = Path.Combine(_dataPath, directoryType);
-            
+
             if (!Directory.Exists(directory))
                 return new List<string>();
 
@@ -185,7 +185,7 @@ public class FileStorageService : IFileStorageService
     {
         var timestamp = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss");
         var uniqueId = Guid.NewGuid().ToString("N")[..8];
-        
+
         return $"{baseName}_{timestamp}_{uniqueId}{extension}";
     }
 
@@ -199,7 +199,7 @@ public class FileStorageService : IFileStorageService
         try
         {
             var directory = Path.Combine(_dataPath, directoryType);
-            
+
             if (!Directory.Exists(directory))
                 return 0;
 

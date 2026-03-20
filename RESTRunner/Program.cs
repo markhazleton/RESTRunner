@@ -2,12 +2,11 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RESTRunner.Domain.Interfaces;
-using RESTRunner.Services.HttpClientRunner;
 
 var builder = new HostBuilder()
 .ConfigureServices((hostContext, services) =>
 {
-    services.AddLogging(configure => 
+    services.AddLogging(configure =>
     {
         configure.AddConsole();
         configure.SetMinimumLevel(LogLevel.Warning);
@@ -33,10 +32,10 @@ using (var serviceScope = host.Services.CreateScope())
     {
         Console.WriteLine("Starting REST Runner execution...");
         Console.WriteLine($"Start Time: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        
+
         var myService = services.GetRequiredService<IExecuteRunner>();
         var statistics = await myService.ExecuteRunnerAsync(new CsvOutput($"c:\\test\\RESTRunner.csv")).ConfigureAwait(false);
-        
+
         // Display comprehensive statistics
         DisplayExecutionStatistics(statistics);
     }
@@ -59,7 +58,7 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
     Console.WriteLine("\n" + new string('=', 80));
     Console.WriteLine("🚀 REST RUNNER EXECUTION STATISTICS");
     Console.WriteLine(new string('=', 80));
-    
+
     // Overall Summary
     Console.WriteLine("\n📊 OVERALL SUMMARY");
     Console.WriteLine(new string('-', 40));
@@ -70,14 +69,14 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
     Console.WriteLine($"{"End Time:",-25} {statistics.EndTime:yyyy-MM-dd HH:mm:ss} UTC");
     Console.WriteLine($"{"Total Duration:",-25} {statistics.TotalDuration:hh\\:mm\\:ss}");
     Console.WriteLine($"{"Requests per Second:",-25} {statistics.RequestsPerSecond:F2}");
-    
+
     // Performance Metrics
     Console.WriteLine("\n⚡ PERFORMANCE METRICS");
     Console.WriteLine(new string('-', 40));
     Console.WriteLine($"{"Average Response Time:",-25} {statistics.AverageResponseTime:F2} ms");
     Console.WriteLine($"{"Minimum Response Time:",-25} {statistics.MinResponseTime:N0} ms");
     Console.WriteLine($"{"Maximum Response Time:",-25} {statistics.MaxResponseTime:N0} ms");
-    
+
     // Response Time Percentiles
     Console.WriteLine("\n📈 RESPONSE TIME PERCENTILES");
     Console.WriteLine(new string('-', 40));
@@ -94,7 +93,7 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
     {
         Console.WriteLine($"Error calculating percentiles: {ex.Message}");
     }
-    
+
     // Requests by HTTP Method
     if (statistics.RequestsByMethod.Any())
     {
@@ -107,7 +106,7 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
             Console.WriteLine($"{method.Key,-10} {method.Value,8:N0} ({percentage,5:F1}%)");
         }
     }
-    
+
     // Requests by Status Code
     if (statistics.RequestsByStatusCode.Any())
     {
@@ -121,7 +120,7 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
             Console.WriteLine($"{statusIcon} {status.Key,-15} {status.Value,8:N0} ({percentage,5:F1}%)");
         }
     }
-    
+
     // Requests by Instance
     if (statistics.RequestsByInstance.Any())
     {
@@ -134,7 +133,7 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
             Console.WriteLine($"{instance.Key,-20} {instance.Value,8:N0} ({percentage,5:F1}%)");
         }
     }
-    
+
     // Requests by User
     if (statistics.RequestsByUser.Any())
     {
@@ -147,11 +146,11 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
             Console.WriteLine($"{user.Key,-20} {user.Value,8:N0} ({percentage,5:F1}%)");
         }
     }
-    
+
     // Performance Summary
     Console.WriteLine("\n🎯 PERFORMANCE SUMMARY");
     Console.WriteLine(new string('-', 80));
-    
+
     if (statistics.SuccessRate >= 99.0)
         Console.WriteLine("✅ Excellent: Success rate is above 99%");
     else if (statistics.SuccessRate >= 95.0)
@@ -160,7 +159,7 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
         Console.WriteLine("🟠 Warning: Success rate is below 95%");
     else
         Console.WriteLine("🔴 Critical: Success rate is below 90%");
-    
+
     if (statistics.AverageResponseTime <= 100)
         Console.WriteLine("✅ Excellent: Average response time is under 100ms");
     else if (statistics.AverageResponseTime <= 500)
@@ -169,7 +168,7 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
         Console.WriteLine("🟠 Warning: Average response time is above 500ms");
     else
         Console.WriteLine("🔴 Critical: Average response time is above 1000ms");
-    
+
     if (statistics.RequestsPerSecond >= 100)
         Console.WriteLine("✅ Excellent: Processing over 100 requests per second");
     else if (statistics.RequestsPerSecond >= 50)
@@ -178,7 +177,7 @@ static void DisplayExecutionStatistics(ExecutionStatistics statistics)
         Console.WriteLine("🟠 Moderate: Processing over 10 requests per second");
     else
         Console.WriteLine("🔴 Low: Processing fewer than 10 requests per second");
-    
+
     Console.WriteLine(new string('=', 80));
     Console.WriteLine($"📄 Results exported to: c:\\test\\RESTRunner.csv");
     Console.WriteLine($"⏰ Execution completed at: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");

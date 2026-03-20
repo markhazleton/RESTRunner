@@ -10,7 +10,7 @@ public abstract class RESTRunnerException : Exception
     /// </summary>
     /// <param name="message">The error message</param>
     protected RESTRunnerException(string message) : base(message) { }
-    
+
     /// <summary>
     /// Initializes a new instance of the RESTRunnerException class
     /// </summary>
@@ -28,13 +28,13 @@ public class ValidationException : RESTRunnerException
     /// The name of the property that failed validation
     /// </summary>
     public string? PropertyName { get; }
-    
+
     /// <summary>
     /// Initializes a new instance of the ValidationException class
     /// </summary>
     /// <param name="message">The error message</param>
     public ValidationException(string message) : base(message) { }
-    
+
     /// <summary>
     /// Initializes a new instance of the ValidationException class
     /// </summary>
@@ -56,7 +56,7 @@ public class ConfigurationException : RESTRunnerException
     /// </summary>
     /// <param name="message">The error message</param>
     public ConfigurationException(string message) : base(message) { }
-    
+
     /// <summary>
     /// Initializes a new instance of the ConfigurationException class
     /// </summary>
@@ -74,18 +74,18 @@ public class RequestExecutionException : RESTRunnerException
     /// The HTTP status code if available
     /// </summary>
     public string? StatusCode { get; }
-    
+
     /// <summary>
     /// The request that failed
     /// </summary>
     public string? RequestPath { get; }
-    
+
     /// <summary>
     /// Initializes a new instance of the RequestExecutionException class
     /// </summary>
     /// <param name="message">The error message</param>
     public RequestExecutionException(string message) : base(message) { }
-    
+
     /// <summary>
     /// Initializes a new instance of the RequestExecutionException class
     /// </summary>
@@ -97,7 +97,7 @@ public class RequestExecutionException : RESTRunnerException
         RequestPath = requestPath;
         StatusCode = statusCode;
     }
-    
+
     /// <summary>
     /// Initializes a new instance of the RequestExecutionException class
     /// </summary>

@@ -1,5 +1,5 @@
-using RESTRunner.Web.Models;
 using RESTRunner.Domain.Models;
+using RESTRunner.Web.Models;
 
 namespace RESTRunner.Web.Services;
 
@@ -16,7 +16,7 @@ public class SimpleExecutionService : IExecutionService
     public SimpleExecutionService(ILogger<SimpleExecutionService> logger)
     {
         _logger = logger;
-        
+
         // Add some sample data for demonstration
         SeedSampleData();
     }
@@ -36,7 +36,7 @@ public class SimpleExecutionService : IExecutionService
 
         _runningExecutions.Add(execution);
         _logger.LogInformation("Started execution {ExecutionId} for configuration {ConfigurationId}", execution.Id, configurationId);
-        
+
         return execution;
     }
 
@@ -65,7 +65,7 @@ public class SimpleExecutionService : IExecutionService
     public async Task<List<ExecutionHistory>> GetExecutionHistoryAsync(int pageSize = 50, int pageNumber = 1, string? configurationId = null)
     {
         var query = _executionHistory.AsQueryable();
-        
+
         if (!string.IsNullOrEmpty(configurationId))
         {
             query = query.Where(e => e.ConfigurationId == configurationId);
@@ -105,8 +105,8 @@ public class SimpleExecutionService : IExecutionService
 
     public async Task<ExecutionStatistics> GetAggregatedStatisticsAsync(DateTime startDate, DateTime endDate, string? configurationId = null)
     {
-        var executions = _executionHistory.Where(e => 
-            e.StartTime >= startDate && 
+        var executions = _executionHistory.Where(e =>
+            e.StartTime >= startDate &&
             e.StartTime <= endDate &&
             (configurationId == null || e.ConfigurationId == configurationId) &&
             e.Statistics != null);
@@ -140,7 +140,7 @@ public class SimpleExecutionService : IExecutionService
                 {
                     stats.IncrementFailedRequests();
                 }
-                
+
                 // Add some sample response times (this is simplified)
                 stats.AddResponseTime(execution.Statistics.MinResponseTime);
                 stats.AddResponseTime(execution.Statistics.MaxResponseTime);
@@ -160,7 +160,7 @@ public class SimpleExecutionService : IExecutionService
         // Mock export - in Phase 3 this would generate actual files
         var fileName = $"execution_{executionId}_{DateTime.UtcNow:yyyyMMddHHmmss}.{format}";
         _logger.LogInformation("Exported execution results {ExecutionId} to {FileName}", executionId, fileName);
-        
+
         return fileName;
     }
 
@@ -183,7 +183,7 @@ public class SimpleExecutionService : IExecutionService
             new ExecutionHistory
             {
                 Id = Guid.NewGuid().ToString(),
-                ConfigurationId = "config-2", 
+                ConfigurationId = "config-2",
                 ConfigurationName = "Load Test - Production",
                 StartTime = DateTime.UtcNow.AddHours(-4),
                 EndTime = DateTime.UtcNow.AddHours(-4).AddMinutes(15),
@@ -206,14 +206,14 @@ public class SimpleExecutionService : IExecutionService
         };
 
         _executionHistory.AddRange(sampleExecutions);
-        
+
         _logger.LogInformation("Seeded {Count} sample execution records", sampleExecutions.Length);
     }
 
     private ExecutionStatistics CreateSampleStatistics(int total, int successful, int failed, double avgResponseTime, long minResponseTime, long maxResponseTime)
     {
         var stats = new ExecutionStatistics();
-        
+
         // Increment counters using the proper methods
         for (int i = 0; i < total; i++)
         {
@@ -227,11 +227,11 @@ public class SimpleExecutionService : IExecutionService
         {
             stats.IncrementFailedRequests();
         }
-        
+
         // Add sample response times to calculate proper statistics
         stats.AddResponseTime(minResponseTime);
         stats.AddResponseTime(maxResponseTime);
-        
+
         // Add some response times around the average
         var random = new Random();
         for (int i = 0; i < 10; i++)
@@ -239,7 +239,7 @@ public class SimpleExecutionService : IExecutionService
             var responseTime = (long)(avgResponseTime + random.Next(-50, 50));
             stats.AddResponseTime(Math.Max(1, responseTime)); // Ensure positive response time
         }
-        
+
         stats.FinalizeStatistics();
         return stats;
     }

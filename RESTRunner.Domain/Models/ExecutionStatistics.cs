@@ -124,17 +124,17 @@ public class ExecutionStatistics
     {
         _responseTimes.Add(responseTime);
         Interlocked.Add(ref _totalResponseTimeMs, responseTime);
-        
+
         // Update min/max using thread-safe operations
         var currentMin = _minResponseTime;
-        while (responseTime < currentMin && 
+        while (responseTime < currentMin &&
                Interlocked.CompareExchange(ref _minResponseTime, responseTime, currentMin) != currentMin)
         {
             currentMin = _minResponseTime;
         }
 
         var currentMax = _maxResponseTime;
-        while (responseTime > currentMax && 
+        while (responseTime > currentMax &&
                Interlocked.CompareExchange(ref _maxResponseTime, responseTime, currentMax) != currentMax)
         {
             currentMax = _maxResponseTime;
@@ -165,7 +165,7 @@ public class ExecutionStatistics
     public void FinalizeStatistics()
     {
         EndTime = DateTime.UtcNow;
-        
+
         var times = _responseTimes.ToArray();
         if (times.Length > 0)
         {
