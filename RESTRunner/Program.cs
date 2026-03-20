@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RESTRunner.Domain.Interfaces;
+using RESTRunner.Domain.Services;
 
 var builder = new HostBuilder()
 .ConfigureServices((hostContext, services) =>

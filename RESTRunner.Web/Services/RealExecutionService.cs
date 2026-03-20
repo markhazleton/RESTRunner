@@ -3,7 +3,6 @@ using RESTRunner.Domain.Extensions;
 using RESTRunner.Domain.Interfaces;
 using RESTRunner.Domain.Models;
 using RESTRunner.Domain.Outputs;
-using RESTRunner.Services.HttpClientRunner;
 using RESTRunner.Web.Hubs;
 using RESTRunner.Web.Models;
 using System.Collections.Concurrent;
@@ -128,13 +127,6 @@ public class RealExecutionService : IExecutionService
                 ExecutedBy = execution.ExecutedBy,
                 Tags = config.Tags
             };
-
-            // Create ExecuteRunnerService with the configuration's CompareRunner
-            var executeRunnerLogger = _loggerFactory.CreateLogger<ExecuteRunnerService>();
-            var executeRunner = new ExecuteRunnerService(
-                config.Runner,
-                _httpClientFactory,
-                executeRunnerLogger);
 
             // Create output handler for CSV results
             var resultsFileName = $"execution_{execution.Id}_{DateTime.UtcNow:yyyyMMddHHmmss}.csv";

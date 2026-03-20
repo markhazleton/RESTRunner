@@ -16,11 +16,11 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.5" />
+		<PackageReference Include="WebSpark.HttpClientUtility" Version="2.5.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\RESTRunner.Domain\RESTRunner.Domain.csproj" />
 		<ProjectReference Include="..\RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj" />
-		<ProjectReference Include="..\RESTRunner.Services.HttpClient\RESTRunner.Services.HttpClientRunner.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="collection.json">

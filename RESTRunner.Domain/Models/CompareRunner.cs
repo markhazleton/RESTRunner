@@ -32,6 +32,16 @@ public class CompareRunner
     public List<CompareUser> Users { get; set; } = [];
 
     /// <summary>
+    /// Number of iterations to execute the test suite
+    /// </summary>
+    public int Iterations { get; set; } = 100;
+
+    /// <summary>
+    /// Maximum number of concurrent requests
+    /// </summary>
+    public int MaxConcurrency { get; set; } = 10;
+
+    /// <summary>
     /// Initializes a new instance of the CompareRunner class
     /// </summary>
     public CompareRunner()

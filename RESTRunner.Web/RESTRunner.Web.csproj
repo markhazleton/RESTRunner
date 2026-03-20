@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RESTRunner.Domain\RESTRunner.Domain.csproj" />
-    <ProjectReference Include="..\RESTRunner.Services.HttpClient\RESTRunner.Services.HttpClientRunner.csproj" />
     <ProjectReference Include="..\RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj" />
   </ItemGroup>
 
