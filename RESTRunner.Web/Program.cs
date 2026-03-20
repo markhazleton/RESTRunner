@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Server.Kestrel.Core; // Add for KestrelServerOptions
 using Microsoft.OpenApi; // Add for Swagger
 using RESTRunner.Domain.Interfaces;
 using RESTRunner.Domain.Models;
-using RESTRunner.Services.HttpClientRunner;
 using RESTRunner.Web.SampleCRUD;
 using RESTRunner.Web.Services; // Add for our new services
 using WebSpark.Bootswatch; // Add for Bootswatch
