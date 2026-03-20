@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RESTRunner.Domain.Interfaces;
 using RESTRunner.Domain.Services;
+using WebSpark.HttpClientUtility;
 
 var builder = new HostBuilder()
 .ConfigureServices((hostContext, services) =>
@@ -13,6 +14,7 @@ var builder = new HostBuilder()
         configure.SetMinimumLevel(LogLevel.Warning);
     });
     services.AddHttpClient();
+    services.AddHttpClientUtility();
     services.AddSingleton(serviceProvider =>
     {
         var myRunner = new CompareRunner();
