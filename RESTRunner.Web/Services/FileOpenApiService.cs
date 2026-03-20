@@ -1,5 +1,5 @@
-using System.Text.Json;
 using RESTRunner.Web.Models;
+using System.Text.Json;
 
 namespace RESTRunner.Web.Services;
 
@@ -365,8 +365,8 @@ public class FileOpenApiService : IOpenApiService
     {
         if (root.TryGetProperty("info", out var info))
         {
-            structure.Title = info.TryGetProperty("title", out var t) ? t.GetString() ?? "" : "";
-            structure.Version = info.TryGetProperty("version", out var v) ? v.GetString() ?? "" : "";
+            structure.Title = info.TryGetProperty("title", out var t) ? t.GetString() ?? string.Empty : string.Empty;
+            structure.Version = info.TryGetProperty("version", out var v) ? v.GetString() ?? string.Empty : string.Empty;
             structure.Description = info.TryGetProperty("description", out var d) ? d.GetString() : null;
         }
 
@@ -380,8 +380,8 @@ public class FileOpenApiService : IOpenApiService
         if (root.TryGetProperty("tags", out var tags))
             foreach (var tag in tags.EnumerateArray())
             {
-                var name = tag.TryGetProperty("name", out var n) ? n.GetString() ?? "" : "";
-                var desc = tag.TryGetProperty("description", out var td) ? td.GetString() ?? "" : "";
+                var name = tag.TryGetProperty("name", out var n) ? n.GetString() ?? string.Empty : string.Empty;
+                var desc = tag.TryGetProperty("description", out var td) ? td.GetString() ?? string.Empty : string.Empty;
                 if (!string.IsNullOrEmpty(name)) tagDescriptions[name] = desc;
             }
 
@@ -456,7 +456,7 @@ public class FileOpenApiService : IOpenApiService
                     if (operation.TryGetProperty("responses", out var responses))
                         foreach (var resp in responses.EnumerateObject())
                         {
-                            var respDesc = resp.Value.TryGetProperty("description", out var rd) ? rd.GetString() ?? "" : "";
+                            var respDesc = resp.Value.TryGetProperty("description", out var rd) ? rd.GetString() ?? string.Empty : string.Empty;
                             endpoint.Responses[resp.Name] = respDesc;
                         }
 
@@ -495,8 +495,8 @@ public class FileOpenApiService : IOpenApiService
     {
         if (root.TryGetProperty("info", out var info))
         {
-            structure.Title = info.TryGetProperty("title", out var t) ? t.GetString() ?? "" : "";
-            structure.Version = info.TryGetProperty("version", out var v) ? v.GetString() ?? "" : "";
+            structure.Title = info.TryGetProperty("title", out var t) ? t.GetString() ?? string.Empty : string.Empty;
+            structure.Version = info.TryGetProperty("version", out var v) ? v.GetString() ?? string.Empty : string.Empty;
             structure.Description = info.TryGetProperty("description", out var d) ? d.GetString() : null;
         }
 
@@ -512,8 +512,8 @@ public class FileOpenApiService : IOpenApiService
         if (root.TryGetProperty("tags", out var tags))
             foreach (var tag in tags.EnumerateArray())
             {
-                var name = tag.TryGetProperty("name", out var n) ? n.GetString() ?? "" : "";
-                var desc = tag.TryGetProperty("description", out var td) ? td.GetString() ?? "" : "";
+                var name = tag.TryGetProperty("name", out var n) ? n.GetString() ?? string.Empty : string.Empty;
+                var desc = tag.TryGetProperty("description", out var td) ? td.GetString() ?? string.Empty : string.Empty;
                 if (!string.IsNullOrEmpty(name)) tagDescriptions[name] = desc;
             }
 
@@ -550,7 +550,7 @@ public class FileOpenApiService : IOpenApiService
                 if (operation.TryGetProperty("responses", out var responses))
                     foreach (var resp in responses.EnumerateObject())
                     {
-                        var rd = resp.Value.TryGetProperty("description", out var rdEl) ? rdEl.GetString() ?? "" : "";
+                        var rd = resp.Value.TryGetProperty("description", out var rdEl) ? rdEl.GetString() ?? string.Empty : string.Empty;
                         endpoint.Responses[resp.Name] = rd;
                     }
 
@@ -609,8 +609,8 @@ public class FileOpenApiService : IOpenApiService
             var schema = p.TryGetProperty("schema", out var s) ? s : (JsonElement?)null;
             var param = new OpenApiParameterInfo
             {
-                Name = p.TryGetProperty("name", out var n) ? n.GetString() ?? "" : "",
-                In = p.TryGetProperty("in", out var i) ? i.GetString() ?? "" : "",
+                Name = p.TryGetProperty("name", out var n) ? n.GetString() ?? string.Empty : string.Empty,
+                In = p.TryGetProperty("in", out var i) ? i.GetString() ?? string.Empty : string.Empty,
                 Description = p.TryGetProperty("description", out var d) ? d.GetString() : null,
                 Required = p.TryGetProperty("required", out var r) && r.GetBoolean(),
                 Type = ExtractJsonSchemaType(schema),
@@ -636,10 +636,10 @@ public class FileOpenApiService : IOpenApiService
         {
             if (p.TryGetProperty("$ref", out _)) continue;
 
-            var inValue = p.TryGetProperty("in", out var i) ? i.GetString() ?? "" : "";
+            var inValue = p.TryGetProperty("in", out var i) ? i.GetString() ?? string.Empty : string.Empty;
             var param = new OpenApiParameterInfo
             {
-                Name = p.TryGetProperty("name", out var n) ? n.GetString() ?? "" : "",
+                Name = p.TryGetProperty("name", out var n) ? n.GetString() ?? string.Empty : string.Empty,
                 In = inValue,
                 Description = p.TryGetProperty("description", out var d) ? d.GetString() : null,
                 Required = p.TryGetProperty("required", out var r) && r.GetBoolean(),

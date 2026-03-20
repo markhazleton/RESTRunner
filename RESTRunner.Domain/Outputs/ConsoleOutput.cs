@@ -29,7 +29,7 @@ public class ConsoleOutput : IOutput
     /// <param name="info">Array of information strings to display</param>
     public void WriteInfo(string[] info)
     {
-        foreach (string line in info) 
+        foreach (string line in info)
             Console.WriteLine(line);
     }
 }

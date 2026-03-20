@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using RESTRunner.Domain.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace RESTRunner.Web.Models;
 
@@ -88,8 +88,8 @@ public class ExecutionHistory
     /// <summary>
     /// Total duration of execution
     /// </summary>
-    public TimeSpan? Duration => EndTime.HasValue && StartTime != default 
-        ? EndTime.Value - StartTime 
+    public TimeSpan? Duration => EndTime.HasValue && StartTime != default
+        ? EndTime.Value - StartTime
         : null;
 
     /// <summary>
@@ -117,22 +117,22 @@ public enum ExecutionStatus
     /// Execution is queued but not started
     /// </summary>
     Pending,
-    
+
     /// <summary>
     /// Execution is currently running
     /// </summary>
     Running,
-    
+
     /// <summary>
     /// Execution completed successfully
     /// </summary>
     Completed,
-    
+
     /// <summary>
     /// Execution failed with error
     /// </summary>
     Failed,
-    
+
     /// <summary>
     /// Execution was cancelled by user
     /// </summary>

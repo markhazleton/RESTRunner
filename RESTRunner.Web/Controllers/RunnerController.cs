@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using RESTRunner.Web.Services;
 using RESTRunner.Web.Models.ViewModels;
+using RESTRunner.Web.Services;
 using System.Diagnostics;
 
 namespace RESTRunner.Web.Controllers
@@ -98,7 +98,7 @@ namespace RESTRunner.Web.Controllers
                     TotalExecutions = dashboardViewModel.RecentExecutions.Count,
                     RunningExecutions = dashboardViewModel.RunningExecutions.Count,
                     LastExecution = dashboardViewModel.RecentExecutions.FirstOrDefault()?.StartTime,
-                    AverageSuccessRate = dashboardViewModel.RecentExecutions.Any(e => e.SuccessRate.HasValue) 
+                    AverageSuccessRate = dashboardViewModel.RecentExecutions.Any(e => e.SuccessRate.HasValue)
                         ? dashboardViewModel.RecentExecutions.Where(e => e.SuccessRate.HasValue).Average(e => e.SuccessRate ?? 0)
                         : 0,
                     SystemUptime = DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()

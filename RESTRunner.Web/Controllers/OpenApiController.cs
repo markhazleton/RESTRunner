@@ -1,12 +1,10 @@
-using System.Diagnostics;
-using System.Net.Http.Headers;
-using System.Text;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using RESTRunner.Web.Models;
 using RESTRunner.Web.Models.ViewModels;
 using RESTRunner.Web.Services;
+using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace RESTRunner.Web.Controllers;
 
@@ -85,7 +83,7 @@ public class OpenApiController : Controller
             var validation = await _openApiService.ValidateAsync(file);
             if (!validation.IsValid)
             {
-                foreach (var error in validation.Errors) ModelState.AddModelError("", error);
+                foreach (var error in validation.Errors) ModelState.AddModelError(string.Empty, error);
                 return View(viewModel);
             }
 
@@ -96,8 +94,8 @@ public class OpenApiController : Controller
             {
                 Title = !string.IsNullOrWhiteSpace(viewModel.Title) ? viewModel.Title : (validation.Title ?? file.FileName),
                 Description = viewModel.Description,
-                Version = validation.Version ?? "",
-                SpecFormat = validation.SpecFormat ?? "",
+                Version = validation.Version ?? string.Empty,
+                SpecFormat = validation.SpecFormat ?? string.Empty,
                 FileName = file.FileName,
                 FileSize = file.Length,
                 DefaultBaseUrl = !string.IsNullOrWhiteSpace(viewModel.DefaultBaseUrl) ? viewModel.DefaultBaseUrl : validation.DefaultBaseUrl,
@@ -117,7 +115,7 @@ public class OpenApiController : Controller
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error uploading OpenAPI spec");
-            ModelState.AddModelError("", $"Upload failed: {ex.Message}");
+            ModelState.AddModelError(string.Empty, $"Upload failed: {ex.Message}");
             return View(viewModel);
         }
     }
@@ -182,7 +180,7 @@ public class OpenApiController : Controller
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error updating OpenAPI spec {Id}", id);
-            ModelState.AddModelError("", "Failed to update specification");
+            ModelState.AddModelError(string.Empty, "Failed to update specification");
             return View(spec);
         }
     }

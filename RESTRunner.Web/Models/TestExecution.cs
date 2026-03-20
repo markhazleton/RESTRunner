@@ -122,7 +122,7 @@ public class TestExecution
         SuccessfulRequests = successful;
         FailedRequests = failed;
         CurrentAverageResponseTime = averageResponseTime;
-        
+
         if (!string.IsNullOrEmpty(currentPhase))
             CurrentPhase = currentPhase;
 

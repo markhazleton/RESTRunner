@@ -1,7 +1,5 @@
-using System.Text.Json;
 using RESTRunner.Web.Models;
-using RESTRunner.Web.Models.ViewModels;
-using RESTRunner.Domain.Models;
+using System.Text.Json;
 
 namespace RESTRunner.Web.Services;
 
@@ -80,18 +78,18 @@ public class FileConfigurationService : IConfigurationService
         try
         {
             _logger.LogInformation("Looking for configuration with ID: {Id}", id);
-            
+
             var fileName = $"{id}.json";
             var filePath = Path.Combine(_fileStorage.GetDirectoryPath("configurations"), fileName);
-            
+
             _logger.LogInformation("Checking file path: {FilePath}", filePath);
-            
+
             var content = await _fileStorage.ReadFileAsync(filePath);
-            
-            if (content == null) 
+
+            if (content == null)
             {
                 _logger.LogWarning("No content found for configuration file: {FilePath}", filePath);
-                
+
                 // Let's also check what files actually exist
                 var configDir = _fileStorage.GetDirectoryPath("configurations");
                 if (Directory.Exists(configDir))
@@ -103,12 +101,12 @@ public class FileConfigurationService : IConfigurationService
                 {
                     _logger.LogWarning("Configuration directory does not exist: {ConfigDir}", configDir);
                 }
-                
+
                 return null;
             }
 
             _logger.LogInformation("Configuration file content loaded, length: {ContentLength}", content.Length);
-            
+
             var config = JsonSerializer.Deserialize<TestConfiguration>(content, _readOptions);
 
             if (config != null)
@@ -121,7 +119,7 @@ public class FileConfigurationService : IConfigurationService
                 _logger.LogInformation("Configuration deserialized successfully: {Name}, Runner instances: {Instances}, users: {Users}, requests: {Requests}",
                     config.Name, config.Runner?.Instances?.Count ?? 0, config.Runner?.Users?.Count ?? 0, config.Runner?.Requests?.Count ?? 0);
             }
-            
+
             return config;
         }
         catch (Exception ex)
@@ -208,7 +206,7 @@ public class FileConfigurationService : IConfigurationService
     public async Task<List<TestConfiguration>> SearchAsync(string searchTerm)
     {
         var all = await GetAllAsync();
-        return all.Where(c => 
+        return all.Where(c =>
             c.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
             (c.Description?.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ?? false)
         ).ToList();

@@ -9,22 +9,22 @@ public class CompareProperty
     /// The key identifier for the property
     /// </summary>
     public string Key { get; set; }
-    
+
     /// <summary>
     /// The value of the property
     /// </summary>
     public string Value { get; set; }
-    
+
     /// <summary>
     /// The type of the property
     /// </summary>
     public string Type { get; set; }
-    
+
     /// <summary>
     /// The display name of the property
     /// </summary>
     public string Name { get; set; }
-    
+
     /// <summary>
     /// Optional description of the property
     /// </summary>

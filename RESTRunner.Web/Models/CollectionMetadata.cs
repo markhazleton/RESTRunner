@@ -96,8 +96,8 @@ public class CollectionMetadata
     /// Validates the collection metadata
     /// </summary>
     /// <returns>True if valid, false otherwise</returns>
-    public bool IsValid() => !string.IsNullOrEmpty(Name) && 
-                           !string.IsNullOrEmpty(FileName) && 
+    public bool IsValid() => !string.IsNullOrEmpty(Name) &&
+                           !string.IsNullOrEmpty(FileName) &&
                            !string.IsNullOrEmpty(FilePath) &&
                            File.Exists(FilePath);
 }

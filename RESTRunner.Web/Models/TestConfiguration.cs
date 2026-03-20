@@ -1,6 +1,5 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using RESTRunner.Domain.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace RESTRunner.Web.Models;
 

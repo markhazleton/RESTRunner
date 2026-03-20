@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using RESTRunner.Web.Services;
-using RESTRunner.Web.Models.ViewModels;
-using RESTRunner.Web.Models;
 using RESTRunner.Domain.Models;
+using RESTRunner.Web.Models;
+using RESTRunner.Web.Models.ViewModels;
+using RESTRunner.Web.Services;
 using System.Text.Json;
 
 namespace RESTRunner.Web.Controllers
@@ -105,7 +105,7 @@ namespace RESTRunner.Web.Controllers
                 if (!validation.IsValid)
                 {
                     foreach (var error in validation.Errors)
-                        ModelState.AddModelError("", error);
+                        ModelState.AddModelError(string.Empty, error);
 
                     foreach (var warning in validation.Warnings)
                         TempData["Warning"] = warning;
@@ -121,7 +121,7 @@ namespace RESTRunner.Web.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating configuration");
-                ModelState.AddModelError("", "Failed to create configuration");
+                ModelState.AddModelError(string.Empty, "Failed to create configuration");
                 await PopulateViewModelCollections(viewModel);
                 return View(viewModel);
             }
@@ -138,7 +138,7 @@ namespace RESTRunner.Web.Controllers
             try
             {
                 _logger.LogInformation("Edit requested for configuration ID: {Id}", id);
-                
+
                 var configuration = await _configurationService.GetByIdAsync(id);
                 if (configuration == null)
                 {
@@ -146,14 +146,14 @@ namespace RESTRunner.Web.Controllers
                     return NotFound();
                 }
 
-                _logger.LogInformation("Configuration loaded: {Name}, Instances: {InstancesCount}, Users: {UsersCount}, Requests: {RequestsCount}", 
+                _logger.LogInformation("Configuration loaded: {Name}, Instances: {InstancesCount}, Users: {UsersCount}, Requests: {RequestsCount}",
                     configuration.Name, configuration.Runner.Instances?.Count ?? 0, configuration.Runner.Users?.Count ?? 0, configuration.Runner.Requests?.Count ?? 0);
 
                 var viewModel = await MapConfigurationToViewModel(configuration);
-                
-                _logger.LogInformation("ViewModel mapped: InstancesJson length: {InstancesLength}, UsersJson length: {UsersLength}, RequestsJson length: {RequestsLength}", 
+
+                _logger.LogInformation("ViewModel mapped: InstancesJson length: {InstancesLength}, UsersJson length: {UsersLength}, RequestsJson length: {RequestsLength}",
                     viewModel.InstancesJson?.Length ?? 0, viewModel.UsersJson?.Length ?? 0, viewModel.RequestsJson?.Length ?? 0);
-                
+
                 await PopulateViewModelCollections(viewModel);
                 return View(viewModel);
             }
@@ -189,7 +189,7 @@ namespace RESTRunner.Web.Controllers
                 if (!validation.IsValid)
                 {
                     foreach (var error in validation.Errors)
-                        ModelState.AddModelError("", error);
+                        ModelState.AddModelError(string.Empty, error);
 
                     foreach (var warning in validation.Warnings)
                         TempData["Warning"] = warning;
@@ -205,7 +205,7 @@ namespace RESTRunner.Web.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating configuration {Id}", id);
-                ModelState.AddModelError("", "Failed to update configuration");
+                ModelState.AddModelError(string.Empty, "Failed to update configuration");
                 await PopulateViewModelCollections(viewModel);
                 return View(viewModel);
             }
@@ -330,7 +330,7 @@ namespace RESTRunner.Web.Controllers
             {
                 var configurations = await _configurationService.GetAllAsync();
                 var initialConfig = configurations.FirstOrDefault(c => c.Name == "Initial RESTRunner Configuration");
-                
+
                 if (initialConfig != null)
                 {
                     return RedirectToAction("Edit", new { id = initialConfig.Id });
@@ -433,7 +433,7 @@ namespace RESTRunner.Web.Controllers
 
         private async Task<ConfigurationViewModel> MapConfigurationToViewModel(TestConfiguration configuration)
         {
-            _logger.LogInformation("Mapping configuration to view model: {ConfigId}, {ConfigName}, {ConfigDescription}, {ConfigIterations}, {ConfigConcurrency}", 
+            _logger.LogInformation("Mapping configuration to view model: {ConfigId}, {ConfigName}, {ConfigDescription}, {ConfigIterations}, {ConfigConcurrency}",
                 configuration.Id, configuration.Name, configuration.Description, configuration.Iterations, configuration.MaxConcurrency);
 
             var viewModel = new ConfigurationViewModel
@@ -452,17 +452,17 @@ namespace RESTRunner.Web.Controllers
                 IsActive = configuration.IsActive
             };
 
-            _logger.LogInformation("ViewModel created with basic properties: Id={Id}, Name={Name}, Description={Description}, Iterations={Iterations}, MaxConcurrency={MaxConcurrency}", 
+            _logger.LogInformation("ViewModel created with basic properties: Id={Id}, Name={Name}, Description={Description}, Iterations={Iterations}, MaxConcurrency={MaxConcurrency}",
                 viewModel.Id, viewModel.Name, viewModel.Description, viewModel.Iterations, viewModel.MaxConcurrency);
 
             viewModel.SetTags(configuration.Tags);
 
             // Serialize to JSON for editing with proper handling of null/empty collections
             var options = new JsonSerializerOptions { WriteIndented = true };
-            
+
             // Ensure we have actual data to serialize, provide defaults if empty
-            var instances = configuration.Runner.Instances?.Any() == true 
-                ? configuration.Runner.Instances 
+            var instances = configuration.Runner.Instances?.Any() == true
+                ? configuration.Runner.Instances
                 : new List<CompareInstance>
                 {
                     new() { Name = "Local", BaseUrl = "https://localhost:44315/" },
@@ -473,9 +473,9 @@ namespace RESTRunner.Web.Controllers
                 ? configuration.Runner.Users
                 : new List<CompareUser>
                 {
-                    new() 
-                    { 
-                        UserName = "testuser", 
+                    new()
+                    {
+                        UserName = "testuser",
                         Password = "password",
                         Properties = new Dictionary<string, string>
                         {
@@ -499,7 +499,7 @@ namespace RESTRunner.Web.Controllers
             viewModel.UsersJson = JsonSerializer.Serialize(users, options);
             viewModel.RequestsJson = JsonSerializer.Serialize(requests, options);
 
-            _logger.LogInformation("Final ViewModel: Name={Name}, InstancesJson={InstancesLength} chars, UsersJson={UsersLength} chars, RequestsJson={RequestsLength} chars", 
+            _logger.LogInformation("Final ViewModel: Name={Name}, InstancesJson={InstancesLength} chars, UsersJson={UsersLength} chars, RequestsJson={RequestsLength} chars",
                 viewModel.Name, viewModel.InstancesJson?.Length ?? 0, viewModel.UsersJson?.Length ?? 0, viewModel.RequestsJson?.Length ?? 0);
 
             return viewModel;

@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using RESTRunner.Web.Services;
 using RESTRunner.Web.Models.ViewModels;
-using System.Diagnostics;
+using RESTRunner.Web.Services;
 
 namespace RESTRunner.Web.Controllers
 {
@@ -54,7 +53,7 @@ namespace RESTRunner.Web.Controllers
                     return NotFound();
 
                 var structure = await _collectionService.GetStructureAsync(id);
-                
+
                 var viewModel = new CollectionDetailsViewModel
                 {
                     Metadata = metadata,
@@ -119,7 +118,7 @@ namespace RESTRunner.Web.Controllers
             // Check model state first
             if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Model validation failed for upload. Errors: {Errors}", 
+                _logger.LogWarning("Model validation failed for upload. Errors: {Errors}",
                     string.Join(", ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
                 return View(viewModel);
             }
@@ -158,18 +157,18 @@ namespace RESTRunner.Web.Controllers
                     return View(viewModel);
                 }
 
-                _logger.LogInformation("File validation passed. File: {FileName}, Size: {Size} bytes", 
+                _logger.LogInformation("File validation passed. File: {FileName}, Size: {Size} bytes",
                     collectionFile.FileName, collectionFile.Length);
 
                 // Validate collection content
                 var validation = await _collectionService.ValidateAsync(collectionFile);
                 if (!validation.IsValid)
                 {
-                    _logger.LogWarning("Collection validation failed. Errors: {Errors}", 
+                    _logger.LogWarning("Collection validation failed. Errors: {Errors}",
                         string.Join(", ", validation.Errors));
 
                     foreach (var error in validation.Errors)
-                        ModelState.AddModelError("", error);
+                        ModelState.AddModelError(string.Empty, error);
 
                     foreach (var warning in validation.Warnings)
                         TempData["Warning"] = warning;
@@ -196,17 +195,17 @@ namespace RESTRunner.Web.Controllers
 
                 // Upload and save
                 var savedMetadata = await _collectionService.UploadAsync(collectionFile, metadata);
-                
-                _logger.LogInformation("Collection uploaded successfully: {Name} ({Id})", 
+
+                _logger.LogInformation("Collection uploaded successfully: {Name} ({Id})",
                     savedMetadata.Name, savedMetadata.Id);
-                
+
                 TempData["Success"] = $"Collection '{savedMetadata.Name}' uploaded successfully";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error uploading collection: {Name}", viewModel?.Name ?? "Unknown");
-                ModelState.AddModelError("", $"Failed to upload collection: {ex.Message}");
+                ModelState.AddModelError(string.Empty, $"Failed to upload collection: {ex.Message}");
                 return View(viewModel);
             }
         }
@@ -257,7 +256,7 @@ namespace RESTRunner.Web.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating collection {Id}", id);
-                ModelState.AddModelError("", "Failed to update collection");
+                ModelState.AddModelError(string.Empty, "Failed to update collection");
                 return View(collection);
             }
         }
@@ -353,7 +352,7 @@ namespace RESTRunner.Web.Controllers
 
                 ViewBag.CollectionJson = content;
                 ViewBag.CollectionId = id;
-                
+
                 var metadata = await _collectionService.GetByIdAsync(id);
                 ViewBag.CollectionName = metadata?.Name ?? "Unknown";
 
