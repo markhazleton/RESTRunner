@@ -78,6 +78,17 @@
                             <p><strong>@Model.GetTotalTestCount()</strong> combinations</p>
                         </div>
                     </div>
+
+                    @if (Model.SourceType != RESTRunner.Web.Models.ApiDefinitionType.None && !string.IsNullOrWhiteSpace(Model.SourceName))
+                    {
+                        <div class="mt-3">
+                            <h6>Definition Source</h6>
+                            <p>
+                                <span class="badge bg-info me-2">@Model.SourceType</span>
+                                @Model.SourceName
+                            </p>
+                        </div>
+                    }
                 </div>
             </div>
 

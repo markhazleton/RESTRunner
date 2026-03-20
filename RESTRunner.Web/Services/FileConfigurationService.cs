@@ -48,7 +48,10 @@ public class FileConfigurationService : IConfigurationService
                     {
                         var config = JsonSerializer.Deserialize<TestConfiguration>(content, _readOptions);
                         if (config != null)
+                        {
+                            NormalizeSourceReference(config);
                             configurations.Add(config);
+                        }
                     }
                     catch (JsonException ex)
                     {
@@ -107,6 +110,11 @@ public class FileConfigurationService : IConfigurationService
             _logger.LogInformation("Configuration file content loaded, length: {ContentLength}", content.Length);
             
             var config = JsonSerializer.Deserialize<TestConfiguration>(content, _readOptions);
+
+            if (config != null)
+            {
+                NormalizeSourceReference(config);
+            }
 
             if (config != null)
             {
@@ -270,6 +278,12 @@ public class FileConfigurationService : IConfigurationService
             result.IsValid = false;
         }
 
+        if (configuration.SourceType != ApiDefinitionType.None && string.IsNullOrWhiteSpace(configuration.SourceId))
+        {
+            result.Errors.Add("A definition source must be selected when a source type is specified");
+            result.IsValid = false;
+        }
+
         // Check for duplicate names
         var existing = await GetByNameAsync(configuration.Name);
         if (existing != null && existing.Id != configuration.Id)
@@ -297,5 +311,14 @@ public class FileConfigurationService : IConfigurationService
         }
 
         return result;
+    }
+
+    private static void NormalizeSourceReference(TestConfiguration configuration)
+    {
+        if (configuration.SourceType == ApiDefinitionType.None && !string.IsNullOrWhiteSpace(configuration.CollectionFileName))
+        {
+            configuration.SourceType = ApiDefinitionType.PostmanCollection;
+            configuration.SourceId = configuration.CollectionFileName;
+        }
     }
 }

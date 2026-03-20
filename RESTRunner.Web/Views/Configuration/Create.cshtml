@@ -118,30 +118,44 @@
 
             <!-- Sidebar -->
             <div class="col-lg-4">
-                <!-- Collection Selection -->
+                <!-- Definition Source Selection -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h6 class="mb-0">Postman Collection</h6>
+                        <h6 class="mb-0">Definition Source</h6>
                     </div>
                     <div class="card-body">
-                        @if (Model.AvailableCollections.Any())
+                        @if (Model.AvailableApiDefinitions.Any())
                         {
                             <div class="mb-3">
-                                <label asp-for="CollectionId" class="form-label">Select Collection</label>
-                                <select asp-for="CollectionId" class="form-select">
+                                <label asp-for="SourceType" class="form-label">Source Type</label>
+                                <select asp-for="SourceType" class="form-select" id="sourceTypeSelect">
+                                    <option value="0">Manual JSON Requests</option>
+                                    <option value="1">Postman Collection</option>
+                                    <option value="2">OpenAPI Specification</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="SourceId" class="form-label">Select Source</label>
+                                <select asp-for="SourceId" class="form-select" id="sourceIdSelect">
                                     <option value="">-- None Selected --</option>
-                                    @foreach (var collection in Model.AvailableCollections)
+                                    @foreach (var source in Model.AvailableApiDefinitions)
                                     {
-                                        <option value="@collection.Id">@collection.Name (@collection.RequestCount requests)</option>
+                                        <option value="@source.Id" data-source-type="@((int)source.SourceType)">
+                                            @source.Name (@source.EndpointCount endpoints) - @source.SourceLabel
+                                        </option>
                                     }
                                 </select>
-                                <div class="form-text">Optional: Use an existing Postman collection</div>
+                                <div class="form-text">Optional: Map requests from the selected source into this configuration</div>
                             </div>
                         }
                         else
                         {
-                            <p class="text-muted">No collections available.</p>
-                            <a href="/Collection/Upload" class="btn btn-sm btn-success">Upload Collection</a>
+                            <p class="text-muted">No Postman collections or OpenAPI specs available.</p>
+                            <div class="d-flex gap-2">
+                                <a href="/Collection/Upload" class="btn btn-sm btn-success">Upload Collection</a>
+                                <a href="/OpenApi/Upload" class="btn btn-sm btn-outline-primary">Upload OpenAPI</a>
+                            </div>
                         }
                     </div>
                 </div>
@@ -279,5 +293,33 @@
                 validateJson(this.id);
             });
         });
+
+        const sourceTypeSelect = document.getElementById('sourceTypeSelect');
+        const sourceIdSelect = document.getElementById('sourceIdSelect');
+
+        function filterSourceOptions() {
+            if (!sourceTypeSelect || !sourceIdSelect) return;
+            const selectedType = sourceTypeSelect.value;
+
+            Array.from(sourceIdSelect.options).forEach(option => {
+                if (!option.value) {
+                    option.hidden = false;
+                    return;
+                }
+
+                const optionType = option.getAttribute('data-source-type');
+                option.hidden = selectedType === '0' || optionType !== selectedType;
+            });
+
+            const currentOption = sourceIdSelect.selectedOptions[0];
+            if (currentOption && currentOption.hidden) {
+                sourceIdSelect.value = '';
+            }
+        }
+
+        if (sourceTypeSelect && sourceIdSelect) {
+            sourceTypeSelect.addEventListener('change', filterSourceOptions);
+            filterSourceOptions();
+        }
     </script>
 }

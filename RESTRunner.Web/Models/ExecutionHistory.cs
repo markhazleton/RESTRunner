@@ -26,6 +26,21 @@ public class ExecutionHistory
     public string ConfigurationName { get; set; } = string.Empty;
 
     /// <summary>
+    /// Definition source used by the executed configuration
+    /// </summary>
+    public ApiDefinitionType SourceType { get; set; } = ApiDefinitionType.None;
+
+    /// <summary>
+    /// Definition source identifier used by the executed configuration
+    /// </summary>
+    public string? SourceId { get; set; }
+
+    /// <summary>
+    /// Definition source name captured at execution time
+    /// </summary>
+    public string? SourceName { get; set; }
+
+    /// <summary>
     /// When the execution started
     /// </summary>
     public DateTime StartTime { get; set; }

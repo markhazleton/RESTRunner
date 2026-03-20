@@ -74,6 +74,7 @@
                         <thead>
                             <tr>
                                 <th>Configuration</th>
+                                <th>Source</th>
                                 <th>Start Time</th>
                                 <th>Duration</th>
                                 <th>Status</th>
@@ -98,6 +99,17 @@
                                             {
                                                 <span class="badge bg-secondary me-1">@tag</span>
                                             }
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (execution.SourceType != RESTRunner.Web.Models.ApiDefinitionType.None && !string.IsNullOrWhiteSpace(execution.SourceName))
+                                        {
+                                            <span class="badge bg-info">@execution.SourceType</span>
+                                            <div><small class="text-muted">@execution.SourceName</small></div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Manual</span>
                                         }
                                     </td>
                                     <td>
