@@ -39,6 +39,21 @@ public class TestConfiguration
     public string? CollectionFileName { get; set; }
 
     /// <summary>
+    /// Source type used to generate request definitions for this configuration
+    /// </summary>
+    public ApiDefinitionType SourceType { get; set; } = ApiDefinitionType.None;
+
+    /// <summary>
+    /// Source identifier (collection ID or OpenAPI spec ID)
+    /// </summary>
+    public string? SourceId { get; set; }
+
+    /// <summary>
+    /// Source display name captured when the configuration is saved
+    /// </summary>
+    public string? SourceName { get; set; }
+
+    /// <summary>
     /// Number of iterations to run (default from console app is 100)
     /// </summary>
     [Range(1, 1000)]

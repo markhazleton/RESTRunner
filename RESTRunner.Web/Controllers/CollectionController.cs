@@ -339,6 +339,7 @@ namespace RESTRunner.Web.Controllers
         /// <summary>
         /// View collection structure (JSON viewer)
         /// </summary>
+        [ActionName("View")]
         public async Task<IActionResult> ViewCollection(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -356,7 +357,7 @@ namespace RESTRunner.Web.Controllers
                 var metadata = await _collectionService.GetByIdAsync(id);
                 ViewBag.CollectionName = metadata?.Name ?? "Unknown";
 
-                return View();
+                return View("View");
             }
             catch (Exception ex)
             {

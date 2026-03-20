@@ -1,0 +1,80 @@
+@model RESTRunner.Web.Models.CollectionMetadata
+@{
+    ViewData["Title"] = "Edit Collection";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Edit Collection</h1>
+        <a href="/Collection/Details/@Model.Id" class="btn btn-outline-secondary">Back to Details</a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="FileName" />
+                <input type="hidden" asp-for="FilePath" />
+                <input type="hidden" asp-for="PostmanId" />
+                <input type="hidden" asp-for="SchemaVersion" />
+                <input type="hidden" asp-for="RequestCount" />
+                <input type="hidden" asp-for="UploadedAt" />
+                <input type="hidden" asp-for="UploadedBy" />
+                <input type="hidden" asp-for="FileSize" />
+                <input type="hidden" asp-for="ContentHash" />
+
+                @for (var i = 0; i < Model.Tags.Count; i++)
+                {
+                    <input type="hidden" name="Tags[@i]" value="@Model.Tags[i]" />
+                }
+
+                @for (var i = 0; i < Model.EnvironmentVariables.Count; i++)
+                {
+                    <input type="hidden" name="EnvironmentVariables[@i]" value="@Model.EnvironmentVariables[i]" />
+                }
+
+                @for (var i = 0; i < Model.HttpMethods.Count; i++)
+                {
+                    <input type="hidden" name="HttpMethods[@i]" value="@Model.HttpMethods[i]" />
+                }
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Collection Metadata</h5>
+                    </div>
+                    <div class="card-body">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="IsActive" class="form-check-input" />
+                            <label asp-for="IsActive" class="form-check-label"></label>
+                        </div>
+
+                        <div class="small text-muted">
+                            <div><strong>File:</strong> @Model.FileName</div>
+                            <div><strong>Requests:</strong> @Model.RequestCount</div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="/Collection/Details/@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

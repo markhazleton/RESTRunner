@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using RESTRunner.Web.Models;
 
 namespace RESTRunner.Web.Models.ViewModels;
 
@@ -44,10 +45,16 @@ public class ConfigurationViewModel
     public int MaxConcurrency { get; set; } = 10;
 
     /// <summary>
-    /// Selected collection ID
+    /// Selected definition source type
     /// </summary>
-    [Display(Name = "Postman Collection")]
-    public string? CollectionId { get; set; }
+    [Display(Name = "Definition Source Type")]
+    public ApiDefinitionType SourceType { get; set; } = ApiDefinitionType.None;
+
+    /// <summary>
+    /// Selected source identifier
+    /// </summary>
+    [Display(Name = "Definition Source")]
+    public string? SourceId { get; set; }
 
     /// <summary>
     /// Tags (comma-separated)
@@ -80,9 +87,9 @@ public class ConfigurationViewModel
     public string RequestsJson { get; set; } = "[]";
 
     /// <summary>
-    /// Available collections for selection
+    /// Available API definitions for selection
     /// </summary>
-    public List<CollectionOption> AvailableCollections { get; set; } = new();
+    public List<ApiDefinitionOption> AvailableApiDefinitions { get; set; } = new();
 
     /// <summary>
     /// Convert tags string to list
@@ -108,12 +115,13 @@ public class ConfigurationViewModel
 }
 
 /// <summary>
-/// Option for collection selection
+/// Option for API definition selection
 /// </summary>
-public class CollectionOption
+public class ApiDefinitionOption
 {
+    public ApiDefinitionType SourceType { get; set; }
     public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
-    public string FileName { get; set; } = string.Empty;
-    public int RequestCount { get; set; }
+    public string SourceLabel { get; set; } = string.Empty;
+    public int EndpointCount { get; set; }
 }

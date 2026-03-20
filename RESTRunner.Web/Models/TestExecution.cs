@@ -23,6 +23,21 @@ public class TestExecution
     public string ConfigurationName { get; set; } = string.Empty;
 
     /// <summary>
+    /// Definition source used for this execution
+    /// </summary>
+    public ApiDefinitionType SourceType { get; set; } = ApiDefinitionType.None;
+
+    /// <summary>
+    /// Definition source identifier
+    /// </summary>
+    public string? SourceId { get; set; }
+
+    /// <summary>
+    /// Definition source display name
+    /// </summary>
+    public string? SourceName { get; set; }
+
+    /// <summary>
     /// Current status of the execution
     /// </summary>
     public ExecutionStatus Status { get; set; } = ExecutionStatus.Pending;

@@ -133,18 +133,28 @@
 
             <!-- Sidebar -->
             <div class="col-lg-4">
-                @if (Model?.AvailableCollections?.Any() == true)
+                @if (Model?.AvailableApiDefinitions?.Any() == true)
                 {
                     <div class="card mb-4">
-                        <div class="card-header"><h6 class="mb-0">Postman Collection</h6></div>
+                        <div class="card-header"><h6 class="mb-0">Definition Source</h6></div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <label asp-for="CollectionId" class="form-label">Select Collection</label>
-                                <select asp-for="CollectionId" class="form-select">
+                                <label asp-for="SourceType" class="form-label">Source Type</label>
+                                <select asp-for="SourceType" class="form-select" id="sourceTypeSelect">
+                                    <option value="0">Manual JSON Requests</option>
+                                    <option value="1">Postman Collection</option>
+                                    <option value="2">OpenAPI Specification</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="SourceId" class="form-label">Select Source</label>
+                                <select asp-for="SourceId" class="form-select" id="sourceIdSelect">
                                     <option value="">-- None Selected --</option>
-                                    @foreach (var collection in Model!.AvailableCollections)
+                                    @foreach (var source in Model!.AvailableApiDefinitions)
                                     {
-                                        <option value="@collection.Id">@collection.Name (@collection.RequestCount requests)</option>
+                                        <option value="@source.Id" data-source-type="@((int)source.SourceType)">
+                                            @source.Name (@source.EndpointCount endpoints) - @source.SourceLabel
+                                        </option>
                                     }
                                 </select>
                             </div>
@@ -302,6 +312,34 @@
     document.getElementById('validateJson').addEventListener('click', () => validateAll(true));
     document.getElementById('formatJson').addEventListener('click', formatAll);
     document.getElementById('formatJson2').addEventListener('click', formatAll);
+
+    const sourceTypeSelect = document.getElementById('sourceTypeSelect');
+    const sourceIdSelect = document.getElementById('sourceIdSelect');
+
+    function filterSourceOptions() {
+        if (!sourceTypeSelect || !sourceIdSelect) return;
+
+        const selectedType = sourceTypeSelect.value;
+        Array.from(sourceIdSelect.options).forEach(option => {
+            if (!option.value) {
+                option.hidden = false;
+                return;
+            }
+
+            const optionType = option.getAttribute('data-source-type');
+            option.hidden = selectedType === '0' || optionType !== selectedType;
+        });
+
+        const currentOption = sourceIdSelect.selectedOptions[0];
+        if (currentOption && currentOption.hidden) {
+            sourceIdSelect.value = '';
+        }
+    }
+
+    if (sourceTypeSelect && sourceIdSelect) {
+        sourceTypeSelect.addEventListener('change', filterSourceOptions);
+        filterSourceOptions();
+    }
 
     // Validate before form submission
     document.getElementById('editForm').addEventListener('submit', function (e) {

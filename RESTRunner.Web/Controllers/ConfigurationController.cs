@@ -14,15 +14,21 @@ namespace RESTRunner.Web.Controllers
     {
         private readonly IConfigurationService _configurationService;
         private readonly ICollectionService _collectionService;
+        private readonly IOpenApiService _openApiService;
+        private readonly IApiDefinitionMappingService _apiDefinitionMappingService;
         private readonly ILogger<ConfigurationController> _logger;
 
         public ConfigurationController(
             IConfigurationService configurationService,
             ICollectionService collectionService,
+            IOpenApiService openApiService,
+            IApiDefinitionMappingService apiDefinitionMappingService,
             ILogger<ConfigurationController> logger)
         {
             _configurationService = configurationService;
             _collectionService = collectionService;
+            _openApiService = openApiService;
+            _apiDefinitionMappingService = apiDefinitionMappingService;
             _logger = logger;
         }
 
@@ -349,22 +355,29 @@ namespace RESTRunner.Web.Controllers
         {
             try
             {
-                if (_collectionService != null)
+                var collections = await _collectionService.GetActiveAsync();
+                var specs = await _openApiService.GetActiveAsync();
+
+                viewModel.AvailableApiDefinitions = collections.Select(c => new ApiDefinitionOption
                 {
-                    var collections = await _collectionService.GetActiveAsync();
-                    viewModel.AvailableCollections = collections.Select(c => new CollectionOption
-                    {
-                        Id = c.Id,
-                        Name = c.Name,
-                        FileName = c.FileName,
-                        RequestCount = c.RequestCount
-                    }).ToList();
-                }
+                    SourceType = ApiDefinitionType.PostmanCollection,
+                    Id = c.Id,
+                    Name = c.Name,
+                    SourceLabel = "Postman Collection",
+                    EndpointCount = c.RequestCount
+                }).Concat(specs.Select(s => new ApiDefinitionOption
+                {
+                    SourceType = ApiDefinitionType.OpenApiSpec,
+                    Id = s.Id,
+                    Name = s.Title,
+                    SourceLabel = "OpenAPI Specification",
+                    EndpointCount = s.EndpointCount
+                })).OrderBy(s => s.SourceLabel).ThenBy(s => s.Name).ToList();
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, "Failed to load collections for dropdown");
-                viewModel.AvailableCollections = new List<CollectionOption>();
+                _logger.LogWarning(ex, "Failed to load API definition options for dropdown");
+                viewModel.AvailableApiDefinitions = new List<ApiDefinitionOption>();
             }
         }
 
@@ -377,7 +390,9 @@ namespace RESTRunner.Web.Controllers
                 Description = viewModel.Description,
                 Iterations = viewModel.Iterations,
                 MaxConcurrency = viewModel.MaxConcurrency,
-                CollectionFileName = viewModel.CollectionId,
+                SourceType = viewModel.SourceType,
+                SourceId = viewModel.SourceType == ApiDefinitionType.None ? null : viewModel.SourceId,
+                CollectionFileName = viewModel.SourceType == ApiDefinitionType.PostmanCollection ? viewModel.SourceId : null,
                 IsActive = viewModel.IsActive,
                 Tags = viewModel.GetTags()
             };
@@ -398,6 +413,13 @@ namespace RESTRunner.Web.Controllers
                 if (!string.IsNullOrWhiteSpace(viewModel.RequestsJson))
                 {
                     configuration.Runner.Requests = JsonSerializer.Deserialize<List<CompareRequest>>(viewModel.RequestsJson) ?? new List<CompareRequest>();
+                }
+
+                if (viewModel.SourceType != ApiDefinitionType.None && !string.IsNullOrWhiteSpace(viewModel.SourceId))
+                {
+                    var mappingResult = await _apiDefinitionMappingService.MapRequestsAsync(viewModel.SourceType, viewModel.SourceId);
+                    configuration.SourceName = mappingResult.SourceName;
+                    configuration.Runner.Requests = mappingResult.Requests;
                 }
             }
             catch (JsonException ex)
@@ -421,7 +443,12 @@ namespace RESTRunner.Web.Controllers
                 Description = configuration.Description,
                 Iterations = configuration.Iterations,
                 MaxConcurrency = configuration.MaxConcurrency,
-                CollectionId = configuration.CollectionFileName,
+                SourceType = configuration.SourceType == ApiDefinitionType.None && !string.IsNullOrWhiteSpace(configuration.CollectionFileName)
+                    ? ApiDefinitionType.PostmanCollection
+                    : configuration.SourceType,
+                SourceId = !string.IsNullOrWhiteSpace(configuration.SourceId)
+                    ? configuration.SourceId
+                    : configuration.CollectionFileName,
                 IsActive = configuration.IsActive
             };
 
