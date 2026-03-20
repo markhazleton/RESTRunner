@@ -148,9 +148,6 @@ builder.Services.AddScoped<CompareRunner>(serviceProvider =>
     return runner;
 });
 
-// Register ExecuteRunnerService with proper dependencies
-builder.Services.AddScoped<IExecuteRunner, ExecuteRunnerService>();
-
 var app = builder.Build();
 
 // Initialize file storage and create sample data on startup
