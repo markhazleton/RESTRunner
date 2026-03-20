@@ -162,7 +162,6 @@ public class RealExecutionService : IExecutionService
 
             // Execute with cancellation support and progress reporting
             var statistics = await ExecuteWithProgressAsync(
-                executeRunner,
                 output,
                 config,
                 execution.CancellationTokenSource!.Token,
@@ -251,7 +250,6 @@ public class RealExecutionService : IExecutionService
     }
 
     private async Task<ExecutionStatistics> ExecuteWithProgressAsync(
-        IExecuteRunner executeRunner,
         IOutput output,
         TestConfiguration config,
         CancellationToken cancellationToken,
