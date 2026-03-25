@@ -151,6 +151,11 @@ Defined in `RESTRunner.Web/Program.cs`:
 - Results: `~/Data/results/{guid}.csv`
 - Use `IFileStorageService` for all file operations
 
+### Secure Configuration Conventions
+- Executable code must not embed real or plausible deployable secrets
+- Runtime passwords, tokens, and connection secrets must come from configuration providers, secret stores, or explicit user input
+- Sample or seeded values must use clearly non-secret placeholders and document how operators replace them safely
+
 ### Configuration Model
 `TestConfiguration` wraps `CompareRunner` with metadata:
 ```csharp
@@ -220,3 +225,4 @@ All projects use deterministic versioning in `.csproj`:
 - **Thread safety issues**: Use `Interlocked` or `Concurrent*` collections for shared state
 - **Template substitution not working**: Verify property keys match exactly (case-sensitive)
 - **High memory usage**: Reduce iterations or concurrency in configuration
+- **Credential setup looks baked in**: Replace executable-source defaults with environment-backed values or explicit non-secret placeholders before merging

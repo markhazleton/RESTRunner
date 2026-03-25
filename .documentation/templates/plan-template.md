@@ -31,7 +31,23 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] Layering remains domain-first: domain models/contracts stay in
+  `RESTRunner.Domain`, execution behavior stays behind service boundaries,
+  and entry points only compose services.
+- [ ] Project-wide C# conventions remain intact: target framework, nullable,
+  implicit usings, and `GlobalUsings.cs` usage stay consistent.
+- [ ] Testing impact is covered: MSTest additions or updates are identified for
+  any domain logic or regression-prone behavior, and `dotnet build` plus
+  `dotnet test` validation is planned.
+- [ ] Logging and documentation impact is covered: `ILogger` usage, error
+  context, and XML documentation updates for public-facing surfaces are
+  identified.
+- [ ] Boundary validation and maintainability impact is covered: input
+  validation, failure behavior, and any oversized-file decomposition work
+  are identified.
+- [ ] Secure configuration impact is covered: secrets are sourced from
+  configuration providers or user input, and executable code does not rely
+  on hardcoded credential defaults.
 
 ## Project Structure
 
@@ -48,51 +64,38 @@
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+RESTRunner.Domain/
+├── Models/
+├── Interfaces/
+├── Extensions/
+└── Outputs/
 
-tests/
-├── contract/
-├── integration/
-└── unit/
+RESTRunner.Services.HttpClientRunner/
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
+RESTRunner/
+├── Extensions/
+└── Infrastructure/
 
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
+RESTRunner.PostmanImport/
 
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
+RESTRunner.Web/
+├── Controllers/
+├── Services/
+├── Models/
+├── Hubs/
+├── Views/
+├── Data/
+└── wwwroot/
 
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+RESTRunner.Domain.Tests/
+RESTRunner.Web.Tests/
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Use the real solution layout above and identify the
+projects touched by the feature. Plans must explain any deviation from the
+domain-first layering defined in the constitution.
 
 ## Complexity Tracking
 

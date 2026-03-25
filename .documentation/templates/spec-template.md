@@ -74,6 +74,10 @@
 
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
+- What happens when required configuration, secrets, or credentials are missing,
+  invalid, or intentionally unset?
+- How are validation failures and unsafe inputs surfaced at the application
+  boundary?
 
 ## Requirements *(mandatory)*
 
@@ -89,11 +93,15 @@
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-006**: System MUST describe any required configuration or secret inputs
+  and MUST avoid requiring executable-source credential defaults.
+- **FR-007**: System MUST define expected validation and failure behavior for
+  external inputs when the feature introduces or changes application boundaries.
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-008**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
+- **FR-009**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
 ### Key Entities *(include if feature involves data)*
 
