@@ -14,6 +14,11 @@ namespace RESTRunner.Web.Controllers
         private readonly ICollectionService _collectionService;
         private readonly ILogger<CollectionController> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="CollectionController"/>.
+        /// </summary>
+        /// <param name="collectionService">Service for managing collections.</param>
+        /// <param name="logger">Logger instance.</param>
         public CollectionController(ICollectionService collectionService, ILogger<CollectionController> logger)
         {
             _collectionService = collectionService;

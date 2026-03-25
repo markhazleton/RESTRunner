@@ -27,7 +27,7 @@ public static class CompareRunner_Extensions
         var user = new CompareUser()
         {
             UserName = "markhazleton",
-            Password = "password"
+            Password = "changeme"
         };
         user.Properties.Add("username", user.UserName);
         user.Properties.Add("user_firstname", "Mark");
