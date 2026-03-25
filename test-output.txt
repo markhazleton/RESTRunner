@@ -1,0 +1,6 @@
+Test run for c:\GitHub\MarkHazleton\RESTRunner\RESTRunner.Domain.Tests\bin\Debug\net10.0\RESTRunner.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for c:\GitHub\MarkHazleton\RESTRunner\RESTRunner.Web.Tests\bin\Debug\net10.0\RESTRunner.Web.Tests.dll (.NETCoreApp,Version=v10.0)
+The test source file "c:\GitHub\MarkHazleton\RESTRunner\RESTRunner.Web.Tests\bin\Debug\net10.0\RESTRunner.Web.Tests.dll" provided was not found.
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    81, Skipped:     0, Total:    81, Duration: 148 ms - RESTRunner.Domain.Tests.dll (net10.0)

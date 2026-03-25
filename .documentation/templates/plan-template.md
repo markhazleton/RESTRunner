@@ -1,7 +1,7 @@
 # Implementation Plan: [FEATURE]
 
 **Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Input**: Feature specification from `/.documentation/specs/[###-feature-name]/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.documentation/templates/commands/plan.md` for the execution workflow.
 
@@ -17,34 +17,28 @@
   the iteration process.
 -->
 
-**Language/Version**: [default: C# / .NET 10, or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., ASP.NET Core MVC, minimal APIs, SignalR, Swashbuckle, CsvHelper, Newtonsoft.Json, WebSpark libs, or NEEDS CLARIFICATION]  
-**Storage**: [default: file-backed JSON under RESTRunner.Web/Data, or NEEDS CLARIFICATION]  
-**Testing**: [default: MSTest in RESTRunner.Domain.Tests, or NEEDS CLARIFICATION]  
-**Target Platform**: [default: console + ASP.NET Core web app on Windows/Linux/macOS, or NEEDS CLARIFICATION]
-**Project Type**: [default: multi-project .NET solution, or NEEDS CLARIFICATION]  
-**Performance Goals**: [domain-specific, e.g., throughput, latency, concurrency, or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., thread safety, file size limits, layer boundaries, or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., iterations × instances × users × requests, or NEEDS CLARIFICATION]
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
+**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- Layering preserved: domain, execution, import, console, and web responsibilities stay in the correct project.
-- C# defaults preserved: framework choice, nullable, implicit usings, and project-wide imports remain consistent.
-- Test impact defined: MSTest coverage is added or updated for domain and regression-prone changes.
-- Logging impact defined: web/service changes use ILogger; console reporting stays in entrypoints.
-- Public-surface documentation impact defined: controller, hub, endpoint, and externally consumed model docs are updated when behavior changes.
-- Boundary validation impact defined: external input validation and error behavior are explicit.
-- Validation commands listed: dotnet build, dotnet test, and npm run build when RESTRunner.Web assets change.
+[Gates determined based on constitution file]
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/[###-feature]/
+.documentation/specs/[###-feature]/
 ├── plan.md              # This file (/speckit.plan command output)
 ├── research.md          # Phase 0 output (/speckit.plan command)
 ├── data-model.md        # Phase 1 output (/speckit.plan command)
@@ -62,37 +56,39 @@ specs/[###-feature]/
 -->
 
 ```text
-RESTRunner.Domain/
-├── Models/
-├── Interfaces/
-├── Extensions/
-├── Constants/
-└── Outputs/
+# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+src/
+├── models/
+├── services/
+├── cli/
+└── lib/
 
-RESTRunner.Services.HttpClient/
-└── ExecuteRunnerService.cs
+tests/
+├── contract/
+├── integration/
+└── unit/
 
-RESTRunner/
-├── Program.cs
-├── Extensions/
-└── Infrastructure/
+# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+backend/
+├── src/
+│   ├── models/
+│   ├── services/
+│   └── api/
+└── tests/
 
-RESTRunner.Web/
-├── Program.cs
-├── Controllers/
-├── Services/
-├── Hubs/
-├── Models/
-├── Views/
-└── wwwroot/
+frontend/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   └── services/
+└── tests/
 
-RESTRunner.PostmanImport/
-└── Models/
+# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+api/
+└── [same as backend above]
 
-RESTRunner.Domain.Tests/
-├── Models/
-├── Extensions/
-└── Outputs/
+ios/ or android/
+└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
 **Structure Decision**: [Document the selected structure and reference the real

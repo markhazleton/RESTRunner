@@ -18,10 +18,6 @@
   - Tested independently
   - Deployed independently
   - Demonstrated to users independently
-
-  For this repository, scenarios that change domain behavior or address known
-  regressions must identify the automated MSTest coverage needed to prove the
-  change.
 -->
 
 ### User Story 1 - [Brief Title] (Priority: P1)
@@ -93,15 +89,6 @@
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
-
-When applicable, requirements MUST also state:
-
-- Validation rules for every external input, including failure behavior and size
-  or format constraints.
-- Public-facing surfaces affected by the change, including any controller, hub,
-  endpoint, or externally consumed model documentation updates.
-- The project boundary where the change belongs so the plan can preserve the
-  domain-first architecture.
 
 *Example of marking unclear requirements:*
 

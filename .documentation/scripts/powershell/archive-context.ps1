@@ -6,7 +6,9 @@
 param(
     [Parameter(Position = 0, ValueFromRemainingArguments)]
     [string[]]$Arguments,
-    [switch]$Json
+    [switch]$Json,
+    [switch]$IncludeFullInventory,
+    [int]$SampleLimit = 50
 )
 
 . (Join-Path $PSScriptRoot 'common.ps1')
@@ -29,6 +31,23 @@ function Get-RelativeMdFiles {
         Where-Object { $_.FullName -notmatch [regex]::Escape('.archive') } |
         ForEach-Object { $_.FullName.Substring($repoRoot.Length + 1).Replace('\', '/') } |
         Sort-Object
+}
+
+function Get-SampledItems {
+    param(
+        [array]$Items,
+        [int]$Limit
+    )
+
+    if (-not $Items) {
+        return @()
+    }
+
+    return @($Items | Select-Object -First $Limit)
+}
+
+if ($SampleLimit -lt 1) {
+    $SampleLimit = 50
 }
 
 # Candidate categories
@@ -68,26 +87,59 @@ $guideExists     = Test-Path (Join-Path $repoRoot $guidePath)
 $changelogExists = Test-Path (Join-Path $repoRoot $changelogPath)
 
 if ($Json) {
+    $candidateCounts = @{
+        drafts = $drafts.Count
+        session_docs = $sessionDocs.Count
+        implementation_plans = $implPlans.Count
+        release_docs = $releaseDocs.Count
+        quickfix_records = $quickfixRecords.Count
+        pr_reviews = $prReviews.Count
+    }
+
+    $currentDocsCount = $currentDocs.Count
+
     @{
         REPO_ROOT          = $repoRoot
         TIMESTAMP          = $timestamp
         ARCHIVE_DIR        = $archiveDir
         ARCHIVE_EXISTS     = $archiveExists
-        EXISTING_ARCHIVES  = $existingArchives
+        EXISTING_ARCHIVES  = Get-SampledItems -Items $existingArchives -Limit $SampleLimit
+        EXISTING_ARCHIVES_COUNT = $existingArchives.Count
         GUIDE_PATH         = $guidePath
         GUIDE_EXISTS       = $guideExists
         CHANGELOG_PATH     = $changelogPath
         CHANGELOG_EXISTS   = $changelogExists
+        SAMPLE_LIMIT       = $SampleLimit
+        INCLUDE_FULL_INVENTORY = [bool]$IncludeFullInventory
+        CANDIDATE_COUNTS   = $candidateCounts
         CANDIDATES         = @{
-            drafts               = $drafts
-            session_docs         = $sessionDocs
-            implementation_plans = $implPlans
-            release_docs         = $releaseDocs
-            quickfix_records     = $quickfixRecords
-            pr_reviews           = $prReviews
+            drafts               = Get-SampledItems -Items $drafts -Limit $SampleLimit
+            session_docs         = Get-SampledItems -Items $sessionDocs -Limit $SampleLimit
+            implementation_plans = Get-SampledItems -Items $implPlans -Limit $SampleLimit
+            release_docs         = Get-SampledItems -Items $releaseDocs -Limit $SampleLimit
+            quickfix_records     = Get-SampledItems -Items $quickfixRecords -Limit $SampleLimit
+            pr_reviews           = Get-SampledItems -Items $prReviews -Limit $SampleLimit
         }
-        CURRENT_DOCS       = $currentDocs
-    } | ConvertTo-Json -Depth 5 -Compress
+        CURRENT_DOCS       = Get-SampledItems -Items $currentDocs -Limit $SampleLimit
+        CURRENT_DOCS_COUNT = $currentDocsCount
+    
+        FULL_INVENTORY = $(if ($IncludeFullInventory) {
+            @{
+                existing_archives = $existingArchives
+                candidates = @{
+                    drafts = $drafts
+                    session_docs = $sessionDocs
+                    implementation_plans = $implPlans
+                    release_docs = $releaseDocs
+                    quickfix_records = $quickfixRecords
+                    pr_reviews = $prReviews
+                }
+                current_docs = $currentDocs
+            }
+        } else {
+            $null
+        })
+    } | ConvertTo-Json -Depth 8
 }
 else {
     Write-Output "Archive Context"
