@@ -1,26 +1,22 @@
 <!--
 Sync Impact Report
-- Version change: template -> 1.0.0
+- Version change: 1.0.0 -> 1.1.0
 - Modified principles:
-	- Principle slot 1 -> I. Layered Domain-First Architecture
-	- Principle slot 2 -> II. Project-Wide C# Conventions
-	- Principle slot 3 -> III. MSTest Quality Gates
-	- Principle slot 4 -> IV. Contextual Logging And Public Documentation
-	- Principle slot 5 -> V. Boundary Validation And Maintainability
+  - None
 - Added sections:
-	- Engineering Standards
-	- Delivery Workflow
+  - None
 - Removed sections:
-	- None
+  - None
 - Templates requiring updates:
-	- ✅ .documentation/templates/plan-template.md
-	- ✅ .documentation/templates/spec-template.md
-	- ✅ .documentation/templates/tasks-template.md
-	- ✅ README.md
-	- ✅ .github/copilot-instructions.md
-	- ✅ No command templates present under .documentation/templates/commands/
+  - ✅ .documentation/templates/plan-template.md
+  - ✅ .documentation/templates/spec-template.md
+  - ✅ .documentation/templates/tasks-template.md
+  - ✅ README.md
+  - ✅ .github/copilot-instructions.md
+  - ✅ No command templates present under .documentation/templates/commands/
 - Follow-up TODOs:
-	- Add a CI workflow that enforces the build and test quality gates defined here
+  - Replace the remaining executable-source password defaults with configuration-backed or clearly non-secret placeholder values
+  - Add lightweight automation that flags hardcoded secrets in executable code paths
 -->
 # RESTRunner Constitution
 
@@ -91,6 +87,26 @@ shows partial adoption rather than universal enforcement.
 - Oversized files SHOULD be decomposed when a change naturally exposes a clean
 	extraction point.
 
+### VI. Secure Configuration And Secret Hygiene
+RESTRunner MUST keep secrets, credentials, and security-sensitive defaults out
+of executable source code. Runtime configuration that requires passwords,
+tokens, or connection secrets MUST come from environment variables, user input,
+secret stores, or clearly non-secret placeholder values that cannot be mistaken
+for deployable credentials. Sample data and developer scaffolding MUST make the
+unsafe state obvious and MUST not normalize shipping hardcoded secrets.
+
+Rationale: the approved CAP-2026-001 amendment closes a governance gap exposed
+by repeated audit findings for hardcoded credential defaults in executable
+source paths.
+
+- Executable code MUST NOT embed real or plausible deployable secrets.
+- Runtime credential inputs MUST come from configuration providers, secret
+	stores, or explicit user-provided values.
+- Sample or seeded values MUST use unmistakable non-secret placeholders and
+	document how operators replace them safely.
+- Security-sensitive configuration paths SHOULD fail fast when required secrets
+	are absent instead of silently falling back to defaults.
+
 ## Engineering Standards
 
 - File-backed JSON storage under RESTRunner.Web/Data is the default persistence
@@ -107,7 +123,7 @@ shows partial adoption rather than universal enforcement.
 
 - Specs, plans, and tasks MUST include a constitution check that verifies layer
 	boundaries, testing impact, logging impact, documentation impact, and input
-	validation impact.
+	validation impact, and secret/configuration impact.
 - Feature plans SHOULD map work onto the real solution structure:
 	RESTRunner.Domain, RESTRunner.Services.HttpClient, RESTRunner,
 	RESTRunner.Web, RESTRunner.PostmanImport, and RESTRunner.Domain.Tests.
@@ -115,6 +131,9 @@ shows partial adoption rather than universal enforcement.
 	change affects RESTRunner.Web/package.json-managed assets.
 - Pull request reviews SHOULD treat MUST rules as blocking and SHOULD rules as
 	improvement guidance that can be deferred with rationale.
+- Reviews, audits, and implementation plans SHOULD flag hardcoded secret-like
+	literals in executable code as constitution violations unless an approved
+	exception is documented.
 
 ## Governance
 
@@ -136,8 +155,8 @@ Compliance review expectations:
 
 - Every plan and task set MUST check for constitution alignment.
 - Every implementation review SHOULD confirm testing, layering, logging,
-	documentation, and validation impacts.
+	documentation, validation, and secret/configuration impacts.
 - Temporary exceptions MUST be documented in the relevant plan or pull request
 	with the simpler alternative that was rejected.
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-15
+**Version**: 1.1.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-25

@@ -154,6 +154,9 @@ Repository engineering rules are defined in `.documentation/memory/constitution.
 Until CI is added, contributors are expected to run `dotnet build` and `dotnet test`
 locally before merging changes. Run `npm run build` when editing
 `RESTRunner.Web` asset-pipeline inputs.
+Executable code paths must not introduce hardcoded secrets or deployable
+credential defaults; use configuration-backed values or clearly non-secret
+placeholders instead.
 
 ### Reporting Issues
 
