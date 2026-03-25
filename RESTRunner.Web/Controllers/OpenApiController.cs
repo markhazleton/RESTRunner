@@ -62,15 +62,15 @@ public class OpenApiController : Controller
     /// <returns>The upload view.</returns>
     public IActionResult Upload() => View(new OpenApiUploadViewModel());
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [RequestSizeLimit(10 * 1024 * 1024)]
-    [RequestFormLimits(MultipartBodyLengthLimit = 10 * 1024 * 1024)]
     /// <summary>
     /// Uploads and validates a new OpenAPI specification.
     /// </summary>
     /// <param name="viewModel">Upload form values.</param>
     /// <returns>The upload view or a redirect to details.</returns>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [RequestSizeLimit(10 * 1024 * 1024)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 10 * 1024 * 1024)]
     public async Task<IActionResult> Upload(OpenApiUploadViewModel viewModel)
     {
         if (!ModelState.IsValid) return View(viewModel);
@@ -141,6 +141,11 @@ public class OpenApiController : Controller
 
     // ── MVC: Details ──────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Displays the details and parsed structure for a stored specification.
+    /// </summary>
+    /// <param name="id">Specification identifier.</param>
+    /// <returns>The details view for the requested specification.</returns>
     public async Task<IActionResult> Details(string id)
     {
         if (string.IsNullOrEmpty(id)) return NotFound();
@@ -164,6 +169,11 @@ public class OpenApiController : Controller
 
     // ── MVC: Edit ─────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Displays the edit form for a stored specification.
+    /// </summary>
+    /// <param name="id">Specification identifier.</param>
+    /// <returns>The edit view for the requested specification.</returns>
     public async Task<IActionResult> Edit(string id)
     {
         if (string.IsNullOrEmpty(id)) return NotFound();
@@ -174,6 +184,14 @@ public class OpenApiController : Controller
         return View(spec);
     }
 
+    /// <summary>
+    /// Updates metadata for a stored specification.
+    /// </summary>
+    /// <param name="id">Specification identifier.</param>
+    /// <param name="spec">Updated specification metadata.</param>
+    /// <param name="userTagsString">Comma-separated user tags.</param>
+    /// <param name="defaultBaseUrl">Optional default base URL override.</param>
+    /// <returns>The edit view on validation failure or a redirect to the details view on success.</returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(string id, OpenApiSpec spec, string? userTagsString, string? defaultBaseUrl)
@@ -206,6 +224,11 @@ public class OpenApiController : Controller
 
     // ── MVC: Delete ───────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Displays the delete confirmation page for a stored specification.
+    /// </summary>
+    /// <param name="id">Specification identifier.</param>
+    /// <returns>The delete confirmation view for the requested specification.</returns>
     public async Task<IActionResult> Delete(string id)
     {
         if (string.IsNullOrEmpty(id)) return NotFound();
@@ -216,6 +239,11 @@ public class OpenApiController : Controller
         return View(spec);
     }
 
+    /// <summary>
+    /// Deletes a stored specification.
+    /// </summary>
+    /// <param name="id">Specification identifier.</param>
+    /// <returns>A redirect to the index view.</returns>
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(string id)
@@ -239,6 +267,11 @@ public class OpenApiController : Controller
 
     // ── MVC: Download ─────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Downloads the raw specification file.
+    /// </summary>
+    /// <param name="id">Specification identifier.</param>
+    /// <returns>The specification content as a file download.</returns>
     public async Task<IActionResult> Download(string id)
     {
         try
@@ -261,6 +294,11 @@ public class OpenApiController : Controller
 
     // ── MVC: Test runner view ─────────────────────────────────────────────────
 
+    /// <summary>
+    /// Displays the interactive endpoint test runner for a specification.
+    /// </summary>
+    /// <param name="id">Specification identifier.</param>
+    /// <returns>The test runner view for the requested specification.</returns>
     public async Task<IActionResult> Test(string id)
     {
         if (string.IsNullOrEmpty(id)) return NotFound();
@@ -283,6 +321,11 @@ public class OpenApiController : Controller
 
     // ── API: Get endpoints as JSON ────────────────────────────────────────────
 
+    /// <summary>
+    /// Returns the parsed endpoint list for a stored specification.
+    /// </summary>
+    /// <param name="specId">Specification identifier.</param>
+    /// <returns>A JSON payload describing available servers, security schemes, and endpoints.</returns>
     [HttpGet("/api/openapi/{specId}/endpoints")]
     public async Task<IActionResult> GetEndpoints(string specId)
     {
@@ -335,6 +378,12 @@ public class OpenApiController : Controller
 
     // ── API: Execute a single endpoint ────────────────────────────────────────
 
+    /// <summary>
+    /// Executes a single endpoint from a stored specification using caller-supplied inputs.
+    /// </summary>
+    /// <param name="specId">Specification identifier.</param>
+    /// <param name="request">Endpoint execution request payload.</param>
+    /// <returns>A JSON result containing request timing, response payload, and headers.</returns>
     [HttpPost("/api/openapi/{specId}/execute")]
     public async Task<IActionResult> ExecuteEndpoint(string specId, [FromBody] OpenApiEndpointExecuteRequest request)
     {
