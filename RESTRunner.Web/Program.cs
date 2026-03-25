@@ -141,7 +141,7 @@ builder.Services.AddScoped<CompareRunner>(serviceProvider =>
         new()
         {
             UserName = "default",
-            Password = "password"
+            Password = "changeme"
         }
     };
 
@@ -319,54 +319,54 @@ app.MapGet("/api/initialization-status", async (HttpContext context) =>
     }
     catch (Exception ex)
     {
-        return Results.Ok(new
-        {
-            timestamp = DateTime.UtcNow,
-            initialized = false,
-            error = ex.Message
-        });
+        return Results.Problem(
+            title: "Initialization status check failed",
+            detail: ex.Message,
+            statusCode: StatusCodes.Status500InternalServerError);
     }
 }).WithTags("System");
 
 
-// Add debug endpoint to list all configurations
-app.MapGet("/api/debug-configurations", async (HttpContext context) =>
+// Add debug endpoint to list all configurations (development only)
+if (app.Environment.IsDevelopment())
 {
-    var serviceProvider = context.RequestServices;
-    try
+    app.MapGet("/api/debug-configurations", async (HttpContext context) =>
     {
-        var configurationService = serviceProvider.GetRequiredService<IConfigurationService>();
-        var configurations = await configurationService.GetAllAsync();
+        var serviceProvider = context.RequestServices;
+        try
+        {
+            var configurationService = serviceProvider.GetRequiredService<IConfigurationService>();
+            var configurations = await configurationService.GetAllAsync();
 
-        return Results.Ok(new
-        {
-            timestamp = DateTime.UtcNow,
-            totalConfigurations = configurations.Count,
-            configurations = configurations.Select(c => new
+            return Results.Ok(new
             {
-                id = c.Id,
-                name = c.Name,
-                description = c.Description,
-                isActive = c.IsActive,
-                createdAt = c.CreatedAt,
-                iterations = c.Iterations,
-                maxConcurrency = c.MaxConcurrency,
-                instancesCount = c.Runner?.Instances?.Count ?? 0,
-                usersCount = c.Runner?.Users?.Count ?? 0,
-                requestsCount = c.Runner?.Requests?.Count ?? 0,
-                editUrl = $"/Configuration/Edit/{c.Id}"
-            })
-        });
-    }
-    catch (Exception ex)
-    {
-        return Results.Ok(new
+                timestamp = DateTime.UtcNow,
+                totalConfigurations = configurations.Count,
+                configurations = configurations.Select(c => new
+                {
+                    id = c.Id,
+                    name = c.Name,
+                    description = c.Description,
+                    isActive = c.IsActive,
+                    createdAt = c.CreatedAt,
+                    iterations = c.Iterations,
+                    maxConcurrency = c.MaxConcurrency,
+                    instancesCount = c.Runner?.Instances?.Count ?? 0,
+                    usersCount = c.Runner?.Users?.Count ?? 0,
+                    requestsCount = c.Runner?.Requests?.Count ?? 0,
+                    editUrl = $"/Configuration/Edit/{c.Id}"
+                })
+            });
+        }
+        catch (Exception ex)
         {
-            timestamp = DateTime.UtcNow,
-            error = ex.Message
-        });
-    }
-}).WithTags("Debug");
+            return Results.Problem(
+                title: "Debug configurations check failed",
+                detail: ex.Message,
+                statusCode: StatusCodes.Status500InternalServerError);
+        }
+    }).WithTags("Debug");
+}
 
 // Map SignalR hub for real-time execution updates
 app.MapHub<RESTRunner.Web.Hubs.ExecutionHub>("/hubs/execution");
@@ -418,7 +418,7 @@ static async Task InitializeSampleDataAsync(IServiceProvider serviceProvider)
                         new()
                         {
                             UserName = "testuser",
-                            Password = "password",
+                            Password = "changeme",
                             Properties = new Dictionary<string, string>
                             {
                                 { "email", "test@example.com" },
@@ -429,7 +429,7 @@ static async Task InitializeSampleDataAsync(IServiceProvider serviceProvider)
                         new()
                         {
                             UserName = "admin",
-                            Password = "admin123",
+                            Password = "changeme",
                             Properties = new Dictionary<string, string>
                             {
                                 { "email", "admin@example.com" },

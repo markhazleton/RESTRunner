@@ -15,6 +15,13 @@ public class ExecutionController : Controller
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<ExecutionController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="ExecutionController"/>.
+    /// </summary>
+    /// <param name="executionService">Service for managing test executions.</param>
+    /// <param name="configurationService">Service for managing test configurations.</param>
+    /// <param name="httpClientFactory">Factory for creating HTTP clients.</param>
+    /// <param name="logger">Logger instance.</param>
     public ExecutionController(
         IExecutionService executionService,
         IConfigurationService configurationService,

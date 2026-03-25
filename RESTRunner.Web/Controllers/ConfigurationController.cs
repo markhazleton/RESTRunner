@@ -476,7 +476,7 @@ namespace RESTRunner.Web.Controllers
                     new()
                     {
                         UserName = "testuser",
-                        Password = "password",
+                        Password = "changeme",
                         Properties = new Dictionary<string, string>
                         {
                             { "email", "test@example.com" },
