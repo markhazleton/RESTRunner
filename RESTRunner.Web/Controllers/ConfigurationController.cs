@@ -18,6 +18,14 @@ namespace RESTRunner.Web.Controllers
         private readonly IApiDefinitionMappingService _apiDefinitionMappingService;
         private readonly ILogger<ConfigurationController> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="ConfigurationController"/>.
+        /// </summary>
+        /// <param name="configurationService">Service for configuration storage and retrieval.</param>
+        /// <param name="collectionService">Service for collection storage and retrieval.</param>
+        /// <param name="openApiService">Service for OpenAPI specification management.</param>
+        /// <param name="apiDefinitionMappingService">Service for mapping API definitions into runner requests.</param>
+        /// <param name="logger">Logger instance.</param>
         public ConfigurationController(
             IConfigurationService configurationService,
             ICollectionService collectionService,

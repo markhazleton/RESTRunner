@@ -47,6 +47,17 @@ Run `.documentation/scripts/powershell/archive-context.ps1 -Json` from the repo 
   - `pr_reviews` — files under `.documentation/specs/pr-review/`
 - `CURRENT_DOCS` — top-level `.documentation/*.md` files (review for staleness)
 
+Treat script JSON as summary context:
+- Candidate arrays may be sampled; use `CANDIDATE_COUNTS` and `CURRENT_DOCS_COUNT` for totals.
+- Do not force exhaustive review of every candidate when counts are large.
+- Only request full inventory when explicitly needed.
+
+Execution limits (required):
+- Default max files to read in one pass: 40
+- Prioritize by category in this order: drafts, stale session docs, superseded plans/releases, then remaining categories
+- Stop once enough evidence exists to archive clearly stale content safely
+- If ambiguous, keep file and note why instead of broadening scope
+
 ### 2. Review and Decide
 
 Read each candidate file. For each, make one of three decisions:
@@ -56,6 +67,8 @@ Read each candidate file. For each, make one of three decisions:
 | **Archive** | Completed, superseded, contradicts current docs, or is working-notes noise (sausage-making) |
 | **Keep** | Still actively referenced, contains unique current guidance, or is the canonical version of something |
 | **Merge** | Has important content that should be folded into a current doc before the file is archived |
+
+If candidate counts exceed the one-pass limit, process the highest-signal subset first and report deferred items.
 
 **Always archive:**
 - Everything under `.documentation/drafts/`

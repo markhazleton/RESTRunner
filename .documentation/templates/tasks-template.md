@@ -5,10 +5,10 @@ description: "Task list template for feature implementation"
 
 # Tasks: [FEATURE NAME]
 
-**Input**: Design documents from `/specs/[###-feature-name]/`
+**Input**: Design documents from `/.documentation/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: Tests are REQUIRED when the feature changes domain behavior, fixes a regression, or otherwise triggers constitution quality gates. Use MSTest and the solution's existing test projects unless the plan documents a different repository-owned test location.
+**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -20,11 +20,10 @@ description: "Task list template for feature implementation"
 
 ## Path Conventions
 
-- **Domain**: `RESTRunner.Domain/` for shared models, interfaces, outputs, and extensions
-- **Execution engine**: `RESTRunner.Services.HttpClient/`
-- **Console app**: `RESTRunner/`
-- **Web app**: `RESTRunner.Web/`
-- **Tests**: `RESTRunner.Domain.Tests/` and any additional solution-owned test project defined in plan.md
+- **Single project**: `src/`, `tests/` at repository root
+- **Web app**: `backend/src/`, `frontend/src/`
+- **Mobile**: `api/src/`, `ios/src/` or `android/src/`
+- Paths shown below assume single project - adjust based on plan.md structure
 
 <!-- 
   ============================================================================
@@ -80,21 +79,21 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1
+### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
 
-> **NOTE: Add these whenever the constitution or feature risk requires automated coverage**
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T010 [P] [US1] Add or update MSTest coverage in RESTRunner.Domain.Tests/[area]/[Name]Tests.cs
-- [ ] T011 [P] [US1] Add regression validation for the user journey or contract impacted by this story
+- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create or update domain models in RESTRunner.Domain/Models/[Name].cs
-- [ ] T013 [P] [US1] Create or update supporting types in RESTRunner.Web/Models/[Name].cs or RESTRunner.Domain/Interfaces/[Name].cs
-- [ ] T014 [US1] Implement service logic in RESTRunner.Services.HttpClient/[Name].cs or RESTRunner.Web/Services/[Name].cs (depends on T012, T013)
-- [ ] T015 [US1] Implement controller, endpoint, or console behavior in the correct project file
-- [ ] T016 [US1] Add or update boundary validation and failure handling
-- [ ] T017 [US1] Add or update structured logging and XML documentation for changed public surfaces
+- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
+- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
+- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
+- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T016 [US1] Add validation and error handling
+- [ ] T017 [US1] Add logging for user story 1 operations
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -106,16 +105,16 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2
+### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
 
-- [ ] T018 [P] [US2] Add or update MSTest coverage in RESTRunner.Domain.Tests/[area]/[Name]Tests.cs
-- [ ] T019 [P] [US2] Add regression validation for the user journey or contract impacted by this story
+- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
 
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Create or update models in the owning RESTRunner.* project
-- [ ] T021 [US2] Implement service logic in the owning RESTRunner.* project
-- [ ] T022 [US2] Implement controller, endpoint, UI, or console behavior in the owning RESTRunner.* project
+- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
+- [ ] T021 [US2] Implement [Service] in src/services/[service].py
+- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
 - [ ] T023 [US2] Integrate with User Story 1 components (if needed)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
@@ -128,16 +127,16 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3
+### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
 
-- [ ] T024 [P] [US3] Add or update MSTest coverage in RESTRunner.Domain.Tests/[area]/[Name]Tests.cs
-- [ ] T025 [P] [US3] Add regression validation for the user journey or contract impacted by this story
+- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
 
 ### Implementation for User Story 3
 
-- [ ] T026 [P] [US3] Create or update models in the owning RESTRunner.* project
-- [ ] T027 [US3] Implement service logic in the owning RESTRunner.* project
-- [ ] T028 [US3] Implement controller, endpoint, UI, or console behavior in the owning RESTRunner.* project
+- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
+- [ ] T027 [US3] Implement [Service] in src/services/[service].py
+- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -151,12 +150,12 @@ Examples of foundational tasks (adjust based on your project):
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] TXXX [P] Documentation updates in .documentation/ and XML docs for changed public surfaces
+- [ ] TXXX [P] Documentation updates in .documentation/
 - [ ] TXXX Code cleanup and refactoring
 - [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional MSTest coverage in RESTRunner.Domain.Tests/
+- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
-- [ ] TXXX Run dotnet build, dotnet test, and npm run build when RESTRunner.Web assets changed
+- [ ] TXXX Run quickstart.md validation
 
 ---
 
@@ -179,7 +178,7 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Within Each User Story
 
-- Tests required by the constitution MUST be written or updated before a story is considered complete
+- Tests (if included) MUST be written and FAIL before implementation
 - Models before services
 - Services before endpoints
 - Core implementation before integration
@@ -246,7 +245,7 @@ With multiple developers:
 - [P] tasks = different files, no dependencies
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
-- Verify required tests and validation commands pass before completing the feature
+- Verify tests fail before implementing
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence

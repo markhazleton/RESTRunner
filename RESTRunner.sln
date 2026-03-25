@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RESTRunner.Web", "RESTRunne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RESTRunner.Domain.Tests", "RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj", "{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RESTRunner.Web.Tests", "RESTRunner.Web.Tests\RESTRunner.Web.Tests.csproj", "{C6BBA3E1-7E88-4F8C-9B9F-8E48371A2B10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,12 +48,17 @@ Global
 		{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6BBA3E1-7E88-4F8C-9B9F-8E48371A2B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BBA3E1-7E88-4F8C-9B9F-8E48371A2B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BBA3E1-7E88-4F8C-9B9F-8E48371A2B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6BBA3E1-7E88-4F8C-9B9F-8E48371A2B10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DD5E5BCF-2AF5-2BA9-608C-86C686B5FBDF} = {35EAF6D9-88BD-4F9B-9496-CDF71BF5AA1E}
+		{C6BBA3E1-7E88-4F8C-9B9F-8E48371A2B10} = {35EAF6D9-88BD-4F9B-9496-CDF71BF5AA1E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {84E323A2-B564-4189-88E6-1E3C01042473}

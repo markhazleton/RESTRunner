@@ -53,6 +53,18 @@ Run `.documentation/scripts/powershell/site-audit.ps1 $ARGUMENTS -Json` to gathe
 - `PACKAGES`: Dependency information
 - `METRICS`: Code metrics (line counts, file counts)
 
+Treat pre-scan JSON as summary context:
+- Use `files.counts` and sampled file arrays as the primary source.
+- Do not assume sampled arrays are exhaustive.
+- Only request full inventories when explicitly needed and user-approved.
+
+Execution limits (required):
+- Max findings in report: 5 highest-signal items
+- Max broad follow-up searches: 6
+- Max file reads per finding: 3
+- Stop early once evidence is sufficient for high-confidence findings
+- If confidence is low, ask one clarifying question instead of broadening scope
+
 **Error Handling**:
 If the script fails:
 - **Constitution missing**: Guide user to run `/speckit.constitution`
@@ -116,8 +128,8 @@ Read the most recent `## [X.Y.Z]` entry in `CHANGELOG.md` (repo root) to get
 |-----------|-----------|---------|
 | `.documentation/SPECKIT_VERSION` absent | VER1 | HIGH |
 | Installed version < latest version | VER2 | MEDIUM |
-| Agent command files reference `.documentation/` or root `memory/` paths | VER3 | HIGH |
-| Root-level `memory/`, `scripts/`, or `templates/` directories exist | VER4 | HIGH |
+| Agent command files reference `.specify/` or root `memory/`, `scripts/`, `templates/`, or `specs/` paths | VER3 | HIGH |
+| Root-level `memory/`, `scripts/`, `templates/`, or `specs/` directories exist | VER4 | HIGH |
 | Old `speckit.*-old.md` files in agent folder | VER5 | LOW |
 
 Include in the audit report under a **Spec Kit Spark Version** section:

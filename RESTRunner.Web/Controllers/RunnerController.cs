@@ -15,6 +15,13 @@ namespace RESTRunner.Web.Controllers
         private readonly IExecutionService _executionService;
         private readonly ILogger<RunnerController> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="RunnerController"/>.
+        /// </summary>
+        /// <param name="configurationService">Service for retrieving configurations.</param>
+        /// <param name="collectionService">Service for retrieving collections.</param>
+        /// <param name="executionService">Service for retrieving execution state and history.</param>
+        /// <param name="logger">Logger instance.</param>
         public RunnerController(
             IConfigurationService configurationService,
             ICollectionService collectionService,

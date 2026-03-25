@@ -90,9 +90,9 @@ Confirm this version or provide explicit version:
 
 | Content | Bump Type | Example |
 |---------|-----------|---------|
-| Completed feature specs | Minor | 1.2.0 → 1.3.0 |
-| Quickfixes only | Patch | 1.2.0 → 1.2.1 |
-| Breaking changes in specs | Major | 1.2.0 → 2.0.0 |
+| Completed feature specs | Minor | 1.2.4 → 1.3.0 |
+| Quickfixes only | Patch | 1.2.4 → 1.2.5 |
+| Breaking changes in specs | Major | 1.2.4 → 2.0.0 |
 
 ### 3. Classify Artifacts
 

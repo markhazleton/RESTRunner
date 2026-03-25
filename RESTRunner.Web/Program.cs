@@ -217,19 +217,36 @@ app.MapGet("/api/employee/{id}", (SampleCRUDService service, int id) =>
 .ProducesProblem(StatusCodes.Status502BadGateway)
 .ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
-app.MapPost("/api/employee", (SampleCRUDService service, EmployeeDto employee) =>
-    Proxy(() => service.CreateEmployee(employee)))
+app.MapPost("/api/employee", async (SampleCRUDService service, EmployeeDto employee) =>
+{
+    var validationErrors = EmployeeDtoValidator.Validate(employee);
+    return validationErrors.Count > 0
+        ? Results.ValidationProblem(validationErrors)
+    : await Proxy(() => service.CreateEmployee(employee));
+})
 .WithTags("Employee")
 .WithName("CreateEmployee")
 .Produces<EmployeeDto>(StatusCodes.Status200OK)
+.ProducesValidationProblem(StatusCodes.Status400BadRequest)
 .ProducesProblem(StatusCodes.Status502BadGateway)
 .ProducesProblem(StatusCodes.Status504GatewayTimeout);
 
-app.MapPut("/api/employee/{id}", (SampleCRUDService service, int id, EmployeeDto employee) =>
-    Proxy(() => service.UpdateEmployee(id, employee)))
+app.MapPut("/api/employee/{id}", async (SampleCRUDService service, int id, EmployeeDto employee) =>
+{
+    var validationErrors = EmployeeDtoValidator.Validate(employee);
+    if (id <= 0)
+    {
+        validationErrors["id"] = ["Id must be greater than zero."];
+    }
+
+    return validationErrors.Count > 0
+        ? Results.ValidationProblem(validationErrors)
+        : await Proxy(() => service.UpdateEmployee(id, employee));
+})
 .WithTags("Employee")
 .WithName("UpdateEmployee")
 .Produces<EmployeeDto>(StatusCodes.Status200OK)
+.ProducesValidationProblem(StatusCodes.Status400BadRequest)
 .ProducesProblem(StatusCodes.Status502BadGateway)
 .ProducesProblem(StatusCodes.Status504GatewayTimeout);
 

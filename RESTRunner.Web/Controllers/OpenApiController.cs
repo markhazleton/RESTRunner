@@ -17,6 +17,12 @@ public class OpenApiController : Controller
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<OpenApiController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="OpenApiController"/>.
+    /// </summary>
+    /// <param name="openApiService">Service for OpenAPI specification management.</param>
+    /// <param name="httpClientFactory">Factory for creating HTTP clients.</param>
+    /// <param name="logger">Logger instance.</param>
     public OpenApiController(
         IOpenApiService openApiService,
         IHttpClientFactory httpClientFactory,
@@ -29,6 +35,10 @@ public class OpenApiController : Controller
 
     // ── MVC: Index ────────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Displays the list of stored OpenAPI specifications.
+    /// </summary>
+    /// <returns>The OpenAPI index view.</returns>
     public async Task<IActionResult> Index()
     {
         try
@@ -46,12 +56,21 @@ public class OpenApiController : Controller
 
     // ── MVC: Upload ───────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Displays the upload form for a new OpenAPI specification.
+    /// </summary>
+    /// <returns>The upload view.</returns>
     public IActionResult Upload() => View(new OpenApiUploadViewModel());
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     [RequestSizeLimit(10 * 1024 * 1024)]
     [RequestFormLimits(MultipartBodyLengthLimit = 10 * 1024 * 1024)]
+    /// <summary>
+    /// Uploads and validates a new OpenAPI specification.
+    /// </summary>
+    /// <param name="viewModel">Upload form values.</param>
+    /// <returns>The upload view or a redirect to details.</returns>
     public async Task<IActionResult> Upload(OpenApiUploadViewModel viewModel)
     {
         if (!ModelState.IsValid) return View(viewModel);

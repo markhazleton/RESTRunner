@@ -43,7 +43,6 @@ public class RealExecutionService : IExecutionService
     {
         try
         {
-            // Load configuration via a short-lived scope (service is singleton, config service is scoped)
             TestConfiguration? config;
             using (var scope = _scopeFactory.CreateScope())
             {
@@ -56,13 +55,11 @@ public class RealExecutionService : IExecutionService
                 throw new InvalidOperationException($"Configuration {configurationId} not found");
             }
 
-            // Validate configuration
             if (!config.IsValid())
             {
                 throw new InvalidOperationException("Configuration is not valid");
             }
 
-            // Create execution tracking object
             var execution = new TestExecution
             {
                 ConfigurationId = configurationId,
@@ -78,16 +75,13 @@ public class RealExecutionService : IExecutionService
                 CancellationTokenSource = new CancellationTokenSource()
             };
 
-            // Add to running executions
             _runningExecutions.TryAdd(execution.Id, execution);
 
             _logger.LogInformation("Started execution {ExecutionId} for configuration {ConfigurationName}",
                 execution.Id, config.Name);
 
-            // Broadcast execution started
             await _hubContext.Clients.All.SendAsync("ExecutionStarted", execution);
 
-            // Start execution in background
             _ = Task.Run(async () => await ExecuteAsync(execution, config));
 
             return execution;
@@ -113,7 +107,6 @@ public class RealExecutionService : IExecutionService
             _logger.LogInformation("Starting execution {ExecutionId} for configuration {ConfigurationName}",
                 execution.Id, execution.ConfigurationName);
 
-            // Create execution history record
             history = new ExecutionHistory
             {
                 Id = execution.Id,
@@ -128,24 +121,20 @@ public class RealExecutionService : IExecutionService
                 Tags = config.Tags
             };
 
-            // Create output handler for CSV results
             var resultsFileName = $"execution_{execution.Id}_{DateTime.UtcNow:yyyyMMddHHmmss}.csv";
             var resultsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Data", "results");
 
-            // Ensure results directory exists
             if (!Directory.Exists(resultsDirectory))
             {
                 Directory.CreateDirectory(resultsDirectory);
             }
 
             resultsFilePath = Path.Combine(resultsDirectory, resultsFileName);
-
             var output = new CsvOutput(resultsFilePath);
 
             execution.CurrentPhase = "Executing requests...";
             execution.LastUpdate = DateTime.UtcNow;
 
-            // Create progress reporter
             var progressReporter = new Progress<ExecutionProgress>(progress =>
             {
                 execution.UpdateProgress(
@@ -155,29 +144,24 @@ public class RealExecutionService : IExecutionService
                     progress.AverageResponseTime,
                     progress.CurrentPhase);
 
-                // Broadcast progress via SignalR
                 _ = _hubContext.Clients.Group($"execution_{execution.Id}")
                     .SendAsync("ProgressUpdate", execution);
             });
 
-            // Execute with cancellation support and progress reporting
             var statistics = await ExecuteWithProgressAsync(
                 output,
                 config,
                 execution.CancellationTokenSource!.Token,
                 progressReporter);
 
-            // Finalize statistics
             statistics.FinalizeStatistics();
 
-            // Update execution
             execution.MarkCompleted();
             history.Statistics = statistics;
             history.EndTime = DateTime.UtcNow;
             history.Status = ExecutionStatus.Completed;
             history.ResultsFilePath = resultsFilePath;
 
-            // Broadcast completion via SignalR
             await _hubContext.Clients.Group($"execution_{execution.Id}")
                 .SendAsync("ExecutionCompleted", history);
 
@@ -193,7 +177,6 @@ public class RealExecutionService : IExecutionService
                 history.Status = ExecutionStatus.Cancelled;
             }
 
-            // Broadcast cancellation via SignalR
             await _hubContext.Clients.Group($"execution_{execution.Id}")
                 .SendAsync("ExecutionCancelled", new { ExecutionId = execution.Id, Timestamp = DateTime.UtcNow });
 
@@ -211,7 +194,6 @@ public class RealExecutionService : IExecutionService
                 history.ErrorMessage = errorMessage;
             }
 
-            // Broadcast failure via SignalR
             await _hubContext.Clients.Group($"execution_{execution.Id}")
                 .SendAsync("ExecutionFailed", new { ExecutionId = execution.Id, ErrorMessage = errorMessage, Timestamp = DateTime.UtcNow });
 
@@ -219,12 +201,10 @@ public class RealExecutionService : IExecutionService
         }
         finally
         {
-            // Save execution history
             if (history != null)
             {
                 _executionHistory.TryAdd(history.Id, history);
 
-                // Persist to file
                 try
                 {
                     var historyFileName = $"history_{history.Id}.json";
@@ -241,10 +221,7 @@ public class RealExecutionService : IExecutionService
                 }
             }
 
-            // Remove from running executions
             _runningExecutions.TryRemove(execution.Id, out _);
-
-            // Clean up cancellation token
             execution.CancellationTokenSource?.Dispose();
         }
     }
@@ -267,7 +244,6 @@ public class RealExecutionService : IExecutionService
 
         try
         {
-            // Report initial progress
             progress.Report(new ExecutionProgress
             {
                 CompletedRequests = 0,
@@ -302,8 +278,6 @@ public class RealExecutionService : IExecutionService
                             {
                                 try
                                 {
-                                    // This would call the actual execution logic
-                                    // For now, we'll use the ExecuteRunnerService pattern
                                     var result = await ExecuteRequestAsync(
                                         instance,
                                         request,
@@ -318,7 +292,6 @@ public class RealExecutionService : IExecutionService
 
                                     Interlocked.Increment(ref completedTests);
 
-                                    // Report progress every 10 requests
                                     if (completedTests % 10 == 0)
                                     {
                                         progress.Report(new ExecutionProgress
@@ -333,7 +306,6 @@ public class RealExecutionService : IExecutionService
                                 }
                                 catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                                 {
-                                    // Expected when cancellation is requested
                                 }
                                 catch (Exception ex)
                                 {
@@ -377,14 +349,11 @@ public class RealExecutionService : IExecutionService
         ExecutionStatistics statistics,
         CancellationToken cancellationToken)
     {
-        // This mirrors the logic from ExecuteRunnerService.GetResponseAsync
-        // For now, we'll create a simple HTTP client call
         using var client = _httpClientFactory.CreateClient();
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
         try
         {
-            // Apply template substitutions
             var processedPath = request.Path ?? string.Empty;
             var processedBody = request.BodyTemplate ?? string.Empty;
 
@@ -398,7 +367,6 @@ public class RealExecutionService : IExecutionService
             var requestUri = new Uri($"{instance.BaseUrl}{processedPath}");
             HttpResponseMessage? response = null;
 
-            // Execute based on HTTP method
             switch (request.RequestMethod)
             {
                 case HttpVerb.GET:
@@ -423,7 +391,6 @@ public class RealExecutionService : IExecutionService
             stopwatch.Stop();
             var elapsedMs = stopwatch.ElapsedMilliseconds;
 
-            // Update statistics
             statistics.IncrementTotalRequests();
             statistics.AddResponseTime(elapsedMs);
             statistics.RequestsByMethod.AddOrUpdate(request.RequestMethod.ToString(), 1, (_, count) => count + 1);
@@ -537,7 +504,6 @@ public class RealExecutionService : IExecutionService
         if (_executionHistory.TryGetValue(executionId, out var history))
             return history;
 
-        // Fall back to the persisted history file (survives app restarts / scoped-lifetime gaps)
         var historyFilePath = Path.Combine(
             _fileStorageService.GetDirectoryPath("logs"),
             $"history_{executionId}.json");
@@ -552,7 +518,7 @@ public class RealExecutionService : IExecutionService
                 new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
 
             if (history != null)
-                _executionHistory.TryAdd(executionId, history); // cache for subsequent calls
+                _executionHistory.TryAdd(executionId, history);
         }
         catch (Exception ex)
         {
@@ -568,7 +534,6 @@ public class RealExecutionService : IExecutionService
         {
             _logger.LogInformation("Deleted execution history {ExecutionId}", executionId);
 
-            // Also delete physical files
             try
             {
                 if (!string.IsNullOrEmpty(execution.ResultsFilePath) && File.Exists(execution.ResultsFilePath))
@@ -650,7 +615,6 @@ public class RealExecutionService : IExecutionService
         var execution = await GetExecutionHistoryAsync(executionId);
         if (execution == null) return null;
 
-        // Return existing results file if available
         if (!string.IsNullOrEmpty(execution.ResultsFilePath) && File.Exists(execution.ResultsFilePath))
         {
             return execution.ResultsFilePath;

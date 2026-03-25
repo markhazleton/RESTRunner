@@ -196,7 +196,7 @@ if ($Json) {
         DRY_RUN                = [bool]$DryRun
         SPECKIT_VERSION_PATH   = $specKitVersionPath
         INSTALLED_VERSION      = $installedVersion
-    } | ConvertTo-Json -Compress
+    } | ConvertTo-Json
 }
 else {
     Write-Output "Release Context"
