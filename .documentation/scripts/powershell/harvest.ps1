@@ -65,11 +65,11 @@ function Get-DocTaxon {
     )
 
     $normalizedPath = $RelativePath -replace '\\', '/'
-    $deprecatedPattern = 'pydantic_agent|AGENT_REGISTRY|REPO_MODE_AGENTS|data_field|function_name|display_card_id'
+    $deprecatedPattern = '\[PROJECT_NAME\]|\[PRINCIPLE_[A-Z0-9_]+\]|\[SECTION_[A-Z0-9_]+\]|\[GOVERNANCE_RULES\]|\[CONSTITUTION_VERSION\]|\[RATIFICATION_DATE\]|\[LAST_AMENDED_DATE\]'
 
     if (
         $normalizedPath -match '^docs/' -or
-        ($normalizedPath -match '^\.documentation/' -and $Content -match $deprecatedPattern)
+        ($normalizedPath -match '^\.documentation/' -and $normalizedPath -match '\.(md|txt)$' -and $Content -match $deprecatedPattern)
     ) {
         return 'STALE_REFERENCE'
     }
@@ -137,7 +137,7 @@ function Get-DocScoreBreakdown {
         $freshness -= 5
     }
 
-    if ($Content -match 'pydantic_agent|AGENT_REGISTRY|REPO_MODE_AGENTS|data_field|function_name|display_card_id') {
+    if ($RelativePath -match '\.(md|txt)$' -and $Content -match '\[PROJECT_NAME\]|\[PRINCIPLE_[A-Z0-9_]+\]|\[SECTION_[A-Z0-9_]+\]|\[GOVERNANCE_RULES\]|\[CONSTITUTION_VERSION\]|\[RATIFICATION_DATE\]|\[LAST_AMENDED_DATE\]') {
         $authority -= 8
         $freshness -= 6
     }

@@ -11,8 +11,6 @@ Development rules are governed by `.documentation/memory/constitution.md`. Follo
 ```
 RESTRunner.Domain (core models, no external deps)
   ↓
-RESTRunner.Services.HttpClientRunner (execution engine)
-  ↓
 RESTRunner (console app) + RESTRunner.Web (web app)
   ↓
 RESTRunner.PostmanImport (Postman collection parser)
@@ -20,9 +18,10 @@ RESTRunner.PostmanImport (Postman collection parser)
 
 **Key architectural decisions:**
 - **Domain-first design**: `RESTRunner.Domain` contains all domain models and is referenced by all other projects
-- **Service layer pattern**: `IExecuteRunner` in Domain, implemented in `ExecuteRunnerService` (Services.HttpClientRunner)
+- **Service layer pattern**: `IExecuteRunner` lives in Domain and is implemented by `RESTRunner.Domain.Services.ExecuteRunnerService`
 - **Dual UI**: Console app for CI/CD, web app for interactive use
 - **File-based storage**: Web app uses JSON files in `~/Data` for configurations/collections (no database)
+- **Batch execution integration**: domain execution maps `CompareRunner` into WebSpark batch models and delegates execution to `IBatchExecutionService`
 
 ### Core Domain Models
 - `CompareRunner`: Root configuration object containing `Instances`, `Users`, and `Requests`
@@ -33,11 +32,12 @@ RESTRunner.PostmanImport (Postman collection parser)
 - `ExecutionStatistics`: Thread-safe statistics collector with percentile calculations
 
 ### Request Execution Flow
-1. Console: `Program.cs` → `ExecuteRunnerService.ExecuteRunnerAsync()`
-2. Web: `RunnerController` → `IExecutionService` → `ExecuteRunnerService`
-3. Parallel execution: 100 iterations × instances × users × requests (default 10 concurrent)
-4. Template substitution: `{{encoded_user_name}}` and `{{property_key}}` replaced from `CompareUser.Properties`
-5. Results output: CSV via `IOutput` interface (`CsvOutput`, `ConsoleOutput`)
+1. Console: `Program.cs` resolves `IExecuteRunner` and calls `ExecuteRunnerService.ExecuteRunnerAsync()`
+2. Domain execution: `ExecuteRunnerService` builds a `BatchExecutionConfiguration` and delegates to `IBatchExecutionService`
+3. Web: `RunnerController` and `ExecutionController` call `IExecutionService`; the default implementation is `RealExecutionService`
+4. Parallel execution: iterations, concurrency, instances, users, and requests are passed through batch configuration
+5. Template substitution: user properties flow into batch user context properties, including `encoded_user_name`
+6. Results output: CSV via `IOutput` in the console path and persisted execution history in the web path
 
 ## Critical Conventions
 
@@ -56,11 +56,10 @@ Service classes use primary constructors with dependency injection:
 ```csharp
 public class ExecuteRunnerService(
     CompareRunner compareRunner,
-    IHttpClientFactory HttpClientFactory,
+  IBatchExecutionService batchExecutionService,
     ILogger<ExecuteRunnerService> logger) : IExecuteRunner
 {
-    private readonly HttpClient client = HttpClientFactory.CreateClient();
-    // ...
+  // Maps CompareRunner into batch execution and aggregates RESTRunner statistics.
 }
 ```
 
@@ -196,7 +195,7 @@ All projects use deterministic versioning in `.csproj`:
 ### Adding a New Request Property
 1. Add property to `CompareRequest` (RESTRunner.Domain/Models)
 2. Update JSON serialization if needed
-3. Handle in `ExecuteRunnerService.GetResponseAsync()` template substitution
+3. Handle mapping and template-related behavior in `RESTRunner.Domain.Services.ExecuteRunnerService`
 4. Update Postman import if mapping from collection
 
 ### Adding a New Output Format
