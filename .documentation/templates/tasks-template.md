@@ -8,10 +8,7 @@ description: "Task list template for feature implementation"
 **Input**: Design documents from `/.documentation/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are REQUIRED whenever
-the feature changes domain logic, regression-prone behavior, or public API
-contracts; omit them only when the plan documents why the change is safely
-outside the constitution's testing gate.
+**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -23,13 +20,10 @@ outside the constitution's testing gate.
 
 ## Path Conventions
 
-- **Domain model and contracts**: `RESTRunner.Domain/`
-- **Console app**: `RESTRunner/`
-- **Web app**: `RESTRunner.Web/`
-- **Postman import**: `RESTRunner.PostmanImport/`
-- **Tests**: `RESTRunner.Domain.Tests/`, `RESTRunner.Web.Tests/`
-- Use the exact solution paths from `plan.md`; do not fall back to generic
-  `src/` or `tests/` placeholders in generated task lists.
+- **Single project**: `src/`, `tests/` at repository root
+- **Web app**: `backend/src/`, `frontend/src/`
+- **Mobile**: `api/src/`, `ios/src/` or `android/src/`
+- Paths shown below assume single project - adjust based on plan.md structure
 
 <!-- 
   ============================================================================
@@ -74,8 +68,6 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T007 Create base models/entities that all stories depend on
 - [ ] T008 Configure error handling and logging infrastructure
 - [ ] T009 Setup environment configuration management
-- [ ] T010 [P] Define secure secret/configuration sourcing for any runtime
-  credentials or tokens
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -91,18 +83,17 @@ Examples of foundational tasks (adjust based on your project):
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T011 [P] [US1] Contract test for [endpoint] in the relevant test project
-- [ ] T012 [P] [US1] Integration test for [user journey] in the relevant test project
+- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] Create or update [Entity1] in the owning project path
-- [ ] T014 [P] [US1] Create or update [Entity2] in the owning project path
-- [ ] T015 [US1] Implement [Service] in the owning service or application path (depends on T013, T014)
-- [ ] T016 [US1] Implement [endpoint/feature] in the owning project path
-- [ ] T017 [US1] Add validation and typed failure handling
-- [ ] T018 [US1] Add structured logging and XML documentation updates for affected public surfaces
-- [ ] T019 [US1] Remove or avoid hardcoded secret-like defaults in executable code paths
+- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
+- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
+- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
+- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T016 [US1] Add validation and error handling
+- [ ] T017 [US1] Add logging for user story 1 operations
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -116,15 +107,15 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
 
-- [ ] T020 [P] [US2] Contract test for [endpoint] in the relevant test project
-- [ ] T021 [P] [US2] Integration test for [user journey] in the relevant test project
+- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
 
 ### Implementation for User Story 2
 
-- [ ] T022 [P] [US2] Create or update [Entity] in the owning project path
-- [ ] T023 [US2] Implement [Service] in the owning project path
-- [ ] T024 [US2] Implement [endpoint/feature] in the owning project path
-- [ ] T025 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
+- [ ] T021 [US2] Implement [Service] in src/services/[service].py
+- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T023 [US2] Integrate with User Story 1 components (if needed)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -138,14 +129,14 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
 
-- [ ] T026 [P] [US3] Contract test for [endpoint] in the relevant test project
-- [ ] T027 [P] [US3] Integration test for [user journey] in the relevant test project
+- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
+- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
 
 ### Implementation for User Story 3
 
-- [ ] T028 [P] [US3] Create or update [Entity] in the owning project path
-- [ ] T029 [US3] Implement [Service] in the owning project path
-- [ ] T030 [US3] Implement [endpoint/feature] in the owning project path
+- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
+- [ ] T027 [US3] Implement [Service] in src/services/[service].py
+- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -159,12 +150,12 @@ Examples of foundational tasks (adjust based on your project):
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] TXXX [P] Documentation updates in `.documentation/`, `README.md`, or public XML docs
+- [ ] TXXX [P] Documentation updates in .documentation/
 - [ ] TXXX Code cleanup and refactoring
 - [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional MSTest coverage in `RESTRunner.Domain.Tests/` or `RESTRunner.Web.Tests/`
-- [ ] TXXX Security hardening and secret/configuration cleanup
-- [ ] TXXX Run the validation commands identified in `plan.md`
+- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
+- [ ] TXXX Security hardening
+- [ ] TXXX Run quickstart.md validation
 
 ---
 

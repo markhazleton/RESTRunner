@@ -14,7 +14,7 @@
     Output is JSON for LLM consumption.
 
 .PARAMETER Scope
-    Optional scope filter: 'full', 'specs', 'docs', 'comments', 'scan'
+    Optional scope filter: 'full', 'specs', 'docs', 'comments', 'changelog', 'scan'
     Default: 'full'
 
 .PARAMETER Json
@@ -31,7 +31,7 @@
 #>
 
 param(
-    [ValidateSet('full', 'specs', 'docs', 'comments', 'scan')]
+    [ValidateSet('full', 'specs', 'docs', 'comments', 'changelog', 'scan')]
     [string]$Scope = 'full',
     [switch]$Json,
     [int]$SampleLimit = 100
@@ -45,6 +45,159 @@ $ErrorActionPreference = 'Continue'
 # Get repository root
 $repoRoot = Get-RepoRoot
 
+function Update-CountMap {
+    param(
+        [hashtable]$Map,
+        [string]$Key
+    )
+
+    if (-not $Map.ContainsKey($Key)) {
+        $Map[$Key] = 0
+    }
+
+    $Map[$Key]++
+}
+
+function Get-DocTaxon {
+    param(
+        [string]$RelativePath,
+        [string]$Content
+    )
+
+    $normalizedPath = $RelativePath -replace '\\', '/'
+    $deprecatedPattern = 'pydantic_agent|AGENT_REGISTRY|REPO_MODE_AGENTS|data_field|function_name|display_card_id'
+
+    if (
+        $normalizedPath -match '^docs/' -or
+        ($normalizedPath -match '^\.documentation/' -and $Content -match $deprecatedPattern)
+    ) {
+        return 'STALE_REFERENCE'
+    }
+
+    switch -Regex ($normalizedPath) {
+        '^CHANGELOG\.md$' { return 'HISTORICAL_RECORD' }
+        '^\.github/copilot-instructions\.md$' { return 'AUTHORITATIVE_REFERENCE' }
+        '^\.documentation/memory/' { return 'AUTHORITATIVE_REFERENCE' }
+        '^\.documentation/decisions/' { return 'ENGINEERING_PATTERN' }
+        '^\.documentation/releases/' { return 'HISTORICAL_RECORD' }
+        '^\.documentation/quickfixes/' { return 'HISTORICAL_RECORD' }
+        '^\.documentation/specs/pr-review/' { return 'HISTORICAL_RECORD' }
+        '^\.documentation/copilot/audit/' { return 'HISTORICAL_RECORD' }
+        '^\.documentation/copilot/' { return 'RESEARCH_OR_CONTEXT' }
+        '^\.documentation/reference-data/' { return 'REFERENCE_DATA' }
+        '^\.documentation/templates/' { return 'ENGINEERING_PATTERN' }
+        '^\.documentation/scripts/' { return 'OPERATIONS_RUNBOOK' }
+        '^\.documentation/' { return 'AUTHORITATIVE_REFERENCE' }
+        default { return 'AUTHORITATIVE_REFERENCE' }
+    }
+}
+
+function Get-DocScoreBreakdown {
+    param(
+        [string]$Taxon,
+        [string]$RelativePath,
+        [string]$Content,
+        [datetime]$LastModified,
+        [string]$Category
+    )
+
+    $operational = 0
+    $authority = 0
+    $uniqueness = 0
+    $freshness = 0
+
+    switch ($Taxon) {
+        'AUTHORITATIVE_REFERENCE' { $operational = 38; $authority = 24; $uniqueness = 18; $freshness = 13 }
+        'CONSUMER_GUIDE'          { $operational = 35; $authority = 21; $uniqueness = 16; $freshness = 14 }
+        'OPERATIONS_RUNBOOK'      { $operational = 34; $authority = 20; $uniqueness = 15; $freshness = 12 }
+        'ENGINEERING_PATTERN'     { $operational = 31; $authority = 22; $uniqueness = 16; $freshness = 13 }
+        'REFERENCE_DATA'          { $operational = 27; $authority = 16; $uniqueness = 14; $freshness = 13 }
+        'ANALYTICS_ASSET'         { $operational = 28; $authority = 15; $uniqueness = 14; $freshness = 12 }
+        'HISTORICAL_RECORD'       { $operational = 20; $authority = 18; $uniqueness = 10; $freshness = 10 }
+        'RESEARCH_OR_CONTEXT'     { $operational = 15; $authority = 9;  $uniqueness = 12; $freshness = 10 }
+        'STALE_REFERENCE'         { $operational = 10; $authority = 5;  $uniqueness = 8;  $freshness = 4 }
+        default                   { $operational = 20; $authority = 10; $uniqueness = 10; $freshness = 10 }
+    }
+
+    $daysOld = ((Get-Date) - $LastModified).Days
+    if ($daysOld -le 7) {
+        $freshness += 2
+    } elseif ($daysOld -gt 120 -and $daysOld -le 240) {
+        $freshness -= 2
+    } elseif ($daysOld -gt 240) {
+        $freshness -= 4
+    }
+
+    if ($RelativePath -in @('CHANGELOG.md', '.github/copilot-instructions.md')) {
+        $authority += 1
+        $uniqueness += 2
+    }
+
+    if ($Content -match 'HEAD on the `[^`]+` branch') {
+        $freshness -= 5
+    }
+
+    if ($Content -match 'pydantic_agent|AGENT_REGISTRY|REPO_MODE_AGENTS|data_field|function_name|display_card_id') {
+        $authority -= 8
+        $freshness -= 6
+    }
+
+    if ($Category -in @('completed_review', 'completed_audit', 'stale_draft', 'session_notes', 'backup', 'orphaned', 'legacy_root_doc')) {
+        $operational = [Math]::Min($operational, 18)
+        $authority = [Math]::Min($authority, 14)
+    }
+
+    $operational = [Math]::Max(0, [Math]::Min(40, $operational))
+    $authority = [Math]::Max(0, [Math]::Min(25, $authority))
+    $uniqueness = [Math]::Max(0, [Math]::Min(20, $uniqueness))
+    $freshness = [Math]::Max(0, [Math]::Min(15, $freshness))
+
+    return @{
+        operational_relevance = $operational
+        authority = $authority
+        uniqueness = $uniqueness
+        freshness = $freshness
+        total = $operational + $authority + $uniqueness + $freshness
+    }
+}
+
+function Get-DocDisposition {
+    param(
+        [string]$RelativePath,
+        [string]$Category,
+        [string]$Taxon,
+        [int]$Score,
+        [datetime]$LastModified
+    )
+
+    if ($Category -in @('backup', 'orphaned', 'completed_review', 'completed_audit', 'stale_draft', 'session_notes', 'legacy_root_doc')) {
+        return 'archive'
+    }
+
+    if ($Taxon -eq 'STALE_REFERENCE') {
+        return 'rewrite'
+    }
+
+    if ($RelativePath -match '^\.documentation/copilot/harvest-\d{4}-\d{2}-\d{2}\.md$') {
+        $daysOld = ((Get-Date) - $LastModified).Days
+        if ($daysOld -gt 30) {
+            return 'archive'
+        }
+    }
+
+    if ($Score -ge 75) {
+        return 'keep'
+    }
+    if ($Score -ge 60) {
+        return 'keep_refresh'
+    }
+    if ($Score -ge 40) {
+        return 'consolidate'
+    }
+
+    return 'archive'
+}
+
 # Initialize result object
 $result = @{
     harvest_date      = (Get-Date -Format 'yyyy-MM-dd')
@@ -54,6 +207,7 @@ $result = @{
     report_path       = '.documentation/copilot/harvest-' + (Get-Date -Format 'yyyy-MM-dd') + '.md'
     specs             = @()
     docs              = @{
+        all                = @()
         living_reference  = @()
         completed_reviews = @()
         completed_audits  = @()
@@ -64,11 +218,19 @@ $result = @{
         impl_plans        = @()
         release_docs      = @()
         quickfix_records  = @()
+        legacy_root_docs  = @()
+        taxonomy_counts   = @{}
+        disposition_counts = @{}
     }
     code_comments     = @()
     changelog_gaps    = @()
+    changelog_entries = @()
     bak_files         = @()
     archive_existing  = @()
+    path_roots        = @{
+        canonical_documentation = '.documentation/'
+        legacy_roots = @()
+    }
     summary           = @{
         specs_completed      = 0
         specs_in_progress    = 0
@@ -197,6 +359,13 @@ if ($Scope -in @('full', 'specs', 'scan')) {
             }
 
             $result.specs += $specEntry
+            $result.changelog_entries += @{
+                spec_name = $specName
+                spec_number = $specNumber
+                status = $status
+                in_changelog = $inChangelog
+                pr_review = $prReviewFound
+            }
 
             switch ($status) {
                 'completed'                 { $result.summary.specs_completed++ }
@@ -228,24 +397,42 @@ if ($Scope -in @('full', 'specs', 'scan')) {
 # PHASE 2: Documentation Inventory
 # ============================================================================
 
-if ($Scope -in @('full', 'docs', 'scan')) {
+if ($Scope -in @('full', 'docs', 'scan', 'changelog')) {
     if (-not $Json) { Write-Host "[DOCS] Scanning documentation..." -ForegroundColor Cyan }
 
-    $docDir = Join-Path $repoRoot '.documentation'
+    $docRoots = @()
+    $canonicalDocDir = Join-Path $repoRoot '.documentation'
+    $legacyDocsDir = Join-Path $repoRoot 'docs'
 
-    if (Test-Path $docDir) {
-        Get-ChildItem $docDir -Recurse -File -ErrorAction SilentlyContinue |
+    if (Test-Path $canonicalDocDir) {
+        $docRoots += @{ path = $canonicalDocDir; mode = 'canonical' }
+    }
+
+    if (Test-Path $legacyDocsDir) {
+        $docRoots += @{ path = $legacyDocsDir; mode = 'legacy' }
+        $result.path_roots.legacy_roots += 'docs/'
+    }
+
+    foreach ($docRoot in $docRoots) {
+        Get-ChildItem $docRoot.path -Recurse -File -ErrorAction SilentlyContinue |
             Where-Object { $_.FullName -notmatch [regex]::Escape('.archive') } |
             Select-Object -First $SampleLimit |
             ForEach-Object {
             $file         = $_
             $relativePath = $file.FullName.Substring($repoRoot.Length + 1).Replace('\', '/')
             $category     = 'living_reference'
+            $content = if ($file.Extension -in @('.md', '.txt', '.json', '.yml', '.yaml', '.toml', '.ps1', '.sh')) {
+                Get-Content $file.FullName -Raw -ErrorAction SilentlyContinue
+            } else {
+                ''
+            }
 
             if ($file.Extension -in @('.bak', '.backup', '.old')) {
                 $category = 'backup'
                 $result.bak_files += $relativePath
                 $result.summary.bak_files_found++
+            } elseif ($docRoot.mode -eq 'legacy') {
+                $category = 'legacy_root_doc'
             } elseif ($relativePath -match '\.documentation/specs/pr-review/') {
                 $category = 'completed_review'
             } elseif ($relativePath -match '\.documentation/copilot/audit/') {
@@ -276,6 +463,10 @@ if ($Scope -in @('full', 'docs', 'scan')) {
                 if (-not $isReferenced) { $category = 'orphaned' }
             }
 
+            $taxon = Get-DocTaxon -RelativePath $relativePath -Content $content
+            $scoreBreakdown = Get-DocScoreBreakdown -Taxon $taxon -RelativePath $relativePath -Content $content -LastModified $file.LastWriteTime -Category $category
+            $disposition = Get-DocDisposition -RelativePath $relativePath -Category $category -Taxon $taxon -Score $scoreBreakdown.total -LastModified $file.LastWriteTime
+
             $docEntry = @{
                 path          = $relativePath
                 name          = $file.Name
@@ -283,7 +474,15 @@ if ($Scope -in @('full', 'docs', 'scan')) {
                 size_bytes    = $file.Length
                 last_modified = $file.LastWriteTime.ToString('yyyy-MM-dd')
                 category      = $category
+                taxon         = $taxon
+                usefulness_score = $scoreBreakdown.total
+                score_breakdown = $scoreBreakdown
+                disposition   = $disposition
             }
+
+            $result.docs.all += $docEntry
+            Update-CountMap -Map $result.docs.taxonomy_counts -Key $taxon
+            Update-CountMap -Map $result.docs.disposition_counts -Key $disposition
 
             switch ($category) {
                 'backup'           { $result.docs.backup_files += $docEntry;      $result.summary.docs_to_archive++ }
@@ -295,15 +494,17 @@ if ($Scope -in @('full', 'docs', 'scan')) {
                 'impl_plan'        { $result.docs.impl_plans += $docEntry;        $result.summary.docs_to_archive++ }
                 'release_doc'      { $result.docs.release_docs += $docEntry;      $result.summary.docs_to_archive++ }
                 'quickfix_record'  { $result.docs.quickfix_records += $docEntry;  $result.summary.docs_to_archive++ }
+                'legacy_root_doc'  { $result.docs.legacy_root_docs += $docEntry;  $result.summary.docs_to_archive++ }
                 default            { $result.docs.living_reference += $docEntry }
             }
         }
+    }
 
-        if (-not $Json) {
-            Write-Host "  Living reference: $($result.docs.living_reference.Count) files" -ForegroundColor Green
-            $archColor = if ($result.summary.docs_to_archive -gt 0) { 'Yellow' } else { 'Green' }
-            Write-Host "  To archive: $($result.summary.docs_to_archive) files" -ForegroundColor $archColor
-        }
+    if (-not $Json) {
+        Write-Host "  Living reference: $($result.docs.living_reference.Count) files" -ForegroundColor Green
+        $archColor = if ($result.summary.docs_to_archive -gt 0) { 'Yellow' } else { 'Green' }
+        Write-Host "  To archive: $($result.summary.docs_to_archive) files" -ForegroundColor $archColor
+        Write-Host "  Taxonomy buckets: $($result.docs.taxonomy_counts.Keys.Count)" -ForegroundColor Gray
     }
 }
 
