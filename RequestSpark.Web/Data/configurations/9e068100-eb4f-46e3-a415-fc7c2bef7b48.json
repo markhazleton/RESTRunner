@@ -57,7 +57,7 @@
     "sessionId": "RequestSpark-2025-09-27",
     "users": [
       {
-        "password": "password",
+        "password": "REPLACE_ME",
         "properties": {
           "email": "test@example.com",
           "role": "tester",
@@ -66,7 +66,7 @@
         "userName": "testuser"
       },
       {
-        "password": "admin123",
+        "password": "REPLACE_ME",
         "properties": {
           "email": "admin@example.com",
           "role": "administrator",

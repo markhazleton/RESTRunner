@@ -357,3 +357,6 @@ coverage/
 .DS_Store
 Thumbs.db
 *.swp
+
+# Runtime execution results (generated at test-run time)
+RequestSpark.Web/Data/results/

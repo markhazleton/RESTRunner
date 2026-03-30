@@ -98,7 +98,7 @@
     "sessionId": "RequestSpark-2026-03-20",
     "users": [
       {
-        "password": "password",
+        "password": "REPLACE_ME",
         "properties": {
           "email": "test@example.com",
           "role": "admin"
