@@ -1,6 +1,6 @@
 # NuGet Package Review Report
 **Date**: 2025-12-23  
-**Solution**: RESTRunner  
+**Solution**: RequestSpark  
 **Target Framework**: .NET 10.0  
 
 ---
@@ -19,7 +19,7 @@
 
 ## Package Analysis by Project
 
-### 1. RESTRunner.Domain (1 package)
+### 1. RequestSpark.Domain (1 package)
 
 | Package | Current | Latest | Status | Recommendation |
 |---------|---------|--------|--------|----------------|
@@ -29,7 +29,7 @@
 
 ---
 
-### 2. RESTRunner.PostmanImport (1 package)
+### 2. RequestSpark.PostmanImport (1 package)
 
 | Package | Current | Latest | Status | Recommendation |
 |---------|---------|--------|--------|----------------|
@@ -39,7 +39,7 @@
 
 ---
 
-### 3. RESTRunner.Services.HttpClientRunner (3 packages)
+### 3. RequestSpark.Services.HttpClientRunner (3 packages)
 
 | Package | Current | Latest | Status | Recommendation |
 |---------|---------|--------|--------|----------------|
@@ -51,7 +51,7 @@
 
 ---
 
-### 4. RESTRunner (Console App) (5 packages)
+### 4. RequestSpark (Console App) (5 packages)
 
 | Package | Current | Latest | Status | Recommendation |
 |---------|---------|--------|--------|----------------|
@@ -68,7 +68,7 @@
 
 ---
 
-### 5. RESTRunner.Web (5 packages)
+### 5. RequestSpark.Web (5 packages)
 
 | Package | Current | Latest | Status | Recommendation |
 |---------|---------|--------|--------|----------------|
@@ -85,7 +85,7 @@
 
 ---
 
-### 6. RESTRunner.Domain.Tests (4 packages)
+### 6. RequestSpark.Domain.Tests (4 packages)
 
 | Package | Current | Latest | Status | Recommendation |
 |---------|---------|--------|--------|----------------|
@@ -105,7 +105,7 @@
 
 ### Priority 1: Remove Potentially Unused Packages (Low Risk)
 
-#### Action 1.1: Remove System.Text.Json from RESTRunner.csproj
+#### Action 1.1: Remove System.Text.Json from RequestSpark.csproj
 ```xml
 <!-- REMOVE THIS LINE: -->
 <PackageReference Include="System.Text.Json" Version="10.0.1" />
@@ -114,7 +114,7 @@
 **Test**: Build and run console app, verify JSON serialization still works  
 **Risk**: Very Low - Framework-included package
 
-#### Action 1.2: Remove System.Security.Cryptography.Xml from RESTRunner.Web.csproj
+#### Action 1.2: Remove System.Security.Cryptography.Xml from RequestSpark.Web.csproj
 ```xml
 <!-- REMOVE THIS LINE: -->
 <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.1" />
@@ -127,7 +127,7 @@
 
 ### Priority 2: Update Outdated Packages (Medium Risk)
 
-#### Action 2.1: Update RESTRunner.Web Packages
+#### Action 2.1: Update RequestSpark.Web Packages
 ```xml
 <!-- UPDATE THESE: -->
 <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
@@ -138,7 +138,7 @@
 **Risk**: Medium for WebSpark.HttpClientUtility (major version bump)  
 **Test**: Full web app smoke test, especially HTTP client usage
 
-#### Action 2.2: Update RESTRunner.Domain.Tests Packages
+#### Action 2.2: Update RequestSpark.Domain.Tests Packages
 ```xml
 <!-- UPDATE THESE: -->
 <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
@@ -177,24 +177,24 @@ Based on code analysis and dependency tree:
 
 | Package | Used By | Evidence |
 |---------|---------|----------|
-| FileHelpers | RESTRunner.Domain | Domain model CSV parsing |
-| Newtonsoft.Json | RESTRunner.PostmanImport, RESTRunner.Web | Postman collection parsing, JSON operations |
-| CsvHelper | RESTRunner (Console) | CSV output generation (c:\test\RESTRunner.csv) |
-| Microsoft.Extensions.Hosting | RESTRunner (Console) | Host builder and DI container |
-| Microsoft.Extensions.Http | RESTRunner, Services.HttpClientRunner | HttpClientFactory registration |
+| FileHelpers | RequestSpark.Domain | Domain model CSV parsing |
+| Newtonsoft.Json | RequestSpark.PostmanImport, RequestSpark.Web | Postman collection parsing, JSON operations |
+| CsvHelper | RequestSpark (Console) | CSV output generation (c:\test\RequestSpark.csv) |
+| Microsoft.Extensions.Hosting | RequestSpark (Console) | Host builder and DI container |
+| Microsoft.Extensions.Http | RequestSpark, Services.HttpClientRunner | HttpClientFactory registration |
 | Microsoft.Extensions.Logging.Abstractions | Services.HttpClientRunner | ILogger<T> interfaces |
 | Microsoft.AspNet.WebApi.Client | Services.HttpClientRunner | HTTP client utilities |
-| System.Configuration.ConfigurationManager | RESTRunner (Console) | app.config file access |
-| Swashbuckle.AspNetCore | RESTRunner.Web | Swagger/OpenAPI documentation |
-| WebSpark.Bootswatch | RESTRunner.Web | Bootstrap theme switching |
-| WebSpark.HttpClientUtility | RESTRunner.Web | HTTP client decorators |
+| System.Configuration.ConfigurationManager | RequestSpark (Console) | app.config file access |
+| Swashbuckle.AspNetCore | RequestSpark.Web | Swagger/OpenAPI documentation |
+| WebSpark.Bootswatch | RequestSpark.Web | Bootstrap theme switching |
+| WebSpark.HttpClientUtility | RequestSpark.Web | HTTP client decorators |
 
 ### Packages Flagged for Review ??
 
 | Package | Project | Reason | Action |
 |---------|---------|--------|--------|
-| System.Text.Json | RESTRunner (Console) | NU1510 warning - Framework-included | **Remove and test** |
-| System.Security.Cryptography.Xml | RESTRunner.Web | NU1510 warning - May not be used | **Remove and test** |
+| System.Text.Json | RequestSpark (Console) | NU1510 warning - Framework-included | **Remove and test** |
+| System.Security.Cryptography.Xml | RequestSpark.Web | NU1510 warning - May not be used | **Remove and test** |
 
 ---
 
@@ -217,11 +217,11 @@ All packages checked against:
 git checkout -b package-optimization
 
 # Edit project files to remove NU1510 flagged packages
-# RESTRunner\RESTRunner.csproj - Remove System.Text.Json
-# RESTRunner.Web\RESTRunner.Web.csproj - Remove System.Security.Cryptography.Xml
+# RequestSpark\RequestSpark.csproj - Remove System.Text.Json
+# RequestSpark.Web\RequestSpark.Web.csproj - Remove System.Security.Cryptography.Xml
 
 # Test builds
-dotnet build RESTRunner.sln --configuration Release
+dotnet build RequestSpark.sln --configuration Release
 
 # Run tests
 dotnet test
@@ -234,7 +234,7 @@ git commit -m "Remove framework-included packages (System.Text.Json, System.Secu
 ### Step 2: Update Web App Packages (Medium Risk)
 ```bash
 # Update Swashbuckle (minor version)
-cd RESTRunner.Web
+cd RequestSpark.Web
 dotnet add package Swashbuckle.AspNetCore --version 10.1.0
 
 # Update WebSpark.Bootswatch (minor version)
@@ -259,7 +259,7 @@ git commit -m "Update web app packages (Swashbuckle 10.1.0, WebSpark.Bootswatch 
 # https://github.com/microsoft/testfx/releases/tag/v4.0.0
 
 # Update test packages
-cd RESTRunner.Domain.Tests
+cd RequestSpark.Domain.Tests
 dotnet add package Microsoft.NET.Test.Sdk --version 18.0.1
 dotnet add package MSTest.TestAdapter --version 4.0.2
 dotnet add package MSTest.TestFramework --version 4.0.2
@@ -291,8 +291,8 @@ git push origin package-optimization
 After each package update, verify:
 
 ### Build Validation
-- [ ] `dotnet restore RESTRunner.sln` succeeds
-- [ ] `dotnet build RESTRunner.sln --configuration Release` succeeds with 0 errors
+- [ ] `dotnet restore RequestSpark.sln` succeeds
+- [ ] `dotnet build RequestSpark.sln --configuration Release` succeeds with 0 errors
 - [ ] No new warnings introduced (beyond existing 5)
 
 ### Test Validation
@@ -325,8 +325,8 @@ After each package update, verify:
 ## Summary of Recommendations
 
 ### ? Safe to Proceed (Low Risk)
-1. Remove `System.Text.Json` from RESTRunner.csproj
-2. Remove `System.Security.Cryptography.Xml` from RESTRunner.Web.csproj
+1. Remove `System.Text.Json` from RequestSpark.csproj
+2. Remove `System.Security.Cryptography.Xml` from RequestSpark.Web.csproj
 3. Update `Swashbuckle.AspNetCore` to 10.1.0
 4. Update `WebSpark.Bootswatch` to 1.34.0
 
@@ -343,3 +343,4 @@ All other packages are at latest stable versions and actively used.
 **Recommended Approach**: Incremental - Do Priority 1 first, then Priority 2, test between each  
 **Branch Strategy**: Create `package-optimization` branch off `upgrade-to-NET10`  
 **Testing Required**: Full regression test suite after all updates
+

@@ -33,12 +33,12 @@
   },
   "projects": [
     {
-      "path": "RESTRunner\\RESTRunner.csproj",
+      "path": "RequestSpark\\RequestSpark.csproj",
       "startingProject": true,
       "issues": 3,
       "storyPoints": 8,
       "properties": {
-        "appName": "RESTRunner",
+        "appName": "RequestSpark",
         "projectKind": "DotNetCoreApp",
         "frameworks": [
           "net9.0"
@@ -62,7 +62,7 @@
         {
           "incidentId": "31e15597-68ea-45db-bd2f-5755ab1e1571",
           "ruleId": "NuGet.0002",
-          "projectPath": "RESTRunner\\RESTRunner.csproj",
+          "projectPath": "RequestSpark\\RequestSpark.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -70,7 +70,7 @@
               "protected": "Microsoft.Extensions.Hosting, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Hosting, and replace with new package Microsoft.Extensions.Hosting 10.0.1"
             },
             "kind": "File",
-            "path": "RESTRunner\\RESTRunner.csproj",
+            "path": "RequestSpark\\RequestSpark.csproj",
             "snippet": "Microsoft.Extensions.Hosting, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Hosting, and replace with new package Microsoft.Extensions.Hosting 10.0.1",
             "protectedSnippet": "Microsoft.Extensions.Hosting, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Hosting, and replace with new package Microsoft.Extensions.Hosting 10.0.1",
             "label": "Microsoft.Extensions.Hosting 9.0.9",
@@ -85,7 +85,7 @@
         {
           "incidentId": "821593c5-aeb7-439c-9e9e-3f2ddc9452d6",
           "ruleId": "NuGet.0002",
-          "projectPath": "RESTRunner\\RESTRunner.csproj",
+          "projectPath": "RequestSpark\\RequestSpark.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -93,7 +93,7 @@
               "protected": "Microsoft.Extensions.Http, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.1"
             },
             "kind": "File",
-            "path": "RESTRunner\\RESTRunner.csproj",
+            "path": "RequestSpark\\RequestSpark.csproj",
             "snippet": "Microsoft.Extensions.Http, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.1",
             "protectedSnippet": "Microsoft.Extensions.Http, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.1",
             "label": "Microsoft.Extensions.Http 9.0.9",
@@ -108,7 +108,7 @@
         {
           "incidentId": "01a7fff6-f569-446a-9f47-1ad4bbb503bb",
           "ruleId": "NuGet.0002",
-          "projectPath": "RESTRunner\\RESTRunner.csproj",
+          "projectPath": "RequestSpark\\RequestSpark.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -116,7 +116,7 @@
               "protected": "System.Configuration.ConfigurationManager, 9.0.9\n\nRecommendation:\n\nRemove System.Configuration.ConfigurationManager, and replace with new package System.Configuration.ConfigurationManager 10.0.1"
             },
             "kind": "File",
-            "path": "RESTRunner\\RESTRunner.csproj",
+            "path": "RequestSpark\\RequestSpark.csproj",
             "snippet": "System.Configuration.ConfigurationManager, 9.0.9\n\nRecommendation:\n\nRemove System.Configuration.ConfigurationManager, and replace with new package System.Configuration.ConfigurationManager 10.0.1",
             "protectedSnippet": "System.Configuration.ConfigurationManager, 9.0.9\n\nRecommendation:\n\nRemove System.Configuration.ConfigurationManager, and replace with new package System.Configuration.ConfigurationManager 10.0.1",
             "label": "System.Configuration.ConfigurationManager 9.0.9",
@@ -131,7 +131,7 @@
         {
           "incidentId": "c91458e7-f7e2-4e56-820f-e70ecde2dd83",
           "ruleId": "NuGet.0002",
-          "projectPath": "RESTRunner\\RESTRunner.csproj",
+          "projectPath": "RequestSpark\\RequestSpark.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -139,7 +139,7 @@
               "protected": "System.Text.Json, 9.0.9\n\nRecommendation:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.1"
             },
             "kind": "File",
-            "path": "RESTRunner\\RESTRunner.csproj",
+            "path": "RequestSpark\\RequestSpark.csproj",
             "snippet": "System.Text.Json, 9.0.9\n\nRecommendation:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.1",
             "protectedSnippet": "System.Text.Json, 9.0.9\n\nRecommendation:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.1",
             "label": "System.Text.Json 9.0.9",
@@ -154,7 +154,7 @@
         {
           "incidentId": "33e187a3-ce9d-47dc-b546-2b65786a1587",
           "ruleId": "Project.0002",
-          "projectPath": "RESTRunner\\RESTRunner.csproj",
+          "projectPath": "RequestSpark\\RequestSpark.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -162,7 +162,7 @@
               "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
             },
             "kind": "File",
-            "path": "RESTRunner\\RESTRunner.csproj",
+            "path": "RequestSpark\\RequestSpark.csproj",
             "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "properties": {
@@ -175,7 +175,7 @@
           "incidentId": "b9a69466-803b-44bc-9473-773ecc805f7b",
           "ruleId": "Api.0003",
           "description": "URI query redaction in IHttpClientFactory logs ",
-          "projectPath": "RESTRunner\\RESTRunner.csproj",
+          "projectPath": "RequestSpark\\RequestSpark.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -183,7 +183,7 @@
               "protected": "M:Microsoft.Extensions.DependencyInjection.HttpClientFactoryServiceCollectionExtensions.AddHttpClient(Microsoft.Extensions.DependencyInjection.IServiceCollection)"
             },
             "kind": "File",
-            "path": "RESTRunner\\Program.cs",
+            "path": "RequestSpark\\Program.cs",
             "snippet": "services.AddHttpClient();",
             "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.HttpClientFactoryServiceCollectionExtensions.AddHttpClient(Microsoft.Extensions.DependencyInjection.IServiceCollection)",
             "label": "M:Microsoft.Extensions.DependencyInjection.HttpClientFactoryServiceCollectionExtensions.AddHttpClient(Microsoft.Extensions.DependencyInjection.IServiceCollection)",
@@ -202,7 +202,7 @@
           "incidentId": "4d75b34f-0c3c-4217-9ae1-4519e64980c5",
           "ruleId": "Api.0003",
           "description": "Breaking change: Message no longer duplicated in Console log output ",
-          "projectPath": "RESTRunner\\RESTRunner.csproj",
+          "projectPath": "RequestSpark\\RequestSpark.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -210,7 +210,7 @@
               "protected": "M:Microsoft.Extensions.Logging.ConsoleLoggerExtensions.AddConsole(Microsoft.Extensions.Logging.ILoggingBuilder)"
             },
             "kind": "File",
-            "path": "RESTRunner\\Program.cs",
+            "path": "RequestSpark\\Program.cs",
             "snippet": "configure.AddConsole();",
             "protectedSnippet": "M:Microsoft.Extensions.Logging.ConsoleLoggerExtensions.AddConsole(Microsoft.Extensions.Logging.ILoggingBuilder)",
             "label": "M:Microsoft.Extensions.Logging.ConsoleLoggerExtensions.AddConsole(Microsoft.Extensions.Logging.ILoggingBuilder)",
@@ -229,7 +229,7 @@
           "incidentId": "b204394f-dee9-49ba-b69e-095a266f9b85",
           "ruleId": "Api.0003",
           "description": "Breaking change: HostBuilder enables ValidateOnBuild/ValidateScopes in development environment ",
-          "projectPath": "RESTRunner\\RESTRunner.csproj",
+          "projectPath": "RequestSpark\\RequestSpark.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -237,7 +237,7 @@
               "protected": "T:Microsoft.Extensions.Hosting.HostBuilder"
             },
             "kind": "File",
-            "path": "RESTRunner\\Program.cs",
+            "path": "RequestSpark\\Program.cs",
             "snippet": "var builder = new HostBuilder()\r\n.ConfigureServices((hostContext, services) =\u003E\r\n{\r\n    services.AddLogging(configure =\u003E \r\n    {\r\n        configure.AddConsole();\r\n        configure.SetMinimumLevel(LogLevel.Warning);\r\n    });\r\n    services.AddHttpClient();\r\n    services.AddSingleton(serviceProvider =\u003E\r\n    {\r\n        var myRunner = new CompareRunner();\r\n        myRunner.InitializeCompareRunner();\r\n        var import = new PostmanImport(myRunner);\r\n        import.LoadFromPostman(\u0022collection.json\u0022);\r\n        myRunner.SaveToFile();\r\n        return myRunner;\r\n    });\r\n    services.AddSingleton\u003CIExecuteRunner, ExecuteRunnerService\u003E();\r\n}).UseConsoleLifetime();",
             "protectedSnippet": "T:Microsoft.Extensions.Hosting.HostBuilder",
             "label": "T:Microsoft.Extensions.Hosting.HostBuilder",
@@ -256,12 +256,12 @@
       "features": []
     },
     {
-      "path": "RESTRunner.Domain\\RESTRunner.Domain.csproj",
+      "path": "RequestSpark.Domain\\RequestSpark.Domain.csproj",
       "startingProject": true,
       "issues": 2,
       "storyPoints": 3,
       "properties": {
-        "appName": "RESTRunner.Domain",
+        "appName": "RequestSpark.Domain",
         "projectKind": "ClassLibrary",
         "frameworks": [
           "net9.0"
@@ -285,7 +285,7 @@
         {
           "incidentId": "cf62927f-15a9-42bf-968c-d21bc7e7ef02",
           "ruleId": "Project.0002",
-          "projectPath": "RESTRunner.Domain\\RESTRunner.Domain.csproj",
+          "projectPath": "RequestSpark.Domain\\RequestSpark.Domain.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -293,7 +293,7 @@
               "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
             },
             "kind": "File",
-            "path": "RESTRunner.Domain\\RESTRunner.Domain.csproj",
+            "path": "RequestSpark.Domain\\RequestSpark.Domain.csproj",
             "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "properties": {
@@ -306,7 +306,7 @@
           "incidentId": "991c4661-a572-4c4d-b6a1-a7528bb987e7",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Domain\\RESTRunner.Domain.csproj",
+          "projectPath": "RequestSpark.Domain\\RequestSpark.Domain.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -314,7 +314,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Domain\\Models\\CompareInstance.cs",
+            "path": "RequestSpark.Domain\\Models\\CompareInstance.cs",
             "snippet": "if (!string.IsNullOrWhiteSpace(value) \u0026\u0026 Uri.TryCreate(value, UriKind.Absolute, out _))\r\n            {\r\n                _baseUrl = value;\r\n            }\r\n            else if (!string.IsNullOrWhiteSpace(value))\r\n            {\r\n                throw new ArgumentException(\u0022BaseUrl must be a valid absolute URL\u0022, nameof(BaseUrl));\r\n            }\r\n            else\r\n            {\r\n                _baseUrl = value;\r\n            }",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -333,7 +333,7 @@
           "incidentId": "804345e0-ccf0-402b-b967-20323e26287e",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Domain\\RESTRunner.Domain.csproj",
+          "projectPath": "RequestSpark.Domain\\RequestSpark.Domain.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -341,7 +341,7 @@
               "protected": "M:System.Uri.TryCreate(System.String,System.UriKind,System.Uri@)"
             },
             "kind": "File",
-            "path": "RESTRunner.Domain\\Models\\CompareInstance.cs",
+            "path": "RequestSpark.Domain\\Models\\CompareInstance.cs",
             "snippet": "if (!string.IsNullOrWhiteSpace(value) \u0026\u0026 Uri.TryCreate(value, UriKind.Absolute, out _))\r\n            {\r\n                _baseUrl = value;\r\n            }\r\n            else if (!string.IsNullOrWhiteSpace(value))\r\n            {\r\n                throw new ArgumentException(\u0022BaseUrl must be a valid absolute URL\u0022, nameof(BaseUrl));\r\n            }\r\n            else\r\n            {\r\n                _baseUrl = value;\r\n            }",
             "protectedSnippet": "M:System.Uri.TryCreate(System.String,System.UriKind,System.Uri@)",
             "label": "M:System.Uri.TryCreate(System.String,System.UriKind,System.Uri@)",
@@ -360,12 +360,12 @@
       "features": []
     },
     {
-      "path": "RESTRunner.Domain.Tests\\RESTRunner.Domain.Tests.csproj",
+      "path": "RequestSpark.Domain.Tests\\RequestSpark.Domain.Tests.csproj",
       "startingProject": true,
       "issues": 1,
       "storyPoints": 1,
       "properties": {
-        "appName": "RESTRunner.Domain.Tests",
+        "appName": "RequestSpark.Domain.Tests",
         "projectKind": "DotNetCoreApp",
         "frameworks": [
           "net9.0"
@@ -389,7 +389,7 @@
         {
           "incidentId": "a559c5d7-34b0-44ef-8b3a-ae7cdd6d7231",
           "ruleId": "Project.0002",
-          "projectPath": "RESTRunner.Domain.Tests\\RESTRunner.Domain.Tests.csproj",
+          "projectPath": "RequestSpark.Domain.Tests\\RequestSpark.Domain.Tests.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -397,7 +397,7 @@
               "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
             },
             "kind": "File",
-            "path": "RESTRunner.Domain.Tests\\RESTRunner.Domain.Tests.csproj",
+            "path": "RequestSpark.Domain.Tests\\RequestSpark.Domain.Tests.csproj",
             "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "properties": {
@@ -410,12 +410,12 @@
       "features": []
     },
     {
-      "path": "RESTRunner.PostmanImport\\RESTRunner.PostmanImport.csproj",
+      "path": "RequestSpark.PostmanImport\\RequestSpark.PostmanImport.csproj",
       "startingProject": true,
       "issues": 1,
       "storyPoints": 1,
       "properties": {
-        "appName": "RESTRunner.PostmanImport",
+        "appName": "RequestSpark.PostmanImport",
         "projectKind": "ClassLibrary",
         "frameworks": [
           "net9.0"
@@ -439,7 +439,7 @@
         {
           "incidentId": "8df08dc2-ef4a-424a-b3d5-bf8ecc9bf8ae",
           "ruleId": "Project.0002",
-          "projectPath": "RESTRunner.PostmanImport\\RESTRunner.PostmanImport.csproj",
+          "projectPath": "RequestSpark.PostmanImport\\RequestSpark.PostmanImport.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -447,7 +447,7 @@
               "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
             },
             "kind": "File",
-            "path": "RESTRunner.PostmanImport\\RESTRunner.PostmanImport.csproj",
+            "path": "RequestSpark.PostmanImport\\RequestSpark.PostmanImport.csproj",
             "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "properties": {
@@ -460,12 +460,12 @@
       "features": []
     },
     {
-      "path": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+      "path": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
       "startingProject": true,
       "issues": 3,
       "storyPoints": 22,
       "properties": {
-        "appName": "RESTRunner.Services.HttpClientRunner",
+        "appName": "RequestSpark.Services.HttpClientRunner",
         "projectKind": "ClassLibrary",
         "frameworks": [
           "net9.0"
@@ -489,7 +489,7 @@
         {
           "incidentId": "143e2b6d-5d32-4526-9acf-89a3c8e2d763",
           "ruleId": "NuGet.0002",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -497,7 +497,7 @@
               "protected": "Microsoft.Extensions.Http, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.1"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+            "path": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
             "snippet": "Microsoft.Extensions.Http, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.1",
             "protectedSnippet": "Microsoft.Extensions.Http, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Http, and replace with new package Microsoft.Extensions.Http 10.0.1",
             "label": "Microsoft.Extensions.Http 9.0.9",
@@ -512,7 +512,7 @@
         {
           "incidentId": "0b1e4bf8-7b6b-4d60-a0de-ef9d8ef6412e",
           "ruleId": "NuGet.0002",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -520,7 +520,7 @@
               "protected": "Microsoft.Extensions.Logging.Abstractions, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Abstractions, and replace with new package Microsoft.Extensions.Logging.Abstractions 10.0.1"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+            "path": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
             "snippet": "Microsoft.Extensions.Logging.Abstractions, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Abstractions, and replace with new package Microsoft.Extensions.Logging.Abstractions 10.0.1",
             "protectedSnippet": "Microsoft.Extensions.Logging.Abstractions, 9.0.9\n\nRecommendation:\n\nRemove Microsoft.Extensions.Logging.Abstractions, and replace with new package Microsoft.Extensions.Logging.Abstractions 10.0.1",
             "label": "Microsoft.Extensions.Logging.Abstractions 9.0.9",
@@ -535,7 +535,7 @@
         {
           "incidentId": "1c44fa0e-1081-4b9b-abb5-6c14a436d89f",
           "ruleId": "Project.0002",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -543,7 +543,7 @@
               "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+            "path": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
             "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "properties": {
@@ -556,7 +556,7 @@
           "incidentId": "504eb3cc-d4cc-4b40-bba9-83320d2db09e",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -564,7 +564,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "string content = await response.Content.ReadAsStringAsync(ct);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -583,7 +583,7 @@
           "incidentId": "b80409dc-63e1-447e-a5ed-636b12f8113b",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -591,7 +591,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "customRequest.Content = new StringContent(req.BodyTemplate ?? string.Empty, Encoding.UTF8, \u0022application/json\u0022);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -610,7 +610,7 @@
           "incidentId": "cf979201-d7cd-4103-b990-da853bd5162f",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -618,7 +618,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -637,7 +637,7 @@
           "incidentId": "471a8b3f-5576-4022-8f7f-c0040966738f",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -645,7 +645,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -664,7 +664,7 @@
           "incidentId": "1912ae58-87cd-4e0d-924e-05bda8fb17de",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -672,7 +672,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "using (var patchRequest = new HttpRequestMessage(HttpMethod.Patch, requestUri) { Content = content })\r\n                    {\r\n                        response = await client.SendAsync(patchRequest, ct);\r\n                    }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -691,7 +691,7 @@
           "incidentId": "7efcd613-daec-46e3-8e99-61fa339eed06",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -699,7 +699,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -718,7 +718,7 @@
           "incidentId": "b717c3bb-6794-42ca-938b-8637b7eb4f2a",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -726,7 +726,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -745,7 +745,7 @@
           "incidentId": "9289bc25-1bdb-49d0-a766-d456d7c09b11",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -753,7 +753,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -772,7 +772,7 @@
           "incidentId": "9a8f3221-cd58-4f92-b58b-8b3c6afad6d4",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -780,7 +780,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -799,7 +799,7 @@
           "incidentId": "143b747c-3690-4db8-8b2b-c498da1f831c",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -807,7 +807,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -826,7 +826,7 @@
           "incidentId": "7e23690d-3c1e-49d7-8219-a1194cd29305",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -834,7 +834,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -853,7 +853,7 @@
           "incidentId": "090d9b03-25d8-454d-bad7-a592afa7bb05",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -861,7 +861,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -880,7 +880,7 @@
           "incidentId": "1ac54f43-24ee-4327-95f6-db1631d4d257",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -888,7 +888,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -907,7 +907,7 @@
           "incidentId": "d6903d2c-6038-43e5-a2cf-6f0f07105856",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -915,7 +915,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -934,7 +934,7 @@
           "incidentId": "f4c2f28e-f1a8-49cb-a6a4-c27365aef027",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -942,7 +942,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -961,7 +961,7 @@
           "incidentId": "2ea444b2-a949-444c-82ac-d542d39d119a",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -969,7 +969,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -988,7 +988,7 @@
           "incidentId": "0a7d70c0-bca4-46b3-b5c9-a39b1de40bd1",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -996,7 +996,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -1015,7 +1015,7 @@
           "incidentId": "317622bc-3693-4f6f-a28b-6a4d100a6fcc",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1023,7 +1023,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "Uri requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -1042,7 +1042,7 @@
           "incidentId": "4f4919ec-0c7c-4faf-878c-809f0775a156",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Services.HttpClient\\RESTRunner.Services.HttpClientRunner.csproj",
+          "projectPath": "RequestSpark.Services.HttpClient\\RequestSpark.Services.HttpClientRunner.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1050,7 +1050,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Services.HttpClient\\ExecuteRunnerService.cs",
+            "path": "RequestSpark.Services.HttpClient\\ExecuteRunnerService.cs",
             "snippet": "Uri requestUri = new($\u0022{env.BaseUrl}{req.Path}\u0022);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -1069,12 +1069,12 @@
       "features": []
     },
     {
-      "path": "RESTRunner.Web\\RESTRunner.Web.csproj",
+      "path": "RequestSpark.Web\\RequestSpark.Web.csproj",
       "startingProject": true,
       "issues": 5,
       "storyPoints": 118,
       "properties": {
-        "appName": "RESTRunner.Web",
+        "appName": "RequestSpark.Web",
         "projectKind": "AspNetCore",
         "frameworks": [
           "net9.0"
@@ -1098,7 +1098,7 @@
         {
           "incidentId": "054eb7da-4eb2-4d97-b923-ccd87728d96a",
           "ruleId": "NuGet.0001",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1106,7 +1106,7 @@
               "protected": "Microsoft.VisualStudio.Azure.Containers.Tools.Targets, 1.22.1\n\nRecommendation:\n\nNo supported version found"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\RESTRunner.Web.csproj",
+            "path": "RequestSpark.Web\\RequestSpark.Web.csproj",
             "snippet": "Microsoft.VisualStudio.Azure.Containers.Tools.Targets, 1.22.1\n\nRecommendation:\n\nNo supported version found",
             "protectedSnippet": "Microsoft.VisualStudio.Azure.Containers.Tools.Targets, 1.22.1\n\nRecommendation:\n\nNo supported version found",
             "label": "Microsoft.VisualStudio.Azure.Containers.Tools.Targets 1.22.1",
@@ -1121,7 +1121,7 @@
         {
           "incidentId": "75d54cb5-d55d-4cd6-8176-66600236781d",
           "ruleId": "NuGet.0003",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1129,7 +1129,7 @@
               "protected": "System.Net.Http, 4.3.4\n\nRecommendation:\n\nPackage functionality included with new framework reference"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\RESTRunner.Web.csproj",
+            "path": "RequestSpark.Web\\RequestSpark.Web.csproj",
             "snippet": "System.Net.Http, 4.3.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
             "protectedSnippet": "System.Net.Http, 4.3.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
             "label": "System.Net.Http 4.3.4",
@@ -1144,7 +1144,7 @@
         {
           "incidentId": "d0fef67a-d0ad-4055-9bb9-11ff2f5c24e9",
           "ruleId": "NuGet.0002",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1152,7 +1152,7 @@
               "protected": "System.Security.Cryptography.Xml, 9.0.9\n\nRecommendation:\n\nRemove System.Security.Cryptography.Xml, and replace with new package System.Security.Cryptography.Xml 10.0.1"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\RESTRunner.Web.csproj",
+            "path": "RequestSpark.Web\\RequestSpark.Web.csproj",
             "snippet": "System.Security.Cryptography.Xml, 9.0.9\n\nRecommendation:\n\nRemove System.Security.Cryptography.Xml, and replace with new package System.Security.Cryptography.Xml 10.0.1",
             "protectedSnippet": "System.Security.Cryptography.Xml, 9.0.9\n\nRecommendation:\n\nRemove System.Security.Cryptography.Xml, and replace with new package System.Security.Cryptography.Xml 10.0.1",
             "label": "System.Security.Cryptography.Xml 9.0.9",
@@ -1167,7 +1167,7 @@
         {
           "incidentId": "6be191f2-7ae0-4fa8-8323-5b0c7c163511",
           "ruleId": "NuGet.0003",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1175,7 +1175,7 @@
               "protected": "System.Text.RegularExpressions, 4.3.1\n\nRecommendation:\n\nPackage functionality included with new framework reference"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\RESTRunner.Web.csproj",
+            "path": "RequestSpark.Web\\RequestSpark.Web.csproj",
             "snippet": "System.Text.RegularExpressions, 4.3.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
             "protectedSnippet": "System.Text.RegularExpressions, 4.3.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
             "label": "System.Text.RegularExpressions 4.3.1",
@@ -1190,7 +1190,7 @@
         {
           "incidentId": "51c8a41b-9e49-41d7-b9a8-42d5b42d025d",
           "ruleId": "Project.0002",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1198,7 +1198,7 @@
               "protected": "Current target framework: net9.0\nRecommended target framework: net10.0"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\RESTRunner.Web.csproj",
+            "path": "RequestSpark.Web\\RequestSpark.Web.csproj",
             "snippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "protectedSnippet": "Current target framework: net9.0\nRecommended target framework: net10.0",
             "properties": {
@@ -1211,7 +1211,7 @@
           "incidentId": "29381b89-6637-4121-b4a8-a0b0f0e9c73d",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1219,7 +1219,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))\r\n                    using (var streamReader = new System.IO.StreamReader(responseStream))\r\n                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))\r\n                    {\r\n                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);\r\n                        var typedBody = serializer.Deserialize\u003CT\u003E(jsonTextReader);\r\n                        return new ObjectResponseResult\u003CT\u003E(typedBody, string.Empty);\r\n                    }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1238,7 +1238,7 @@
           "incidentId": "323bbfc7-7f46-47fd-aace-f1732877a9db",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1246,7 +1246,7 @@
               "protected": "M:System.Net.Http.HttpContent.ReadAsStreamAsync"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))\r\n                    using (var streamReader = new System.IO.StreamReader(responseStream))\r\n                    using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))\r\n                    {\r\n                        var serializer = Newtonsoft.Json.JsonSerializer.Create(JsonSerializerSettings);\r\n                        var typedBody = serializer.Deserialize\u003CT\u003E(jsonTextReader);\r\n                        return new ObjectResponseResult\u003CT\u003E(typedBody, string.Empty);\r\n                    }",
             "protectedSnippet": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
             "label": "M:System.Net.Http.HttpContent.ReadAsStreamAsync",
@@ -1265,7 +1265,7 @@
           "incidentId": "f18a25bf-0653-4fbd-a9e1-7308629c0831",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1273,7 +1273,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1292,7 +1292,7 @@
           "incidentId": "d340c38c-5354-4d6b-ac2c-f4ddd0a094d6",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1300,7 +1300,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response == null || response.Content == null)\r\n            {\r\n                return new ObjectResponseResult\u003CT\u003E(default(T), string.Empty);\r\n            }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1319,7 +1319,7 @@
           "incidentId": "fab3dc05-4b9f-4ca5-bfc1-a04df2710c42",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1327,7 +1327,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1346,7 +1346,7 @@
           "incidentId": "f382c64c-9061-4fb7-8be6-ee555488e0e9",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1354,7 +1354,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1373,7 +1373,7 @@
           "incidentId": "69c4a8d2-f248-400d-9852-a0b75cbeb857",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1381,7 +1381,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1400,7 +1400,7 @@
           "incidentId": "4256c26f-5404-4285-ab12-70baad105799",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1408,7 +1408,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1427,7 +1427,7 @@
           "incidentId": "8c63ed4a-84b0-4be9-8e4a-4c85ebc509fe",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1435,7 +1435,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1454,7 +1454,7 @@
           "incidentId": "76e950a4-cf47-4f4a-b413-889d93e1e4dd",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1462,7 +1462,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -1481,7 +1481,7 @@
           "incidentId": "300d303b-b240-4d19-ac53-ecabae4a1f55",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1489,7 +1489,7 @@
               "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
             "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
@@ -1508,7 +1508,7 @@
           "incidentId": "c2a8396c-3988-4ff5-9df0-52843f6b3151",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1516,7 +1516,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -1535,7 +1535,7 @@
           "incidentId": "0f85ce6f-9162-4c33-a89d-8b9a52861166",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1543,7 +1543,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -1562,7 +1562,7 @@
           "incidentId": "619ceadf-2b8c-47d9-9473-3febb718a7ac",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1570,7 +1570,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -1589,7 +1589,7 @@
           "incidentId": "5d903b95-d289-45c0-99f6-31f6d522a07a",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1597,7 +1597,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1616,7 +1616,7 @@
           "incidentId": "488b5f3d-4c25-4c54-96c9-7a56f67fef9c",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1624,7 +1624,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1643,7 +1643,7 @@
           "incidentId": "fe545c08-984e-4251-a875-2370de7450c9",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1651,7 +1651,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1670,7 +1670,7 @@
           "incidentId": "5e6d0c0b-a52d-4cd1-9b02-c97ad64c4869",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1678,7 +1678,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1697,7 +1697,7 @@
           "incidentId": "779df3b1-4dd4-4d96-8958-29ddd14a7450",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1705,7 +1705,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1724,7 +1724,7 @@
           "incidentId": "8388626d-e2b8-4bf8-b50e-f6841c1566c1",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1732,7 +1732,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -1751,7 +1751,7 @@
           "incidentId": "3412dbb9-22f7-4223-b255-d94ad46e7ba0",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1759,7 +1759,7 @@
               "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
             "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
@@ -1778,7 +1778,7 @@
           "incidentId": "7fb121fd-dd20-43f3-b82f-fa8f8994341c",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1786,7 +1786,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -1805,7 +1805,7 @@
           "incidentId": "a60edd63-d0ff-4197-87af-0bb71f5f5494",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1813,7 +1813,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -1832,7 +1832,7 @@
           "incidentId": "2a0ba276-5b46-41a3-9fe6-167bd495bcb2",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1840,7 +1840,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -1859,7 +1859,7 @@
           "incidentId": "9f47cfc3-193b-4803-ab24-8ba2baa252e3",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1867,7 +1867,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1886,7 +1886,7 @@
           "incidentId": "a5a400c2-2ed8-478d-9d06-b291c2e318f2",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1894,7 +1894,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1913,7 +1913,7 @@
           "incidentId": "865a3276-50d6-4477-b719-cc3d38b6be79",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1921,7 +1921,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1940,7 +1940,7 @@
           "incidentId": "edfa4ab5-605b-4652-a935-b42fb80c128a",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1948,7 +1948,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1967,7 +1967,7 @@
           "incidentId": "f1cc70ad-dfff-4f8f-99ba-9a02246d5d8b",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -1975,7 +1975,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -1994,7 +1994,7 @@
           "incidentId": "39a080bd-8f87-42f1-8e76-37679f94a4fb",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2002,7 +2002,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2021,7 +2021,7 @@
           "incidentId": "e9bdff81-c135-45ca-8016-24a7d8e992c4",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2029,7 +2029,7 @@
               "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
             "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
@@ -2048,7 +2048,7 @@
           "incidentId": "c7b5a74b-91d8-4e32-897f-17e8d5039455",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2056,7 +2056,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2075,7 +2075,7 @@
           "incidentId": "ec3383d2-a313-416d-974a-d3025220b7ac",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2083,7 +2083,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.Content = content_;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2102,7 +2102,7 @@
           "incidentId": "6a9d8c5b-afd5-42a9-b76b-7b25be503f49",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2110,7 +2110,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2129,7 +2129,7 @@
           "incidentId": "bdb2486e-56e4-491e-9ce2-eb549ab7c0ab",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2137,7 +2137,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2156,7 +2156,7 @@
           "incidentId": "efeab1cc-adca-4c57-b3a2-ced9cd7dd970",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2164,7 +2164,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2183,7 +2183,7 @@
           "incidentId": "1ab4b39f-f3b2-435b-87bc-ee3a2d208881",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2191,7 +2191,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2210,7 +2210,7 @@
           "incidentId": "afad4905-9810-4e1f-8205-62ecf7db63be",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2218,7 +2218,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2237,7 +2237,7 @@
           "incidentId": "33af9158-0cc3-4af6-90cf-7cd3727603fe",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2245,7 +2245,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2264,7 +2264,7 @@
           "incidentId": "ed8ac5a4-3b99-45b6-a0b1-a2542a1fc21d",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2272,7 +2272,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2291,7 +2291,7 @@
           "incidentId": "60014f89-9ff7-4c78-a9b6-1b0ca876fcbd",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2299,7 +2299,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2318,7 +2318,7 @@
           "incidentId": "d45eab30-d12d-4a0b-9a28-41320033cd8a",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2326,7 +2326,7 @@
               "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
             "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
@@ -2345,7 +2345,7 @@
           "incidentId": "caf3c912-c0cb-447e-a438-627c8d07c236",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2353,7 +2353,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2372,7 +2372,7 @@
           "incidentId": "bea5ddd6-82cf-435b-acca-671cc6b0f0c4",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2380,7 +2380,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2399,7 +2399,7 @@
           "incidentId": "81321f4d-453e-4385-bcba-abd055ddad85",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2407,7 +2407,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2426,7 +2426,7 @@
           "incidentId": "bd761576-2b7e-49b9-aa51-ef055202e878",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2434,7 +2434,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022PageSize\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2453,7 +2453,7 @@
           "incidentId": "04bd9643-00cf-4e59-bd9d-0bd3f336f446",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2461,7 +2461,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022PageSize\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(pageSize, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2480,7 +2480,7 @@
           "incidentId": "6e8639b3-0116-498c-95df-c52fe93ec224",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2488,7 +2488,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022PageNumber\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2507,7 +2507,7 @@
           "incidentId": "9d098fb8-0514-46f2-8720-d7565f7744e4",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2515,7 +2515,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022PageNumber\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2534,7 +2534,7 @@
           "incidentId": "03459aac-ac4f-4d23-a934-cb4be875ee86",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2542,7 +2542,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2561,7 +2561,7 @@
           "incidentId": "d65607ca-11cb-4b2b-8af7-786178d2ace5",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2569,7 +2569,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2588,7 +2588,7 @@
           "incidentId": "3cda79fe-c2c6-4c59-aaf9-6b586f78e69b",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2596,7 +2596,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2615,7 +2615,7 @@
           "incidentId": "71a7df0e-da98-4324-b416-389f4d433cbb",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2623,7 +2623,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2642,7 +2642,7 @@
           "incidentId": "836dffb3-16f7-41b2-a927-bd89aa9e1cf1",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2650,7 +2650,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2669,7 +2669,7 @@
           "incidentId": "a16ed067-10b1-4bd0-b00f-014348f21a3d",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2677,7 +2677,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2696,7 +2696,7 @@
           "incidentId": "68b18d74-42d6-4528-b67a-6931ea2c5601",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2704,7 +2704,7 @@
               "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
             "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
@@ -2723,7 +2723,7 @@
           "incidentId": "e47cedaa-5be7-496a-92ac-ed28259fec85",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2731,7 +2731,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2750,7 +2750,7 @@
           "incidentId": "c65eda91-01e2-43b6-994a-2dafb1605f42",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2758,7 +2758,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.Content = content_;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2777,7 +2777,7 @@
           "incidentId": "d211da9a-992d-4885-b0eb-c91168056922",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2785,7 +2785,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2804,7 +2804,7 @@
           "incidentId": "83d68d8e-6978-4b14-a539-0f73b4054e59",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2812,7 +2812,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2831,7 +2831,7 @@
           "incidentId": "e21ea917-03c3-4fe8-a901-e7bd2f1b1315",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2839,7 +2839,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Replace(\u0022{id}\u0022, System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -2858,7 +2858,7 @@
           "incidentId": "923233ec-05c7-4fe4-a31c-215ae973161f",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2866,7 +2866,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2885,7 +2885,7 @@
           "incidentId": "d0cd6416-7e2d-4908-9c80-0082c7afcdb8",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2893,7 +2893,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2912,7 +2912,7 @@
           "incidentId": "6134fdbf-0e3e-41b3-b589-e99f8497db69",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2920,7 +2920,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2939,7 +2939,7 @@
           "incidentId": "d0714114-9fa5-4a62-8be7-ce52436fdcbe",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2947,7 +2947,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2966,7 +2966,7 @@
           "incidentId": "4eff4b58-9dba-4f0c-ad9b-3fc0dce33b62",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -2974,7 +2974,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -2993,7 +2993,7 @@
           "incidentId": "644237e3-36e5-4233-91e2-3d489db5d9d9",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3001,7 +3001,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3020,7 +3020,7 @@
           "incidentId": "e6dde3e3-6482-4245-bb15-d8b4adaced7d",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3028,7 +3028,7 @@
               "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
             "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
@@ -3047,7 +3047,7 @@
           "incidentId": "595feef6-1d35-469c-a16f-7f45102e87a3",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3055,7 +3055,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3074,7 +3074,7 @@
           "incidentId": "de302fac-9f5a-4b57-8672-f0a2def561a3",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3082,7 +3082,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3101,7 +3101,7 @@
           "incidentId": "9c40947e-d4c5-4ed0-9d2c-ea52d83078d5",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3109,7 +3109,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3128,7 +3128,7 @@
           "incidentId": "67356327-bd28-4c63-8225-3c623ecaaf84",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3136,7 +3136,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Replace(\u0022{id}\u0022, System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3155,7 +3155,7 @@
           "incidentId": "e8983b4e-9b81-49c1-98d4-036bda0bcf50",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3163,7 +3163,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3182,7 +3182,7 @@
           "incidentId": "5d6f9b4d-db7c-47c7-ae2e-6616640ea63b",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3190,7 +3190,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3209,7 +3209,7 @@
           "incidentId": "c0fbfe8a-038b-42a2-bb53-d66439b47f43",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3217,7 +3217,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3236,7 +3236,7 @@
           "incidentId": "bb6e1d9c-96d5-4417-b76e-ea2ea681f2c2",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3244,7 +3244,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3263,7 +3263,7 @@
           "incidentId": "70d13639-83aa-44f6-a42e-9f9cf29f40bf",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3271,7 +3271,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3290,7 +3290,7 @@
           "incidentId": "d9bf9c9b-ab95-43c0-98f9-4eb1476a28d7",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3298,7 +3298,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3317,7 +3317,7 @@
           "incidentId": "d45c131d-3409-4e73-8cdf-585e5765a24e",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3325,7 +3325,7 @@
               "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
             "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
@@ -3344,7 +3344,7 @@
           "incidentId": "f1efcf39-c323-4c18-b049-45e6280cf647",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3352,7 +3352,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3371,7 +3371,7 @@
           "incidentId": "c51d09d8-cc73-4c4d-bb0e-7e0099d98624",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3379,7 +3379,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3398,7 +3398,7 @@
           "incidentId": "6ea06065-fe5a-430d-817b-196f64d74355",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3406,7 +3406,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3425,7 +3425,7 @@
           "incidentId": "eaa0dd81-15a3-492c-a83b-30591b7866ee",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3433,7 +3433,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Replace(\u0022{id}\u0022, System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3452,7 +3452,7 @@
           "incidentId": "a8c6a581-0b53-49f0-a812-e58df4dc683c",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3460,7 +3460,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3479,7 +3479,7 @@
           "incidentId": "4ccbe5b8-7aba-4dac-a4ec-cf4ae074b3c9",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3487,7 +3487,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3506,7 +3506,7 @@
           "incidentId": "12a6d47b-ea05-4c48-bf4f-1316a0c528a9",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3514,7 +3514,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3533,7 +3533,7 @@
           "incidentId": "946a5d15-d3b8-4167-8f8e-5d41c693127e",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3541,7 +3541,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3560,7 +3560,7 @@
           "incidentId": "8a4b0d78-52ee-45ff-be56-7a151384f10c",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3568,7 +3568,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3587,7 +3587,7 @@
           "incidentId": "d84452ec-4f43-49c6-ba82-e5ff7900d16a",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3595,7 +3595,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3614,7 +3614,7 @@
           "incidentId": "45a36491-173f-43e9-a9ac-3c5ecf433fb4",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3622,7 +3622,7 @@
               "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
             "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
@@ -3641,7 +3641,7 @@
           "incidentId": "2effd3e8-1090-465b-b9c5-8f210a42c471",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3649,7 +3649,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3668,7 +3668,7 @@
           "incidentId": "2abf848f-5116-450a-be0c-ff753b98c49d",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3676,7 +3676,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3695,7 +3695,7 @@
           "incidentId": "3966bbd2-6b10-41d6-b079-9715d99286d2",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3703,7 +3703,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3722,7 +3722,7 @@
           "incidentId": "2a3954db-6d21-4801-ab38-fd4239811d38",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3730,7 +3730,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Replace(\u0022{id}\u0022, System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3749,7 +3749,7 @@
           "incidentId": "57e01a40-428a-4add-a2a3-acae0202c2ce",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3757,7 +3757,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3776,7 +3776,7 @@
           "incidentId": "ad4b91da-eaf2-476b-a15d-e975cda4ab19",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3784,7 +3784,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3803,7 +3803,7 @@
           "incidentId": "883d7860-3119-472d-8781-1be5ba3bea5a",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3811,7 +3811,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3830,7 +3830,7 @@
           "incidentId": "91d61e62-2bd0-4872-8709-4fb36e427968",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3838,7 +3838,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3857,7 +3857,7 @@
           "incidentId": "4aaa8abd-fb26-4cd1-ab1a-20801acb69f5",
           "ruleId": "Api.0003",
           "description": "Breaking change - Streaming HTTP responses enabled by default in browser HTTP clients ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3865,7 +3865,7 @@
               "protected": "T:System.Net.Http.HttpContent"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "if (response_.Content != null \u0026\u0026 response_.Content.Headers != null)\r\n                        {\r\n                            foreach (var item_ in response_.Content.Headers)\r\n                                headers_[item_.Key] = item_.Value;\r\n                        }",
             "protectedSnippet": "T:System.Net.Http.HttpContent",
             "label": "T:System.Net.Http.HttpContent",
@@ -3884,7 +3884,7 @@
           "incidentId": "49279e57-7153-4083-bc1b-3c87a8f75cba",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3892,7 +3892,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3911,7 +3911,7 @@
           "incidentId": "a5c10f35-847a-47eb-87c5-6f23dcc41170",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3919,7 +3919,7 @@
               "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
             "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
@@ -3938,7 +3938,7 @@
           "incidentId": "63f97667-fd8a-45a0-9b7b-e6fcf28cb21b",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3946,7 +3946,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3965,7 +3965,7 @@
           "incidentId": "d53a78b5-2fcb-4c18-bd1f-cbd3aa7be31e",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -3973,7 +3973,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -3992,7 +3992,7 @@
           "incidentId": "48c0fc0f-bcf6-4fb4-afd7-71b818b50a50",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4000,7 +4000,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022api-version\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(api_version, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -4019,7 +4019,7 @@
           "incidentId": "1b45aea1-f72d-449b-84da-a2fed2835f71",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4027,7 +4027,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022IncludeEmployees\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(includeEmployees, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -4046,7 +4046,7 @@
           "incidentId": "16f6ce73-6e44-446c-a8c2-bf61c6e5e605",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4054,7 +4054,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDClient.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDClient.cs",
             "snippet": "urlBuilder_.Append(System.Uri.EscapeDataString(\u0022IncludeEmployees\u0022) \u002B \u0022=\u0022).Append(System.Uri.EscapeDataString(ConvertToString(includeEmployees, System.Globalization.CultureInfo.InvariantCulture))).Append(\u0022\u0026\u0022);",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -4073,7 +4073,7 @@
           "incidentId": "e7d2df89-1f47-4758-92e8-9921588aae84",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4081,7 +4081,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDService.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDService.cs",
             "snippet": "_client = new HttpClient\r\n        {\r\n            BaseAddress = new Uri(\u0022https://samplecrud.markhazleton.com/\u0022)\r\n        };",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -4100,7 +4100,7 @@
           "incidentId": "9852bcbd-7e4f-4836-b9d5-d82fb08ad616",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4108,7 +4108,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDService.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDService.cs",
             "snippet": "_client = new HttpClient\r\n        {\r\n            BaseAddress = new Uri(\u0022https://samplecrud.markhazleton.com/\u0022)\r\n        };",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -4127,7 +4127,7 @@
           "incidentId": "52beab5e-2387-4f83-ae4e-d1eaa7a6d9c6",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4135,7 +4135,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDService.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDService.cs",
             "snippet": "_client = new HttpClient\r\n        {\r\n            BaseAddress = new Uri(\u0022https://samplecrud.markhazleton.com/\u0022)\r\n        };",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -4154,7 +4154,7 @@
           "incidentId": "8b46f661-c4eb-47c0-a9ed-565a7f724b6d",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4162,7 +4162,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDService.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDService.cs",
             "snippet": "_client = new HttpClient\r\n        {\r\n            BaseAddress = new Uri(\u0022https://samplecrud.markhazleton.com/\u0022)\r\n        };",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -4181,7 +4181,7 @@
           "incidentId": "b27eaddf-90f2-4304-baa2-dff7d0d1a16f",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4189,7 +4189,7 @@
               "protected": "M:System.Uri.#ctor(System.String)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDService.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDService.cs",
             "snippet": "_client = new HttpClient\r\n        {\r\n            BaseAddress = new Uri(\u0022https://samplecrud.markhazleton.com/\u0022)\r\n        };",
             "protectedSnippet": "M:System.Uri.#ctor(System.String)",
             "label": "M:System.Uri.#ctor(System.String)",
@@ -4208,7 +4208,7 @@
           "incidentId": "b9414aaa-50dd-4f61-a4ef-08f31145fdcf",
           "ruleId": "Api.0003",
           "description": "Breaking change: URI length limits removed ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4216,7 +4216,7 @@
               "protected": "T:System.Uri"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\SampleCRUD\\SampleCRUDService.cs",
+            "path": "RequestSpark.Web\\SampleCRUD\\SampleCRUDService.cs",
             "snippet": "_client = new HttpClient\r\n        {\r\n            BaseAddress = new Uri(\u0022https://samplecrud.markhazleton.com/\u0022)\r\n        };",
             "protectedSnippet": "T:System.Uri",
             "label": "T:System.Uri",
@@ -4235,7 +4235,7 @@
           "incidentId": "83c15aec-cce6-4d72-828e-2a9f54af009a",
           "ruleId": "Api.0003",
           "description": "URI query redaction in IHttpClientFactory logs ",
-          "projectPath": "RESTRunner.Web\\RESTRunner.Web.csproj",
+          "projectPath": "RequestSpark.Web\\RequestSpark.Web.csproj",
           "state": "Active",
           "location": {
             "snippetModel": {
@@ -4243,7 +4243,7 @@
               "protected": "M:Microsoft.Extensions.DependencyInjection.HttpClientFactoryServiceCollectionExtensions.AddHttpClient(Microsoft.Extensions.DependencyInjection.IServiceCollection)"
             },
             "kind": "File",
-            "path": "RESTRunner.Web\\Program.cs",
+            "path": "RequestSpark.Web\\Program.cs",
             "snippet": "builder.Services.AddHttpClient();",
             "protectedSnippet": "M:Microsoft.Extensions.DependencyInjection.HttpClientFactoryServiceCollectionExtensions.AddHttpClient(Microsoft.Extensions.DependencyInjection.IServiceCollection)",
             "label": "M:Microsoft.Extensions.DependencyInjection.HttpClientFactoryServiceCollectionExtensions.AddHttpClient(Microsoft.Extensions.DependencyInjection.IServiceCollection)",

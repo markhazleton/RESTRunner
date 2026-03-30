@@ -30,7 +30,7 @@ MSTest v4 introduces enhanced code analyzers that provide 7 actionable suggestio
 
 **Suggested Fix**:
 ```csharp
-// Add to RESTRunner.Domain.Tests/GlobalUsings.cs or AssemblyInfo.cs
+// Add to RequestSpark.Domain.Tests/GlobalUsings.cs or AssemblyInfo.cs
 [assembly: Parallelize(Workers = 0, Scope = ExecutionScope.ClassLevel)]
 ```
 
@@ -91,7 +91,7 @@ Assert.IsNotNull(obj);
 ## Implementation Plan
 
 ### Phase 1: Assembly-Level Configuration (5 minutes)
-1. Create or update `AssemblyInfo.cs` in RESTRunner.Domain.Tests
+1. Create or update `AssemblyInfo.cs` in RequestSpark.Domain.Tests
 2. Add `[assembly: Parallelize(...)]` attribute
 3. Document parallelization strategy in comments
 4. Build and verify no test failures
@@ -201,7 +201,7 @@ Swashbuckle v10 requires Microsoft.OpenApi >= 2.3.0, which has several breaking 
 CS0234: The type or namespace name 'Models' does not exist in the namespace 'Microsoft.OpenApi'
 ```
 
-**Affected File**: `RESTRunner.Web\Program.cs`
+**Affected File**: `RequestSpark.Web\Program.cs`
 
 **Current Code** (Swashbuckle v9):
 ```csharp
@@ -209,7 +209,7 @@ using Microsoft.OpenApi.Models;
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "RESTRunner API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "RequestSpark API", Version = "v1" });
     c.TagActionsBy(api =>
     {
         var path = api.RelativePath?.ToLower();
@@ -286,7 +286,7 @@ builder.Services.AddSwaggerGen(c =>
 - [ ] All existing tests pass (21/21)
 
 **Swagger UI Validation**:
-- [ ] Start web application: `dotnet run` in RESTRunner.Web
+- [ ] Start web application: `dotnet run` in RequestSpark.Web
 - [ ] Navigate to https://localhost:7001/swagger
 - [ ] Verify Swagger UI loads correctly
 - [ ] Test all API endpoints in Swagger UI
@@ -401,7 +401,7 @@ If issues arise:
 
 1. **Immediate Rollback**:
 ```bash
-cd RESTRunner.Web
+cd RequestSpark.Web
 dotnet add package Swashbuckle.AspNetCore --version 9.0.4
 dotnet remove package Microsoft.OpenApi
 git checkout Program.cs  # Restore original
@@ -477,3 +477,4 @@ dotnet run
 5. Should we update our swagger UI theme/styling?
 
 ---
+

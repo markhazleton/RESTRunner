@@ -1,4 +1,4 @@
-# RESTRunner Development Guidelines
+# RequestSpark Development Guidelines
 
 Auto-generated from all feature plans. Last updated: 2026-03-30
 
@@ -28,3 +28,4 @@ C# on .NET 10.0; npm-managed web assets; PowerShell automation: Follow standard 
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
+

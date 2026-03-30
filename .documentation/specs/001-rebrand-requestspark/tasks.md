@@ -13,7 +13,7 @@
 
 **⚠️ CRITICAL**: No setup or implementation work can begin until this phase is complete.
 
-- [ ] T001 Manually verify that the principles outlined in `.documentation/memory/constitution.md` are upheld by the artifacts: `.documentation/specs/001-rebrand-requestspark/plan.md`, `.documentation/specs/001-rebrand-requestspark/spec.md`, and `.documentation/specs/001-rebrand-requestspark/tasks.md`
+- [X] T001 Manually verify that the principles outlined in `.documentation/memory/constitution.md` are upheld by the artifacts: `.documentation/specs/001-rebrand-requestspark/plan.md`, `.documentation/specs/001-rebrand-requestspark/spec.md`, and `.documentation/specs/001-rebrand-requestspark/tasks.md`
 
 ---
 
@@ -21,8 +21,8 @@
 
 **Purpose**: Establish the filesystem and solution-level rename baseline used by all later work.
 
-- [ ] T002 Rename `RESTRunner.sln` to `RequestSpark.sln` and update solution project entries inside `RequestSpark.sln`
-- [ ] T003 Rename the first-party project folders and project files with `git mv`: `RESTRunner/RESTRunner.csproj`, `RESTRunner.Domain/RESTRunner.Domain.csproj`, `RESTRunner.PostmanImport/RESTRunner.PostmanImport.csproj`, `RESTRunner.Web/RESTRunner.Web.csproj`, `RESTRunner.Domain.Tests/RESTRunner.Domain.Tests.csproj`, and `RESTRunner.Web.Tests/RESTRunner.Web.Tests.csproj`; then issue additional `git mv` commands for individual `.cs` files within the renamed folders whose filenames carry the old brand, specifically `RequestSpark.Domain/Exceptions/RESTRunnerExceptions.cs → RequestSparkExceptions.cs`
+- [X] T002 Rename `RequestSpark.sln` to `RequestSpark.sln` and update solution project entries inside `RequestSpark.sln`
+- [X] T003 Rename the first-party project folders and project files with `git mv`: `RequestSpark/RequestSpark.csproj`, `RequestSpark.Domain/RequestSpark.Domain.csproj`, `RequestSpark.PostmanImport/RequestSpark.PostmanImport.csproj`, `RequestSpark.Web/RequestSpark.Web.csproj`, `RequestSpark.Domain.Tests/RequestSpark.Domain.Tests.csproj`, and `RequestSpark.Web.Tests/RequestSpark.Web.Tests.csproj`; then issue additional `git mv` commands for individual `.cs` files within the renamed folders whose filenames carry the old brand, specifically `RequestSpark.Domain/Exceptions/RequestSparkExceptions.cs → RequestSparkExceptions.cs`
 
 ---
 
@@ -32,11 +32,11 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T004 Update project references and solution paths in `RequestSpark.sln`, `RequestSpark/RequestSpark.csproj`, `RequestSpark.Web/RequestSpark.Web.csproj`, `RequestSpark.Domain.Tests/RequestSpark.Domain.Tests.csproj`, and `RequestSpark.Web.Tests/RequestSpark.Web.Tests.csproj`
-- [ ] T005 [P] Rename domain namespaces and global usings from `RESTRunner.Domain` to `RequestSpark.Domain` in `RequestSpark.Domain/GlobalUsings.cs`, `RequestSpark.Domain/**/*.cs`, and `RequestSpark.Domain.Tests/**/*.cs`; also rename the `RESTRunnerException` base class identifier (and all subclasses in `RequestSparkExceptions.cs`) to `RequestSparkException`, `RequestSparkValidationException`, `RequestSparkConfigurationException`, and `RequestSparkRequestExecutionException` respectively, and rename the private class `RestRunnerBatchSink` in `RequestSpark.Domain/Services/ExecuteRunnerService.cs` to `RequestSparkBatchSink`
-- [ ] T006 [P] Rename console and import namespaces from `RESTRunner*` to `RequestSpark*` in `RequestSpark/GlobalUsings.cs`, `RequestSpark/**/*.cs`, and `RequestSpark.PostmanImport/**/*.cs`
-- [ ] T007 [P] Rename web and web-test namespaces from `RESTRunner.Web*` to `RequestSpark.Web*` in `RequestSpark.Web/**/*.cs`, `RequestSpark.Web.Tests/**/*.cs`, and `RequestSpark.Web/Views/_ViewImports.cshtml`
-- [ ] T008 Update assembly metadata, description text, and project display names in `RequestSpark.Domain/RequestSpark.Domain.csproj`, `RequestSpark/RequestSpark.csproj`, `RequestSpark.PostmanImport/RequestSpark.PostmanImport.csproj`, `RequestSpark.Web/RequestSpark.Web.csproj`, `RequestSpark.Domain.Tests/RequestSpark.Domain.Tests.csproj`, and `RequestSpark.Web.Tests/RequestSpark.Web.Tests.csproj`
+- [X] T004 Update project references and solution paths in `RequestSpark.sln`, `RequestSpark/RequestSpark.csproj`, `RequestSpark.Web/RequestSpark.Web.csproj`, `RequestSpark.Domain.Tests/RequestSpark.Domain.Tests.csproj`, and `RequestSpark.Web.Tests/RequestSpark.Web.Tests.csproj`
+- [X] T005 [P] Rename domain namespaces and global usings from `RequestSpark.Domain` to `RequestSpark.Domain` in `RequestSpark.Domain/GlobalUsings.cs`, `RequestSpark.Domain/**/*.cs`, and `RequestSpark.Domain.Tests/**/*.cs`; also rename the `RequestSparkException` base class identifier (and all subclasses in `RequestSparkExceptions.cs`) to `RequestSparkException`, `RequestSparkValidationException`, `RequestSparkConfigurationException`, and `RequestSparkRequestExecutionException` respectively, and rename the private class `RequestSparkBatchSink` in `RequestSpark.Domain/Services/ExecuteRunnerService.cs` to `RequestSparkBatchSink`
+- [X] T006 [P] Rename console and import namespaces from `RequestSpark*` to `RequestSpark*` in `RequestSpark/GlobalUsings.cs`, `RequestSpark/**/*.cs`, and `RequestSpark.PostmanImport/**/*.cs`
+- [X] T007 [P] Rename web and web-test namespaces from `RequestSpark.Web*` to `RequestSpark.Web*` in `RequestSpark.Web/**/*.cs`, `RequestSpark.Web.Tests/**/*.cs`, and `RequestSpark.Web/Views/_ViewImports.cshtml`
+- [X] T008 Update assembly metadata, description text, and project display names in `RequestSpark.Domain/RequestSpark.Domain.csproj`, `RequestSpark/RequestSpark.csproj`, `RequestSpark.PostmanImport/RequestSpark.PostmanImport.csproj`, `RequestSpark.Web/RequestSpark.Web.csproj`, `RequestSpark.Domain.Tests/RequestSpark.Domain.Tests.csproj`, and `RequestSpark.Web.Tests/RequestSpark.Web.Tests.csproj`
 
 **Checkpoint**: The renamed solution structure compiles at the reference level and all user stories can proceed.
 
@@ -46,15 +46,15 @@
 
 **Goal**: Make every first-party entry point, screen, document, and primary artifact present the RequestSpark name.
 
-**Independent Test**: Review the console entry point, the main web UI, Swagger/OpenAPI branding, and the primary README/sample artifacts to confirm RequestSpark appears consistently and RESTRunner does not remain unintentionally.
+**Independent Test**: Review the console entry point, the main web UI, Swagger/OpenAPI branding, and the primary README/sample artifacts to confirm RequestSpark appears consistently and RequestSpark does not remain unintentionally.
 
 ### Implementation for User Story 1
 
-- [ ] T009 [P] [US1] Update console branding and exported artifact naming in `RequestSpark/Program.cs`
-- [ ] T010 [P] [US1] Update shared web layout and home-page branding in `RequestSpark.Web/Views/Shared/_Layout.cshtml` and `RequestSpark.Web/Views/Home/Index.cshtml`
-- [ ] T011 [P] [US1] Update Swagger/OpenAPI branding and application-level web text in `RequestSpark.Web/Program.cs`
-- [ ] T012 [US1] Update primary product documentation and sample descriptions in `README.md` and `sample-collection.json`
-- [ ] T013 [US1] Update remaining active first-party branding surfaces in `RequestSpark.Web/Views/Collection/**`, `RequestSpark.Web/Views/Configuration/**`, `RequestSpark.Web/Views/Execution/**`, `RequestSpark.Web/Views/OpenApi/**`, `RequestSpark.Web/Views/Runner/**`, `.github/copilot-instructions.md`, `.github/agents/copilot-instructions.md`, and `.github/ISSUE_TEMPLATES.md`
+- [X] T009 [P] [US1] Update console branding and exported artifact naming in `RequestSpark/Program.cs`
+- [X] T010 [P] [US1] Update shared web layout and home-page branding in `RequestSpark.Web/Views/Shared/_Layout.cshtml` and `RequestSpark.Web/Views/Home/Index.cshtml`
+- [X] T011 [P] [US1] Update Swagger/OpenAPI branding and application-level web text in `RequestSpark.Web/Program.cs`
+- [X] T012 [US1] Update primary product documentation and sample descriptions in `README.md` and `sample-collection.json`
+- [X] T013 [US1] Update remaining active first-party branding surfaces in `RequestSpark.Web/Views/Collection/**`, `RequestSpark.Web/Views/Configuration/**`, `RequestSpark.Web/Views/Execution/**`, `RequestSpark.Web/Views/OpenApi/**`, `RequestSpark.Web/Views/Runner/**`, `.github/copilot-instructions.md`, `.github/agents/copilot-instructions.md`, and `.github/ISSUE_TEMPLATES.md`
 
 **Checkpoint**: User Story 1 is complete when the main product entry points and primary docs all present RequestSpark consistently.
 
@@ -68,12 +68,12 @@
 
 ### Implementation for User Story 2
 
-- [ ] T014 [P] [US2] Add a migration section mapping retired and replacement names for solution, projects, namespaces, assemblies, and output artifacts in `README.md`
-- [ ] T015 [P] [US2] Update contributor-facing rename guidance in `.github/copilot-instructions.md` and `.github/ISSUE_TEMPLATES.md`
-- [ ] T016 [US2] Mark intentionally historical RESTRunner references as former-name context in `.github/upgrades/upgrade-complete-summary.md`, `.github/upgrades/DEPLOYMENT-COMPLETE.md`, `.github/upgrades/assessment.md`, `.github/upgrades/plan.md`, `.github/upgrades/tasks.md`, and any active `.documentation/` pages that retain historical references
-- [ ] T017 [US2] Audit renamed public code surfaces and remove any legacy-brand aliases or wrappers from `RequestSpark.Domain/**/*.cs`, `RequestSpark/**/*.cs`, `RequestSpark.PostmanImport/**/*.cs`, and `RequestSpark.Web/**/*.cs`
+- [X] T014 [P] [US2] Add a migration section mapping retired and replacement names for solution, projects, namespaces, assemblies, and output artifacts in `README.md`
+- [X] T015 [P] [US2] Update contributor-facing rename guidance in `.github/copilot-instructions.md` and `.github/ISSUE_TEMPLATES.md`
+- [X] T016 [US2] Mark intentionally historical RequestSpark references as former-name context in `.github/upgrades/upgrade-complete-summary.md`, `.github/upgrades/DEPLOYMENT-COMPLETE.md`, `.github/upgrades/assessment.md`, `.github/upgrades/plan.md`, `.github/upgrades/tasks.md`, and any active `.documentation/` pages that retain historical references
+- [X] T017 [US2] Audit renamed public code surfaces and remove any legacy-brand aliases or wrappers from `RequestSpark.Domain/**/*.cs`, `RequestSpark/**/*.cs`, `RequestSpark.PostmanImport/**/*.cs`, and `RequestSpark.Web/**/*.cs`
 
-**Checkpoint**: User Story 2 is complete when downstream users can identify breaking rename replacements quickly and active code exposes no RESTRunner compatibility layer.
+**Checkpoint**: User Story 2 is complete when downstream users can identify breaking rename replacements quickly and active code exposes no RequestSpark compatibility layer.
 
 ---
 
@@ -85,11 +85,11 @@
 
 ### Implementation for User Story 3
 
-- [ ] T018 [P] [US3] Update runtime and packaging identifiers for the renamed web project in `RequestSpark.Web/Dockerfile` and `RequestSpark.Web/package.json`; the Dockerfile update MUST also change the base image tags from `mcr.microsoft.com/dotnet/aspnet:8.0` and `mcr.microsoft.com/dotnet/sdk:8.0` to their `.NET 10` equivalents (`aspnet:10.0` and `sdk:10.0`) in addition to renaming `RESTRunner.Web.csproj` and `RESTRunner.Web.dll` references
-- [ ] T019 [P] [US3] Update build, run, and release command references to renamed paths in `README.md`, `.github/copilot-instructions.md`, `.github/upgrades/upgrade-complete-summary.md`, `.github/upgrades/DEPLOYMENT-COMPLETE.md`, and `.github/upgrades/tasks.md`
-- [ ] T020 [US3] Run structural cleanup and full .NET validation against `RequestSpark.sln` with `dotnet clean`, `dotnet build`, and `dotnet test`
-- [ ] T021 [US3] Run web asset validation in `RequestSpark.Web/package.json` with `npm run build`; this step is unconditional because T018 always modifies `package.json`
-- [ ] T022 [US3] Perform a case-insensitive lingering-brand review across `RequestSpark.sln`, `README.md`, `.documentation/**`, `.github/**`, `RequestSpark/**`, `RequestSpark.Domain/**`, `RequestSpark.PostmanImport/**`, `RequestSpark.Web/**`, `RequestSpark.Domain.Tests/**`, and `RequestSpark.Web.Tests/**` using a search that matches `RESTRunner`, `REST Runner`, and mixed-case variants such as `RestRunner` (PowerShell example: `Get-ChildItem -Recurse | Select-String -Pattern 'restrunner|rest.runner' -CaseSensitive:$false`); then verify any retained `.archive/**` references are explicitly historical and record intentional exceptions with documented justifications in `README.md`
+- [X] T018 [P] [US3] Update runtime and packaging identifiers for the renamed web project in `RequestSpark.Web/Dockerfile` and `RequestSpark.Web/package.json`; the Dockerfile update MUST also change the base image tags from `mcr.microsoft.com/dotnet/aspnet:8.0` and `mcr.microsoft.com/dotnet/sdk:8.0` to their `.NET 10` equivalents (`aspnet:10.0` and `sdk:10.0`) in addition to renaming `RequestSpark.Web.csproj` and `RequestSpark.Web.dll` references
+- [X] T019 [P] [US3] Update build, run, and release command references to renamed paths in `README.md`, `.github/copilot-instructions.md`, `.github/upgrades/upgrade-complete-summary.md`, `.github/upgrades/DEPLOYMENT-COMPLETE.md`, and `.github/upgrades/tasks.md`
+- [X] T020 [US3] Run structural cleanup and full .NET validation against `RequestSpark.sln` with `dotnet clean`, `dotnet build`, and `dotnet test`
+- [X] T021 [US3] Run web asset validation in `RequestSpark.Web/package.json` with `npm run build`; this step is unconditional because T018 always modifies `package.json`
+- [X] T022 [US3] Perform a case-insensitive lingering-brand review across `RequestSpark.sln`, `README.md`, `.documentation/**`, `.github/**`, `RequestSpark/**`, `RequestSpark.Domain/**`, `RequestSpark.PostmanImport/**`, `RequestSpark.Web/**`, `RequestSpark.Domain.Tests/**`, and `RequestSpark.Web.Tests/**` using a search that matches brand variants by case, spacing, and hyphenation (PowerShell example: `Get-ChildItem -Recurse | Select-String -Pattern 'requestspark|request\s*spark|request-spark' -CaseSensitive:$false`); then verify any retained `.archive/**` references are explicitly historical and record intentional exceptions with documented justifications in `README.md`
 
 **Checkpoint**: User Story 3 is complete when the renamed solution validates successfully and lingering-brand references are either removed or explicitly justified.
 
@@ -99,11 +99,11 @@
 
 **Purpose**: Finish cross-story cleanup and prepare the final external repository rename step.
 
-- [ ] T023 [P] Normalize remaining first-party comments, constants, and sample labels in `RequestSpark.Domain/Constants/DomainConstants.cs` (including renaming the `SessionIdPrefix` constant value from `"RESTRunner"` to `"RequestSpark"` and updating any XML doc comments that still reference the old brand), `RequestSpark.Domain/**/*.cs`, and `RequestSpark.Web/**/*.cs`
-- [ ] T024 [P] Prepare the post-merge GitHub repository rename checklist and badge/link updates in `README.md`
-- [ ] T025 Execute the final manual GitHub repository rename from `RESTRunner` to `RequestSpark` after merge, then reconcile badge, release, and repository URLs in `README.md` and any active `.github/` documentation that still references the former repository path
-- [ ] T026 Run the manual verification flow from `.documentation/specs/001-rebrand-requestspark/quickstart.md` and fix any last branding mismatches in affected files
-- [ ] T027 [P] Update `.documentation/memory/constitution.md` to replace all first-party project name references (`RESTRunner.Domain`, `RESTRunner.Web`, `RESTRunner.PostmanImport`, `RESTRunner`, `RESTRunner.Domain.Tests`, `RESTRunner.Web.Tests`) with their `RequestSpark.*` equivalents; also update the file-backed storage path note from `RESTRunner.Web/Data` to `RequestSpark.Web/Data`
+- [X] T023 [P] Normalize remaining first-party comments, constants, and sample labels in `RequestSpark.Domain/Constants/DomainConstants.cs` (including renaming the `SessionIdPrefix` constant value from `"RequestSpark"` to `"RequestSpark"` and updating any XML doc comments that still reference the old brand), `RequestSpark.Domain/**/*.cs`, and `RequestSpark.Web/**/*.cs`
+- [X] T024 [P] Prepare the post-merge GitHub repository rename checklist and badge/link updates in `README.md`
+- [ ] T025 Execute the final manual GitHub repository rename to `RequestSpark` after merge, then reconcile badge, release, and repository URLs in `README.md` and any active `.github/` documentation that still references the former repository path
+- [X] T026 Run the manual verification flow from `.documentation/specs/001-rebrand-requestspark/quickstart.md` and fix any last branding mismatches in affected files
+- [X] T027 [P] Update `.documentation/memory/constitution.md` to replace all first-party project name references (`RequestSpark.Domain`, `RequestSpark.Web`, `RequestSpark.PostmanImport`, `RequestSpark`, `RequestSpark.Domain.Tests`, `RequestSpark.Web.Tests`) with their `RequestSpark.*` equivalents; also update the file-backed storage path note from `RequestSpark.Web/Data` to `RequestSpark.Web/Data`
 
 ---
 
@@ -195,4 +195,6 @@ T019 [US3] Update build, run, and release command references in README.md and .g
 
 - `[P]` means the task can proceed in parallel because it targets different files with no incomplete-task dependency.
 - Story labels map every story-phase task back to its corresponding user story.
-- The GitHub repository rename from `RESTRunner` to `RequestSpark` remains a manual post-merge step, but it is now an explicit completion task in this task set.
+- The GitHub repository rename from `RequestSpark` to `RequestSpark` remains a manual post-merge step, but it is now an explicit completion task in this task set.
+
+

@@ -1,10 +1,10 @@
-# RESTRunner Constitution
+# RequestSpark Constitution
 
 ## Core Principles
 
 ### I. Layered Domain-First Architecture
-RESTRunner MUST preserve the existing domain-first layering of the solution.
-Domain models and contracts belong in RESTRunner.Domain, execution behavior belongs
+RequestSpark MUST preserve the existing domain-first layering of the solution.
+Domain models and contracts belong in RequestSpark.Domain, execution behavior belongs
 behind service interfaces, and console or web entry points MUST compose services
 rather than absorb business logic. This keeps CompareRunner behavior reusable
 across the console runner, web execution flows, and import paths.
@@ -15,7 +15,7 @@ across the console runner, web execution flows, and import paths.
 	justified exception.
 
 ### II. Project-Wide C# Conventions
-RESTRunner MUST keep the current C# defaults consistent across projects so the
+RequestSpark MUST keep the current C# defaults consistent across projects so the
 solution behaves as one codebase rather than a collection of unrelated styles.
 Projects MUST target the active solution framework, MUST enable nullable reference
 types, and MUST enable implicit usings. Shared imports that are broadly used
@@ -85,10 +85,10 @@ shows partial adoption rather than universal enforcement.
 	boundaries, testing impact, logging impact, documentation impact, and input
 	validation impact.
 - Feature plans SHOULD map work onto the real solution structure:
-	RESTRunner.Domain, RESTRunner, RESTRunner.Web, RESTRunner.PostmanImport,
-	RESTRunner.Domain.Tests, and RESTRunner.Web.Tests.
+	RequestSpark.Domain, RequestSpark, RequestSpark.Web, RequestSpark.PostmanImport,
+	RequestSpark.Domain.Tests, and RequestSpark.Web.Tests.
 - Work that changes web assets SHOULD include npm build validation when the
-	change affects RESTRunner.Web/package.json-managed assets.
+	change affects RequestSpark.Web/package.json-managed assets.
 - Pull request reviews SHOULD treat MUST rules as blocking and SHOULD rules as
 	improvement guidance that can be deferred with rationale.
 
@@ -117,3 +117,4 @@ Compliance review expectations:
 	with the simpler alternative that was rejected.
 
 **Version**: 1.0.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-25
+

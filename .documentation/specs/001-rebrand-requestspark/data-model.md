@@ -7,7 +7,7 @@ This feature does not add runtime persistence entities. The planning data model 
 | Field | Type | Description |
 |-------|------|-------------|
 | `kind` | enum | Category of first-party identity surface: `solution`, `project`, `namespace`, `assembly`, `package-metadata`, `ui-text`, `console-text`, `documentation`, `file-path`, `folder-path`, `swagger-label` |
-| `currentValue` | string | Existing RESTRunner-branded value |
+| `currentValue` | string | Existing RequestSpark-branded value |
 | `targetValue` | string | Required RequestSpark-branded replacement |
 | `location` | string | File path or artifact path containing the identifier |
 | `publiclyVisible` | boolean | Whether downstream users or operators can observe the identifier directly |
@@ -49,7 +49,7 @@ This feature does not add runtime persistence entities. The planning data model 
 
 - Contracts with `changeType = renamed` must appear in migration guidance.
 - Contracts with `contractType = route` must stay `preserved` for this feature.
-- No preserved contract may keep the RESTRunner brand unless it is clearly documented as historical.
+- No preserved contract may keep the RequestSpark brand unless it is clearly documented as historical.
 
 ## Entity: ValidationArtifact
 
@@ -63,8 +63,8 @@ This feature does not add runtime persistence entities. The planning data model 
 **Validation rules**
 
 - `build-result` and `test-result` are mandatory for every implementation.
-- `asset-build` is required whenever `RESTRunner.Web/package.json` managed files or output names change.
-- `search-report` must verify zero unintended uses of `RESTRunner` or `REST Runner`.
+- `asset-build` is required whenever `RequestSpark.Web/package.json` managed files or output names change.
+- `search-report` must verify zero unintended uses of `RequestSpark` or `RequestSpark`.
 
 ## Relationships
 
@@ -80,3 +80,4 @@ This feature does not add runtime persistence entities. The planning data model 
 | `PublicContract` | `undocumented-change` | `documented-change` | Migration guidance records old and new names |
 | `RepositoryIdentifier` | `local-ready` | `externally-renamed` | GitHub repository renamed after local merge |
 | `ValidationArtifact` | `pending` | `passed` | Command or manual check succeeds |
+

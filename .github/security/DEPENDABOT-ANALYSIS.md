@@ -1,14 +1,14 @@
 # Dependabot Security Alerts - Analysis & Remediation Plan
 
 **Date**: 2025-12-23  
-**Repository**: RESTRunner  
+**Repository**: RequestSpark  
 **Status**: 2 Open Alerts (1 High, 1 Medium)
 
 ---
 
 ## ?? Executive Summary
 
-Dependabot has identified **2 active security vulnerabilities** in npm dependencies used by the RESTRunner.Web project. Both vulnerabilities are in **transitive dependencies** (not directly specified in package.json) and affect development/build tools.
+Dependabot has identified **2 active security vulnerabilities** in npm dependencies used by the RequestSpark.Web project. Both vulnerabilities are in **transitive dependencies** (not directly specified in package.json) and affect development/build tools.
 
 **Critical Finding**: ? **Your .NET code is NOT affected** - vulnerabilities are in npm packages used for front-end asset management.
 
@@ -37,7 +37,7 @@ Dependabot has identified **2 active security vulnerabilities** in npm dependenc
 - **Dependency Type**: Transitive (indirect dependency)
 - **Scope**: Development only
 
-#### Impact Assessment for RESTRunner
+#### Impact Assessment for RequestSpark
 **Risk Level**: ?? **LOW to MEDIUM**
 
 **Why Low Risk?**
@@ -69,7 +69,7 @@ Dependabot has identified **2 active security vulnerabilities** in npm dependenc
 - **Dependency Type**: Transitive (indirect dependency)
 - **Scope**: Development only
 
-#### Impact Assessment for RESTRunner
+#### Impact Assessment for RequestSpark
 **Risk Level**: ?? **LOW**
 
 **Why Low Risk?**
@@ -103,7 +103,7 @@ Dependabot has identified **2 active security vulnerabilities** in npm dependenc
 
 ### Where Do These Packages Come From?
 
-Your `RESTRunner.Web/package.json` only specifies:
+Your `RequestSpark.Web/package.json` only specifies:
 
 **Direct Dependencies:**
 - `bootstrap@^5.3.6`
@@ -123,7 +123,7 @@ Your `RESTRunner.Web/package.json` only specifies:
 
 These packages are part of the npm ecosystem's dependency tree:
 ```
-RESTRunner.Web
+RequestSpark.Web
 ??? devDependencies
     ??? rimraf@6.0.1
     ?   ??? glob@^10.x.x or ^11.x.x (VULNERABLE)
@@ -146,7 +146,7 @@ RESTRunner.Web
 
 1. **Update package-lock.json**:
 ```bash
-cd RESTRunner.Web
+cd RequestSpark.Web
 npm update
 npm audit fix
 ```
@@ -177,7 +177,7 @@ git push origin main
 If `npm update` doesn't fix the issues:
 
 ```bash
-cd RESTRunner.Web
+cd RequestSpark.Web
 
 # Check current vulnerable versions
 npm list glob js-yaml
@@ -226,7 +226,7 @@ npm audit
 git checkout -b fix/npm-security-vulnerabilities
 
 # 2. Update dependencies
-cd RESTRunner.Web
+cd RequestSpark.Web
 npm update
 npm audit fix
 
@@ -258,12 +258,12 @@ gh pr create --title "Fix npm security vulnerabilities" \
 After applying fixes:
 
 1. **Check Dependabot**:
-   - Visit: https://github.com/markhazleton/RESTRunner/security/dependabot
+   - Visit: https://github.com/markhazleton/RequestSpark/security/dependabot
    - Verify alerts auto-close after merge
 
 2. **Run npm audit**:
 ```bash
-cd RESTRunner.Web
+cd RequestSpark.Web
 npm audit
 # Expected output: found 0 vulnerabilities
 ```
@@ -277,7 +277,7 @@ npm run build
 4. **Test web application**:
 ```bash
 cd ..
-dotnet run --project RESTRunner.Web
+dotnet run --project RequestSpark.Web
 # Navigate to https://localhost:7001
 # Verify Bootstrap styling and jQuery work
 ```
@@ -320,7 +320,7 @@ updates:
 
   # npm packages
   - package-ecosystem: "npm"
-    directory: "/RESTRunner.Web"
+    directory: "/RequestSpark.Web"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
@@ -351,7 +351,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm audit --prefix RESTRunner.Web
+      - run: npm audit --prefix RequestSpark.Web
 ```
 
 ### 3. Consider npm Alternatives
@@ -408,13 +408,13 @@ libman install jquery@3.7.1 --provider cdnjs --destination wwwroot/lib/jquery
 
 ```bash
 # Navigate to project root
-cd C:\GitHub\MarkHazleton\RESTRunner
+cd C:\GitHub\MarkHazleton\RequestSpark
 
 # Create fix branch
 git checkout -b fix/npm-security-vulnerabilities
 
 # Update npm dependencies
-cd RESTRunner.Web
+cd RequestSpark.Web
 npm update
 npm audit fix
 
@@ -428,7 +428,7 @@ npm run build
 cd ..
 
 # Commit
-git add RESTRunner.Web/package-lock.json
+git add RequestSpark.Web/package-lock.json
 git commit -m "Fix npm security vulnerabilities (glob, js-yaml)"
 
 # Push
@@ -467,5 +467,6 @@ gh pr create --title "Fix npm security vulnerabilities" --body "Fixes Dependabot
 ---
 
 **Generated**: 2025-12-23  
-**Repository**: https://github.com/markhazleton/RESTRunner  
-**Dependabot**: https://github.com/markhazleton/RESTRunner/security/dependabot
+**Repository**: https://github.com/markhazleton/RequestSpark  
+**Dependabot**: https://github.com/markhazleton/RequestSpark/security/dependabot
+

@@ -1,8 +1,10 @@
-# RESTRunner .NET 10.0 Upgrade Tasks
+# RequestSpark .NET 10.0 Upgrade Tasks
+
+> Historical note: This task log records upgrade work predating the RequestSpark rebrand and may retain legacy references intentionally.
 
 ## Overview
 
-This document tracks the execution of the RESTRunner solution upgrade from .NET 9.0 to .NET 10.0 (LTS). All 6 projects will be upgraded simultaneously in a single atomic operation, followed by comprehensive testing and validation.
+This document tracks the execution of the RequestSpark solution upgrade from .NET 9.0 to .NET 10.0 (LTS). All 6 projects will be upgraded simultaneously in a single atomic operation, followed by comprehensive testing and validation.
 
 **Progress**: 3/3 tasks complete (100%) ![100%](https://progress-bar.xyz/100)
 
@@ -23,13 +25,13 @@ This document tracks the execution of the RESTRunner solution upgrade from .NET 
 ### [✓] TASK-002: Atomic framework and package upgrade with compilation fixes *(Completed: 2025-12-23 14:33)*
 **References**: Plan §Phase 1, Plan §Package Update Reference, Plan §Breaking Changes Catalog
 
-- [✓] (1) Update TargetFramework to net10.0 in all 6 project files per Plan §Phase 1 (RESTRunner.Domain, RESTRunner.PostmanImport, RESTRunner.Services.HttpClientRunner, RESTRunner, RESTRunner.Web, RESTRunner.Domain.Tests)
+- [✓] (1) Update TargetFramework to net10.0 in all 6 project files per Plan §Phase 1 (RequestSpark.Domain, RequestSpark.PostmanImport, RequestSpark.Services.HttpClientRunner, RequestSpark, RequestSpark.Web, RequestSpark.Domain.Tests)
 - [✓] (2) All project files updated to net10.0 (**Verify**)
 - [✓] (3) Update 7 package references per Plan §Package Update Reference (Microsoft.Extensions.Hosting 10.0.1, Microsoft.Extensions.Http 10.0.1, Microsoft.Extensions.Logging.Abstractions 10.0.1, System.Configuration.ConfigurationManager 10.0.1, System.Text.Json 10.0.1, System.Security.Cryptography.Xml 10.0.1)
 - [✓] (4) All required packages updated (**Verify**)
-- [✓] (5) Remove 3 packages from RESTRunner.Web per Plan §Package Update Reference (Microsoft.VisualStudio.Azure.Containers.Tools.Targets, System.Net.Http, System.Text.RegularExpressions)
+- [✓] (5) Remove 3 packages from RequestSpark.Web per Plan §Package Update Reference (Microsoft.VisualStudio.Azure.Containers.Tools.Targets, System.Net.Http, System.Text.RegularExpressions)
 - [✓] (6) Incompatible and redundant packages removed (**Verify**)
-- [✓] (7) Restore all dependencies: dotnet restore RESTRunner.sln
+- [✓] (7) Restore all dependencies: dotnet restore RequestSpark.sln
 - [✓] (8) All dependencies restored successfully (**Verify**)
 - [✓] (9) Build solution and fix all compilation errors per Plan §Breaking Changes Catalog (focus on System.Uri and HttpContent behavioral changes if compilation errors occur)
 - [✓] (10) Solution builds with 0 errors (**Verify**)
@@ -40,7 +42,7 @@ This document tracks the execution of the RESTRunner solution upgrade from .NET 
 ### [✓] TASK-003: Run full test suite and validate upgrade *(Completed: 2025-12-23 08:34)*
 **References**: Plan §Phase 2, Plan §Testing & Validation Strategy
 
-- [✓] (1) Run tests in RESTRunner.Domain.Tests project: dotnet test RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj
+- [✓] (1) Run tests in RequestSpark.Domain.Tests project: dotnet test RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj
 - [⊘] (2) Fix any test failures related to behavioral changes per Plan §Breaking Changes Catalog (System.Uri parsing, HttpContent reading)
 - [⊘] (3) Re-run tests after fixes
 - [✓] (4) All tests pass with 0 failures (**Verify**)
@@ -52,6 +54,7 @@ This document tracks the execution of the RESTRunner solution upgrade from .NET 
 - [✓] (10) Commit test fixes and validation with message: "TASK-003: Complete .NET 10.0 upgrade testing and validation"
 
 ---
+
 
 
 

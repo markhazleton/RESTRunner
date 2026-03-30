@@ -19,7 +19,7 @@
 
 ### User Story 1 - Present a consistent RequestSpark identity (Priority: P1)
 
-As a developer or operator using the product, I want every first-party entry point, screen, document, and package artifact to present the RequestSpark name so that the product identity is consistent and no longer described as RESTRunner.
+As a developer or operator using the product, I want every first-party entry point, screen, document, and package artifact to present the RequestSpark name so that the product identity is consistent and no longer described as RequestSpark.
 
 **Why this priority**: The rebrand fails if end users still encounter mixed naming in the core product experience.
 
@@ -65,12 +65,12 @@ As a release engineer or maintainer, I want solution, packaging, and validation 
 - References to REST as an architectural style, protocol family, or external standard must remain unchanged when they do not refer to the product brand.
 - Third-party package names, external dependency identifiers, and imported vendor documentation must not be renamed merely because they contain REST-related terms.
 - Historical references that must remain for migration guidance, changelog accuracy, or breaking-change notes must clearly distinguish the retired name from the active RequestSpark brand.
-- Archived materials under `.archive/` may retain RESTRunner references when preserved strictly as historical records, but any active documentation that points to them must label RESTRunner as the former name.
+- Archived materials under `.archive/` may retain RequestSpark references when preserved strictly as historical records, but any active documentation that points to them must label RequestSpark as the former name.
 - File, folder, or artifact renames must avoid creating ambiguous mixed-brand paths where a user cannot tell which name is current.
 - URL paths, route patterns, and port assignments in the web application are functional contracts and must not be changed as part of the rebrand; only brand text in page titles, headers, and descriptive UI content is renamed.
-- Individual `.cs` files whose filenames contain the product brand (e.g., `RESTRunnerExceptions.cs`) require a separate `git mv` to rename the file itself in addition to the enclosing project-folder rename; the class names within those files that also carry the old brand (e.g., `RESTRunnerException`) must be renamed as identifiers, not merely by namespace replacement.
-- Runtime string constants that emit brand text in observable output (such as `DomainConstants.SessionIdPrefix = "RESTRunner"`) are identity-facing labels in scope for the rename; changing them is not a behavioral change even though they flow into runtime-generated field values.
-- Lingering-reference audit commands must use case-insensitive matching to catch mixed-case variants such as `RestRunner` that would survive a strict case-sensitive search for `RESTRunner`.
+- Individual `.cs` files whose filenames contain the product brand (e.g., `RequestSparkExceptions.cs`) require a separate `git mv` to rename the file itself in addition to the enclosing project-folder rename; the class names within those files that also carry the old brand (e.g., `RequestSparkException`) must be renamed as identifiers, not merely by namespace replacement.
+- Runtime string constants that emit brand text in observable output (such as `DomainConstants.SessionIdPrefix = "RequestSpark"`) are identity-facing labels in scope for the rename; changing them is not a behavioral change even though they flow into runtime-generated field values.
+- Lingering-reference audit commands must use case-insensitive matching to catch mixed-case variants such as `RequestSpark` that would survive a strict case-sensitive search for `RequestSpark`.
 
 ## Requirements *(mandatory)*
 
@@ -78,7 +78,7 @@ As a release engineer or maintainer, I want solution, packaging, and validation 
 
 - **FR-001**: The product MUST adopt RequestSpark as the canonical first-party product name across source-controlled project assets.
 - **FR-002**: All first-party namespaces, project identifiers, package metadata, assembly metadata, solution-facing names, file and folder identifiers, and repository-facing names that currently represent the product brand MUST be updated to the RequestSpark brand.
-- **FR-003**: All first-party user-facing text that currently presents the product as RESTRunner or REST Runner MUST be updated to natural RequestSpark wording that describes the product as an execution and validation engine for API requests.
+- **FR-003**: All first-party user-facing text that currently presents the product as RequestSpark or RequestSpark MUST be updated to natural RequestSpark wording that describes the product as an execution and validation engine for API requests.
 - **FR-004**: The rebrand MUST update primary documentation to describe the product as a lightweight execution and validation engine for API requests and must avoid positioning the product as REST-only unless a specific statement is describing a scoped limitation that still exists.
 - **FR-005**: Renamed public-facing contracts MAY break existing consumers as part of the rebrand, but the repository MUST document the old name and the RequestSpark replacement clearly enough for migration planning.
 - **FR-006**: The rebrand MUST not introduce compatibility aliases, wrappers, or obsolete fallback APIs whose only purpose is to preserve the retired product brand in active code.
@@ -97,13 +97,13 @@ As a release engineer or maintainer, I want solution, packaging, and validation 
 
 ## Assumptions
 
-- The rebrand applies to all first-party projects currently branded as RESTRunner, including console, domain, web, test, and import-related assets in this repository.
+- The rebrand applies to all first-party projects currently branded as RequestSpark, including console, domain, web, test, and import-related assets in this repository.
 - The rebrand also applies to first-party repository naming and other externally visible source-control identifiers that expose the retired product brand.
 - The rebrand is allowed to make explicit breaking name changes for public-facing surfaces; migration support is documentation-based rather than code-based.
-- Historical references may remain in targeted places such as migration notes or changelog-style documentation if they clearly explain that RESTRunner is the former name.
+- Historical references may remain in targeted places such as migration notes or changelog-style documentation if they clearly explain that RequestSpark is the former name.
 - The canonical brand form is "RequestSpark" (one PascalCase word, no space) in every context: code identifiers, namespaces, UI labels, documentation prose, headings, and repository names. No alternate spellings such as "Request Spark", "requestSpark", or "request-spark" are permitted in first-party assets.
-- The rebrand is performed in place on the existing repository using git mv for file/folder renames to preserve Git blame and log history. The GitHub repository rename (RESTRunner → RequestSpark) is executed as the final separate step after all code, file, and documentation renames are merged.
-- Repository-wide lingering-reference review covers active first-party assets in the solution root, `.github/`, and `.documentation/`; `.archive/` content is reviewed only to confirm any preserved RESTRunner references are explicitly historical.
+- The rebrand is performed in place on the existing repository using git mv for file/folder renames to preserve Git blame and log history. The GitHub repository rename (RequestSpark → RequestSpark) is executed as the final separate step after all code, file, and documentation renames are merged.
+- Repository-wide lingering-reference review covers active first-party assets in the solution root, `.github/`, and `.documentation/`; `.archive/` content is reviewed only to confirm any preserved RequestSpark references are explicitly historical.
 - Standard validation for this feature includes the repository's normal build and automated test execution rather than introducing new validation mechanisms.
 
 ## Success Criteria *(mandatory)*
@@ -112,6 +112,7 @@ As a release engineer or maintainer, I want solution, packaging, and validation 
 
 - **SC-001**: 100% of reviewed first-party product titles, headers, labels, primary documentation, and repository-facing names present RequestSpark as the active product name.
 - **SC-002**: 100% of renamed public-facing surfaces with migration impact are documented with the retired name and the RequestSpark replacement.
-- **SC-003**: A case-insensitive repository-wide review of active first-party assets in the solution root, `.github/`, and `.documentation/` finds zero unintended uses of RESTRunner, REST Runner, or mixed-case variants such as RestRunner after the rebrand is complete, and any retained `.archive/` references are explicitly marked as historical.
+- **SC-003**: A case-insensitive repository-wide review of active first-party assets in the solution root, `.github/`, and `.documentation/` finds zero unintended uses of RequestSpark, RequestSpark, or mixed-case variants such as RequestSpark after the rebrand is complete, and any retained `.archive/` references are explicitly marked as historical.
 - **SC-004**: The full solution completes the standard build and automated test workflow successfully after the rebrand.
 - **SC-005**: Maintainers can identify, within 5 minutes, whether any remaining old-brand reference is intentionally preserved and why it remains.
+

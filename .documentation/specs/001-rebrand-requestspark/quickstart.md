@@ -26,7 +26,7 @@ dotnet test
 If the web asset pipeline or Dockerfile was touched (T018 always touches `package.json`), also run:
 
 ```powershell
-Set-Location RESTRunner.Web
+Set-Location RequestSpark.Web
 npm run build
 Set-Location ..
 ```
@@ -35,12 +35,13 @@ Set-Location ..
 
 1. Launch the console app and verify startup text, completion text, statistics headings, and exported CSV naming use RequestSpark.
 2. Launch the web app and verify layout branding, home page copy, Swagger title, and related UI labels use RequestSpark.
-3. Search the repository for `RESTRunner`, `REST Runner`, and mixed-case variants (e.g., `RestRunner`) using a case-insensitive search and confirm any remaining matches are intentional historical references only.
+3. Search the repository for unexpected brand variants (spacing, hyphenation, or mixed case) using a case-insensitive search and confirm any remaining matches are intentional historical references only.
    ```powershell
-   Get-ChildItem -Recurse -File | Select-String -Pattern 'restrunner|rest.runner' -CaseSensitive:$false
+   Get-ChildItem -Recurse -File | Select-String -Pattern 'requestspark|request\s*spark|request-spark' -CaseSensitive:$false
    ```
 4. Verify project references, Docker entrypoint names, and README badges align with renamed project and repository identifiers.
 
 ## Final External Step
 
-After local code, documentation, and validation are complete and merged, rename the GitHub repository from `RESTRunner` to `RequestSpark` and then update any remaining badge or release URLs that depend on the final repository name.
+After local code, documentation, and validation are complete and merged, ensure the GitHub repository is named `RequestSpark`, then update any remaining badge or release URLs that depend on the final repository name.
+

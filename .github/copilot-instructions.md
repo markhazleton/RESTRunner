@@ -1,7 +1,7 @@
-# RESTRunner AI Coding Instructions
+# RequestSpark AI Coding Instructions
 
 ## Project Overview
-RESTRunner is a .NET 10.0 API testing, performance benchmarking, and regression testing solution that imports Postman collections and executes them against multiple instances with detailed statistics. The solution includes both a console application for batch testing and a web application (Razor Pages + minimal APIs) for interactive testing.
+RequestSpark is a .NET 10.0 API testing, performance benchmarking, and regression testing solution that imports Postman collections and executes them against multiple instances with detailed statistics. The solution includes both a console application for batch testing and a web application (Razor Pages + minimal APIs) for interactive testing.
 
 Development rules are governed by `.documentation/memory/constitution.md`. Follow it when there is a conflict with older ad hoc guidance.
 
@@ -9,16 +9,16 @@ Development rules are governed by `.documentation/memory/constitution.md`. Follo
 
 ### Project Structure & Dependencies
 ```
-RESTRunner.Domain (core models, no external deps)
+RequestSpark.Domain (core models, no external deps)
   ↓
-RESTRunner (console app) + RESTRunner.Web (web app)
+RequestSpark (console app) + RequestSpark.Web (web app)
   ↓
-RESTRunner.PostmanImport (Postman collection parser)
+RequestSpark.PostmanImport (Postman collection parser)
 ```
 
 **Key architectural decisions:**
-- **Domain-first design**: `RESTRunner.Domain` contains all domain models and is referenced by all other projects
-- **Service layer pattern**: `IExecuteRunner` lives in Domain and is implemented by `RESTRunner.Domain.Services.ExecuteRunnerService`
+- **Domain-first design**: `RequestSpark.Domain` contains all domain models and is referenced by all other projects
+- **Service layer pattern**: `IExecuteRunner` lives in Domain and is implemented by `RequestSpark.Domain.Services.ExecuteRunnerService`
 - **Dual UI**: Console app for CI/CD, web app for interactive use
 - **File-based storage**: Web app uses JSON files in `~/Data` for configurations/collections (no database)
 - **Batch execution integration**: domain execution maps `CompareRunner` into WebSpark batch models and delegates execution to `IBatchExecutionService`
@@ -44,9 +44,9 @@ RESTRunner.PostmanImport (Postman collection parser)
 ### Global Usings Pattern
 All projects use `GlobalUsings.cs` for project-wide imports:
 ```csharp
-// RESTRunner.Domain/GlobalUsings.cs
-global using RESTRunner.Domain.Constants;
-global using RESTRunner.Domain.Models;
+// RequestSpark.Domain/GlobalUsings.cs
+global using RequestSpark.Domain.Constants;
+global using RequestSpark.Domain.Models;
 global using System.Runtime.Serialization;
 ```
 **Rule**: Add new domain types to GlobalUsings instead of per-file using statements.
@@ -59,7 +59,7 @@ public class ExecuteRunnerService(
   IBatchExecutionService batchExecutionService,
     ILogger<ExecuteRunnerService> logger) : IExecuteRunner
 {
-  // Maps CompareRunner into batch execution and aggregates RESTRunner statistics.
+  // Maps CompareRunner into batch execution and aggregates RequestSpark statistics.
 }
 ```
 
@@ -88,12 +88,12 @@ foreach (var prop in user.Properties)
 # Build entire solution
 dotnet build
 
-# Run console app (requires collection.json in RESTRunner/)
-cd RESTRunner
+# Run console app (requires collection.json in RequestSpark/)
+cd RequestSpark
 dotnet run
 
 # Run web app (https://localhost:7001)
-cd RESTRunner.Web
+cd RequestSpark.Web
 dotnet run
 
 # Run tests
@@ -102,7 +102,7 @@ dotnet test
 
 ### Testing Patterns
 - MSTest framework (`[TestClass]`, `[TestMethod]`)
-- Test files named `*Tests.cs` in `RESTRunner.Domain.Tests`
+- Test files named `*Tests.cs` in `RequestSpark.Domain.Tests`
 - Basic structure: Arrange → Act → Assert
 ```csharp
 [TestMethod]
@@ -120,7 +120,7 @@ public void CompareRunner_GetTotalTestCount_ReturnsCorrectValue()
 ```
 
 ### Postman Import
-- Place `collection.json` in `RESTRunner/` directory (auto-copied to output)
+- Place `collection.json` in `RequestSpark/` directory (auto-copied to output)
 - Uses Postman v2.1.0 format
 - URL template: `{{url}}/path` or `{{api-url}}/path` → converted to relative path
 - Import process: `PostmanImport.LoadFromPostman()` → populates `CompareRunner.Requests`
@@ -129,7 +129,7 @@ public void CompareRunner_GetTotalTestCount_ReturnsCorrectValue()
 
 ### Service Registration (Program.cs)
 ```csharp
-// RESTRunner services
+// RequestSpark services
 builder.Services.AddSingleton<IFileStorageService, FileStorageService>();
 builder.Services.AddScoped<IConfigurationService, FileConfigurationService>();
 builder.Services.AddScoped<ICollectionService, FileCollectionService>();
@@ -137,7 +137,7 @@ builder.Services.AddSingleton<IExecutionService, RealExecutionService>();
 ```
 
 ### Minimal API Endpoints
-Defined in `RESTRunner.Web/Program.cs`:
+Defined in `RequestSpark.Web/Program.cs`:
 - `/api/employees/*` - Sample CRUD operations
 - `/api/departments/*` - Department management
 - `/api/status` - Health check
@@ -180,7 +180,7 @@ Console app displays comprehensive execution report with emoji indicators:
 - ✅ 2xx Success, ⚠️ 4xx Client Error, ❌ 5xx Server Error
 - Performance metrics: P50/P75/P90/P95/P99/P99.9 percentiles
 - Breakdown by: HTTP method, status code, instance, user
-- Results exported to `c:\test\RESTRunner.csv`
+- Results exported to `c:\test\RequestSpark.csv`
 
 ## Version & Build Configuration
 All projects use deterministic versioning in `.csproj`:
@@ -193,13 +193,13 @@ All projects use deterministic versioning in `.csproj`:
 ## Common Tasks
 
 ### Adding a New Request Property
-1. Add property to `CompareRequest` (RESTRunner.Domain/Models)
+1. Add property to `CompareRequest` (RequestSpark.Domain/Models)
 2. Update JSON serialization if needed
-3. Handle mapping and template-related behavior in `RESTRunner.Domain.Services.ExecuteRunnerService`
+3. Handle mapping and template-related behavior in `RequestSpark.Domain.Services.ExecuteRunnerService`
 4. Update Postman import if mapping from collection
 
 ### Adding a New Output Format
-1. Create class implementing `IOutput` (RESTRunner.Domain/Interfaces)
+1. Create class implementing `IOutput` (RequestSpark.Domain/Interfaces)
 2. Implement `WriteInfo()`, `WriteError()`, `WriteHeader()` methods
 3. Register in DI container (Program.cs)
 4. Pass to `ExecuteRunnerAsync(IOutput output)`
@@ -225,3 +225,4 @@ All projects use deterministic versioning in `.csproj`:
 - **Template substitution not working**: Verify property keys match exactly (case-sensitive)
 - **High memory usage**: Reduce iterations or concurrency in configuration
 - **Credential setup looks baked in**: Replace executable-source defaults with environment-backed values or explicit non-secret placeholders before merging
+
