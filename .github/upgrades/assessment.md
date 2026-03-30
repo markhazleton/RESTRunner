@@ -1,5 +1,7 @@
 # Projects and dependencies analysis
 
+> Historical note: Some anchor IDs and generated graph labels preserve former-name tokens from the original tool output.
+
 This document provides a comprehensive overview of the projects and their dependencies in the context of upgrading to .NETCoreApp,Version=v10.0.
 
 ## Table of Contents
@@ -16,12 +18,12 @@ This document provides a comprehensive overview of the projects and their depend
 - [Projects Relationship Graph](#projects-relationship-graph)
 - [Project Details](#project-details)
 
-  - [RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj](#restrunnerdomaintestsrestrunnerdomaintestscsproj)
-  - [RESTRunner.Domain\RESTRunner.Domain.csproj](#restrunnerdomainrestrunnerdomaincsproj)
-  - [RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj](#restrunnerpostmanimportrestrunnerpostmanimportcsproj)
-  - [RESTRunner.Services.HttpClient\RESTRunner.Services.HttpClientRunner.csproj](#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj)
-  - [RESTRunner.Web\RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj)
-  - [RESTRunner\RESTRunner.csproj](#restrunnerrestrunnercsproj)
+  - [RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj](#requestsparkdomaintestsrequestsparkdomaintestscsproj)
+  - [RequestSpark.Domain\RequestSpark.Domain.csproj](#requestsparkdomainrequestsparkdomaincsproj)
+  - [RequestSpark.PostmanImport\RequestSpark.PostmanImport.csproj](#requestsparkpostmanimportrequestsparkpostmanimportcsproj)
+  - [RequestSpark.Services.HttpClient\RequestSpark.Services.HttpClientRunner.csproj](#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj)
+  - [RequestSpark.Web\RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj)
+  - [RequestSpark\RequestSpark.csproj](#requestsparkrequestsparkcsproj)
 
 
 ## Executive Summary
@@ -42,12 +44,12 @@ This document provides a comprehensive overview of the projects and their depend
 
 | Project | Target Framework | Difficulty | Package Issues | API Issues | Est. LOC Impact | Description |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| [RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj](#restrunnerdomaintestsrestrunnerdomaintestscsproj) | net9.0 | 🟢 Low | 0 | 0 |  | DotNetCoreApp, Sdk Style = True |
-| [RESTRunner.Domain\RESTRunner.Domain.csproj](#restrunnerdomainrestrunnerdomaincsproj) | net9.0 | 🟢 Low | 0 | 2 | 2+ | ClassLibrary, Sdk Style = True |
-| [RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj](#restrunnerpostmanimportrestrunnerpostmanimportcsproj) | net9.0 | 🟢 Low | 0 | 0 |  | ClassLibrary, Sdk Style = True |
-| [RESTRunner.Services.HttpClient\RESTRunner.Services.HttpClientRunner.csproj](#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj) | net9.0 | 🟢 Low | 2 | 19 | 19+ | ClassLibrary, Sdk Style = True |
-| [RESTRunner.Web\RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj) | net9.0 | 🟢 Low | 4 | 113 | 113+ | AspNetCore, Sdk Style = True |
-| [RESTRunner\RESTRunner.csproj](#restrunnerrestrunnercsproj) | net9.0 | 🟢 Low | 4 | 3 | 3+ | DotNetCoreApp, Sdk Style = True |
+| [RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj](#requestsparkdomaintestsrequestsparkdomaintestscsproj) | net9.0 | 🟢 Low | 0 | 0 |  | DotNetCoreApp, Sdk Style = True |
+| [RequestSpark.Domain\RequestSpark.Domain.csproj](#requestsparkdomainrequestsparkdomaincsproj) | net9.0 | 🟢 Low | 0 | 2 | 2+ | ClassLibrary, Sdk Style = True |
+| [RequestSpark.PostmanImport\RequestSpark.PostmanImport.csproj](#requestsparkpostmanimportrequestsparkpostmanimportcsproj) | net9.0 | 🟢 Low | 0 | 0 |  | ClassLibrary, Sdk Style = True |
+| [RequestSpark.Services.HttpClient\RequestSpark.Services.HttpClientRunner.csproj](#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj) | net9.0 | 🟢 Low | 2 | 19 | 19+ | ClassLibrary, Sdk Style = True |
+| [RequestSpark.Web\RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj) | net9.0 | 🟢 Low | 4 | 113 | 113+ | AspNetCore, Sdk Style = True |
+| [RequestSpark\RequestSpark.csproj](#requestsparkrequestsparkcsproj) | net9.0 | 🟢 Low | 4 | 3 | 3+ | DotNetCoreApp, Sdk Style = True |
 
 ### Package Compatibility
 
@@ -72,26 +74,26 @@ This document provides a comprehensive overview of the projects and their depend
 
 | Package | Current Version | Suggested Version | Projects | Description |
 | :--- | :---: | :---: | :--- | :--- |
-| coverlet.collector | 6.0.4 |  | [RESTRunner.Domain.Tests.csproj](#restrunnerdomaintestsrestrunnerdomaintestscsproj) | ✅Compatible |
-| CsvHelper | 33.1.0 |  | [RESTRunner.csproj](#restrunnerrestrunnercsproj) | ✅Compatible |
-| FileHelpers | 3.5.2 |  | [RESTRunner.Domain.csproj](#restrunnerdomainrestrunnerdomaincsproj) | ✅Compatible |
-| Microsoft.AspNet.WebApi.Client | 6.0.0 |  | [RESTRunner.Services.HttpClientRunner.csproj](#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj) | ✅Compatible |
-| Microsoft.Extensions.Hosting | 9.0.9 | 10.0.1 | [RESTRunner.csproj](#restrunnerrestrunnercsproj) | NuGet package upgrade is recommended |
-| Microsoft.Extensions.Http | 9.0.9 | 10.0.1 | [RESTRunner.csproj](#restrunnerrestrunnercsproj)<br/>[RESTRunner.Services.HttpClientRunner.csproj](#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj) | NuGet package upgrade is recommended |
-| Microsoft.Extensions.Logging.Abstractions | 9.0.9 | 10.0.1 | [RESTRunner.Services.HttpClientRunner.csproj](#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj) | NuGet package upgrade is recommended |
-| Microsoft.NET.Test.Sdk | 17.14.1 |  | [RESTRunner.Domain.Tests.csproj](#restrunnerdomaintestsrestrunnerdomaintestscsproj) | ✅Compatible |
-| Microsoft.VisualStudio.Azure.Containers.Tools.Targets | 1.22.1 |  | [RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj) | ⚠️NuGet package is incompatible |
-| MSTest.TestAdapter | 3.10.4 |  | [RESTRunner.Domain.Tests.csproj](#restrunnerdomaintestsrestrunnerdomaintestscsproj) | ✅Compatible |
-| MSTest.TestFramework | 3.10.4 |  | [RESTRunner.Domain.Tests.csproj](#restrunnerdomaintestsrestrunnerdomaintestscsproj) | ✅Compatible |
-| Newtonsoft.Json | 13.0.4 |  | [RESTRunner.PostmanImport.csproj](#restrunnerpostmanimportrestrunnerpostmanimportcsproj)<br/>[RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj) | ✅Compatible |
-| Swashbuckle.AspNetCore | 9.0.4 |  | [RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj) | ✅Compatible |
-| System.Configuration.ConfigurationManager | 9.0.9 | 10.0.1 | [RESTRunner.csproj](#restrunnerrestrunnercsproj) | NuGet package upgrade is recommended |
-| System.Net.Http | 4.3.4 |  | [RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj) | NuGet package functionality is included with framework reference |
-| System.Security.Cryptography.Xml | 9.0.9 | 10.0.1 | [RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj) | NuGet package upgrade is recommended |
-| System.Text.Json | 9.0.9 | 10.0.1 | [RESTRunner.csproj](#restrunnerrestrunnercsproj) | NuGet package upgrade is recommended |
-| System.Text.RegularExpressions | 4.3.1 |  | [RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj) | NuGet package functionality is included with framework reference |
-| WebSpark.Bootswatch | 1.30.0 |  | [RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj) | ✅Compatible |
-| WebSpark.HttpClientUtility | 1.2.0 |  | [RESTRunner.Web.csproj](#restrunnerwebrestrunnerwebcsproj) | ✅Compatible |
+| coverlet.collector | 6.0.4 |  | [RequestSpark.Domain.Tests.csproj](#requestsparkdomaintestsrequestsparkdomaintestscsproj) | ✅Compatible |
+| CsvHelper | 33.1.0 |  | [RequestSpark.csproj](#requestsparkrequestsparkcsproj) | ✅Compatible |
+| FileHelpers | 3.5.2 |  | [RequestSpark.Domain.csproj](#requestsparkdomainrequestsparkdomaincsproj) | ✅Compatible |
+| Microsoft.AspNet.WebApi.Client | 6.0.0 |  | [RequestSpark.Services.HttpClientRunner.csproj](#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj) | ✅Compatible |
+| Microsoft.Extensions.Hosting | 9.0.9 | 10.0.1 | [RequestSpark.csproj](#requestsparkrequestsparkcsproj) | NuGet package upgrade is recommended |
+| Microsoft.Extensions.Http | 9.0.9 | 10.0.1 | [RequestSpark.csproj](#requestsparkrequestsparkcsproj)<br/>[RequestSpark.Services.HttpClientRunner.csproj](#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj) | NuGet package upgrade is recommended |
+| Microsoft.Extensions.Logging.Abstractions | 9.0.9 | 10.0.1 | [RequestSpark.Services.HttpClientRunner.csproj](#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj) | NuGet package upgrade is recommended |
+| Microsoft.NET.Test.Sdk | 17.14.1 |  | [RequestSpark.Domain.Tests.csproj](#requestsparkdomaintestsrequestsparkdomaintestscsproj) | ✅Compatible |
+| Microsoft.VisualStudio.Azure.Containers.Tools.Targets | 1.22.1 |  | [RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj) | ⚠️NuGet package is incompatible |
+| MSTest.TestAdapter | 3.10.4 |  | [RequestSpark.Domain.Tests.csproj](#requestsparkdomaintestsrequestsparkdomaintestscsproj) | ✅Compatible |
+| MSTest.TestFramework | 3.10.4 |  | [RequestSpark.Domain.Tests.csproj](#requestsparkdomaintestsrequestsparkdomaintestscsproj) | ✅Compatible |
+| Newtonsoft.Json | 13.0.4 |  | [RequestSpark.PostmanImport.csproj](#requestsparkpostmanimportrequestsparkpostmanimportcsproj)<br/>[RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj) | ✅Compatible |
+| Swashbuckle.AspNetCore | 9.0.4 |  | [RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj) | ✅Compatible |
+| System.Configuration.ConfigurationManager | 9.0.9 | 10.0.1 | [RequestSpark.csproj](#requestsparkrequestsparkcsproj) | NuGet package upgrade is recommended |
+| System.Net.Http | 4.3.4 |  | [RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj) | NuGet package functionality is included with framework reference |
+| System.Security.Cryptography.Xml | 9.0.9 | 10.0.1 | [RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj) | NuGet package upgrade is recommended |
+| System.Text.Json | 9.0.9 | 10.0.1 | [RequestSpark.csproj](#requestsparkrequestsparkcsproj) | NuGet package upgrade is recommended |
+| System.Text.RegularExpressions | 4.3.1 |  | [RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj) | NuGet package functionality is included with framework reference |
+| WebSpark.Bootswatch | 1.30.0 |  | [RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj) | ✅Compatible |
+| WebSpark.HttpClientUtility | 1.2.0 |  | [RequestSpark.Web.csproj](#requestsparkwebrequestsparkwebcsproj) | ✅Compatible |
 
 ## Top API Migration Challenges
 
@@ -122,12 +124,12 @@ Legend:
 
 ```mermaid
 flowchart LR
-    P1["<b>📦&nbsp;RESTRunner.csproj</b><br/><small>net9.0</small>"]
-    P2["<b>📦&nbsp;RESTRunner.Domain.csproj</b><br/><small>net9.0</small>"]
-    P3["<b>📦&nbsp;RESTRunner.PostmanImport.csproj</b><br/><small>net9.0</small>"]
-    P4["<b>📦&nbsp;RESTRunner.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
-    P5["<b>📦&nbsp;RESTRunner.Web.csproj</b><br/><small>net9.0</small>"]
-    P6["<b>📦&nbsp;RESTRunner.Domain.Tests.csproj</b><br/><small>net9.0</small>"]
+    P1["<b>📦&nbsp;RequestSpark.csproj</b><br/><small>net9.0</small>"]
+    P2["<b>📦&nbsp;RequestSpark.Domain.csproj</b><br/><small>net9.0</small>"]
+    P3["<b>📦&nbsp;RequestSpark.PostmanImport.csproj</b><br/><small>net9.0</small>"]
+    P4["<b>📦&nbsp;RequestSpark.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
+    P5["<b>📦&nbsp;RequestSpark.Web.csproj</b><br/><small>net9.0</small>"]
+    P6["<b>📦&nbsp;RequestSpark.Domain.Tests.csproj</b><br/><small>net9.0</small>"]
     P1 --> P2
     P1 --> P4
     P1 --> P3
@@ -138,19 +140,19 @@ flowchart LR
     P5 --> P3
     P6 --> P2
     P6 --> P3
-    click P1 "#restrunnerrestrunnercsproj"
-    click P2 "#restrunnerdomainrestrunnerdomaincsproj"
-    click P3 "#restrunnerpostmanimportrestrunnerpostmanimportcsproj"
-    click P4 "#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj"
-    click P5 "#restrunnerwebrestrunnerwebcsproj"
-    click P6 "#restrunnerdomaintestsrestrunnerdomaintestscsproj"
+    click P1 "#requestsparkrequestsparkcsproj"
+    click P2 "#requestsparkdomainrequestsparkdomaincsproj"
+    click P3 "#requestsparkpostmanimportrequestsparkpostmanimportcsproj"
+    click P4 "#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj"
+    click P5 "#requestsparkwebrequestsparkwebcsproj"
+    click P6 "#requestsparkdomaintestsrequestsparkdomaintestscsproj"
 
 ```
 
 ## Project Details
 
-<a id="restrunnerdomaintestsrestrunnerdomaintestscsproj"></a>
-### RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj
+<a id="requestsparkdomaintestsrequestsparkdomaintestscsproj"></a>
+### RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj
 
 #### Project Info
 
@@ -173,15 +175,15 @@ Legend:
 
 ```mermaid
 flowchart TB
-    subgraph current["RESTRunner.Domain.Tests.csproj"]
-        MAIN["<b>📦&nbsp;RESTRunner.Domain.Tests.csproj</b><br/><small>net9.0</small>"]
-        click MAIN "#restrunnerdomaintestsrestrunnerdomaintestscsproj"
+    subgraph current["RequestSpark.Domain.Tests.csproj"]
+        MAIN["<b>📦&nbsp;RequestSpark.Domain.Tests.csproj</b><br/><small>net9.0</small>"]
+        click MAIN "#requestsparkdomaintestsrequestsparkdomaintestscsproj"
     end
     subgraph downstream["Dependencies (2"]
-        P2["<b>📦&nbsp;RESTRunner.Domain.csproj</b><br/><small>net9.0</small>"]
-        P3["<b>📦&nbsp;RESTRunner.PostmanImport.csproj</b><br/><small>net9.0</small>"]
-        click P2 "#restrunnerdomainrestrunnerdomaincsproj"
-        click P3 "#restrunnerpostmanimportrestrunnerpostmanimportcsproj"
+        P2["<b>📦&nbsp;RequestSpark.Domain.csproj</b><br/><small>net9.0</small>"]
+        P3["<b>📦&nbsp;RequestSpark.PostmanImport.csproj</b><br/><small>net9.0</small>"]
+        click P2 "#requestsparkdomainrequestsparkdomaincsproj"
+        click P3 "#requestsparkpostmanimportrequestsparkpostmanimportcsproj"
     end
     MAIN --> P2
     MAIN --> P3
@@ -198,8 +200,8 @@ flowchart TB
 | ✅ Compatible | 313 |  |
 | ***Total APIs Analyzed*** | ***313*** |  |
 
-<a id="restrunnerdomainrestrunnerdomaincsproj"></a>
-### RESTRunner.Domain\RESTRunner.Domain.csproj
+<a id="requestsparkdomainrequestsparkdomaincsproj"></a>
+### RequestSpark.Domain\RequestSpark.Domain.csproj
 
 #### Project Info
 
@@ -223,20 +225,20 @@ Legend:
 ```mermaid
 flowchart TB
     subgraph upstream["Dependants (5)"]
-        P1["<b>📦&nbsp;RESTRunner.csproj</b><br/><small>net9.0</small>"]
-        P3["<b>📦&nbsp;RESTRunner.PostmanImport.csproj</b><br/><small>net9.0</small>"]
-        P4["<b>📦&nbsp;RESTRunner.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
-        P5["<b>📦&nbsp;RESTRunner.Web.csproj</b><br/><small>net9.0</small>"]
-        P6["<b>📦&nbsp;RESTRunner.Domain.Tests.csproj</b><br/><small>net9.0</small>"]
-        click P1 "#restrunnerrestrunnercsproj"
-        click P3 "#restrunnerpostmanimportrestrunnerpostmanimportcsproj"
-        click P4 "#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj"
-        click P5 "#restrunnerwebrestrunnerwebcsproj"
-        click P6 "#restrunnerdomaintestsrestrunnerdomaintestscsproj"
+        P1["<b>📦&nbsp;RequestSpark.csproj</b><br/><small>net9.0</small>"]
+        P3["<b>📦&nbsp;RequestSpark.PostmanImport.csproj</b><br/><small>net9.0</small>"]
+        P4["<b>📦&nbsp;RequestSpark.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
+        P5["<b>📦&nbsp;RequestSpark.Web.csproj</b><br/><small>net9.0</small>"]
+        P6["<b>📦&nbsp;RequestSpark.Domain.Tests.csproj</b><br/><small>net9.0</small>"]
+        click P1 "#requestsparkrequestsparkcsproj"
+        click P3 "#requestsparkpostmanimportrequestsparkpostmanimportcsproj"
+        click P4 "#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj"
+        click P5 "#requestsparkwebrequestsparkwebcsproj"
+        click P6 "#requestsparkdomaintestsrequestsparkdomaintestscsproj"
     end
-    subgraph current["RESTRunner.Domain.csproj"]
-        MAIN["<b>📦&nbsp;RESTRunner.Domain.csproj</b><br/><small>net9.0</small>"]
-        click MAIN "#restrunnerdomainrestrunnerdomaincsproj"
+    subgraph current["RequestSpark.Domain.csproj"]
+        MAIN["<b>📦&nbsp;RequestSpark.Domain.csproj</b><br/><small>net9.0</small>"]
+        click MAIN "#requestsparkdomainrequestsparkdomaincsproj"
     end
     P1 --> MAIN
     P3 --> MAIN
@@ -256,8 +258,8 @@ flowchart TB
 | ✅ Compatible | 1066 |  |
 | ***Total APIs Analyzed*** | ***1068*** |  |
 
-<a id="restrunnerpostmanimportrestrunnerpostmanimportcsproj"></a>
-### RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj
+<a id="requestsparkpostmanimportrequestsparkpostmanimportcsproj"></a>
+### RequestSpark.PostmanImport\RequestSpark.PostmanImport.csproj
 
 #### Project Info
 
@@ -281,20 +283,20 @@ Legend:
 ```mermaid
 flowchart TB
     subgraph upstream["Dependants (3)"]
-        P1["<b>📦&nbsp;RESTRunner.csproj</b><br/><small>net9.0</small>"]
-        P5["<b>📦&nbsp;RESTRunner.Web.csproj</b><br/><small>net9.0</small>"]
-        P6["<b>📦&nbsp;RESTRunner.Domain.Tests.csproj</b><br/><small>net9.0</small>"]
-        click P1 "#restrunnerrestrunnercsproj"
-        click P5 "#restrunnerwebrestrunnerwebcsproj"
-        click P6 "#restrunnerdomaintestsrestrunnerdomaintestscsproj"
+        P1["<b>📦&nbsp;RequestSpark.csproj</b><br/><small>net9.0</small>"]
+        P5["<b>📦&nbsp;RequestSpark.Web.csproj</b><br/><small>net9.0</small>"]
+        P6["<b>📦&nbsp;RequestSpark.Domain.Tests.csproj</b><br/><small>net9.0</small>"]
+        click P1 "#requestsparkrequestsparkcsproj"
+        click P5 "#requestsparkwebrequestsparkwebcsproj"
+        click P6 "#requestsparkdomaintestsrequestsparkdomaintestscsproj"
     end
-    subgraph current["RESTRunner.PostmanImport.csproj"]
-        MAIN["<b>📦&nbsp;RESTRunner.PostmanImport.csproj</b><br/><small>net9.0</small>"]
-        click MAIN "#restrunnerpostmanimportrestrunnerpostmanimportcsproj"
+    subgraph current["RequestSpark.PostmanImport.csproj"]
+        MAIN["<b>📦&nbsp;RequestSpark.PostmanImport.csproj</b><br/><small>net9.0</small>"]
+        click MAIN "#requestsparkpostmanimportrequestsparkpostmanimportcsproj"
     end
     subgraph downstream["Dependencies (1"]
-        P2["<b>📦&nbsp;RESTRunner.Domain.csproj</b><br/><small>net9.0</small>"]
-        click P2 "#restrunnerdomainrestrunnerdomaincsproj"
+        P2["<b>📦&nbsp;RequestSpark.Domain.csproj</b><br/><small>net9.0</small>"]
+        click P2 "#requestsparkdomainrequestsparkdomaincsproj"
     end
     P1 --> MAIN
     P5 --> MAIN
@@ -313,8 +315,8 @@ flowchart TB
 | ✅ Compatible | 662 |  |
 | ***Total APIs Analyzed*** | ***662*** |  |
 
-<a id="restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj"></a>
-### RESTRunner.Services.HttpClient\RESTRunner.Services.HttpClientRunner.csproj
+<a id="requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj"></a>
+### RequestSpark.Services.HttpClient\RequestSpark.Services.HttpClientRunner.csproj
 
 #### Project Info
 
@@ -338,18 +340,18 @@ Legend:
 ```mermaid
 flowchart TB
     subgraph upstream["Dependants (2)"]
-        P1["<b>📦&nbsp;RESTRunner.csproj</b><br/><small>net9.0</small>"]
-        P5["<b>📦&nbsp;RESTRunner.Web.csproj</b><br/><small>net9.0</small>"]
-        click P1 "#restrunnerrestrunnercsproj"
-        click P5 "#restrunnerwebrestrunnerwebcsproj"
+        P1["<b>📦&nbsp;RequestSpark.csproj</b><br/><small>net9.0</small>"]
+        P5["<b>📦&nbsp;RequestSpark.Web.csproj</b><br/><small>net9.0</small>"]
+        click P1 "#requestsparkrequestsparkcsproj"
+        click P5 "#requestsparkwebrequestsparkwebcsproj"
     end
-    subgraph current["RESTRunner.Services.HttpClientRunner.csproj"]
-        MAIN["<b>📦&nbsp;RESTRunner.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
-        click MAIN "#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj"
+    subgraph current["RequestSpark.Services.HttpClientRunner.csproj"]
+        MAIN["<b>📦&nbsp;RequestSpark.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
+        click MAIN "#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj"
     end
     subgraph downstream["Dependencies (1"]
-        P2["<b>📦&nbsp;RESTRunner.Domain.csproj</b><br/><small>net9.0</small>"]
-        click P2 "#restrunnerdomainrestrunnerdomaincsproj"
+        P2["<b>📦&nbsp;RequestSpark.Domain.csproj</b><br/><small>net9.0</small>"]
+        click P2 "#requestsparkdomainrequestsparkdomaincsproj"
     end
     P1 --> MAIN
     P5 --> MAIN
@@ -367,8 +369,8 @@ flowchart TB
 | ✅ Compatible | 447 |  |
 | ***Total APIs Analyzed*** | ***466*** |  |
 
-<a id="restrunnerwebrestrunnerwebcsproj"></a>
-### RESTRunner.Web\RESTRunner.Web.csproj
+<a id="requestsparkwebrequestsparkwebcsproj"></a>
+### RequestSpark.Web\RequestSpark.Web.csproj
 
 #### Project Info
 
@@ -391,17 +393,17 @@ Legend:
 
 ```mermaid
 flowchart TB
-    subgraph current["RESTRunner.Web.csproj"]
-        MAIN["<b>📦&nbsp;RESTRunner.Web.csproj</b><br/><small>net9.0</small>"]
-        click MAIN "#restrunnerwebrestrunnerwebcsproj"
+    subgraph current["RequestSpark.Web.csproj"]
+        MAIN["<b>📦&nbsp;RequestSpark.Web.csproj</b><br/><small>net9.0</small>"]
+        click MAIN "#requestsparkwebrequestsparkwebcsproj"
     end
     subgraph downstream["Dependencies (3"]
-        P2["<b>📦&nbsp;RESTRunner.Domain.csproj</b><br/><small>net9.0</small>"]
-        P4["<b>📦&nbsp;RESTRunner.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
-        P3["<b>📦&nbsp;RESTRunner.PostmanImport.csproj</b><br/><small>net9.0</small>"]
-        click P2 "#restrunnerdomainrestrunnerdomaincsproj"
-        click P4 "#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj"
-        click P3 "#restrunnerpostmanimportrestrunnerpostmanimportcsproj"
+        P2["<b>📦&nbsp;RequestSpark.Domain.csproj</b><br/><small>net9.0</small>"]
+        P4["<b>📦&nbsp;RequestSpark.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
+        P3["<b>📦&nbsp;RequestSpark.PostmanImport.csproj</b><br/><small>net9.0</small>"]
+        click P2 "#requestsparkdomainrequestsparkdomaincsproj"
+        click P4 "#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj"
+        click P3 "#requestsparkpostmanimportrequestsparkpostmanimportcsproj"
     end
     MAIN --> P2
     MAIN --> P4
@@ -419,8 +421,8 @@ flowchart TB
 | ✅ Compatible | 8306 |  |
 | ***Total APIs Analyzed*** | ***8419*** |  |
 
-<a id="restrunnerrestrunnercsproj"></a>
-### RESTRunner\RESTRunner.csproj
+<a id="requestsparkrequestsparkcsproj"></a>
+### RequestSpark\RequestSpark.csproj
 
 #### Project Info
 
@@ -443,17 +445,17 @@ Legend:
 
 ```mermaid
 flowchart TB
-    subgraph current["RESTRunner.csproj"]
-        MAIN["<b>📦&nbsp;RESTRunner.csproj</b><br/><small>net9.0</small>"]
-        click MAIN "#restrunnerrestrunnercsproj"
+    subgraph current["RequestSpark.csproj"]
+        MAIN["<b>📦&nbsp;RequestSpark.csproj</b><br/><small>net9.0</small>"]
+        click MAIN "#requestsparkrequestsparkcsproj"
     end
     subgraph downstream["Dependencies (3"]
-        P2["<b>📦&nbsp;RESTRunner.Domain.csproj</b><br/><small>net9.0</small>"]
-        P4["<b>📦&nbsp;RESTRunner.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
-        P3["<b>📦&nbsp;RESTRunner.PostmanImport.csproj</b><br/><small>net9.0</small>"]
-        click P2 "#restrunnerdomainrestrunnerdomaincsproj"
-        click P4 "#restrunnerserviceshttpclientrestrunnerserviceshttpclientrunnercsproj"
-        click P3 "#restrunnerpostmanimportrestrunnerpostmanimportcsproj"
+        P2["<b>📦&nbsp;RequestSpark.Domain.csproj</b><br/><small>net9.0</small>"]
+        P4["<b>📦&nbsp;RequestSpark.Services.HttpClientRunner.csproj</b><br/><small>net9.0</small>"]
+        P3["<b>📦&nbsp;RequestSpark.PostmanImport.csproj</b><br/><small>net9.0</small>"]
+        click P2 "#requestsparkdomainrequestsparkdomaincsproj"
+        click P4 "#requestsparkserviceshttpclientrequestsparkserviceshttpclientrunnercsproj"
+        click P3 "#requestsparkpostmanimportrequestsparkpostmanimportcsproj"
     end
     MAIN --> P2
     MAIN --> P4
@@ -470,4 +472,6 @@ flowchart TB
 | 🔵 Behavioral change | 3 | Low - Behavioral changes that may require testing at runtime |
 | ✅ Compatible | 464 |  |
 | ***Total APIs Analyzed*** | ***467*** |  |
+
+
 

@@ -1,4 +1,6 @@
-# .NET 10 Upgrade Plan for RESTRunner Solution
+# .NET 10 Upgrade Plan for RequestSpark Solution
+
+> Historical note: Generated upgrade examples may include pre-rebrand markers where preserved for traceability.
 
 ## Table of Contents
 
@@ -19,7 +21,7 @@
 ## Executive Summary
 
 ### Scenario Description
-Upgrade RESTRunner solution from .NET 9.0 to .NET 10.0 (Long Term Support). This solution includes a console application for batch API testing, a Razor Pages web application for interactive testing, and supporting class libraries for domain models, Postman import, and HTTP client execution.
+Upgrade RequestSpark solution from .NET 9.0 to .NET 10.0 (Long Term Support). This solution includes a console application for batch API testing, a Razor Pages web application for interactive testing, and supporting class libraries for domain models, Postman import, and HTTP client execution.
 
 ### Scope
 - **Projects Affected**: 6 projects (all require upgrade from net9.0 to net10.0)
@@ -49,7 +51,7 @@ Upgrade RESTRunner solution from .NET 9.0 to .NET 10.0 (Long Term Support). This
 - All projects SDK-style (no conversion needed)
 
 ### Selected Strategy
-**All-At-Once Strategy** — All projects upgraded simultaneously in a single coordinated operation.
+**All-At-Once Strategy** ï¿½ All projects upgraded simultaneously in a single coordinated operation.
 
 **Justification**:
 - Solution size ideal for atomic upgrade (6 projects)
@@ -63,18 +65,18 @@ Upgrade RESTRunner solution from .NET 9.0 to .NET 10.0 (Long Term Support). This
 ? **No Security Vulnerabilities** - All packages are secure
 
 ?? **Incompatible Package**:
-- `Microsoft.VisualStudio.Azure.Containers.Tools.Targets` v1.22.1 (RESTRunner.Web) - Development-time tool, may need removal or updated version
+- `Microsoft.VisualStudio.Azure.Containers.Tools.Targets` v1.22.1 (RequestSpark.Web) - Development-time tool, may need removal or updated version
 
 ?? **Redundant Packages** (included in .NET 10 framework):
-- `System.Net.Http` v4.3.4 (RESTRunner.Web)
-- `System.Text.RegularExpressions` v4.3.1 (RESTRunner.Web)
+- `System.Net.Http` v4.3.4 (RequestSpark.Web)
+- `System.Text.RegularExpressions` v4.3.1 (RequestSpark.Web)
 
 ?? **Behavioral Changes**:
 - 137 instances across 4 projects (primarily System.Uri and HttpContent usage)
 - Requires runtime testing validation, not code changes
 
 ### Iteration Strategy Used
-**Fast batch approach** — Simple solution enables consolidated detail generation:
+**Fast batch approach** ï¿½ Simple solution enables consolidated detail generation:
 1. **Phase 1**: Discovery & classification (3 iterations) ?
 2. **Phase 2**: Foundation sections (3 iterations)
 3. **Phase 3**: Consolidated project details (2 iterations)
@@ -139,8 +141,8 @@ Behavioral changes tested at runtime through existing MSTest suite and manual sm
 **Operations** (performed as single coordinated batch):
 1. Update all 6 project files: `<TargetFramework>net9.0</TargetFramework>` ? `<TargetFramework>net10.0</TargetFramework>`
 2. Update all package references across projects (7 packages to update version, 2 to remove)
-3. Restore dependencies: `dotnet restore RESTRunner.sln`
-4. Build entire solution: `dotnet build RESTRunner.sln`
+3. Restore dependencies: `dotnet restore RequestSpark.sln`
+4. Build entire solution: `dotnet build RequestSpark.sln`
 5. Fix compilation errors (if any) based on breaking changes catalog
 6. Rebuild to verify fixes
 
@@ -151,7 +153,7 @@ Behavioral changes tested at runtime through existing MSTest suite and manual sm
 
 #### Phase 2: Test Validation
 **Operations**:
-1. Execute MSTest suite: `dotnet test RESTRunner.Domain.Tests.csproj`
+1. Execute MSTest suite: `dotnet test RequestSpark.Domain.Tests.csproj`
 2. Address test failures related to behavioral changes
 3. Manual smoke test: Console app with sample Postman collection
 4. Manual smoke test: Web app basic navigation and test execution
@@ -177,16 +179,16 @@ Behavioral changes tested at runtime through existing MSTest suite and manual sm
 While all projects upgrade simultaneously, internal operations follow dependency order:
 
 **Project File Updates** (can be parallel):
-1. RESTRunner.Domain.csproj
-2. RESTRunner.PostmanImport.csproj, RESTRunner.Services.HttpClientRunner.csproj
-3. RESTRunner.csproj, RESTRunner.Web.csproj, RESTRunner.Domain.Tests.csproj
+1. RequestSpark.Domain.csproj
+2. RequestSpark.PostmanImport.csproj, RequestSpark.Services.HttpClientRunner.csproj
+3. RequestSpark.csproj, RequestSpark.Web.csproj, RequestSpark.Domain.Tests.csproj
 
 **Package Updates** (coordinated across projects):
 - Restore runs once after all project files updated
 - Package resolution determines final versions for entire solution
 
 **Build Validation** (follows dependencies):
-- RESTRunner.Domain builds first (implicit)
+- RequestSpark.Domain builds first (implicit)
 - Dependent projects build next (automatic)
 - MSBuild handles ordering
 
@@ -218,58 +220,58 @@ While all projects upgrade simultaneously, internal operations follow dependency
 
 ### Dependency Graph Summary
 
-The RESTRunner solution has a clean, layered architecture with no circular dependencies:
+The RequestSpark solution has a clean, layered architecture with no circular dependencies:
 
 **Layer 0 (Foundation)**: 
-- `RESTRunner.Domain` - Core models and interfaces (no dependencies)
+- `RequestSpark.Domain` - Core models and interfaces (no dependencies)
 
 **Layer 1 (Services)**:
-- `RESTRunner.PostmanImport` - Postman collection parser (depends on Domain)
-- `RESTRunner.Services.HttpClientRunner` - HTTP execution engine (depends on Domain)
+- `RequestSpark.PostmanImport` - Postman collection parser (depends on Domain)
+- `RequestSpark.Services.HttpClientRunner` - HTTP execution engine (depends on Domain)
 
 **Layer 2 (Applications)**:
-- `RESTRunner` - Console application (depends on Domain, PostmanImport, Services.HttpClientRunner)
-- `RESTRunner.Web` - Razor Pages web app (depends on Domain, PostmanImport, Services.HttpClientRunner)
-- `RESTRunner.Domain.Tests` - MSTest unit tests (depends on Domain, PostmanImport)
+- `RequestSpark` - Console application (depends on Domain, PostmanImport, Services.HttpClientRunner)
+- `RequestSpark.Web` - Razor Pages web app (depends on Domain, PostmanImport, Services.HttpClientRunner)
+- `RequestSpark.Domain.Tests` - MSTest unit tests (depends on Domain, PostmanImport)
 
 ### Project Groupings for All-At-Once Migration
 
 Since this is an All-At-Once strategy, all projects will be upgraded simultaneously. However, understanding the dependency layers helps identify validation checkpoints:
 
 **Atomic Upgrade Group (All Projects)**:
-1. **RESTRunner.Domain** (0 dependencies, 5 dependants)
+1. **RequestSpark.Domain** (0 dependencies, 5 dependants)
    - Foundation library, highest reuse
    - 1,428 LOC, 2 behavioral change instances
    
-2. **RESTRunner.PostmanImport** (1 dependency, 3 dependants)
+2. **RequestSpark.PostmanImport** (1 dependency, 3 dependants)
    - Postman v2.1.0 collection parser
    - 303 LOC, 0 API issues
    
-3. **RESTRunner.Services.HttpClientRunner** (1 dependency, 2 dependants)
+3. **RequestSpark.Services.HttpClientRunner** (1 dependency, 2 dependants)
    - Core execution engine with HttpClient
    - 373 LOC, 19 behavioral change instances
    - 2 package updates needed
    
-4. **RESTRunner** (3 dependencies, 0 dependants)
+4. **RequestSpark** (3 dependencies, 0 dependants)
    - Console application (main entry point)
    - 310 LOC, 3 behavioral change instances
    - 4 package updates needed
    
-5. **RESTRunner.Web** (3 dependencies, 0 dependants)
+5. **RequestSpark.Web** (3 dependencies, 0 dependants)
    - Razor Pages web application
    - 8,744 LOC (largest project), 113 behavioral change instances
    - 4 package updates needed, 1 incompatible package
    
-6. **RESTRunner.Domain.Tests** (2 dependencies, 0 dependants)
+6. **RequestSpark.Domain.Tests** (2 dependencies, 0 dependants)
    - MSTest unit tests
    - 476 LOC, 0 API issues
 
 ### Critical Path
 
 **All projects upgraded together**, but validation should prioritize:
-1. **RESTRunner.Domain** - Foundation used by all projects
+1. **RequestSpark.Domain** - Foundation used by all projects
 2. **Services.HttpClientRunner** - Highest API issue density (19 behavioral changes in 373 LOC = 5.1%)
-3. **RESTRunner.Web** - Largest project (8,744 LOC), most total issues (113), has incompatible package
+3. **RequestSpark.Web** - Largest project (8,744 LOC), most total issues (113), has incompatible package
 
 ### Circular Dependencies
 ? **None detected** - Clean dependency structure supports straightforward migration
@@ -277,18 +279,18 @@ Since this is an All-At-Once strategy, all projects will be upgraded simultaneou
 ### Dependency Visualization
 
 ```
-RESTRunner.Domain (Layer 0)
+RequestSpark.Domain (Layer 0)
     ?
-    ??? RESTRunner.PostmanImport (Layer 1)
+    ??? RequestSpark.PostmanImport (Layer 1)
     ?       ?
-    ?       ??? RESTRunner (Layer 2)
-    ?       ??? RESTRunner.Web (Layer 2)
-    ?       ??? RESTRunner.Domain.Tests (Layer 2)
+    ?       ??? RequestSpark (Layer 2)
+    ?       ??? RequestSpark.Web (Layer 2)
+    ?       ??? RequestSpark.Domain.Tests (Layer 2)
     ?
-    ??? RESTRunner.Services.HttpClientRunner (Layer 1)
+    ??? RequestSpark.Services.HttpClientRunner (Layer 1)
             ?
-            ??? RESTRunner (Layer 2)
-            ??? RESTRunner.Web (Layer 2)
+            ??? RequestSpark (Layer 2)
+            ??? RequestSpark.Web (Layer 2)
 ```
 
 **Migration Advantage**: Single atomic operation eliminates need for multi-targeting or phased compatibility testing.
@@ -302,7 +304,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 ---
 
-### 1. RESTRunner.Domain
+### 1. RequestSpark.Domain
 
 **Current State**: net9.0, 0 dependencies, 1,428 LOC, 1 NuGet package (FileHelpers 3.5.2)
 
@@ -317,7 +319,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 **Migration Steps**:
 
-1. **Update Project File** (`RESTRunner.Domain\RESTRunner.Domain.csproj`)
+1. **Update Project File** (`RequestSpark.Domain\RequestSpark.Domain.csproj`)
    ```xml
    <!-- Change: -->
    <TargetFramework>net9.0</TargetFramework>
@@ -338,7 +340,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
    - Monitor for behavioral differences in URI handling if domain models use System.Uri
 
 5. **Testing Strategy**
-   - **Unit Tests**: RESTRunner.Domain.Tests exercises domain models
+   - **Unit Tests**: RequestSpark.Domain.Tests exercises domain models
    - **Validation**: All existing tests should pass
    - **Focus Areas**: Any models using System.Uri or HTTP-related types
 
@@ -346,14 +348,14 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
    - [ ] Project targets `net10.0`
    - [ ] Builds without errors
    - [ ] Builds without warnings
-   - [ ] RESTRunner.Domain.Tests suite passes
+   - [ ] RequestSpark.Domain.Tests suite passes
    - [ ] No runtime exceptions in dependent projects
 
 **Dependencies Impact**: This is the foundation library - 5 projects depend on it (PostmanImport, Services.HttpClientRunner, Console, Web, Tests). Must build successfully before dependents.
 
 ---
 
-### 2. RESTRunner.PostmanImport
+### 2. RequestSpark.PostmanImport
 
 **Current State**: net9.0, 1 dependency (Domain), 303 LOC, 1 NuGet package (Newtonsoft.Json 13.0.4)
 
@@ -368,7 +370,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 **Migration Steps**:
 
-1. **Update Project File** (`RESTRunner.PostmanImport\RESTRunner.PostmanImport.csproj`)
+1. **Update Project File** (`RequestSpark.PostmanImport\RequestSpark.PostmanImport.csproj`)
    ```xml
    <!-- Change: -->
    <TargetFramework>net9.0</TargetFramework>
@@ -403,7 +405,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 ---
 
-### 3. RESTRunner.Services.HttpClientRunner
+### 3. RequestSpark.Services.HttpClientRunner
 
 **Current State**: net9.0, 1 dependency (Domain), 373 LOC, 3 NuGet packages
 
@@ -420,7 +422,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 **Migration Steps**:
 
-1. **Update Project File** (`RESTRunner.Services.HttpClient\RESTRunner.Services.HttpClientRunner.csproj`)
+1. **Update Project File** (`RequestSpark.Services.HttpClient\RequestSpark.Services.HttpClientRunner.csproj`)
    ```xml
    <!-- Change: -->
    <TargetFramework>net9.0</TargetFramework>
@@ -456,7 +458,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
    - **Monitoring**: Watch for differences in URL parsing or response reading
 
 5. **Testing Strategy**
-   - **Unit Tests**: RESTRunner.Domain.Tests may cover some scenarios
+   - **Unit Tests**: RequestSpark.Domain.Tests may cover some scenarios
    - **Integration Tests**: Execute sample requests against test API
    - **Focus Areas**:
      - Absolute vs. relative URI handling
@@ -482,7 +484,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 ---
 
-### 4. RESTRunner (Console App)
+### 4. RequestSpark (Console App)
 
 **Current State**: net9.0, 3 dependencies, 310 LOC, 5 NuGet packages
 
@@ -501,7 +503,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 **Migration Steps**:
 
-1. **Update Project File** (`RESTRunner\RESTRunner.csproj`)
+1. **Update Project File** (`RequestSpark\RequestSpark.csproj`)
    ```xml
    <!-- Change: -->
    <TargetFramework>net9.0</TargetFramework>
@@ -542,10 +544,10 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 5. **Testing Strategy**
    - **Smoke Test**: Run console app with sample Postman collection
    - **Validation Steps**:
-     1. Place `collection.json` in RESTRunner output directory
-     2. Run: `dotnet run --project RESTRunner\RESTRunner.csproj`
+     1. Place `collection.json` in RequestSpark output directory
+     2. Run: `dotnet run --project RequestSpark\RequestSpark.csproj`
      3. Verify execution completes successfully
-     4. Check CSV output generated (`c:\test\RESTRunner.csv`)
+     4. Check CSV output generated (`c:\test\RequestSpark.csv`)
      5. Review statistics display (P50/P75/P90/P95/P99 percentiles)
    - **Expected Output**: 
      - Execution report with emoji indicators (? 2xx, ?? 4xx, ? 5xx)
@@ -568,7 +570,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 ---
 
-### 5. RESTRunner.Web (Razor Pages)
+### 5. RequestSpark.Web (Razor Pages)
 
 **Current State**: net9.0, 3 dependencies, 8,744 LOC (largest project), 10 NuGet packages
 
@@ -590,7 +592,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 **Migration Steps**:
 
-1. **Update Project File** (`RESTRunner.Web\RESTRunner.Web.csproj`)
+1. **Update Project File** (`RequestSpark.Web\RequestSpark.Web.csproj`)
    ```xml
    <!-- Change: -->
    <TargetFramework>net9.0</TargetFramework>
@@ -628,8 +630,8 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
      - HTTP client usage for test execution
      - URI parsing for configuration management
    - **Docker Tooling**: After removing incompatible package, verify:
-     - Dockerfile still present (`RESTRunner.Web/Dockerfile`
-     - Docker build works: `docker build -t restrunner-web .`
+     - Dockerfile still present (`RequestSpark.Web/Dockerfile`
+   - Docker build works: `docker build -t requestspark-web .`
      - Container runs correctly
    - **No Expected Code Changes**: Behavioral changes rarely require modifications
 
@@ -638,7 +640,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
      - Verify no errors after removing 3 packages
      - Ensure System.Net.Http and Regex work (framework-included)
    - **Smoke Test - Web UI**:
-     1. Run: `dotnet run --project RESTRunner.Web\RESTRunner.Web.csproj`
+     1. Run: `dotnet run --project RequestSpark.Web\RequestSpark.Web.csproj`
      2. Navigate to `https://localhost:7001`
      3. Test pages:
         - Home page loads
@@ -687,7 +689,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 ---
 
-### 6. RESTRunner.Domain.Tests
+### 6. RequestSpark.Domain.Tests
 
 **Current State**: net9.0, 2 dependencies, 476 LOC, 4 NuGet packages (test frameworks)
 
@@ -705,7 +707,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 **Migration Steps**:
 
-1. **Update Project File** (`RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj`)
+1. **Update Project File** (`RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj`)
    ```xml
    <!-- Change: -->
    <TargetFramework>net9.0</TargetFramework>
@@ -728,7 +730,7 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 5. **Testing Strategy**
    - **Execute Test Suite**: 
      ```
-     dotnet test RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj
+     dotnet test RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj
      ```
    - **Expected Outcome**: All tests pass (validates Domain and PostmanImport projects)
    - **Test Areas Covered**:
@@ -775,17 +777,17 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 - `Microsoft.Extensions.Http`: 9.0.9 ? 10.0.1 (HttpClientFactory)
 - `Microsoft.Extensions.Logging.Abstractions`: 9.0.9 ? 10.0.1 (logging interfaces)
 
-**RESTRunner.Web** (1 package update):
+**RequestSpark.Web** (1 package update):
 - `System.Security.Cryptography.Xml`: 9.0.9 ? 10.0.1 (XML cryptography)
 
 ### Package Removals
 
-**Incompatible Packages** (RESTRunner.Web):
+**Incompatible Packages** (RequestSpark.Web):
 | Package | Version | Reason for Removal | Impact |
 |---------|---------|-------------------|--------|
 | Microsoft.VisualStudio.Azure.Containers.Tools.Targets | 1.22.1 | Incompatible with .NET 10 | Development-time Docker tooling; functionality may be in SDK or requires manual Docker config |
 
-**Framework-Included Packages** (RESTRunner.Web):
+**Framework-Included Packages** (RequestSpark.Web):
 | Package | Version | Reason for Removal | Impact |
 |---------|---------|-------------------|--------|
 | System.Net.Http | 4.3.4 | Functionality included in .NET 10 framework | No impact; framework provides HttpClient |
@@ -811,12 +813,12 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 
 | Project | Updates | Removals | No Change | Total Packages |
 |---------|---------|----------|-----------|----------------|
-| RESTRunner.Domain | 0 | 0 | 1 | 1 |
-| RESTRunner.PostmanImport | 0 | 0 | 1 | 1 |
-| RESTRunner.Services.HttpClientRunner | 2 | 0 | 1 | 3 |
-| RESTRunner (Console) | 4 | 0 | 1 | 5 |
-| RESTRunner.Web | 1 | 3 | 6 | 10 |
-| RESTRunner.Domain.Tests | 0 | 0 | 4 | 4 |
+| RequestSpark.Domain | 0 | 0 | 1 | 1 |
+| RequestSpark.PostmanImport | 0 | 0 | 1 | 1 |
+| RequestSpark.Services.HttpClientRunner | 2 | 0 | 1 | 3 |
+| RequestSpark (Console) | 4 | 0 | 1 | 5 |
+| RequestSpark.Web | 1 | 3 | 6 | 10 |
+| RequestSpark.Domain.Tests | 0 | 0 | 4 | 4 |
 | **TOTALS** | **7** | **3** | **13** | **20** (unique) |
 
 ### Package Version Alignment
@@ -842,7 +844,7 @@ All Microsoft.Extensions.* packages align at version **10.0.1** across the solut
 
 ?? **No Breaking Changes Requiring Code Modifications**
 
-All 137 issues are **behavioral changes** — APIs that work differently at runtime but remain binary/source compatible. Code compiles unchanged; validation focuses on runtime behavior.
+All 137 issues are **behavioral changes** ï¿½ APIs that work differently at runtime but remain binary/source compatible. Code compiles unchanged; validation focuses on runtime behavior.
 
 ### Behavioral Changes by Category
 
@@ -855,10 +857,10 @@ All 137 issues are **behavioral changes** — APIs that work differently at runtim
 - `System.Uri.TryCreate(string, UriKind, out Uri)` - 1 instance
 
 **Projects Impacted**:
-- **RESTRunner.Web**: Primary impact (large codebase, URL handling in Razor Pages/APIs)
-- **RESTRunner.Services.HttpClientRunner**: Request URL construction
-- **RESTRunner**: Console app URL configuration
-- **RESTRunner.Domain**: Possible URI properties in models
+- **RequestSpark.Web**: Primary impact (large codebase, URL handling in Razor Pages/APIs)
+- **RequestSpark.Services.HttpClientRunner**: Request URL construction
+- **RequestSpark**: Console app URL configuration
+- **RequestSpark.Domain**: Possible URI properties in models
 
 **Behavioral Change Details**:
 .NET 10 may have refinements to URI parsing, validation, or normalization. Common areas:
@@ -885,8 +887,8 @@ All 137 issues are **behavioral changes** — APIs that work differently at runtim
 - `HttpContent.ReadAsStreamAsync()` method - 1 instance
 
 **Projects Impacted**:
-- **RESTRunner.Web**: HTTP response handling (largest project)
-- **RESTRunner.Services.HttpClientRunner**: Core execution engine, response parsing
+- **RequestSpark.Web**: HTTP response handling (largest project)
+- **RequestSpark.Services.HttpClientRunner**: Core execution engine, response parsing
 
 **Behavioral Change Details**:
 .NET 10 may have changes to:
@@ -915,8 +917,8 @@ All 137 issues are **behavioral changes** — APIs that work differently at runtim
 - `Microsoft.Extensions.Hosting.HostBuilder` type - 1 instance
 
 **Projects Impacted**:
-- **RESTRunner**: Console app DI setup in Program.cs
-- **RESTRunner.Web**: Web app DI registration in Program.cs
+- **RequestSpark**: Console app DI setup in Program.cs
+- **RequestSpark.Web**: Web app DI registration in Program.cs
 
 **Behavioral Change Details**:
 Possible changes to:
@@ -939,10 +941,10 @@ Possible changes to:
 
 | Project | Behavioral Changes | Primary APIs Affected | Validation Focus |
 |---------|-------------------|----------------------|------------------|
-| RESTRunner.Web | 113 (82.5%) | System.Uri (59), HttpContent (53) | Web UI, minimal APIs, HTTP requests |
+| RequestSpark.Web | 113 (82.5%) | System.Uri (59), HttpContent (53) | Web UI, minimal APIs, HTTP requests |
 | Services.HttpClientRunner | 19 (13.9%) | System.Uri, HttpContent | Request execution, response parsing |
-| RESTRunner (Console) | 3 (2.2%) | HostBuilder, AddHttpClient, AddConsole | DI setup, logging |
-| RESTRunner.Domain | 2 (1.5%) | System.Uri (likely) | Domain model URI properties |
+| RequestSpark (Console) | 3 (2.2%) | HostBuilder, AddHttpClient, AddConsole | DI setup, logging |
+| RequestSpark.Domain | 2 (1.5%) | System.Uri (likely) | Domain model URI properties |
 | PostmanImport | 0 | None | No behavioral changes |
 | Domain.Tests | 0 | None | No behavioral changes |
 
@@ -962,7 +964,7 @@ https://learn.microsoft.com/en-us/dotnet/core/compatibility/10.0
 ### Mitigation Strategies
 
 **For Behavioral Changes**:
-1. **Automated Testing**: Run MSTest suite (RESTRunner.Domain.Tests)
+1. **Automated Testing**: Run MSTest suite (RequestSpark.Domain.Tests)
 2. **Manual Smoke Tests**:
    - Console app: Execute sample Postman collection, verify results
    - Web app: Test UI navigation, API execution, result display
@@ -1009,12 +1011,12 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 **Steps**:
 1. Restore NuGet packages:
    ```
-   dotnet restore RESTRunner.sln
+   dotnet restore RequestSpark.sln
    ```
    
 2. Build entire solution:
    ```
-   dotnet build RESTRunner.sln --configuration Release
+   dotnet build RequestSpark.sln --configuration Release
    ```
 
 **Success Criteria**:
@@ -1038,7 +1040,7 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 **Steps**:
 1. Run test project:
    ```
-   dotnet test RESTRunner.Domain.Tests\RESTRunner.Domain.Tests.csproj --configuration Release
+   dotnet test RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj --configuration Release
    ```
 
 2. Review test results:
@@ -1072,13 +1074,13 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 **Objective**: Validate end-to-end execution through console app
 
 **Prerequisites**:
-- Sample `collection.json` (Postman v2.1.0 format) in RESTRunner output directory
+- Sample `collection.json` (Postman v2.1.0 format) in RequestSpark output directory
 - Target API endpoints accessible (or mock server)
 
 **Steps**:
 1. Navigate to console app:
    ```
-   cd RESTRunner
+   cd RequestSpark
    ```
 
 2. Run application:
@@ -1096,12 +1098,12 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 **Success Criteria**:
 - ? Application starts without exceptions
 - ? Collection imports successfully
-- ? Requests execute (100 iterations × instances × users × requests)
+- ? Requests execute (100 iterations ï¿½ instances ï¿½ users ï¿½ requests)
 - ? Statistics display correctly:
   - Emoji indicators (? 2xx Success, ?? 4xx Client Error, ? 5xx Server Error)
   - Performance metrics (P50, P75, P90, P95, P99, P99.9 percentiles)
   - Breakdown by HTTP method, status code, instance, user
-- ? CSV output generated at `c:\test\RESTRunner.csv`
+- ? CSV output generated at `c:\test\RequestSpark.csv`
 - ? No unhandled exceptions
 - ? No unexpected errors in output
 
@@ -1134,7 +1136,7 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 #### 4.1 Application Startup
 1. Run web application:
    ```
-   cd RESTRunner.Web
+   cd RequestSpark.Web
    dotnet run --configuration Release
    ```
 
@@ -1234,18 +1236,18 @@ Test API endpoints (use Swagger UI or curl):
 
 **Prerequisites**:
 - Docker Desktop installed
-- Dockerfile present in `RESTRunner.Web/`
+- Dockerfile present in `RequestSpark.Web/`
 
 **Steps**:
 1. Build Docker image:
    ```
-   cd RESTRunner.Web
-   docker build -t restrunner-web:net10 .
+   cd RequestSpark.Web
+   docker build -t requestspark-web:net10 .
    ```
 
 2. Run container:
    ```
-   docker run -d -p 8080:8080 --name restrunner-test restrunner-web:net10
+   docker run -d -p 8080:8080 --name requestspark-test requestspark-web:net10
    ```
 
 3. Test application:
@@ -1255,8 +1257,8 @@ Test API endpoints (use Swagger UI or curl):
 
 4. Cleanup:
    ```
-   docker stop restrunner-test
-   docker rm restrunner-test
+   docker stop requestspark-test
+   docker rm requestspark-test
    ```
 
 **Success Criteria**:
@@ -1267,7 +1269,7 @@ Test API endpoints (use Swagger UI or curl):
 
 **Failure Response**:
 - If build fails: Verify Dockerfile references correct SDK/runtime versions
-- If runtime fails: Check container logs (`docker logs restrunner-test`)
+- If runtime fails: Check container logs (`docker logs requestspark-test`)
 - If incompatible package needed: Research updated version or manual Docker config
 
 ---
@@ -1365,3 +1367,4 @@ If possible, run same scenarios on .NET 9 and .NET 10, compare:
 3. **Level 5-6 Failures**: Document, proceed with caution, fix in follow-up
 
 ---
+

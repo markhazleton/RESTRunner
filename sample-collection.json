@@ -1,8 +1,8 @@
 {
   "info": {
     "_postman_id": "12345678-1234-1234-1234-123456789012",
-    "name": "Sample RESTRunner Test Collection",
-    "description": "A sample Postman collection for testing RESTRunner upload functionality",
+    "name": "Sample RequestSpark Test Collection",
+    "description": "A sample Postman collection for testing RequestSpark upload functionality",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [

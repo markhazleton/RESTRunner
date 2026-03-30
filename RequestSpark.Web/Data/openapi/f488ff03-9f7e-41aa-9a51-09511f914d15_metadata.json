@@ -1,0 +1,40 @@
+{
+  "id": "f488ff03-9f7e-41aa-9a51-09511f914d15",
+  "title": "websparkportal  v1",
+  "description": null,
+  "version": "1.0.0",
+  "specFormat": "OpenAPI 3.1.1",
+  "fileName": "websparkportal--v1.json",
+  "filePath": "C:\\GitHub\\MarkHazleton\\RequestSpark\\RequestSpark.Web\\Data\\openapi\\f488ff03-9f7e-41aa-9a51-09511f914d15_spec.json",
+  "fileSize": 42977,
+  "defaultBaseUrl": "https://webspark.markhazleton.com/",
+  "availableServers": [
+    "https://webspark.markhazleton.com/"
+  ],
+  "endpointCount": 37,
+  "httpMethods": [
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE"
+  ],
+  "apiTags": [
+    "WebSpark.Portal",
+    "Diagnostics",
+    "SignalRTest",
+    "WebCMSApi",
+    "RecipeSparkApi",
+    "Variant",
+    "OpenWeatherApi",
+    "Remote",
+    "Status"
+  ],
+  "userTags": [
+    "WebSpark"
+  ],
+  "securitySchemes": [],
+  "uploadedAt": "2026-03-15T20:26:43.2636845Z",
+  "uploadedBy": "System",
+  "isActive": true,
+  "contentHash": "ME3XIggy8cGIbC2HLk1KcxperMZ67h32qwy/dBvFRyo="
+}

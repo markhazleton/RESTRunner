@@ -138,9 +138,9 @@ To:
 
 ## ?? Live on GitHub
 
-**README.md URL**: https://github.com/markhazleton/RESTRunner/blob/main/README.md
+**README.md URL**: https://github.com/markhazleton/RequestSpark/blob/main/README.md
 
-**Commit**: https://github.com/markhazleton/RESTRunner/commit/14e7f38
+**Commit**: https://github.com/markhazleton/RequestSpark/commit/14e7f38
 
 ---
 
@@ -254,3 +254,4 @@ The README.md has been comprehensively updated to reflect the .NET 10 upgrade, s
 **Generated**: 2025-12-23  
 **Commit**: 14e7f38  
 **Branch**: main
+

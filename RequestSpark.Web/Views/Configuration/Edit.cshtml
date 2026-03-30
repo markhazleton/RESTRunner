@@ -1,0 +1,356 @@
+@model RequestSpark.Web.Models.ViewModels.ConfigurationViewModel
+@{
+    ViewData["Title"] = "Edit Configuration";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css" crossorigin="anonymous">
+<style>
+    .CodeMirror { height: 220px; font-size: .82rem; border: 1px solid #ced4da; border-radius: .375rem; }
+    .CodeMirror.cm-valid { border-color: #198754; }
+    .CodeMirror.cm-invalid { border-color: #dc3545; }
+    .cm-json-label { display: flex; justify-content: space-between; align-items: center; }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Edit Configuration</h1>
+        <div>
+            @if (Model != null)
+            {
+                <a href="/Configuration/Details/@Model.Id" class="btn btn-outline-info">View Details</a>
+            }
+            <a href="/Configuration" class="btn btn-outline-secondary">Back to List</a>
+        </div>
+    </div>
+
+    @if (TempData["Warning"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["Warning"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <form asp-action="Edit" method="post" id="editForm" class="needs-validation" novalidate>
+        <input asp-for="Id" type="hidden" />
+
+        <div class="row">
+            <!-- Basic Information -->
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header"><h5 class="mb-0">Basic Information</h5></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label asp-for="Name" class="form-label">Configuration Name *</label>
+                                    <input asp-for="Name" class="form-control" placeholder="Enter a descriptive name">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label asp-for="IsActive" class="form-label">Status</label>
+                                    <div class="form-check form-switch mt-2">
+                                        <input class="form-check-input" type="checkbox" asp-for="IsActive" id="isActiveSwitch">
+                                        <input name="IsActive" type="hidden" value="false" />
+                                        <label class="form-check-label" for="isActiveSwitch">Active</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe what this configuration tests"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TagsString" class="form-label">Tags</label>
+                            <input asp-for="TagsString" class="form-control" placeholder="api, smoke-test, regression">
+                            <div class="form-text">Comma-separated tags</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Execution Settings -->
+                <div class="card mb-4">
+                    <div class="card-header"><h5 class="mb-0">Execution Settings</h5></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Iterations" class="form-label">Number of Iterations *</label>
+                                    <input asp-for="Iterations" type="number" class="form-control" min="1" max="1000">
+                                    <span asp-validation-for="Iterations" class="text-danger"></span>
+                                    <div class="form-text">How many times to run the complete test suite</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="MaxConcurrency" class="form-label">Max Concurrent Requests *</label>
+                                    <input asp-for="MaxConcurrency" type="number" class="form-control" min="1" max="100">
+                                    <span asp-validation-for="MaxConcurrency" class="text-danger"></span>
+                                    <div class="form-text">Maximum number of simultaneous requests</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JSON Editors -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Test Configuration (JSON)</h5>
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-outline-secondary" id="formatJson">Format</button>
+                            <button type="button" class="btn btn-outline-secondary" id="validateJson">Validate</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="jsonValidationAlert" class="alert d-none mb-3"></div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Test Instances</label>
+                            <div class="form-text mb-1">JSON array of target servers</div>
+                            <textarea id="instancesJson" name="InstancesJson">@(Model?.InstancesJson ?? "[]")</textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Test Users</label>
+                            <div class="form-text mb-1">JSON array of test users (optional)</div>
+                            <textarea id="usersJson" name="UsersJson">@(Model?.UsersJson ?? "[]")</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Test Requests</label>
+                            <div class="form-text mb-1">JSON array of API endpoints to test</div>
+                            <textarea id="requestsJson" name="RequestsJson">@(Model?.RequestsJson ?? "[]")</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                @if (Model?.AvailableApiDefinitions?.Any() == true)
+                {
+                    <div class="card mb-4">
+                        <div class="card-header"><h6 class="mb-0">Definition Source</h6></div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label asp-for="SourceType" class="form-label">Source Type</label>
+                                <select asp-for="SourceType" class="form-select" id="sourceTypeSelect">
+                                    <option value="0">Manual JSON Requests</option>
+                                    <option value="1">Postman Collection</option>
+                                    <option value="2">OpenAPI Specification</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="SourceId" class="form-label">Select Source</label>
+                                <select asp-for="SourceId" class="form-select" id="sourceIdSelect">
+                                    <option value="">-- None Selected --</option>
+                                    @foreach (var source in Model!.AvailableApiDefinitions)
+                                    {
+                                        <option value="@source.Id" data-source-type="@((int)source.SourceType)">
+                                            @source.Name (@source.EndpointCount endpoints) - @source.SourceLabel
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Actions -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-outline-info" id="formatJson2">Format JSON</button>
+                            <a href="@(Model != null ? $"/Configuration/Details/{Model.Id}" : "/Configuration")" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JSON Schema Reference -->
+                <div class="card">
+                    <div class="card-header"><h6 class="mb-0">JSON Reference</h6></div>
+                    <div class="card-body small">
+                        <div class="accordion" id="schemaRef">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#refInstances">
+                                        Instance schema
+                                    </button>
+                                </h2>
+                                <div id="refInstances" class="accordion-collapse collapse" data-bs-parent="#schemaRef">
+                                    <div class="accordion-body p-2">
+<pre class="mb-0" style="font-size:.75rem">[{
+  "name": "Local",
+  "baseUrl": "https://localhost:5001/"
+}]</pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#refUsers">
+                                        User schema
+                                    </button>
+                                </h2>
+                                <div id="refUsers" class="accordion-collapse collapse" data-bs-parent="#schemaRef">
+                                    <div class="accordion-body p-2">
+<pre class="mb-0" style="font-size:.75rem">[{
+  "userName": "testuser",
+  "password": "pass",
+  "properties": {
+    "role": "admin"
+  }
+}]</pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#refRequests">
+                                        Request schema
+                                    </button>
+                                </h2>
+                                <div id="refRequests" class="accordion-collapse collapse" data-bs-parent="#schemaRef">
+                                    <div class="accordion-body p-2">
+<pre class="mb-0" style="font-size:.75rem">[{
+  "path": "api/status",
+  "requestMethod": 0,
+  "requiresClientToken": false,
+  "bodyTemplate": null
+}]</pre>
+                                        <div class="text-muted mt-1">requestMethod: 0=GET 1=POST 2=PUT 3=DELETE 4=PATCH</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js" crossorigin="anonymous"></script>
+<script>
+(function () {
+    const cmOpts = {
+        mode: 'application/json',
+        theme: 'material-darker',
+        lineNumbers: true,
+        lineWrapping: true,
+        tabSize: 2,
+        indentWithTabs: false,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        extraKeys: { 'Ctrl-Space': 'autocomplete' }
+    };
+
+    const editors = [
+        CodeMirror.fromTextArea(document.getElementById('instancesJson'), cmOpts),
+        CodeMirror.fromTextArea(document.getElementById('usersJson'),     cmOpts),
+        CodeMirror.fromTextArea(document.getElementById('requestsJson'),  cmOpts)
+    ];
+
+    // Format each editor's JSON on load
+    editors.forEach(ed => {
+        try {
+            const pretty = JSON.stringify(JSON.parse(ed.getValue()), null, 2);
+            ed.setValue(pretty);
+        } catch (_) {}
+        ed.refresh();
+    });
+
+    function validateAll(showAlert) {
+        const alert = document.getElementById('jsonValidationAlert');
+        let errors = [];
+        const labels = ['Instances', 'Users', 'Requests'];
+        editors.forEach((ed, i) => {
+            const cm = ed.getWrapperElement();
+            try {
+                JSON.parse(ed.getValue());
+                cm.classList.remove('cm-invalid');
+                cm.classList.add('cm-valid');
+            } catch (e) {
+                cm.classList.add('cm-invalid');
+                cm.classList.remove('cm-valid');
+                errors.push(`${labels[i]}: ${e.message}`);
+            }
+        });
+        if (showAlert) {
+            alert.classList.remove('d-none', 'alert-success', 'alert-danger');
+            if (errors.length === 0) {
+                alert.className = 'alert alert-success mb-3';
+                alert.textContent = 'All JSON fields are valid.';
+            } else {
+                alert.className = 'alert alert-danger mb-3';
+                alert.innerHTML = '<strong>JSON errors:</strong><ul class="mb-0">' +
+                    errors.map(e => `<li>${e}</li>`).join('') + '</ul>';
+            }
+        }
+        return errors.length === 0;
+    }
+
+    function formatAll() {
+        editors.forEach(ed => {
+            try {
+                const pretty = JSON.stringify(JSON.parse(ed.getValue()), null, 2);
+                ed.setValue(pretty);
+            } catch (_) {}
+        });
+        validateAll(false);
+    }
+
+    document.getElementById('validateJson').addEventListener('click', () => validateAll(true));
+    document.getElementById('formatJson').addEventListener('click', formatAll);
+    document.getElementById('formatJson2').addEventListener('click', formatAll);
+
+    const sourceTypeSelect = document.getElementById('sourceTypeSelect');
+    const sourceIdSelect = document.getElementById('sourceIdSelect');
+
+    function filterSourceOptions() {
+        if (!sourceTypeSelect || !sourceIdSelect) return;
+
+        const selectedType = sourceTypeSelect.value;
+        Array.from(sourceIdSelect.options).forEach(option => {
+            if (!option.value) {
+                option.hidden = false;
+                return;
+            }
+
+            const optionType = option.getAttribute('data-source-type');
+            option.hidden = selectedType === '0' || optionType !== selectedType;
+        });
+
+        const currentOption = sourceIdSelect.selectedOptions[0];
+        if (currentOption && currentOption.hidden) {
+            sourceIdSelect.value = '';
+        }
+    }
+
+    if (sourceTypeSelect && sourceIdSelect) {
+        sourceTypeSelect.addEventListener('change', filterSourceOptions);
+        filterSourceOptions();
+    }
+
+    // Validate before form submission
+    document.getElementById('editForm').addEventListener('submit', function (e) {
+        // CodeMirror.fromTextArea syncs automatically, but force it just in case
+        editors.forEach(ed => ed.save());
+        if (!validateAll(true)) {
+            e.preventDefault();
+            window.scrollTo({ top: document.getElementById('jsonValidationAlert').offsetTop - 80, behavior: 'smooth' });
+        }
+    });
+})();
+</script>
+}
+

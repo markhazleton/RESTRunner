@@ -1,0 +1,50 @@
+@model RequestSpark.Web.Models.OpenApiSpec
+@{
+    ViewData["Title"] = "Delete — " + Model.Title;
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 text-danger">Delete Specification</h1>
+        <a href="/OpenApi" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white fw-semibold">Confirm Deletion</div>
+                <div class="card-body">
+                    <p class="text-danger fw-semibold">This will permanently delete the specification and its stored file. This cannot be undone.</p>
+
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Title</dt>
+                        <dd class="col-sm-8">@Model.Title</dd>
+
+                        <dt class="col-sm-4">Format</dt>
+                        <dd class="col-sm-8">@Model.SpecFormat v@Model.Version</dd>
+
+                        <dt class="col-sm-4">Endpoints</dt>
+                        <dd class="col-sm-8">@Model.EndpointCount</dd>
+
+                        <dt class="col-sm-4">File</dt>
+                        <dd class="col-sm-8"><code>@Model.FileName</code></dd>
+
+                        <dt class="col-sm-4">Uploaded</dt>
+                        <dd class="col-sm-8">@Model.UploadedAt.ToString("MMM dd, yyyy 'at' HH:mm")</dd>
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        @Html.AntiForgeryToken()
+                        <div class="d-flex justify-content-between">
+                            <a href="/OpenApi/Details/@Model.Id" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-danger">Delete Specification</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

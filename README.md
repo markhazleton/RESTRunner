@@ -1,4 +1,4 @@
-# RESTRunner
+# RequestSpark
 
 [![.NET](https://img.shields.io/badge/.NET-10.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/10.0)
 [![License](https://img.shields.io/github/license/markhazleton/RESTRunner)](https://github.com/markhazleton/RESTRunner/blob/main/LICENSE)
@@ -46,7 +46,7 @@ A comprehensive .NET 10 solution for running REST API tests, performance benchma
 
 ### Why .NET 10?
 
-RESTRunner uses **.NET 10.0 (LTS)** for:
+RequestSpark uses **.NET 10.0 (LTS)** for:
 - **Long-term support**: 3 years of support (until November 2028)
 - **Performance**: Significant improvements in build and test performance
 - **Security**: Latest security patches and updates
@@ -58,14 +58,14 @@ RESTRunner uses **.NET 10.0 (LTS)** for:
 
 ```bash
 git clone https://github.com/markhazleton/RESTRunner.git
-cd RESTRunner
+cd RequestSpark
 ```
 
 ### Build the Solution
 
 ```bash
 dotnet build
-# Expected output: Project RESTRunner.sln has been successfully built.
+# Expected output: Project RequestSpark.sln has been successfully built.
 ```
 
 ### Running Tests
@@ -75,7 +75,7 @@ dotnet build
 dotnet test
 
 # Run specific test project
-dotnet test RESTRunner.Domain.Tests
+dotnet test RequestSpark.Domain.Tests
 
 # Expected output: 21/21 tests passing (100%)
 # Test execution time: ~0.6s (25% faster than .NET 9)
@@ -85,25 +85,25 @@ dotnet test RESTRunner.Domain.Tests
 
 ### Console Application
 
-1. **Prepare your Postman collection**: Place your `collection.json` file in the `RESTRunner` project directory
+1. **Prepare your Postman collection**: Place your `collection.json` file in the `RequestSpark` project directory
 2. **Run the console application**:
    ```bash
-   cd RESTRunner
+   cd RequestSpark
    dotnet run
    ```
-3. **View results**: Check the generated CSV file at `c:\test\RESTRunner.csv`
+3. **View results**: Check the generated CSV file at `c:\test\RequestSpark.csv`
 
 ### Web Application
 
 1. **Start the web server**:
    ```bash
-   cd RESTRunner.Web
+   cd RequestSpark.Web
    dotnet run
    ```
 
 ## ? Performance
 
-RESTRunner v10.0.0 delivers significant performance improvements:
+RequestSpark v10.0.0 delivers significant performance improvements:
 
 ### Build Performance
 - **Build Time**: 19% faster (5.1s ? 4.1s)
@@ -148,12 +148,45 @@ For detailed upgrade information, see [Upgrade Documentation](.github/upgrades/u
 
 See [CHANGELOG.md](https://github.com/markhazleton/RESTRunner/blob/main/CHANGELOG.md) for complete version history.
 
+## Migration Guide
+
+The product identity is now fully standardized as RequestSpark across active source, runtime surfaces, and current documentation.
+
+| Surface | Current Identifier |
+|---------|--------------------|
+| Solution | `RequestSpark.sln` |
+| Console project | `RequestSpark` |
+| Domain project | `RequestSpark.Domain` |
+| Import project | `RequestSpark.PostmanImport` |
+| Web project | `RequestSpark.Web` |
+| Domain test project | `RequestSpark.Domain.Tests` |
+| Web test project | `RequestSpark.Web.Tests` |
+| Namespace root | `RequestSpark.*` |
+| Exception family | `RequestSparkException*` |
+| Console CSV output | `RequestSpark.csv` |
+
+### Intentional Historical References
+
+The lingering-brand audit is clean for active runtime code and project metadata. Remaining former-name references are intentional historical records:
+
+- `.github/upgrades/assessment.md` (generated anchor IDs and graph labels preserved for report integrity)
+- `.github/upgrades/assessment.csv` and `.github/upgrades/assessment.json` (source analyzer output snapshots)
+- `.github/security/DEPENDABOT-ANALYSIS.md` and `.github/security/VULNERABILITIES-RESOLVED.md` (historical security incident documentation)
+- `.documentation/**` historical/specification/audit artifacts (including quickfix and planning records retained for traceability)
+
+### Post-Merge Repository Rename Checklist
+
+1. Ensure the GitHub repository name is `RequestSpark`.
+2. Confirm badges and links resolve under the new repository path.
+3. Update any remaining GitHub URLs in active `.github/` docs to the renamed repository.
+4. Re-run the lingering-brand audit and keep only explicitly historical exceptions.
+
 ## ?? Contributing
 
 Repository engineering rules are defined in `.documentation/memory/constitution.md`.
 Until CI is added, contributors are expected to run `dotnet build` and `dotnet test`
 locally before merging changes. Run `npm run build` when editing
-`RESTRunner.Web` asset-pipeline inputs.
+`RequestSpark.Web` asset-pipeline inputs.
 Executable code paths must not introduce hardcoded secrets or deployable
 credential defaults; use configuration-backed values or clearly non-secret
 placeholders instead.
@@ -176,6 +209,8 @@ When reporting issues, please include:
 - **Package Optimization**: [.github/upgrades/package-review-report.md](.github/upgrades/package-review-report.md)
 
 ## ?? Changelog
+
+
 
 
 

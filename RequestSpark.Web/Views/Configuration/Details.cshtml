@@ -1,0 +1,880 @@
+@model RequestSpark.Web.Models.TestConfiguration
+@{
+    ViewData["Title"] = "Configuration Details";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Configuration Details</h1>
+        <div>
+            <a href="/Configuration/Edit/@Model.Id" class="btn btn-primary">
+                Edit
+            </a>
+            <a href="/Configuration" class="btn btn-outline-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Basic Information -->
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Basic Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Configuration Name</h6>
+                            <p>@Model.Name</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Status</h6>
+                            <p>
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <div class="mb-3">
+                            <h6>Description</h6>
+                            <p>@Model.Description</p>
+                        </div>
+                    }
+
+                    @if (Model.Tags.Any())
+                    {
+                        <div class="mb-3">
+                            <h6>Tags</h6>
+                            <p>
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <span class="badge bg-light text-dark me-1">@tag</span>
+                                }
+                            </p>
+                        </div>
+                    }
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6>Iterations</h6>
+                            <p>@Model.Iterations</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Max Concurrency</h6>
+                            <p>@Model.MaxConcurrency</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Total Test Count</h6>
+                            <p><strong>@Model.GetTotalTestCount()</strong> combinations</p>
+                        </div>
+                    </div>
+
+                    @if (Model.SourceType != RequestSpark.Web.Models.ApiDefinitionType.None && !string.IsNullOrWhiteSpace(Model.SourceName))
+                    {
+                        <div class="mt-3">
+                            <h6>Definition Source</h6>
+                            <p>
+                                <span class="badge bg-info me-2">@Model.SourceType</span>
+                                @Model.SourceName
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Configuration Details -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Test Configuration</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Instances -->
+                    <div class="mb-4">
+                        <h6>Test Instances (@Model.Runner.Instances.Count)</h6>
+                        @if (Model.Runner.Instances.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Base URL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var instance in Model.Runner.Instances)
+                                        {
+                                            <tr>
+                                                <td><code>@instance.Name</code></td>
+                                                <td><a href="@instance.BaseUrl" target="_blank">@instance.BaseUrl</a></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No instances configured</p>
+                        }
+                    </div>
+
+                    <!-- Users -->
+                    <div class="mb-4">
+                        <h6>Test Users (@Model.Runner.Users.Count)</h6>
+                        @if (Model.Runner.Users.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Username</th>
+                                            <th>Properties</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var user in Model.Runner.Users)
+                                        {
+                                            <tr>
+                                                <td><code>@user.UserName</code></td>
+                                                <td>
+                                                    @if (user.Properties.Any())
+                                                    {
+                                                        @foreach (var prop in user.Properties.Take(3))
+                                                        {
+                                                            <small class="badge bg-light text-dark me-1">@prop.Key</small>
+                                                        }
+                                                        @if (user.Properties.Count > 3)
+                                                        {
+                                                            <small class="text-muted">+@(user.Properties.Count - 3) more</small>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">No properties</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No users configured</p>
+                        }
+                    </div>
+
+                    <!-- Requests -->
+                    <div class="mb-4">
+                        <h6>Test Requests (@Model.Runner.Requests.Count)</h6>
+                        @if (Model.Runner.Requests.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Method</th>
+                                            <th>Path</th>
+                                            <th>Auth Required</th>
+                                            <th>Body Template</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var request in Model.Runner.Requests)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <span class="badge bg-@(request.RequestMethod.ToString() switch
+                                                    {
+                                                        "GET" => "success",
+                                                        "POST" => "primary",
+                                                        "PUT" => "warning",
+                                                        "DELETE" => "danger",
+                                                        _ => "secondary"
+                                                    })">
+                                                        @request.RequestMethod
+                                                    </span>
+                                                </td>
+                                                <td><code>@request.Path</code></td>
+                                                <td>
+                                                    @if (request.RequiresClientToken)
+                                                    {
+                                                        <span class="text-success">[YES]</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">[NO]</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(request.BodyTemplate))
+                                                    {
+                                                        <small class="text-muted">Has body template</small>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted">-</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-outline-info test-request-btn"
+                                                            data-method="@request.RequestMethod"
+                                                            data-path="@request.Path"
+                                                            data-body="@request.BodyTemplate"
+                                                            data-requires-token="@request.RequiresClientToken.ToString().ToLower()">
+                                                        Test
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No requests configured</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Execution History -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Execution History</h5>
+                    <a href="/Execution?configurationId=@Model.Id" class="btn btn-sm btn-outline-secondary">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div id="historyLoading" class="text-center py-3 text-muted">
+                        <div class="spinner-border spinner-border-sm me-2" role="status"></div>Loading runs...
+                    </div>
+                    <div id="historyEmpty" class="text-center py-3 text-muted d-none">
+                        No runs yet for this configuration.
+                    </div>
+                    <div id="historyError" class="alert alert-warning m-3 d-none"></div>
+                    <div class="table-responsive d-none" id="historyTable">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Started</th>
+                                    <th>Status</th>
+                                    <th>Duration</th>
+                                    <th class="text-end">Requests</th>
+                                    <th class="text-end">Success %</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Actions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-success" id="runConfiguration">
+                            Run Configuration
+                        </button>
+                        <a href="/Configuration/Edit/@Model.Id" class="btn btn-primary">
+                            Edit Configuration
+                        </a>
+                        <a href="/Configuration/Export/@Model.Id" class="btn btn-info">
+                            Export JSON
+                        </a>
+                        <button type="button" class="btn btn-outline-warning" id="duplicateConfig">
+                            Duplicate
+                        </button>
+                        <a href="/Configuration/Delete/@Model.Id" class="btn btn-outline-danger">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metadata -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Metadata</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted">Created</small>
+                        <div>@Model.CreatedAt.ToString("MMM dd, yyyy 'at' HH:mm")</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Last Modified</small>
+                        <div>@Model.ModifiedAt.ToString("MMM dd, yyyy 'at' HH:mm")</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Created By</small>
+                        <div>@Model.CreatedBy</div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted">Configuration ID</small>
+                        <div><code class="small">@Model.Id</code></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Test Breakdown</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="h4 text-primary">@Model.Runner.Instances.Count</div>
+                            <small class="text-muted">Instances</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="h4 text-success">@Model.Runner.Requests.Count</div>
+                            <small class="text-muted">Requests</small>
+                        </div>
+                        <div class="col-4">
+                            <div class="h4 text-info">@Model.Runner.Users.Count</div>
+                            <small class="text-muted">Users</small>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-center">
+                        <div class="h3 text-warning">@Model.GetTotalTestCount()</div>
+                        <small class="text-muted">Total test combinations<br>(@Model.Iterations iterations)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Test Request Modal -->
+<div class="modal fade" id="testRequestModal" tabindex="-1" aria-labelledby="testRequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="testRequestModalLabel">Test Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Configuration -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Instance (Base URL)</label>
+                        <select class="form-select" id="trInstance">
+                            @foreach (var inst in Model.Runner.Instances)
+                            {
+                                <option value="@inst.BaseUrl">@inst.Name — @inst.BaseUrl</option>
+                            }
+                            <option value="">— Custom URL —</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Method</label>
+                        <select class="form-select" id="trMethod">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="PATCH">PATCH</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Path</label>
+                        <input type="text" class="form-control" id="trPath" placeholder="api/endpoint">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Full Request URL</label>
+                    <input type="text" class="form-control bg-light" id="trFullUrl" readonly>
+                </div>
+
+                <div class="mb-3" id="trBearerTokenRow">
+                    <label class="form-label fw-semibold">Bearer Token <small class="text-muted">(required for this endpoint)</small></label>
+                    <input type="text" class="form-control font-monospace" id="trBearerToken" placeholder="Paste token here (without 'Bearer ' prefix)">
+                </div>
+
+                <div class="mb-3" id="trBodyRow">
+                    <label class="form-label fw-semibold">Request Body <small class="text-muted">(JSON)</small></label>
+                    <textarea class="form-control font-monospace" id="trBody" rows="6" placeholder="{}"></textarea>
+                </div>
+
+                <!-- Results -->
+                <div id="trResults" class="d-none">
+                    <hr>
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <h6 class="mb-0">Response</h6>
+                        <span id="trStatusBadge" class="badge fs-6"></span>
+                        <span class="text-muted small" id="trResponseTime"></span>
+                        <span class="text-muted small font-monospace" id="trRequestUrlDisplay"></span>
+                    </div>
+                    <div id="trErrorAlert" class="alert alert-danger d-none"></div>
+                    <ul class="nav nav-tabs mb-2" id="trResultTabs">
+                        <li class="nav-item"><button class="nav-link active" data-tab="body">Body</button></li>
+                        <li class="nav-item"><button class="nav-link" data-tab="headers">Headers</button></li>
+                    </ul>
+                    <div id="trBodyTab">
+                        <pre class="bg-light border rounded p-3 mb-0" style="max-height:300px;overflow-y:auto;font-size:.8rem;white-space:pre-wrap;word-break:break-all;" id="trResponseBody"></pre>
+                    </div>
+                    <div id="trHeadersTab" class="d-none">
+                        <table class="table table-sm table-bordered mb-0">
+                            <thead><tr><th>Header</th><th>Value</th></tr></thead>
+                            <tbody id="trHeadersBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="trExecuteBtn">
+                    <span id="trExecuteSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    Execute Request
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@microsoft/signalr@latest/dist/browser/signalr.min.js"></script>
+    <script>
+        let connection = null;
+        let currentExecutionId = null;
+
+        // Initialize SignalR connection
+        async function initializeSignalR() {
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("/hubs/execution")
+                .withAutomaticReconnect()
+                .build();
+
+            connection.on("ProgressUpdate", function (execution) {
+                updateProgressUI(execution);
+            });
+
+            connection.on("ExecutionCompleted", function (history) {
+                showCompletionMessage(history);
+                setTimeout(() => {
+                    window.location.href = `/Execution/Results/${history.id}`;
+                }, 2000);
+            });
+
+            connection.on("ExecutionFailed", function (data) {
+                showErrorMessage(data.errorMessage);
+            });
+
+            connection.on("ExecutionCancelled", function (data) {
+                showWarningMessage("Execution was cancelled");
+            });
+
+            try {
+                await connection.start();
+                console.log("SignalR connected");
+            } catch (err) {
+                console.error("SignalR connection error:", err);
+            }
+        }
+
+        // Run configuration
+        document.getElementById('runConfiguration').addEventListener('click', async function() {
+            const configId = '@Model.Id';
+            
+            try {
+                // Start execution
+                const response = await fetch('/api/execution/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        configurationId: configId,
+                        executedBy: 'Web User'
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    showErrorMessage(error.detail || 'Failed to start execution');
+                    return;
+                }
+
+                const execution = await response.json();
+                currentExecutionId = execution.id;
+
+                // Join execution group in SignalR
+                if (connection) {
+                    await connection.invoke("JoinExecution", currentExecutionId);
+                }
+
+                // Show progress modal
+                showProgressModal(execution);
+
+            } catch (error) {
+                console.error('Error starting execution:', error);
+                showErrorMessage('Failed to start execution: ' + error.message);
+            }
+        });
+
+        // Duplicate configuration
+        document.getElementById('duplicateConfig').addEventListener('click', function() {
+            if (confirm('Create a copy of this configuration?')) {
+                // In a real implementation, this would duplicate the config
+                alert('Duplicate feature coming soon! This will create a copy with a new name.');
+            }
+        });
+
+        function showProgressModal(execution) {
+            const modalHtml = `
+                <div class="modal fade" id="executionProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Execution in Progress</h5>
+                            </div>
+                            <div class="modal-body">
+                                <h6 id="currentPhase">${execution.currentPhase}</h6>
+                                <div class="progress mb-3" style="height: 30px;">
+                                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                         role="progressbar" style="width: 0%">0%</div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-3">
+                                        <div class="h4" id="completedRequests">0</div>
+                                        <small class="text-muted">Completed</small>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="h4 text-success" id="successfulRequests">0</div>
+                                        <small class="text-muted">Successful</small>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="h4 text-danger" id="failedRequests">0</div>
+                                        <small class="text-muted">Failed</small>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="h4" id="avgResponseTime">0</div>
+                                        <small class="text-muted">Avg (ms)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" onclick="cancelExecution()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('executionProgressModal'));
+            modal.show();
+        }
+
+        function updateProgressUI(execution) {
+            document.getElementById('currentPhase').textContent = execution.currentPhase;
+            document.getElementById('progressBar').style.width = execution.progressPercentage + '%';
+            document.getElementById('progressBar').textContent = Math.round(execution.progressPercentage) + '%';
+            document.getElementById('completedRequests').textContent = execution.completedRequests;
+            document.getElementById('successfulRequests').textContent = execution.successfulRequests;
+            document.getElementById('failedRequests').textContent = execution.failedRequests;
+            document.getElementById('avgResponseTime').textContent = Math.round(execution.currentAverageResponseTime);
+        }
+
+        async function cancelExecution() {
+            if (!currentExecutionId) return;
+
+            try {
+                const response = await fetch(`/api/execution/${currentExecutionId}/cancel`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cancelledBy: 'Web User'
+                    })
+                });
+
+                if (response.ok) {
+                    showWarningMessage('Execution cancelled');
+                }
+            } catch (error) {
+                console.error('Error cancelling execution:', error);
+            }
+        }
+
+        function showCompletionMessage(history) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('executionProgressModal'));
+            if (modal) modal.hide();
+            
+            showSuccessMessage(`Execution completed! ${history.statistics.successfulRequests} successful, ${history.statistics.failedRequests} failed`);
+        }
+
+        function showSuccessMessage(message) {
+            showToast(message, 'success');
+        }
+
+        function showErrorMessage(message) {
+            showToast(message, 'danger');
+        }
+
+        function showWarningMessage(message) {
+            showToast(message, 'warning');
+        }
+
+        function showToast(message, type) {
+            const toastHtml = `
+                <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                    <div class="toast show bg-${type} text-white" role="alert">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', toastHtml);
+            
+            setTimeout(() => {
+                const toasts = document.querySelectorAll('.toast');
+                toasts.forEach(t => t.remove());
+            }, 3000);
+        }
+
+        // ── Test Request Modal ───────────────────────────────────────────────
+        (function () {
+            const modal = new bootstrap.Modal(document.getElementById('testRequestModal'));
+            const trInstance   = document.getElementById('trInstance');
+            const trMethod     = document.getElementById('trMethod');
+            const trPath       = document.getElementById('trPath');
+            const trFullUrl    = document.getElementById('trFullUrl');
+            const trBearerRow  = document.getElementById('trBearerTokenRow');
+            const trBearerToken= document.getElementById('trBearerToken');
+            const trBodyRow    = document.getElementById('trBodyRow');
+            const trBody       = document.getElementById('trBody');
+            const trResults    = document.getElementById('trResults');
+            const trExecuteBtn = document.getElementById('trExecuteBtn');
+            const trSpinner    = document.getElementById('trExecuteSpinner');
+
+            function updateFullUrl() {
+                const base = (trInstance.value || '').replace(/\/$/, '');
+                const path = (trPath.value  || '').replace(/^\//, '');
+                trFullUrl.value = path ? `${base}/${path}` : base;
+            }
+
+            function toggleBodyVisibility() {
+                const m = trMethod.value;
+                trBodyRow.classList.toggle('d-none', !['POST','PUT','PATCH'].includes(m));
+            }
+
+            trInstance.addEventListener('change', updateFullUrl);
+            trMethod.addEventListener('change', () => { updateFullUrl(); toggleBodyVisibility(); });
+            trPath.addEventListener('input', updateFullUrl);
+
+            // Open modal pre-populated from a Test button
+            document.addEventListener('click', function (e) {
+                const btn = e.target.closest('.test-request-btn');
+                if (!btn) return;
+
+                const method       = btn.dataset.method || 'GET';
+                const path         = btn.dataset.path   || '';
+                const body         = btn.dataset.body   || '';
+                const requiresToken= btn.dataset.requiresToken === 'true';
+
+                trMethod.value = method.toUpperCase();
+                trPath.value   = path;
+                trBody.value   = body || '';
+                trBearerToken.value = '';
+                trBearerRow.classList.toggle('d-none', !requiresToken);
+                toggleBodyVisibility();
+                updateFullUrl();
+
+                // Reset results
+                trResults.classList.add('d-none');
+
+                modal.show();
+            });
+
+            // Tab switching
+            document.querySelectorAll('#trResultTabs button').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('#trResultTabs button').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const tab = this.dataset.tab;
+                    document.getElementById('trBodyTab').classList.toggle('d-none',    tab !== 'body');
+                    document.getElementById('trHeadersTab').classList.toggle('d-none', tab !== 'headers');
+                });
+            });
+
+            // Execute
+            trExecuteBtn.addEventListener('click', async function () {
+                trExecuteBtn.disabled = true;
+                trSpinner.classList.remove('d-none');
+                trResults.classList.add('d-none');
+
+                const payload = {
+                    baseUrl:     trInstance.value,
+                    path:        trPath.value,
+                    method:      trMethod.value,
+                    body:        ['POST','PUT','PATCH'].includes(trMethod.value) ? trBody.value : null,
+                    bearerToken: trBearerToken.value || null,
+                    headers:     null
+                };
+
+                try {
+                    const resp = await fetch('/api/execution/test-request', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await resp.json();
+
+                    // Status badge
+                    const badge = document.getElementById('trStatusBadge');
+                    badge.textContent = result.statusCode
+                        ? `${result.statusCode} ${result.statusText}`
+                        : result.statusText;
+                    badge.className = 'badge fs-6 ' + (result.success ? 'bg-success' : 'bg-danger');
+
+                    document.getElementById('trResponseTime').textContent = `${result.responseTimeMs} ms`;
+                    document.getElementById('trRequestUrlDisplay').textContent = result.requestUrl;
+
+                    // Error alert
+                    const errAlert = document.getElementById('trErrorAlert');
+                    if (result.errorMessage) {
+                        errAlert.textContent = result.errorMessage;
+                        errAlert.classList.remove('d-none');
+                    } else {
+                        errAlert.classList.add('d-none');
+                    }
+
+                    // Body — pretty-print JSON if possible
+                    let bodyText = result.responseBody || '';
+                    try { bodyText = JSON.stringify(JSON.parse(bodyText), null, 2); } catch (_) {}
+                    document.getElementById('trResponseBody').textContent = bodyText;
+
+                    // Headers table
+                    const tbody = document.getElementById('trHeadersBody');
+                    tbody.innerHTML = '';
+                    if (result.responseHeaders) {
+                        Object.entries(result.responseHeaders).forEach(([k, v]) => {
+                            const row = tbody.insertRow();
+                            row.insertCell().textContent = k;
+                            row.insertCell().textContent = v;
+                        });
+                    }
+
+                    // Show body tab by default
+                    document.querySelectorAll('#trResultTabs button').forEach(b => b.classList.remove('active'));
+                    document.querySelector('#trResultTabs button[data-tab="body"]').classList.add('active');
+                    document.getElementById('trBodyTab').classList.remove('d-none');
+                    document.getElementById('trHeadersTab').classList.add('d-none');
+
+                    trResults.classList.remove('d-none');
+                } catch (err) {
+                    showErrorMessage('Request failed: ' + err.message);
+                } finally {
+                    trExecuteBtn.disabled = false;
+                    trSpinner.classList.add('d-none');
+                }
+            });
+        })();
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSignalR();
+            loadExecutionHistory();
+        });
+
+        // ── Execution History ────────────────────────────────────────────────
+        async function loadExecutionHistory() {
+            const configId = '@Model.Id';
+            try {
+                const resp = await fetch(`/api/execution/history?configurationId=${configId}&pageSize=10`);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const items = await resp.json();
+
+                document.getElementById('historyLoading').classList.add('d-none');
+
+                if (!items || items.length === 0) {
+                    document.getElementById('historyEmpty').classList.remove('d-none');
+                    return;
+                }
+
+                const tbody = document.getElementById('historyBody');
+                items.forEach(h => {
+                    const dur = h.duration
+                        ? formatDuration(h.duration)
+                        : (h.status === 'Running' ? '<span class="text-primary">running…</span>' : '—');
+
+                    const stats  = h.statistics;
+                    const total  = stats?.totalRequests ?? 0;
+                    const rate   = stats?.successRate != null ? stats.successRate.toFixed(1) + '%' : '—';
+
+                    const statusBadge = {
+                        'Completed': 'bg-success',
+                        'Failed':    'bg-danger',
+                        'Running':   'bg-primary',
+                        'Cancelled': 'bg-warning text-dark',
+                        'Pending':   'bg-secondary'
+                    }[h.status] || 'bg-secondary';
+
+                    const resultsLink = h.isSuccessful
+                        ? `<a href="/Execution/Results/${h.id}" class="btn btn-xs btn-sm btn-outline-info py-0 px-2">Results</a>`
+                        : '';
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="text-nowrap">${new Date(h.startTime).toLocaleString()}</td>
+                        <td><span class="badge ${statusBadge}">${h.status}</span></td>
+                        <td>${dur}</td>
+                        <td class="text-end">${total > 0 ? total.toLocaleString() : '—'}</td>
+                        <td class="text-end">${rate}</td>
+                        <td class="text-end">${resultsLink}</td>`;
+                    tbody.appendChild(row);
+                });
+
+                document.getElementById('historyTable').classList.remove('d-none');
+            } catch (err) {
+                document.getElementById('historyLoading').classList.add('d-none');
+                const errEl = document.getElementById('historyError');
+                errEl.textContent = 'Could not load execution history: ' + err.message;
+                errEl.classList.remove('d-none');
+            }
+        }
+
+        function formatDuration(iso) {
+            // ISO 8601 duration from .NET TimeSpan e.g. "00:01:23.4567890"
+            if (!iso) return '—';
+            const parts = iso.split(':');
+            if (parts.length === 3) {
+                const h = parseInt(parts[0]), m = parseInt(parts[1]), s = parseFloat(parts[2]);
+                if (h > 0) return `${h}h ${m}m`;
+                if (m > 0) return `${m}m ${Math.round(s)}s`;
+                return `${s.toFixed(1)}s`;
+            }
+            return iso;
+        }
+    </script>
+}

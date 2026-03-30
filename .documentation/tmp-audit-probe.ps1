@@ -69,8 +69,8 @@ $testContents = @{}
 foreach ($tf in $testFiles) { $testContents[$tf.FullName] = Get-Content $tf.FullName -Raw -ErrorAction SilentlyContinue }
 
 $sourceFiles = @(
-    Get-ChildItem RESTRunner.Web -Recurse -File -Filter *.cs -ErrorAction SilentlyContinue
-    Get-ChildItem RESTRunner -Recurse -File -Filter *.cs -ErrorAction SilentlyContinue
+    Get-ChildItem RequestSpark.Web -Recurse -File -Filter *.cs -ErrorAction SilentlyContinue
+    Get-ChildItem RequestSpark -Recurse -File -Filter *.cs -ErrorAction SilentlyContinue
 ) | Where-Object {
     $_.FullName -notmatch '\\(bin|obj)\\' -and
     $_.Name -notmatch 'Tests?\.cs$' -and
@@ -94,7 +94,7 @@ $untested = foreach ($sf in $sourceFiles) {
 }
 $untestedTop = $untested | Sort-Object lines -Descending | Select-Object -First 20
 
-$xmlTargets = @('RESTRunner.Web/Controllers','RESTRunner.Web/Hubs','RESTRunner.Web/Models')
+$xmlTargets = @('RequestSpark.Web/Controllers','RequestSpark.Web/Hubs','RequestSpark.Web/Models')
 $xmlSignals = @()
 foreach ($dir in $xmlTargets) {
     if (-not (Test-Path $dir)) { continue }
@@ -120,7 +120,7 @@ foreach ($dir in $xmlTargets) {
 $xmlTop = $xmlSignals | Select-Object -First 20
 
 $validationSignals = @()
-$programPath = 'RESTRunner.Web/Program.cs'
+$programPath = 'RequestSpark.Web/Program.cs'
 if (Test-Path $programPath) {
     $lines = Get-Content $programPath
     for ($i=0; $i -lt $lines.Count; $i++) {
@@ -172,3 +172,4 @@ $result = [ordered]@{
 }
 
 $result | ConvertTo-Json -Depth 8 -Compress
+

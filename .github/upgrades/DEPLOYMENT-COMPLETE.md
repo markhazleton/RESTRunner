@@ -1,5 +1,7 @@
 # ?? .NET 10 Upgrade - COMPLETE & DEPLOYED!
 
+> Historical note: This upgrade record may include former-name references retained for release-history integrity.
+
 **Date**: 2025-12-23  
 **Status**: ? **SUCCESSFULLY MERGED TO MAIN**  
 **Tag**: v10.0.0  
@@ -38,7 +40,7 @@ Your comprehensive .NET 10 upgrade has been **successfully completed, merged to 
 ## ?? What Was Deployed
 
 ### Main Branch (Production)
-**URL**: https://github.com/markhazleton/RESTRunner/tree/main
+**URL**: https://github.com/markhazleton/RequestSpark/tree/main
 
 **Latest Commit**: `0d7f839`  
 **Message**: Merge upgrade-to-NET10: Complete .NET 10 upgrade with comprehensive package optimization
@@ -55,7 +57,7 @@ Your comprehensive .NET 10 upgrade has been **successfully completed, merged to 
 ---
 
 ### Release Tag: v10.0.0
-**URL**: https://github.com/markhazleton/RESTRunner/releases/tag/v10.0.0
+**URL**: https://github.com/markhazleton/RequestSpark/releases/tag/v10.0.0
 
 **Major version bump** to reflect .NET 10 upgrade milestone
 
@@ -73,7 +75,7 @@ All comprehensive documentation is now live on GitHub:
 
 ### Assessment & Planning
 1. **assessment.md** - Initial analysis (473 lines)
-   - https://github.com/markhazleton/RESTRunner/blob/main/.github/upgrades/assessment.md
+   - https://github.com/markhazleton/RequestSpark/blob/main/.github/upgrades/assessment.md
    - Complete compatibility analysis
    - 137 behavioral changes identified
    - Risk assessment
@@ -84,14 +86,14 @@ All comprehensive documentation is now live on GitHub:
    - Breaking changes catalog
 
 3. **plan.md** - Migration strategy (1,367 lines)
-   - https://github.com/markhazleton/RESTRunner/blob/main/.github/upgrades/plan.md
+   - https://github.com/markhazleton/RequestSpark/blob/main/.github/upgrades/plan.md
    - All-at-once strategy
    - Phase-by-phase breakdown
    - Package update reference
 
 ### Execution & Tracking
 4. **tasks.md** - Execution checklist (65 lines)
-   - https://github.com/markhazleton/RESTRunner/blob/main/.github/upgrades/tasks.md
+   - https://github.com/markhazleton/RequestSpark/blob/main/.github/upgrades/tasks.md
    - 3 tasks completed (100%)
    - Progress tracking
    - Verification checkpoints
@@ -103,7 +105,7 @@ All comprehensive documentation is now live on GitHub:
 
 ### Package Optimization
 6. **package-review-report.md** - Package analysis (345 lines)
-   - https://github.com/markhazleton/RESTRunner/blob/main/.github/upgrades/package-review-report.md
+   - https://github.com/markhazleton/RequestSpark/blob/main/.github/upgrades/package-review-report.md
    - 17 packages analyzed
    - Update recommendations
    - Security scan results
@@ -125,13 +127,13 @@ All comprehensive documentation is now live on GitHub:
 
 ### Final Reports
 10. **upgrade-complete-summary.md** - Master summary (582 lines)
-    - https://github.com/markhazleton/RESTRunner/blob/main/.github/upgrades/upgrade-complete-summary.md
+    - https://github.com/markhazleton/RequestSpark/blob/main/.github/upgrades/upgrade-complete-summary.md
     - Complete timeline
     - All metrics and performance
     - Success scorecard: A+ (98%)
 
 11. **ISSUE_TEMPLATES.md** - Follow-up work (479 lines)
-    - https://github.com/markhazleton/RESTRunner/blob/main/.github/ISSUE_TEMPLATES.md
+    - https://github.com/markhazleton/RequestSpark/blob/main/.github/ISSUE_TEMPLATES.md
     - MSTest v4 improvements
     - Swashbuckle v10 upgrade plan
 
@@ -159,23 +161,23 @@ All comprehensive documentation is now live on GitHub:
 ## ?? GitHub Links
 
 ### Repository
-- **Main Branch**: https://github.com/markhazleton/RESTRunner
-- **Commits**: https://github.com/markhazleton/RESTRunner/commits/main
-- **Releases**: https://github.com/markhazleton/RESTRunner/releases
-- **Issues**: https://github.com/markhazleton/RESTRunner/issues
+- **Main Branch**: https://github.com/markhazleton/RequestSpark
+- **Commits**: https://github.com/markhazleton/RequestSpark/commits/main
+- **Releases**: https://github.com/markhazleton/RequestSpark/releases
+- **Issues**: https://github.com/markhazleton/RequestSpark/issues
 
 ### Specific Items
-- **Tag v10.0.0**: https://github.com/markhazleton/RESTRunner/releases/tag/v10.0.0
-- **Issue #2**: MSTest v4 improvements - https://github.com/markhazleton/RESTRunner/issues/2
-- **Issue #3**: Swashbuckle v10 upgrade - https://github.com/markhazleton/RESTRunner/issues/3
-- **Upgrade Branch**: https://github.com/markhazleton/RESTRunner/tree/upgrade-to-NET10
+- **Tag v10.0.0**: https://github.com/markhazleton/RequestSpark/releases/tag/v10.0.0
+- **Issue #2**: MSTest v4 improvements - https://github.com/markhazleton/RequestSpark/issues/2
+- **Issue #3**: Swashbuckle v10 upgrade - https://github.com/markhazleton/RequestSpark/issues/3
+- **Upgrade Branch**: https://github.com/markhazleton/RequestSpark/tree/upgrade-to-NET10
 
 ---
 
 ## ?? Follow-Up Work (Tracked in Issues)
 
 ### Issue #2: MSTest v4 Code Quality Improvements
-**URL**: https://github.com/markhazleton/RESTRunner/issues/2  
+**URL**: https://github.com/markhazleton/RequestSpark/issues/2  
 **Priority**: Low  
 **Effort**: 30-60 minutes  
 **Status**: Open
@@ -190,7 +192,7 @@ All comprehensive documentation is now live on GitHub:
 ---
 
 ### Issue #3: Swashbuckle v10 Upgrade
-**URL**: https://github.com/markhazleton/RESTRunner/issues/3  
+**URL**: https://github.com/markhazleton/RequestSpark/issues/3  
 **Priority**: Medium  
 **Effort**: 2-4 hours  
 **Status**: Open
@@ -247,7 +249,7 @@ GitHub Dependabot detected **2 vulnerabilities** on the main branch:
 - 1 high severity
 - 1 moderate severity
 
-**View Details**: https://github.com/markhazleton/RESTRunner/security/dependabot
+**View Details**: https://github.com/markhazleton/RequestSpark/security/dependabot
 
 **Note**: These existed before the upgrade and may be resolved by your package updates. Review Dependabot alerts and address as needed.
 
@@ -257,12 +259,12 @@ GitHub Dependabot detected **2 vulnerabilities** on the main branch:
 
 ### Immediate Actions (Optional)
 1. **Create GitHub Release** from v10.0.0 tag
-   - Go to: https://github.com/markhazleton/RESTRunner/releases/new
+   - Go to: https://github.com/markhazleton/RequestSpark/releases/new
    - Select tag: v10.0.0
    - Use upgrade-complete-summary.md as release notes
 
 2. **Review Dependabot Alerts**
-   - Check: https://github.com/markhazleton/RESTRunner/security/dependabot
+   - Check: https://github.com/markhazleton/RequestSpark/security/dependabot
    - Your upgraded packages may have resolved these
 
 3. **Manual Smoke Testing** (before production)
@@ -343,14 +345,14 @@ GitHub Dependabot detected **2 vulnerabilities** on the main branch:
 
 ## ?? Congratulations!
 
-Your **RESTRunner** solution has been successfully upgraded to **.NET 10.0 (LTS)** with comprehensive package optimization!
+Your **RequestSpark** solution has been successfully upgraded to **.NET 10.0 (LTS)** with comprehensive package optimization!
 
 **Status**: ? **PRODUCTION READY**  
 **Quality**: A+ (98%)  
 **Performance**: 19-25% faster  
 **Support**: 3 years (LTS)  
 
-**Repository**: https://github.com/markhazleton/RESTRunner  
+**Repository**: https://github.com/markhazleton/RequestSpark  
 **Release**: v10.0.0
 
 ---
@@ -363,3 +365,4 @@ Your **RESTRunner** solution has been successfully upgraded to **.NET 10.0 (LTS)
 **Final Commit**: 0d7f839  
 **Branch**: main  
 **Tag**: v10.0.0
+
