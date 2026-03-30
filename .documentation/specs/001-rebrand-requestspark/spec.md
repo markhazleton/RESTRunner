@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-rebrand-requestspark`  
 **Created**: 2026-03-30  
-**Status**: Draft  
+**Status**: Complete — merged via PR #11 (squash commit 6892eec, 2026-03-30)  
 **Input**: User description: "Rebrand to RequestSpark"
 
 ## Clarifications
