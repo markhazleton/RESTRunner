@@ -39,7 +39,7 @@ Upgrade RequestSpark solution from .NET 9.0 to .NET 10.0 (Long Term Support). Th
 - **Circular Dependencies**: None
 
 ### Complexity Assessment
-**Classification**: ?? **Simple Solution**
+**Classification**: **Simple Solution**
 
 **Rationale**:
 - Small solution (6 projects, <15K LOC)
@@ -51,7 +51,7 @@ Upgrade RequestSpark solution from .NET 9.0 to .NET 10.0 (Long Term Support). Th
 - All projects SDK-style (no conversion needed)
 
 ### Selected Strategy
-**All-At-Once Strategy** � All projects upgraded simultaneously in a single coordinated operation.
+**All-At-Once Strategy** - All projects upgraded simultaneously in a single coordinated operation.
 
 **Justification**:
 - Solution size ideal for atomic upgrade (6 projects)
@@ -62,22 +62,22 @@ Upgrade RequestSpark solution from .NET 9.0 to .NET 10.0 (Long Term Support). Th
 - Single comprehensive testing phase more efficient than staged approach
 
 ### Critical Issues
-? **No Security Vulnerabilities** - All packages are secure
+**No Security Vulnerabilities** - All packages are secure
 
-?? **Incompatible Package**:
+**Incompatible Package**:
 - `Microsoft.VisualStudio.Azure.Containers.Tools.Targets` v1.22.1 (RequestSpark.Web) - Development-time tool, may need removal or updated version
 
-?? **Redundant Packages** (included in .NET 10 framework):
+**Redundant Packages** (included in .NET 10 framework):
 - `System.Net.Http` v4.3.4 (RequestSpark.Web)
 - `System.Text.RegularExpressions` v4.3.1 (RequestSpark.Web)
 
-?? **Behavioral Changes**:
+**Behavioral Changes**:
 - 137 instances across 4 projects (primarily System.Uri and HttpContent usage)
 - Requires runtime testing validation, not code changes
 
 ### Iteration Strategy Used
-**Fast batch approach** � Simple solution enables consolidated detail generation:
-1. **Phase 1**: Discovery & classification (3 iterations) ?
+**Fast batch approach** - Simple solution enables consolidated detail generation:
+1. **Phase 1**: Discovery & classification (3 iterations)
 2. **Phase 2**: Foundation sections (3 iterations)
 3. **Phase 3**: Consolidated project details (2 iterations)
 4. **Total Expected**: 8 iterations
@@ -104,17 +104,17 @@ Proceed with All-At-Once strategy for fastest completion with manageable risk.
 6. **No Security Issues** - No vulnerabilities requiring immediate attention
 
 **All-At-Once Strategy Advantages**:
-- ? **Fastest Completion** - Single upgrade phase, no multi-targeting overhead
-- ? **Clean Testing** - One comprehensive test pass vs. multiple phase validations
-- ? **No Intermediate States** - Avoid complexity of supporting multiple frameworks simultaneously
-- ? **Simplified Coordination** - All developers migrate together, no "which version" confusion
-- ? **Unified Dependencies** - All projects reference same package versions immediately
+- **Fastest Completion** - Single upgrade phase, no multi-targeting overhead
+- **Clean Testing** - One comprehensive test pass vs. multiple phase validations
+- **No Intermediate States** - Avoid complexity of supporting multiple frameworks simultaneously
+- **Simplified Coordination** - All developers migrate together, no "which version" confusion
+- **Unified Dependencies** - All projects reference same package versions immediately
 
 **Risks Mitigated**:
-- ?? **Rollback Plan** - Git branch isolation (`upgrade-to-NET10`) enables instant revert
-- ?? **Build Validation** - Atomic operation ensures all projects build together before commit
-- ?? **Test Safety** - MSTest suite validates behavioral changes don't break functionality
-- ?? **Package Conflicts** - Single package resolution pass eliminates version mismatches
+- **Rollback Plan** - Git branch isolation (`upgrade-to-NET10`) enables instant revert
+- **Build Validation** - Atomic operation ensures all projects build together before commit
+- **Test Safety** - MSTest suite validates behavioral changes don't break functionality
+- **Package Conflicts** - Single package resolution pass eliminates version mismatches
 
 ### Migration Principles
 
@@ -195,7 +195,7 @@ While all projects upgrade simultaneously, internal operations follow dependency
 ### Parallel vs. Sequential Execution
 
 **Sequential Operations** (must be ordered):
-1. Project file updates ? Restore ? Build ? Fix errors ? Test
+1. Project file updates ? Restore Build ? Fix errors Test
 2. Cannot test before building, cannot build before restoring
 
 **Parallel Opportunities** (not applicable for small solution):
@@ -204,14 +204,14 @@ While all projects upgrade simultaneously, internal operations follow dependency
 
 ### Success Criteria Summary
 
-? All 6 projects target `net10.0`  
-? All 7 package updates applied  
-? 2 redundant packages removed  
-? Solution builds with 0 errors  
-? All MSTest tests pass  
-? Console app smoke test passes  
-? Web app smoke test passes  
-? No new warnings introduced  
+? All 6 projects target `net10.0` 
+? All 7 package updates applied 
+? 2 redundant packages removed 
+? Solution builds with 0 errors 
+? All MSTest tests pass 
+? Console app smoke test passes 
+? Web app smoke test passes 
+? No new warnings introduced 
 ? Committed to `upgrade-to-NET10` branch
 
 ---
@@ -240,31 +240,31 @@ Since this is an All-At-Once strategy, all projects will be upgraded simultaneou
 
 **Atomic Upgrade Group (All Projects)**:
 1. **RequestSpark.Domain** (0 dependencies, 5 dependants)
-   - Foundation library, highest reuse
-   - 1,428 LOC, 2 behavioral change instances
-   
+ - Foundation library, highest reuse
+ - 1,428 LOC, 2 behavioral change instances
+ 
 2. **RequestSpark.PostmanImport** (1 dependency, 3 dependants)
-   - Postman v2.1.0 collection parser
-   - 303 LOC, 0 API issues
-   
+ - Postman v2.1.0 collection parser
+ - 303 LOC, 0 API issues
+ 
 3. **RequestSpark.Services.HttpClientRunner** (1 dependency, 2 dependants)
-   - Core execution engine with HttpClient
-   - 373 LOC, 19 behavioral change instances
-   - 2 package updates needed
-   
+ - Core execution engine with HttpClient
+ - 373 LOC, 19 behavioral change instances
+ - 2 package updates needed
+ 
 4. **RequestSpark** (3 dependencies, 0 dependants)
-   - Console application (main entry point)
-   - 310 LOC, 3 behavioral change instances
-   - 4 package updates needed
-   
+ - Console application (main entry point)
+ - 310 LOC, 3 behavioral change instances
+ - 4 package updates needed
+ 
 5. **RequestSpark.Web** (3 dependencies, 0 dependants)
-   - Razor Pages web application
-   - 8,744 LOC (largest project), 113 behavioral change instances
-   - 4 package updates needed, 1 incompatible package
-   
+ - Razor Pages web application
+ - 8,744 LOC (largest project), 113 behavioral change instances
+ - 4 package updates needed, 1 incompatible package
+ 
 6. **RequestSpark.Domain.Tests** (2 dependencies, 0 dependants)
-   - MSTest unit tests
-   - 476 LOC, 0 API issues
+ - MSTest unit tests
+ - 476 LOC, 0 API issues
 
 ### Critical Path
 
@@ -274,23 +274,23 @@ Since this is an All-At-Once strategy, all projects will be upgraded simultaneou
 3. **RequestSpark.Web** - Largest project (8,744 LOC), most total issues (113), has incompatible package
 
 ### Circular Dependencies
-? **None detected** - Clean dependency structure supports straightforward migration
+**None detected** - Clean dependency structure supports straightforward migration
 
 ### Dependency Visualization
 
 ```
 RequestSpark.Domain (Layer 0)
-    ?
-    ??? RequestSpark.PostmanImport (Layer 1)
-    ?       ?
-    ?       ??? RequestSpark (Layer 2)
-    ?       ??? RequestSpark.Web (Layer 2)
-    ?       ??? RequestSpark.Domain.Tests (Layer 2)
-    ?
-    ??? RequestSpark.Services.HttpClientRunner (Layer 1)
-            ?
-            ??? RequestSpark (Layer 2)
-            ??? RequestSpark.Web (Layer 2)
+
+ +-- RequestSpark.PostmanImport (Layer 1)
+ ?
+ ? ??? RequestSpark (Layer 2)
+ ? ??? RequestSpark.Web (Layer 2)
+ ? ??? RequestSpark.Domain.Tests (Layer 2)
+
+ +-- RequestSpark.Services.HttpClientRunner (Layer 1)
+
+ +-- RequestSpark (Layer 2)
+ +-- RequestSpark.Web (Layer 2)
 ```
 
 **Migration Advantage**: Single atomic operation eliminates need for multi-targeting or phased compatibility testing.
@@ -315,41 +315,41 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 **Package Dependencies**:
 | Package | Current Version | Target Version | Action |
 |---------|----------------|----------------|--------|
-| FileHelpers | 3.5.2 | 3.5.2 | ? Compatible (no update needed) |
+| FileHelpers | 3.5.2 | 3.5.2 | Compatible (no update needed) |
 
 **Migration Steps**:
 
 1. **Update Project File** (`RequestSpark.Domain\RequestSpark.Domain.csproj`)
-   ```xml
-   <!-- Change: -->
-   <TargetFramework>net9.0</TargetFramework>
-   <!-- To: -->
-   <TargetFramework>net10.0</TargetFramework>
-   ```
+ ```xml
+ <!-- Change: -->
+ <TargetFramework>net9.0</TargetFramework>
+ <!-- To: -->
+ <TargetFramework>net10.0</TargetFramework>
+ ```
 
 2. **Package Updates**
-   - No updates required (FileHelpers 3.5.2 compatible with .NET 10)
+ - No updates required (FileHelpers 3.5.2 compatible with .NET 10)
 
 3. **Expected Breaking Changes**
-   - **Behavioral Changes**: 2 instances detected in assessment
-   - **APIs Affected**: Likely System.Uri usage in domain models
-   - **Expected Impact**: Low - behavioral changes require runtime validation, not code modifications
+ - **Behavioral Changes**: 2 instances detected in assessment
+ - **APIs Affected**: Likely System.Uri usage in domain models
+ - **Expected Impact**: Low - behavioral changes require runtime validation, not code modifications
 
 4. **Code Modifications**
-   - No immediate code changes expected
-   - Monitor for behavioral differences in URI handling if domain models use System.Uri
+ - No immediate code changes expected
+ - Monitor for behavioral differences in URI handling if domain models use System.Uri
 
 5. **Testing Strategy**
-   - **Unit Tests**: RequestSpark.Domain.Tests exercises domain models
-   - **Validation**: All existing tests should pass
-   - **Focus Areas**: Any models using System.Uri or HTTP-related types
+ - **Unit Tests**: RequestSpark.Domain.Tests exercises domain models
+ - **Validation**: All existing tests should pass
+ - **Focus Areas**: Any models using System.Uri or HTTP-related types
 
 6. **Validation Checklist**
-   - [ ] Project targets `net10.0`
-   - [ ] Builds without errors
-   - [ ] Builds without warnings
-   - [ ] RequestSpark.Domain.Tests suite passes
-   - [ ] No runtime exceptions in dependent projects
+ - [ ] Project targets `net10.0`
+ - [ ] Builds without errors
+ - [ ] Builds without warnings
+ - [ ] RequestSpark.Domain.Tests suite passes
+ - [ ] No runtime exceptions in dependent projects
 
 **Dependencies Impact**: This is the foundation library - 5 projects depend on it (PostmanImport, Services.HttpClientRunner, Console, Web, Tests). Must build successfully before dependents.
 
@@ -366,40 +366,40 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 **Package Dependencies**:
 | Package | Current Version | Target Version | Action |
 |---------|----------------|----------------|--------|
-| Newtonsoft.Json | 13.0.4 | 13.0.4 | ? Compatible (no update needed) |
+| Newtonsoft.Json | 13.0.4 | 13.0.4 | Compatible (no update needed) |
 
 **Migration Steps**:
 
 1. **Update Project File** (`RequestSpark.PostmanImport\RequestSpark.PostmanImport.csproj`)
-   ```xml
-   <!-- Change: -->
-   <TargetFramework>net9.0</TargetFramework>
-   <!-- To: -->
-   <TargetFramework>net10.0</TargetFramework>
-   ```
+ ```xml
+ <!-- Change: -->
+ <TargetFramework>net9.0</TargetFramework>
+ <!-- To: -->
+ <TargetFramework>net10.0</TargetFramework>
+ ```
 
 2. **Package Updates**
-   - No updates required (Newtonsoft.Json 13.0.4 compatible with .NET 10)
+ - No updates required (Newtonsoft.Json 13.0.4 compatible with .NET 10)
 
 3. **Expected Breaking Changes**
-   - **API Issues**: 0 (no behavioral changes detected)
-   - **Expected Impact**: None
+ - **API Issues**: 0 (no behavioral changes detected)
+ - **Expected Impact**: None
 
 4. **Code Modifications**
-   - No code changes expected
-   - Postman collection parsing logic should work unchanged
+ - No code changes expected
+ - Postman collection parsing logic should work unchanged
 
 5. **Testing Strategy**
-   - **Manual Test**: Import sample `collection.json` in console or web app
-   - **Validation**: Verify CompareRunner populated correctly from Postman v2.1.0 format
-   - **Edge Cases**: Test URL template substitution (`{{url}}/path` ? relative path)
+ - **Manual Test**: Import sample `collection.json` in console or web app
+ - **Validation**: Verify CompareRunner populated correctly from Postman v2.1.0 format
+ - **Edge Cases**: Test URL template substitution (`{{url}}/path` ? relative path)
 
 6. **Validation Checklist**
-   - [ ] Project targets `net10.0`
-   - [ ] Builds without errors
-   - [ ] Builds without warnings
-   - [ ] Sample Postman collection imports successfully
-   - [ ] Request properties mapped correctly (path, method, body)
+ - [ ] Project targets `net10.0`
+ - [ ] Builds without errors
+ - [ ] Builds without warnings
+ - [ ] Sample Postman collection imports successfully
+ - [ ] Request properties mapped correctly (path, method, body)
 
 **Dependencies Impact**: Depends on Domain (must build after Domain). Used by Console, Web, and Tests projects.
 
@@ -416,67 +416,67 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 **Package Dependencies**:
 | Package | Current Version | Target Version | Action |
 |---------|----------------|----------------|--------|
-| Microsoft.AspNet.WebApi.Client | 6.0.0 | 6.0.0 | ? Compatible (no update needed) |
-| Microsoft.Extensions.Http | 9.0.9 | 10.0.1 | ?? Update recommended |
-| Microsoft.Extensions.Logging.Abstractions | 9.0.9 | 10.0.1 | ?? Update recommended |
+| Microsoft.AspNet.WebApi.Client | 6.0.0 | 6.0.0 | Compatible (no update needed) |
+| Microsoft.Extensions.Http | 9.0.9 | 10.0.1 | Update recommended |
+| Microsoft.Extensions.Logging.Abstractions | 9.0.9 | 10.0.1 | Update recommended |
 
 **Migration Steps**:
 
 1. **Update Project File** (`RequestSpark.Services.HttpClient\RequestSpark.Services.HttpClientRunner.csproj`)
-   ```xml
-   <!-- Change: -->
-   <TargetFramework>net9.0</TargetFramework>
-   <!-- To: -->
-   <TargetFramework>net10.0</TargetFramework>
-   ```
+ ```xml
+ <!-- Change: -->
+ <TargetFramework>net9.0</TargetFramework>
+ <!-- To: -->
+ <TargetFramework>net10.0</TargetFramework>
+ ```
 
 2. **Package Updates**
-   ```xml
-   <!-- Update: -->
-   <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
-   <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
-   
-   <!-- To: -->
-   <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
-   <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
-   ```
+ ```xml
+ <!-- Update: -->
+ <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
+ <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+ 
+ <!-- To: -->
+ <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
+ <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
+ ```
 
 3. **Expected Breaking Changes**
-   - **Behavioral Changes**: 19 instances (highest density in solution)
-   - **APIs Affected**:
-     - `System.Uri` constructors and parsing (likely in request URL handling)
-     - `System.Net.Http.HttpContent` reading (response body parsing)
-     - `HttpClientFactory.AddHttpClient` registration behavior
-   - **Expected Impact**: Medium - core execution engine, but changes are behavioral (not binary incompatible)
+ - **Behavioral Changes**: 19 instances (highest density in solution)
+ - **APIs Affected**:
+ - `System.Uri` constructors and parsing (likely in request URL handling)
+ - `System.Net.Http.HttpContent` reading (response body parsing)
+ - `HttpClientFactory.AddHttpClient` registration behavior
+ - **Expected Impact**: Medium - core execution engine, but changes are behavioral (not binary incompatible)
 
 4. **Code Modifications**
-   - **Likely Areas** (based on project purpose):
-     - `ExecuteRunnerService.GetResponseAsync()` - HTTP request execution
-     - URI template substitution (`{{encoded_user_name}}`, `{{property_key}}`)
-     - Response content stream handling
-   - **No Expected Changes**: Behavioral changes typically don't require code modifications
-   - **Monitoring**: Watch for differences in URL parsing or response reading
+ - **Likely Areas** (based on project purpose):
+ - `ExecuteRunnerService.GetResponseAsync()` - HTTP request execution
+ - URI template substitution (`{{encoded_user_name}}`, `{{property_key}}`)
+ - Response content stream handling
+ - **No Expected Changes**: Behavioral changes typically don't require code modifications
+ - **Monitoring**: Watch for differences in URL parsing or response reading
 
 5. **Testing Strategy**
-   - **Unit Tests**: RequestSpark.Domain.Tests may cover some scenarios
-   - **Integration Tests**: Execute sample requests against test API
-   - **Focus Areas**:
-     - Absolute vs. relative URI handling
-     - Template substitution in request paths/bodies
-     - Response body parsing and hashing
-     - Error handling for malformed URIs
-   - **Validation**: Compare .NET 9 vs .NET 10 results for same requests
+ - **Unit Tests**: RequestSpark.Domain.Tests may cover some scenarios
+ - **Integration Tests**: Execute sample requests against test API
+ - **Focus Areas**:
+ - Absolute vs. relative URI handling
+ - Template substitution in request paths/bodies
+ - Response body parsing and hashing
+ - Error handling for malformed URIs
+ - **Validation**: Compare .NET 9 vs .NET 10 results for same requests
 
 6. **Validation Checklist**
-   - [ ] Project targets `net10.0`
-   - [ ] Packages updated to 10.0.1 (Microsoft.Extensions.*)
-   - [ ] Builds without errors
-   - [ ] Builds without warnings
-   - [ ] HttpClient instances created correctly
-   - [ ] Request execution works (GET, POST, PUT, DELETE, PATCH, etc.)
-   - [ ] Response body parsed correctly
-   - [ ] Template substitution works
-   - [ ] Statistics collection accurate (percentiles, status codes)
+ - [ ] Project targets `net10.0`
+ - [ ] Packages updated to 10.0.1 (Microsoft.Extensions.*)
+ - [ ] Builds without errors
+ - [ ] Builds without warnings
+ - [ ] HttpClient instances created correctly
+ - [ ] Request execution works (GET, POST, PUT, DELETE, PATCH, etc.)
+ - [ ] Response body parsed correctly
+ - [ ] Template substitution works
+ - [ ] Statistics collection accurate (percentiles, status codes)
 
 **Dependencies Impact**: Depends on Domain. Used by Console and Web apps - critical component for both.
 
@@ -495,76 +495,76 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 **Package Dependencies**:
 | Package | Current Version | Target Version | Action |
 |---------|----------------|----------------|--------|
-| CsvHelper | 33.1.0 | 33.1.0 | ? Compatible (no update needed) |
-| Microsoft.Extensions.Hosting | 9.0.9 | 10.0.1 | ?? Update recommended |
-| Microsoft.Extensions.Http | 9.0.9 | 10.0.1 | ?? Update recommended |
-| System.Configuration.ConfigurationManager | 9.0.9 | 10.0.1 | ?? Update recommended |
-| System.Text.Json | 9.0.9 | 10.0.1 | ?? Update recommended |
+| CsvHelper | 33.1.0 | 33.1.0 | Compatible (no update needed) |
+| Microsoft.Extensions.Hosting | 9.0.9 | 10.0.1 | Update recommended |
+| Microsoft.Extensions.Http | 9.0.9 | 10.0.1 | Update recommended |
+| System.Configuration.ConfigurationManager | 9.0.9 | 10.0.1 | Update recommended |
+| System.Text.Json | 9.0.9 | 10.0.1 | Update recommended |
 
 **Migration Steps**:
 
 1. **Update Project File** (`RequestSpark\RequestSpark.csproj`)
-   ```xml
-   <!-- Change: -->
-   <TargetFramework>net9.0</TargetFramework>
-   <!-- To: -->
-   <TargetFramework>net10.0</TargetFramework>
-   ```
+ ```xml
+ <!-- Change: -->
+ <TargetFramework>net9.0</TargetFramework>
+ <!-- To: -->
+ <TargetFramework>net10.0</TargetFramework>
+ ```
 
 2. **Package Updates**
-   ```xml
-   <!-- Update: -->
-   <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
-   <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
-   <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
-   <PackageReference Include="System.Text.Json" Version="9.0.9" />
-   
-   <!-- To: -->
-   <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
-   <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
-   <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
-   <PackageReference Include="System.Text.Json" Version="10.0.1" />
-   ```
+ ```xml
+ <!-- Update: -->
+ <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
+ <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
+ <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
+ <PackageReference Include="System.Text.Json" Version="9.0.9" />
+ 
+ <!-- To: -->
+ <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
+ <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
+ <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
+ <PackageReference Include="System.Text.Json" Version="10.0.1" />
+ ```
 
 3. **Expected Breaking Changes**
-   - **Behavioral Changes**: 3 instances detected
-   - **APIs Affected**:
-     - `Microsoft.Extensions.Hosting.HostBuilder` (1 instance)
-     - `HttpClientFactory.AddHttpClient` (likely)
-     - `ConsoleLoggerExtensions.AddConsole` (1 instance)
-   - **Expected Impact**: Low - console app with straightforward DI setup
+ - **Behavioral Changes**: 3 instances detected
+ - **APIs Affected**:
+ - `Microsoft.Extensions.Hosting.HostBuilder` (1 instance)
+ - `HttpClientFactory.AddHttpClient` (likely)
+ - `ConsoleLoggerExtensions.AddConsole` (1 instance)
+ - **Expected Impact**: Low - console app with straightforward DI setup
 
 4. **Code Modifications**
-   - **Likely Areas** (based on assessment):
-     - `Program.cs` - Host builder and DI registration
-     - Console logging configuration
-   - **No Expected Changes**: Behavioral changes typically don't break compilation
-   - **Monitoring**: Watch for logging output changes or DI resolution differences
+ - **Likely Areas** (based on assessment):
+ - `Program.cs` - Host builder and DI registration
+ - Console logging configuration
+ - **No Expected Changes**: Behavioral changes typically don't break compilation
+ - **Monitoring**: Watch for logging output changes or DI resolution differences
 
 5. **Testing Strategy**
-   - **Smoke Test**: Run console app with sample Postman collection
-   - **Validation Steps**:
-     1. Place `collection.json` in RequestSpark output directory
-     2. Run: `dotnet run --project RequestSpark\RequestSpark.csproj`
-     3. Verify execution completes successfully
-     4. Check CSV output generated (`c:\test\RequestSpark.csv`)
-     5. Review statistics display (P50/P75/P90/P95/P99 percentiles)
-   - **Expected Output**: 
-     - Execution report with emoji indicators (? 2xx, ?? 4xx, ? 5xx)
-     - Breakdown by HTTP method, status code, instance, user
-     - CSV file with individual results
+ - **Smoke Test**: Run console app with sample Postman collection
+ - **Validation Steps**:
+ 1. Place `collection.json` in RequestSpark output directory
+ 2. Run: `dotnet run --project RequestSpark\RequestSpark.csproj`
+ 3. Verify execution completes successfully
+ 4. Check CSV output generated (`c:\test\RequestSpark.csv`)
+ 5. Review statistics display (P50/P75/P90/P95/P99 percentiles)
+ - **Expected Output**: 
+ - Execution report with emoji indicators (? 2xx, ?? 4xx, ? 5xx)
+ - Breakdown by HTTP method, status code, instance, user
+ - CSV file with individual results
 
 6. **Validation Checklist**
-   - [ ] Project targets `net10.0`
-   - [ ] Packages updated to 10.0.1 (Microsoft.Extensions.*)
-   - [ ] Builds without errors
-   - [ ] Builds without warnings
-   - [ ] Console app starts successfully
-   - [ ] Postman collection imported correctly
-   - [ ] Requests execute against configured instances
-   - [ ] Statistics calculated correctly
-   - [ ] CSV output generated
-   - [ ] Console logging displays properly
+ - [ ] Project targets `net10.0`
+ - [ ] Packages updated to 10.0.1 (Microsoft.Extensions.*)
+ - [ ] Builds without errors
+ - [ ] Builds without warnings
+ - [ ] Console app starts successfully
+ - [ ] Postman collection imported correctly
+ - [ ] Requests execute against configured instances
+ - [ ] Statistics calculated correctly
+ - [ ] CSV output generated
+ - [ ] Console logging displays properly
 
 **Dependencies Impact**: Depends on Domain, PostmanImport, Services.HttpClientRunner. No dependents (application entry point).
 
@@ -581,104 +581,104 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 **Package Dependencies**:
 | Package | Current Version | Target Version | Action |
 |---------|----------------|----------------|--------|
-| Microsoft.VisualStudio.Azure.Containers.Tools.Targets | 1.22.1 | N/A | ?? Remove (incompatible, dev tool) |
-| Newtonsoft.Json | 13.0.4 | 13.0.4 | ? Compatible (no update needed) |
-| Swashbuckle.AspNetCore | 9.0.4 | 9.0.4 | ? Compatible (no update needed) |
-| System.Net.Http | 4.3.4 | N/A | ?? Remove (framework-included) |
-| System.Security.Cryptography.Xml | 9.0.9 | 10.0.1 | ?? Update recommended |
-| System.Text.RegularExpressions | 4.3.1 | N/A | ?? Remove (framework-included) |
-| WebSpark.Bootswatch | 1.30.0 | 1.30.0 | ? Compatible (no update needed) |
-| WebSpark.HttpClientUtility | 1.2.0 | 1.2.0 | ? Compatible (no update needed) |
+| Microsoft.VisualStudio.Azure.Containers.Tools.Targets | 1.22.1 | N/A | Remove (incompatible, dev tool) |
+| Newtonsoft.Json | 13.0.4 | 13.0.4 | Compatible (no update needed) |
+| Swashbuckle.AspNetCore | 9.0.4 | 9.0.4 | Compatible (no update needed) |
+| System.Net.Http | 4.3.4 | N/A | Remove (framework-included) |
+| System.Security.Cryptography.Xml | 9.0.9 | 10.0.1 | Update recommended |
+| System.Text.RegularExpressions | 4.3.1 | N/A | Remove (framework-included) |
+| WebSpark.Bootswatch | 1.30.0 | 1.30.0 | Compatible (no update needed) |
+| WebSpark.HttpClientUtility | 1.2.0 | 1.2.0 | Compatible (no update needed) |
 
 **Migration Steps**:
 
 1. **Update Project File** (`RequestSpark.Web\RequestSpark.Web.csproj`)
-   ```xml
-   <!-- Change: -->
-   <TargetFramework>net9.0</TargetFramework>
-   <!-- To: -->
-   <TargetFramework>net10.0</TargetFramework>
-   ```
+ ```xml
+ <!-- Change: -->
+ <TargetFramework>net9.0</TargetFramework>
+ <!-- To: -->
+ <TargetFramework>net10.0</TargetFramework>
+ ```
 
 2. **Package Updates and Removals**
-   ```xml
-   <!-- UPDATE: -->
-   <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.9" />
-   <!-- To: -->
-   <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.1" />
-   
-   <!-- REMOVE (incompatible dev tool): -->
-   <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-   
-   <!-- REMOVE (framework-included): -->
-   <PackageReference Include="System.Net.Http" Version="4.3.4" />
-   <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-   ```
+ ```xml
+ <!-- UPDATE: -->
+ <PackageReference Include="System.Security.Cryptography.Xml" Version="9.0.9" />
+ <!-- To: -->
+ <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.1" />
+ 
+ <!-- REMOVE (incompatible dev tool): -->
+ <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+ 
+ <!-- REMOVE (framework-included): -->
+ <PackageReference Include="System.Net.Http" Version="4.3.4" />
+ <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+ ```
 
 3. **Expected Breaking Changes**
-   - **Behavioral Changes**: 113 instances (82% of total solution issues)
-   - **APIs Affected**:
-     - `System.Uri` - 59 instances (URL parsing in Razor Pages, minimal APIs)
-     - `System.Net.Http.HttpContent` - 53 instances (API responses, HTTP client usage)
-     - Various System.Uri constructors - 19 instances
-   - **Expected Impact**: Medium - many instances, but behavioral (not binary incompatible)
+ - **Behavioral Changes**: 113 instances (82% of total solution issues)
+ - **APIs Affected**:
+ - `System.Uri` - 59 instances (URL parsing in Razor Pages, minimal APIs)
+ - `System.Net.Http.HttpContent` - 53 instances (API responses, HTTP client usage)
+ - Various System.Uri constructors - 19 instances
+ - **Expected Impact**: Medium - many instances, but behavioral (not binary incompatible)
 
 4. **Code Modifications**
-   - **Areas to Review**:
-     - Razor Pages (`Pages/*.cshtml.cs`) - URL generation, request handling
-     - Minimal API endpoints (`Program.cs`) - `/api/employees/*`, `/api/departments/*`, `/api/status`
-     - HTTP client usage for test execution
-     - URI parsing for configuration management
-   - **Docker Tooling**: After removing incompatible package, verify:
-     - Dockerfile still present (`RequestSpark.Web/Dockerfile`
-   - Docker build works: `docker build -t requestspark-web .`
-     - Container runs correctly
-   - **No Expected Code Changes**: Behavioral changes rarely require modifications
+ - **Areas to Review**:
+ - Razor Pages (`Pages/*.cshtml.cs`) - URL generation, request handling
+ - Minimal API endpoints (`Program.cs`) - `/api/employees/*`, `/api/departments/*`, `/api/status`
+ - HTTP client usage for test execution
+ - URI parsing for configuration management
+ - **Docker Tooling**: After removing incompatible package, verify:
+ - Dockerfile still present (`RequestSpark.Web/Dockerfile`
+ - Docker build works: `docker build -t requestspark-web .`
+ - Container runs correctly
+ - **No Expected Code Changes**: Behavioral changes rarely require modifications
 
 5. **Testing Strategy**
-   - **Build Validation**:
-     - Verify no errors after removing 3 packages
-     - Ensure System.Net.Http and Regex work (framework-included)
-   - **Smoke Test - Web UI**:
-     1. Run: `dotnet run --project RequestSpark.Web\RequestSpark.Web.csproj`
-     2. Navigate to `https://localhost:7001`
-     3. Test pages:
-        - Home page loads
-        - Configuration create/list/edit
-        - Collection import
-        - Test execution
-        - Results display
-     4. Test minimal APIs:
-        - Swagger UI: `https://localhost:7001/docs` (dev only)
-        - `GET /api/status` (health check)
-        - `GET /api/employees` (sample CRUD)
-        - `GET /api/departments`
-     5. File Storage Validation:
-        - Configuration saves to `~/Data/configurations/{guid}.json`
-        - Collection saves to `~/Data/collections/{guid}.json`
-        - Results export to `~/Data/results/{guid}.csv`
-   - **Docker Validation** (if Docker used):
-     - Build image successfully
-     - Run container exposes port 8080
-     - App accessible in container
+ - **Build Validation**:
+ - Verify no errors after removing 3 packages
+ - Ensure System.Net.Http and Regex work (framework-included)
+ - **Smoke Test - Web UI**:
+ 1. Run: `dotnet run --project RequestSpark.Web\RequestSpark.Web.csproj`
+ 2. Navigate to `https://localhost:7001`
+ 3. Test pages:
+ - Home page loads
+ - Configuration create/list/edit
+ - Collection import
+ - Test execution
+ - Results display
+ 4. Test minimal APIs:
+ - Swagger UI: `https://localhost:7001/docs` (dev only)
+ - `GET /api/status` (health check)
+ - `GET /api/employees` (sample CRUD)
+ - `GET /api/departments`
+ 5. File Storage Validation:
+ - Configuration saves to `~/Data/configurations/{guid}.json`
+ - Collection saves to `~/Data/collections/{guid}.json`
+ - Results export to `~/Data/results/{guid}.csv`
+ - **Docker Validation** (if Docker used):
+ - Build image successfully
+ - Run container exposes port 8080
+ - App accessible in container
 
 6. **Validation Checklist**
-   - [ ] Project targets `net10.0`
-   - [ ] System.Security.Cryptography.Xml updated to 10.0.1
-   - [ ] Microsoft.VisualStudio.Azure.Containers.Tools.Targets removed
-   - [ ] System.Net.Http and System.Text.RegularExpressions removed
-   - [ ] Builds without errors
-   - [ ] Builds without warnings (verify no implicit package warnings)
-   - [ ] Web app starts on https://localhost:7001
-   - [ ] Home page renders correctly (Bootswatch theme)
-   - [ ] Configuration CRUD operations work
-   - [ ] Postman collection import works
-   - [ ] Test execution completes
-   - [ ] Results display correctly
-   - [ ] Minimal APIs respond correctly
-   - [ ] Swagger UI works (dev environment)
-   - [ ] File storage service reads/writes JSON
-   - [ ] Docker build succeeds (if applicable)
+ - [ ] Project targets `net10.0`
+ - [ ] System.Security.Cryptography.Xml updated to 10.0.1
+ - [ ] Microsoft.VisualStudio.Azure.Containers.Tools.Targets removed
+ - [ ] System.Net.Http and System.Text.RegularExpressions removed
+ - [ ] Builds without errors
+ - [ ] Builds without warnings (verify no implicit package warnings)
+ - [ ] Web app starts on https://localhost:7001
+ - [ ] Home page renders correctly (Bootswatch theme)
+ - [ ] Configuration CRUD operations work
+ - [ ] Postman collection import works
+ - [ ] Test execution completes
+ - [ ] Results display correctly
+ - [ ] Minimal APIs respond correctly
+ - [ ] Swagger UI works (dev environment)
+ - [ ] File storage service reads/writes JSON
+ - [ ] Docker build succeeds (if applicable)
 
 **Dependencies Impact**: Depends on Domain, PostmanImport, Services.HttpClientRunner. No dependents (application entry point). Largest project requires most thorough testing.
 
@@ -700,56 +700,56 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 **Package Dependencies**:
 | Package | Current Version | Target Version | Action |
 |---------|----------------|----------------|--------|
-| coverlet.collector | 6.0.4 | 6.0.4 | ? Compatible (no update needed) |
-| Microsoft.NET.Test.Sdk | 17.14.1 | 17.14.1 | ? Compatible (no update needed) |
-| MSTest.TestAdapter | 3.10.4 | 3.10.4 | ? Compatible (no update needed) |
-| MSTest.TestFramework | 3.10.4 | 3.10.4 | ? Compatible (no update needed) |
+| coverlet.collector | 6.0.4 | 6.0.4 | Compatible (no update needed) |
+| Microsoft.NET.Test.Sdk | 17.14.1 | 17.14.1 | Compatible (no update needed) |
+| MSTest.TestAdapter | 3.10.4 | 3.10.4 | Compatible (no update needed) |
+| MSTest.TestFramework | 3.10.4 | 3.10.4 | Compatible (no update needed) |
 
 **Migration Steps**:
 
 1. **Update Project File** (`RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj`)
-   ```xml
-   <!-- Change: -->
-   <TargetFramework>net9.0</TargetFramework>
-   <!-- To: -->
-   <TargetFramework>net10.0</TargetFramework>
-   ```
+ ```xml
+ <!-- Change: -->
+ <TargetFramework>net9.0</TargetFramework>
+ <!-- To: -->
+ <TargetFramework>net10.0</TargetFramework>
+ ```
 
 2. **Package Updates**
-   - No updates required (all test packages compatible with .NET 10)
+ - No updates required (all test packages compatible with .NET 10)
 
 3. **Expected Breaking Changes**
-   - **API Issues**: 0 (no behavioral changes detected in test project)
-   - **Expected Impact**: None - test frameworks stable
+ - **API Issues**: 0 (no behavioral changes detected in test project)
+ - **Expected Impact**: None - test frameworks stable
 
 4. **Code Modifications**
-   - No code changes expected
-   - Test assertions should work unchanged
-   - MSTest attributes (`[TestClass]`, `[TestMethod]`) unchanged
+ - No code changes expected
+ - Test assertions should work unchanged
+ - MSTest attributes (`[TestClass]`, `[TestMethod]`) unchanged
 
 5. **Testing Strategy**
-   - **Execute Test Suite**: 
-     ```
-     dotnet test RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj
-     ```
-   - **Expected Outcome**: All tests pass (validates Domain and PostmanImport projects)
-   - **Test Areas Covered**:
-     - `CompareRunner` total test count calculation
-     - Domain model integrity
-     - Postman import functionality
-   - **Failure Analysis**: If tests fail, distinguish:
-     - Real bugs introduced by .NET 10 changes
-     - Test expectations needing update for behavioral changes
-     - Issues in tested code (Domain, PostmanImport)
+ - **Execute Test Suite**: 
+ ```
+ dotnet test RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj
+ ```
+ - **Expected Outcome**: All tests pass (validates Domain and PostmanImport projects)
+ - **Test Areas Covered**:
+ - `CompareRunner` total test count calculation
+ - Domain model integrity
+ - Postman import functionality
+ - **Failure Analysis**: If tests fail, distinguish:
+ - Real bugs introduced by .NET 10 changes
+ - Test expectations needing update for behavioral changes
+ - Issues in tested code (Domain, PostmanImport)
 
 6. **Validation Checklist**
-   - [ ] Project targets `net10.0`
-   - [ ] Builds without errors
-   - [ ] Builds without warnings
-   - [ ] All tests execute (no discovery failures)
-   - [ ] All tests pass
-   - [ ] Test coverage maintained
-   - [ ] No new test infrastructure issues
+ - [ ] Project targets `net10.0`
+ - [ ] Builds without errors
+ - [ ] Builds without warnings
+ - [ ] All tests execute (no discovery failures)
+ - [ ] All tests pass
+ - [ ] Test coverage maintained
+ - [ ] No new test infrastructure issues
 
 **Dependencies Impact**: Depends on Domain and PostmanImport. No dependents (test project). Provides validation for foundation libraries.
 
@@ -768,17 +768,17 @@ All projects upgraded simultaneously (All-At-Once strategy). Details below provi
 ### Category-Specific Updates
 
 **Microsoft Extensions Packages** (Console app - 4 packages):
-- `Microsoft.Extensions.Hosting`: 9.0.9 ? 10.0.1 (host builder and DI)
-- `Microsoft.Extensions.Http`: 9.0.9 ? 10.0.1 (HttpClientFactory)
-- `System.Configuration.ConfigurationManager`: 9.0.9 ? 10.0.1 (configuration management)
-- `System.Text.Json`: 9.0.9 ? 10.0.1 (JSON serialization)
+- `Microsoft.Extensions.Hosting`: 9.0.9 -> 10.0.1 (host builder and DI)
+- `Microsoft.Extensions.Http`: 9.0.9 -> 10.0.1 (HttpClientFactory)
+- `System.Configuration.ConfigurationManager`: 9.0.9 -> 10.0.1 (configuration management)
+- `System.Text.Json`: 9.0.9 -> 10.0.1 (JSON serialization)
 
 **Services.HttpClientRunner** (2 packages):
-- `Microsoft.Extensions.Http`: 9.0.9 ? 10.0.1 (HttpClientFactory)
-- `Microsoft.Extensions.Logging.Abstractions`: 9.0.9 ? 10.0.1 (logging interfaces)
+- `Microsoft.Extensions.Http`: 9.0.9 -> 10.0.1 (HttpClientFactory)
+- `Microsoft.Extensions.Logging.Abstractions`: 9.0.9 -> 10.0.1 (logging interfaces)
 
 **RequestSpark.Web** (1 package update):
-- `System.Security.Cryptography.Xml`: 9.0.9 ? 10.0.1 (XML cryptography)
+- `System.Security.Cryptography.Xml`: 9.0.9 -> 10.0.1 (XML cryptography)
 
 ### Package Removals
 
@@ -835,16 +835,16 @@ All Microsoft.Extensions.* packages align at version **10.0.1** across the solut
 
 ### Overview
 
-**Total API Issues**: 137 behavioral changes across 4 projects  
-**Binary Incompatible**: 0  
-**Source Incompatible**: 0  
+**Total API Issues**: 137 behavioral changes across 4 projects 
+**Binary Incompatible**: 0 
+**Source Incompatible**: 0 
 **Behavioral Changes**: 137 (runtime behavior differences, no code changes required)
 
 ### Key Insight
 
-?? **No Breaking Changes Requiring Code Modifications**
+**No Breaking Changes Requiring Code Modifications**
 
-All 137 issues are **behavioral changes** � APIs that work differently at runtime but remain binary/source compatible. Code compiles unchanged; validation focuses on runtime behavior.
+All 137 issues are **behavioral changes** - APIs that work differently at runtime but remain binary/source compatible. Code compiles unchanged; validation focuses on runtime behavior.
 
 ### Behavioral Changes by Category
 
@@ -966,8 +966,8 @@ https://learn.microsoft.com/en-us/dotnet/core/compatibility/10.0
 **For Behavioral Changes**:
 1. **Automated Testing**: Run MSTest suite (RequestSpark.Domain.Tests)
 2. **Manual Smoke Tests**:
-   - Console app: Execute sample Postman collection, verify results
-   - Web app: Test UI navigation, API execution, result display
+ - Console app: Execute sample Postman collection, verify results
+ - Web app: Test UI navigation, API execution, result display
 3. **Comparison Testing**: Run same scenarios on .NET 9 and .NET 10, compare outputs
 4. **Monitoring**: Watch for unexpected behavior in production after deployment
 
@@ -1010,20 +1010,20 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 
 **Steps**:
 1. Restore NuGet packages:
-   ```
-   dotnet restore RequestSpark.sln
-   ```
-   
+ ```
+ dotnet restore RequestSpark.sln
+ ```
+ 
 2. Build entire solution:
-   ```
-   dotnet build RequestSpark.sln --configuration Release
-   ```
+ ```
+ dotnet build RequestSpark.sln --configuration Release
+ ```
 
 **Success Criteria**:
-- ? All 6 projects restore without errors
-- ? All 6 projects build without errors
-- ? Zero compilation errors
-- ?? Goal: Zero warnings (acceptable: warnings about deprecated packages)
+- All 6 projects restore without errors
+- All 6 projects build without errors
+- Zero compilation errors
+- Goal: Zero warnings (acceptable: warnings about deprecated packages)
 
 **Failure Response**:
 - Review compilation errors
@@ -1039,20 +1039,20 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 
 **Steps**:
 1. Run test project:
-   ```
-   dotnet test RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj --configuration Release
-   ```
+ ```
+ dotnet test RequestSpark.Domain.Tests\RequestSpark.Domain.Tests.csproj --configuration Release
+ ```
 
 2. Review test results:
-   - Total tests executed
-   - Passed count
-   - Failed count (with details)
-   - Skipped count
+ - Total tests executed
+ - Passed count
+ - Failed count (with details)
+ - Skipped count
 
 **Success Criteria**:
-- ? All tests execute (no discovery failures)
-- ? All tests pass
-- ? No new test failures vs. .NET 9 baseline
+- All tests execute (no discovery failures)
+- All tests pass
+- No new test failures vs. .NET 9 baseline
 
 **Test Coverage Areas**:
 - `CompareRunner` model calculations (GetTotalTestCount)
@@ -1062,9 +1062,9 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 **Failure Response**:
 - Analyze each failing test
 - Distinguish:
-  - Real bugs introduced by .NET 10 changes ? Fix implementation
-  - Test expectations needing update for behavioral changes ? Update test
-  - Test infrastructure issues ? Fix test setup
+ - Real bugs introduced by .NET 10 changes ? Fix implementation
+ - Test expectations needing update for behavioral changes ? Update test
+ - Test infrastructure issues ? Fix test setup
 - Rerun tests after fixes
 
 ---
@@ -1079,33 +1079,33 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 
 **Steps**:
 1. Navigate to console app:
-   ```
-   cd RequestSpark
-   ```
+ ```
+ cd RequestSpark
+ ```
 
 2. Run application:
-   ```
-   dotnet run --configuration Release
-   ```
+ ```
+ dotnet run --configuration Release
+ ```
 
 3. Observe execution:
-   - Postman collection import
-   - Request execution against instances
-   - Statistics calculation
-   - CSV output generation
-   - Console report display
+ - Postman collection import
+ - Request execution against instances
+ - Statistics calculation
+ - CSV output generation
+ - Console report display
 
 **Success Criteria**:
-- ? Application starts without exceptions
-- ? Collection imports successfully
-- ? Requests execute (100 iterations � instances � users � requests)
-- ? Statistics display correctly:
-  - Emoji indicators (? 2xx Success, ?? 4xx Client Error, ? 5xx Server Error)
-  - Performance metrics (P50, P75, P90, P95, P99, P99.9 percentiles)
-  - Breakdown by HTTP method, status code, instance, user
-- ? CSV output generated at `c:\test\RequestSpark.csv`
-- ? No unhandled exceptions
-- ? No unexpected errors in output
+- Application starts without exceptions
+- Collection imports successfully
+- Requests execute (100 iterations - instances - users - requests)
+- Statistics display correctly:
+ - Emoji indicators (? 2xx Success, ?? 4xx Client Error, ? 5xx Server Error)
+ - Performance metrics (P50, P75, P90, P95, P99, P99.9 percentiles)
+ - Breakdown by HTTP method, status code, instance, user
+- CSV output generated at `c:\test\RequestSpark.csv`
+- No unhandled exceptions
+- No unexpected errors in output
 
 **Test Scenarios**:
 1. **Basic execution**: Single instance, single user, simple GET requests
@@ -1135,74 +1135,74 @@ Testing strategy aligns with All-At-Once migration: comprehensive validation aft
 
 #### 4.1 Application Startup
 1. Run web application:
-   ```
-   cd RequestSpark.Web
-   dotnet run --configuration Release
-   ```
+ ```
+ cd RequestSpark.Web
+ dotnet run --configuration Release
+ ```
 
 2. Navigate to: `https://localhost:7001`
 
 3. Verify:
-   - Application starts without exceptions
-   - Home page loads (Bootswatch theme renders)
-   - No JavaScript errors in browser console
+ - Application starts without exceptions
+ - Home page loads (Bootswatch theme renders)
+ - No JavaScript errors in browser console
 
 #### 4.2 Razor Pages Validation
 Test key pages:
 
 1. **Home Page** (`/`)
-   - [ ] Page loads
-   - [ ] Bootswatch theme applied (navbar, buttons, colors)
-   - [ ] Navigation menu works
+ - [ ] Page loads
+ - [ ] Bootswatch theme applied (navbar, buttons, colors)
+ - [ ] Navigation menu works
 
 2. **Configuration Management** (`/Configuration/*`)
-   - [ ] List configurations page loads
-   - [ ] Create new configuration form works
-   - [ ] Edit configuration loads existing data
-   - [ ] Delete configuration removes entry
-   - [ ] Configuration saved to `~/Data/configurations/{guid}.json`
+ - [ ] List configurations page loads
+ - [ ] Create new configuration form works
+ - [ ] Edit configuration loads existing data
+ - [ ] Delete configuration removes entry
+ - [ ] Configuration saved to `~/Data/configurations/{guid}.json`
 
 3. **Collection Management** (`/Collection/*`)
-   - [ ] Import Postman collection page loads
-   - [ ] File upload works
-   - [ ] Collection parsed and displayed
-   - [ ] Collection saved to `~/Data/collections/{guid}.json`
+ - [ ] Import Postman collection page loads
+ - [ ] File upload works
+ - [ ] Collection parsed and displayed
+ - [ ] Collection saved to `~/Data/collections/{guid}.json`
 
 4. **Test Execution** (`/Runner/*`)
-   - [ ] Execute test page loads
-   - [ ] Configuration selection works
-   - [ ] Test execution starts
-   - [ ] Progress indication displays
-   - [ ] Results page shows statistics
+ - [ ] Execute test page loads
+ - [ ] Configuration selection works
+ - [ ] Test execution starts
+ - [ ] Progress indication displays
+ - [ ] Results page shows statistics
 
 5. **Results Display**
-   - [ ] Results table loads
-   - [ ] CSV export works (`~/Data/results/{guid}.csv`)
-   - [ ] Statistics formatted correctly
+ - [ ] Results table loads
+ - [ ] CSV export works (`~/Data/results/{guid}.csv`)
+ - [ ] Statistics formatted correctly
 
 #### 4.3 Minimal API Validation
 Test API endpoints (use Swagger UI or curl):
 
 1. **Health Check**:
-   ```
-   GET https://localhost:7001/api/status
-   ```
-   - [ ] Returns 200 OK
-   - [ ] JSON response with status
+ ```
+ GET https://localhost:7001/api/status
+ ```
+ - [ ] Returns 200 OK
+ - [ ] JSON response with status
 
 2. **Sample CRUD Operations**:
-   ```
-   GET https://localhost:7001/api/employees
-   GET https://localhost:7001/api/departments
-   ```
-   - [ ] Endpoints respond
-   - [ ] JSON data returned
+ ```
+ GET https://localhost:7001/api/employees
+ GET https://localhost:7001/api/departments
+ ```
+ - [ ] Endpoints respond
+ - [ ] JSON data returned
 
 3. **Swagger UI** (Development only):
-   - [ ] Navigate to `https://localhost:7001/docs`
-   - [ ] Swagger page loads
-   - [ ] API documentation displays
-   - [ ] "Try it out" functionality works
+ - [ ] Navigate to `https://localhost:7001/docs`
+ - [ ] Swagger page loads
+ - [ ] API documentation displays
+ - [ ] "Try it out" functionality works
 
 #### 4.4 File Storage Validation
 - [ ] `~/Data/configurations/` directory used
@@ -1212,14 +1212,14 @@ Test API endpoints (use Swagger UI or curl):
 - [ ] File locking handled correctly
 
 **Success Criteria**:
-- ? All Razor Pages render correctly
-- ? All forms submit and process data
-- ? Minimal APIs respond correctly
-- ? File storage reads/writes work
-- ? No exceptions in application logs
-- ? No JavaScript errors in browser console
-- ? Theme switching works (WebSpark.Bootswatch)
-- ? HTTP requests execute through IExecutionService
+- All Razor Pages render correctly
+- All forms submit and process data
+- Minimal APIs respond correctly
+- File storage reads/writes work
+- No exceptions in application logs
+- No JavaScript errors in browser console
+- Theme switching works (WebSpark.Bootswatch)
+- HTTP requests execute through IExecutionService
 
 **Failure Response**:
 - Check application logs for exceptions
@@ -1240,32 +1240,32 @@ Test API endpoints (use Swagger UI or curl):
 
 **Steps**:
 1. Build Docker image:
-   ```
-   cd RequestSpark.Web
-   docker build -t requestspark-web:net10 .
-   ```
+ ```
+ cd RequestSpark.Web
+ docker build -t requestspark-web:net10 .
+ ```
 
 2. Run container:
-   ```
-   docker run -d -p 8080:8080 --name requestspark-test requestspark-web:net10
-   ```
+ ```
+ docker run -d -p 8080:8080 --name requestspark-test requestspark-web:net10
+ ```
 
 3. Test application:
-   ```
-   curl http://localhost:8080/api/status
-   ```
+ ```
+ curl http://localhost:8080/api/status
+ ```
 
 4. Cleanup:
-   ```
-   docker stop requestspark-test
-   docker rm requestspark-test
-   ```
+ ```
+ docker stop requestspark-test
+ docker rm requestspark-test
+ ```
 
 **Success Criteria**:
-- ? Docker image builds successfully
-- ? Container starts without errors
-- ? Application accessible on port 8080
-- ? Health check endpoint responds
+- Docker image builds successfully
+- Container starts without errors
+- Application accessible on port 8080
+- Health check endpoint responds
 
 **Failure Response**:
 - If build fails: Verify Dockerfile references correct SDK/runtime versions
@@ -1284,9 +1284,9 @@ Test API endpoints (use Swagger UI or curl):
 3. Compare to .NET 9 baseline (if available)
 
 **Success Criteria**:
-- ? Execution time comparable (within 10% variance)
-- ? Memory usage acceptable
-- ? No unexpected performance degradation
+- Execution time comparable (within 10% variance)
+- Memory usage acceptable
+- No unexpected performance degradation
 
 **Metrics to Monitor**:
 - Total execution time
@@ -1300,12 +1300,12 @@ Test API endpoints (use Swagger UI or curl):
 
 | Level | Scope | Automation | Estimated Effort |
 |-------|-------|-----------|------------------|
-| 1. Build Validation | Solution-wide | ? Automated | ?? Minimal (< 5 min) |
-| 2. Automated Tests | Unit tests | ? Automated | ?? Low (5-10 min) |
-| 3. Console Smoke Test | End-to-end | ?? Manual | ?? Medium (15-30 min) |
-| 4. Web Smoke Test | UI + APIs | ?? Manual | ?? Medium (30-45 min) |
-| 5. Docker Validation | Containerization | ?? Manual (optional) | ?? Low (10-15 min) |
-| 6. Performance Check | Benchmarking | ?? Manual (optional) | ?? Low (10-15 min) |
+| 1. Build Validation | Solution-wide | Automated | Minimal (< 5 min) |
+| 2. Automated Tests | Unit tests | Automated | Low (5-10 min) |
+| 3. Console Smoke Test | End-to-end | Manual | Medium (15-30 min) |
+| 4. Web Smoke Test | UI + APIs | Manual | Medium (30-45 min) |
+| 5. Docker Validation | Containerization | Manual (optional) | Low (10-15 min) |
+| 6. Performance Check | Benchmarking | Manual (optional) | Low (10-15 min) |
 
 **Total Testing Effort**: ~1.5-2 hours (assuming no failures)
 
@@ -1317,26 +1317,26 @@ Test API endpoints (use Swagger UI or curl):
 
 **Behavioral Change Focus Areas**:
 1. **URI Parsing**:
-   - Test absolute vs. relative URLs
-   - Test URL template substitution
-   - Test query string handling
-   - Test special characters in URLs
+ - Test absolute vs. relative URLs
+ - Test URL template substitution
+ - Test query string handling
+ - Test special characters in URLs
 
 2. **HTTP Execution**:
-   - Test all HTTP verbs (GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS)
-   - Test request body serialization
-   - Test response body parsing
-   - Test different content types
+ - Test all HTTP verbs (GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS)
+ - Test request body serialization
+ - Test response body parsing
+ - Test different content types
 
 3. **Statistics**:
-   - Test percentile calculations (P50, P75, P90, P95, P99, P99.9)
-   - Test request/response hash generation
-   - Test status code categorization
+ - Test percentile calculations (P50, P75, P90, P95, P99, P99.9)
+ - Test request/response hash generation
+ - Test status code categorization
 
 4. **Dependency Injection**:
-   - Test HttpClientFactory resolution
-   - Test IExecuteRunner service injection
-   - Test IFileStorageService injection
+ - Test HttpClientFactory resolution
+ - Test IExecuteRunner service injection
+ - Test IFileStorageService injection
 
 **Comparison Testing**:
 If possible, run same scenarios on .NET 9 and .NET 10, compare:

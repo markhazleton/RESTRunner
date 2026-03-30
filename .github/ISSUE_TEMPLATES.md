@@ -24,8 +24,8 @@ MSTest v4 introduces enhanced code analyzers that provide 7 actionable suggestio
 ## Analyzer Warnings to Address
 
 ### 1. MSTEST0001: Configure Test Parallelization (1 instance)
-**Location**: Assembly level  
-**Current**: Tests run sequentially by default (no explicit configuration)  
+**Location**: Assembly level 
+**Current**: Tests run sequentially by default (no explicit configuration) 
 **Recommendation**: Add explicit parallelization configuration
 
 **Suggested Fix**:
@@ -98,18 +98,18 @@ Assert.IsNotNull(obj);
 
 ### Phase 2: Fix Assertion Argument Order (10-15 minutes)
 1. Open `StrongDictionaryTests.cs`
-   - Line 59: Swap arguments in `Assert.AreEqual`
-   - Line 72: Swap arguments in `Assert.AreEqual`
+ - Line 59: Swap arguments in `Assert.AreEqual`
+ - Line 72: Swap arguments in `Assert.AreEqual`
 2. Open `String_ExtensionsTests.cs`
-   - Line 55: Swap arguments in `Assert.AreEqual`
+ - Line 55: Swap arguments in `Assert.AreEqual`
 3. Run tests to verify all still pass
 4. Intentionally break a test to verify error message improvement
 
 ### Phase 3: Update to Specific Assertions (10-15 minutes)
 1. Open `StrongDictionaryTests.cs`
-   - Line 18: Replace `Assert.AreEqual(count, dict.Count)` with `Assert.HasCount(count, dict)`
-   - Line 100: Replace `Assert.AreNotEqual(null, obj)` with `Assert.IsNotNull(obj)`
-   - Line 110: Replace `Assert.AreNotEqual(null, obj)` with `Assert.IsNotNull(obj)`
+ - Line 18: Replace `Assert.AreEqual(count, dict.Count)` with `Assert.HasCount(count, dict)`
+ - Line 100: Replace `Assert.AreNotEqual(null, obj)` with `Assert.IsNotNull(obj)`
+ - Line 110: Replace `Assert.AreNotEqual(null, obj)` with `Assert.IsNotNull(obj)`
 2. Run tests to verify all still pass
 3. Review improved test readability
 
@@ -141,8 +141,8 @@ Assert.IsNotNull(obj);
 ---
 
 ## Estimated Effort
-**Total Time**: 30-60 minutes  
-**Complexity**: Low  
+**Total Time**: 30-60 minutes 
+**Complexity**: Low 
 **Risk**: Very Low (all tests currently passing)
 
 ---
@@ -209,20 +209,20 @@ using Microsoft.OpenApi.Models;
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "RequestSpark API", Version = "v1" });
-    c.TagActionsBy(api =>
-    {
-        var path = api.RelativePath?.ToLower();
-        if (path != null)
-        {
-            if (path.StartsWith("api/employees"))
-                return new[] { "Employee" };
-            if (path.StartsWith("api/departments"))
-                return new[] { "Department" };
-        }
-        return new[] { "Other" };
-    });
-    c.DocInclusionPredicate((name, api) => true);
+ c.SwaggerDoc("v1", new OpenApiInfo { Title = "RequestSpark API", Version = "v1" });
+ c.TagActionsBy(api =>
+ {
+ var path = api.RelativePath?.ToLower();
+ if (path != null)
+ {
+ if (path.StartsWith("api/employees"))
+ return new[] { "Employee" };
+ if (path.StartsWith("api/departments"))
+ return new[] { "Department" };
+ }
+ return new[] { "Other" };
+ });
+ c.DocInclusionPredicate((name, api) => true);
 });
 ```
 
@@ -232,22 +232,22 @@ builder.Services.AddSwaggerGen(c =>
 
 ### Tasks
 1. **Review Breaking Changes**
-   - [ ] Read Swashbuckle v10 release notes
-   - [ ] Review Microsoft.OpenApi v2.x migration guide
-   - [ ] Identify all affected code locations
-   - [ ] Document required API changes
+ - [ ] Read Swashbuckle v10 release notes
+ - [ ] Review Microsoft.OpenApi v2.x migration guide
+ - [ ] Identify all affected code locations
+ - [ ] Document required API changes
 
 2. **Analyze Current Usage**
-   - [ ] Audit all `Microsoft.OpenApi` usages in codebase
-   - [ ] Document current swagger configuration
-   - [ ] Identify custom swagger configurations
-   - [ ] Check for any swagger middleware customizations
+ - [ ] Audit all `Microsoft.OpenApi` usages in codebase
+ - [ ] Document current swagger configuration
+ - [ ] Identify custom swagger configurations
+ - [ ] Check for any swagger middleware customizations
 
 3. **Create Migration Plan**
-   - [ ] Document step-by-step upgrade approach
-   - [ ] Identify testing requirements
-   - [ ] Plan rollback strategy
-   - [ ] Estimate effort and timeline
+ - [ ] Document step-by-step upgrade approach
+ - [ ] Identify testing requirements
+ - [ ] Plan rollback strategy
+ - [ ] Estimate effort and timeline
 
 ---
 
@@ -261,22 +261,22 @@ builder.Services.AddSwaggerGen(c =>
 
 ### Phase 2: Code Refactoring (60-120 minutes)
 1. **Update using statements** in `Program.cs`
-   - Fix namespace references for Microsoft.OpenApi v2.x
-   - Update any deprecated imports
+ - Fix namespace references for Microsoft.OpenApi v2.x
+ - Update any deprecated imports
 
 2. **Refactor OpenApiInfo initialization**
-   - Update to Microsoft.OpenApi v2.x syntax
-   - Verify all properties are correctly set
+ - Update to Microsoft.OpenApi v2.x syntax
+ - Verify all properties are correctly set
 
 3. **Update Swagger configuration**
-   - Modernize `AddSwaggerGen` configuration
-   - Update `TagActionsBy` if API changed
-   - Update `DocInclusionPredicate` if API changed
-   - Verify custom configurations still work
+ - Modernize `AddSwaggerGen` configuration
+ - Update `TagActionsBy` if API changed
+ - Update `DocInclusionPredicate` if API changed
+ - Verify custom configurations still work
 
 4. **Update middleware configuration** (if needed)
-   - Review `UseSwagger()` and `UseSwaggerUI()` calls
-   - Update any custom middleware options
+ - Review `UseSwagger()` and `UseSwaggerUI()` calls
+ - Update any custom middleware options
 
 ### Phase 3: Testing & Validation (30-60 minutes)
 
@@ -382,8 +382,8 @@ builder.Services.AddSwaggerGen(c =>
 ---
 
 ## Estimated Effort
-**Total Time**: 2-4 hours  
-**Complexity**: Medium  
+**Total Time**: 2-4 hours 
+**Complexity**: Medium 
 **Risk**: Medium (breaking changes require code refactoring)
 
 ### Breakdown
@@ -404,7 +404,7 @@ If issues arise:
 cd RequestSpark.Web
 dotnet add package Swashbuckle.AspNetCore --version 9.0.4
 dotnet remove package Microsoft.OpenApi
-git checkout Program.cs  # Restore original
+git checkout Program.cs # Restore original
 ```
 
 2. **Verification**:
@@ -460,21 +460,21 @@ dotnet run
 ---
 
 ## Success Metrics
-- ? Zero compilation errors
-- ? Zero test failures
-- ? Swagger UI fully functional
-- ? All API documentation accurate
-- ? No performance regression
-- ? Code quality maintained or improved
+- Zero compilation errors
+- Zero test failures
+- Swagger UI fully functional
+- All API documentation accurate
+- No performance regression
+- Code quality maintained or improved
 
 ---
 
 ## Questions to Resolve During Research
-1. What are all the breaking changes in Microsoft.OpenApi v2.x?
-2. Are there any new Swashbuckle v10 features we should leverage?
-3. Does the TagActionsBy API still work the same way?
-4. Are there any performance improvements we can utilize?
-5. Should we update our swagger UI theme/styling?
+1. What are all the breaking changes in Microsoft.OpenApi v2.x
+2. Are there any new Swashbuckle v10 features we should leverage
+3. Does the TagActionsBy API still work the same way
+4. Are there any performance improvements we can utilize
+5. Should we update our swagger UI theme/styling
 
 ---
 

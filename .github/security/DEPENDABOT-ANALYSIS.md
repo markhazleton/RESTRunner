@@ -1,32 +1,32 @@
 # Dependabot Security Alerts - Analysis & Remediation Plan
 
-**Date**: 2025-12-23  
-**Repository**: RequestSpark  
+**Date**: 2025-12-23 
+**Repository**: RequestSpark 
 **Status**: 2 Open Alerts (1 High, 1 Medium)
 
 ---
 
-## ?? Executive Summary
+## Executive Summary
 
 Dependabot has identified **2 active security vulnerabilities** in npm dependencies used by the RequestSpark.Web project. Both vulnerabilities are in **transitive dependencies** (not directly specified in package.json) and affect development/build tools.
 
-**Critical Finding**: ? **Your .NET code is NOT affected** - vulnerabilities are in npm packages used for front-end asset management.
+**Critical Finding**: **Your .NET code is NOT affected** - vulnerabilities are in npm packages used for front-end asset management.
 
 ### Quick Status
 | Severity | Count | Status | Impact |
 |----------|-------|--------|--------|
-| **High** | 1 | ?? Open | Command injection in `glob` CLI |
-| **Medium** | 1 | ?? Open | Prototype pollution in `js-yaml` |
-| **Low** | 2 | ? Auto-dismissed | Regular expression DoS |
+| **High** | 1 | Open | Command injection in `glob` CLI |
+| **Medium** | 1 | Open | Prototype pollution in `js-yaml` |
+| **Low** | 2 | Auto-dismissed | Regular expression DoS |
 
 ---
 
-## ?? Open Alerts (2)
+## Open Alerts (2)
 
 ### Alert #7: High Severity - glob Command Injection
-**Status**: ?? **OPEN**  
-**Severity**: High (CVSS 7.5)  
-**Package**: `glob` (npm)  
+**Status**: **OPEN** 
+**Severity**: High (CVSS 7.5) 
+**Package**: `glob` (npm) 
 **CVE**: CVE-2025-64756
 
 #### Vulnerability Details
@@ -38,27 +38,27 @@ Dependabot has identified **2 active security vulnerabilities** in npm dependenc
 - **Scope**: Development only
 
 #### Impact Assessment for RequestSpark
-**Risk Level**: ?? **LOW to MEDIUM**
+**Risk Level**: **LOW to MEDIUM**
 
 **Why Low Risk?**
-1. ? **Transitive Dependency**: Not directly used in code
-2. ? **Development Scope**: Only used during npm build process
-3. ? **CLI-Specific**: Vulnerability only affects glob CLI tool, not library API
-4. ? **Limited Exposure**: No user input passed to glob CLI
+1. **Transitive Dependency**: Not directly used in code
+2. **Development Scope**: Only used during npm build process
+3. **CLI-Specific**: Vulnerability only affects glob CLI tool, not library API
+4. **Limited Exposure**: No user input passed to glob CLI
 
 **Exploitation Scenario**:
 - Attacker would need to control file paths in your development environment
 - Would require access to build system to inject malicious filenames
 - Does not affect runtime or production deployment
 
-**Recommendation**: ?? **Update, but not critical** - Fix during next maintenance window
+**Recommendation**: **Update, but not critical** - Fix during next maintenance window
 
 ---
 
 ### Alert #5: Medium Severity - js-yaml Prototype Pollution
-**Status**: ?? **OPEN**  
-**Severity**: Medium (CVSS 5.3)  
-**Package**: `js-yaml` (npm)  
+**Status**: **OPEN** 
+**Severity**: Medium (CVSS 5.3) 
+**Package**: `js-yaml` (npm) 
 **CVE**: CVE-2025-64718
 
 #### Vulnerability Details
@@ -70,38 +70,38 @@ Dependabot has identified **2 active security vulnerabilities** in npm dependenc
 - **Scope**: Development only
 
 #### Impact Assessment for RequestSpark
-**Risk Level**: ?? **LOW**
+**Risk Level**: **LOW**
 
 **Why Low Risk?**
-1. ? **Transitive Dependency**: Not directly used in code
-2. ? **Development Scope**: Only used during npm build process
-3. ? **No Untrusted YAML**: Your build process doesn't parse external YAML files
-4. ? **No Runtime Impact**: Not included in production bundle
+1. **Transitive Dependency**: Not directly used in code
+2. **Development Scope**: Only used during npm build process
+3. **No Untrusted YAML**: Your build process doesn't parse external YAML files
+4. **No Runtime Impact**: Not included in production bundle
 
 **Exploitation Scenario**:
 - Attacker would need to inject malicious YAML into build pipeline
 - Would require access to development environment or CI/CD
 - Does not affect runtime or end users
 
-**Recommendation**: ?? **Update for completeness** - Low priority
+**Recommendation**: **Update for completeness** - Low priority
 
 ---
 
-## ? Auto-Dismissed Alerts (2)
+## Auto-Dismissed Alerts (2)
 
 ### Alert #3: brace-expansion v1.x (Low Severity)
-**Status**: ? **AUTO-DISMISSED**  
+**Status**: **AUTO-DISMISSED** 
 **Reason**: Already patched or no longer in use
 
 ### Alert #2: brace-expansion v2.x (Low Severity)
-**Status**: ? **AUTO-DISMISSED**  
+**Status**: **AUTO-DISMISSED** 
 **Reason**: Already patched or no longer in use
 
 ---
 
-## ?? Root Cause Analysis
+## Root Cause Analysis
 
-### Where Do These Packages Come From?
+### Where Do These Packages Come From
 
 Your `RequestSpark.Web/package.json` only specifies:
 
@@ -119,27 +119,27 @@ Your `RequestSpark.Web/package.json` only specifies:
 - `glob` ? likely from `rimraf` or `copyfiles`
 - `js-yaml` ? likely from `eslint` or other dev tools
 
-### Why Are They There?
+### Why Are They There
 
 These packages are part of the npm ecosystem's dependency tree:
 ```
 RequestSpark.Web
-??? devDependencies
-    ??? rimraf@6.0.1
-    ?   ??? glob@^10.x.x or ^11.x.x (VULNERABLE)
-    ??? eslint@9.36.0
-        ??? ... 
-            ??? js-yaml@4.x.x (VULNERABLE)
++-- devDependencies
+ +-- rimraf@6.0.1
+ ? ??? glob@^10.x.x or ^11.x.x (VULNERABLE)
+ +-- eslint@9.36.0
+ +-- ... 
+ +-- js-yaml@4.x.x (VULNERABLE)
 ```
 
 ---
 
-## ??? Remediation Plan
+## Remediation Plan
 
 ### Option 1: Update npm Dependencies (Recommended ?)
 
-**Effort**: 5-10 minutes  
-**Risk**: Very Low  
+**Effort**: 5-10 minutes 
+**Risk**: Very Low 
 **Fixes**: Both alerts
 
 #### Steps:
@@ -198,10 +198,10 @@ If transitive dependencies are stubborn, use npm overrides in `package.json`:
 
 ```json
 {
-  "overrides": {
-    "glob": ">=11.1.0",
-    "js-yaml": ">=4.1.1"
-  }
+ "overrides": {
+ "glob": ">=11.1.0",
+ "js-yaml": ">=4.1.1"
+ }
 }
 ```
 
@@ -213,12 +213,12 @@ npm audit
 
 ---
 
-## ?? Recommended Action Plan
+## Recommended Action Plan
 
 ### Immediate (Within 1 week)
 
-**Priority**: ?? Medium  
-**Effort**: 10 minutes  
+**Priority**: ?? Medium 
+**Effort**: 10 minutes 
 **Branch**: `fix/npm-security-vulnerabilities`
 
 ```bash
@@ -248,7 +248,7 @@ git push origin fix/npm-security-vulnerabilities
 
 # 5. Create PR
 gh pr create --title "Fix npm security vulnerabilities" \
-  --body "Resolves Dependabot alerts #7 (glob) and #5 (js-yaml)"
+ --body "Resolves Dependabot alerts #7 (glob) and #5 (js-yaml)"
 ```
 
 ---
@@ -258,8 +258,8 @@ gh pr create --title "Fix npm security vulnerabilities" \
 After applying fixes:
 
 1. **Check Dependabot**:
-   - Visit: https://github.com/markhazleton/RequestSpark/security/dependabot
-   - Verify alerts auto-close after merge
+ - Visit: https://github.com/markhazleton/RequestSpark/security/dependabot
+ - Verify alerts auto-close after merge
 
 2. **Run npm audit**:
 ```bash
@@ -284,25 +284,25 @@ dotnet run --project RequestSpark.Web
 
 ---
 
-## ?? Impact Summary
+## Impact Summary
 
 ### Development Impact
-- ? **Build Process**: No changes expected
-- ? **Asset Pipeline**: Should work identically
-- ? **Developer Workflow**: Unchanged
+- **Build Process**: No changes expected
+- **Asset Pipeline**: Should work identically
+- **Developer Workflow**: Unchanged
 
 ### Production Impact
-- ? **Runtime**: Zero impact (vulnerabilities are in dev dependencies)
-- ? **Deployment**: No changes needed
-- ? **Performance**: No impact
+- **Runtime**: Zero impact (vulnerabilities are in dev dependencies)
+- **Deployment**: No changes needed
+- **Performance**: No impact
 
 ### Security Posture
-- ?? **Before Fix**: Low risk (dev-only vulnerabilities)
-- ?? **After Fix**: Clean security posture
+- **Before Fix**: Low risk (dev-only vulnerabilities)
+- **After Fix**: Clean security posture
 
 ---
 
-## ?? Long-Term Recommendations
+## Long-Term Recommendations
 
 ### 1. Enable Automated Dependency Updates
 
@@ -311,22 +311,22 @@ dotnet run --project RequestSpark.Web
 ```yaml
 version: 2
 updates:
-  # .NET NuGet packages
-  - package-ecosystem: "nuget"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
+ # .NET NuGet packages
+ - package-ecosystem: "nuget"
+ directory: "/"
+ schedule:
+ interval: "weekly"
+ open-pull-requests-limit: 5
 
-  # npm packages
-  - package-ecosystem: "npm"
-    directory: "/RequestSpark.Web"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
-    # Auto-merge dev dependency updates
-    allow:
-      - dependency-type: "development"
+ # npm packages
+ - package-ecosystem: "npm"
+ directory: "/RequestSpark.Web"
+ schedule:
+ interval: "weekly"
+ open-pull-requests-limit: 5
+ # Auto-merge dev dependency updates
+ allow:
+ - dependency-type: "development"
 ```
 
 ### 2. Regular Security Audits
@@ -338,20 +338,20 @@ Add to your CI/CD pipeline:
 name: Security Audit
 
 on:
-  schedule:
-    - cron: '0 0 * * 0'  # Weekly on Sunday
-  push:
-    branches: [main]
+ schedule:
+ - cron: '0 0 * * 0' # Weekly on Sunday
+ push:
+ branches: [main]
 
 jobs:
-  audit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - run: npm audit --prefix RequestSpark.Web
+ audit:
+ runs-on: ubuntu-latest
+ steps:
+ - uses: actions/checkout@v4
+ - uses: actions/setup-node@v4
+ with:
+ node-version: '20'
+ - run: npm audit --prefix RequestSpark.Web
 ```
 
 ### 3. Consider npm Alternatives
@@ -375,34 +375,34 @@ libman install jquery@3.7.1 --provider cdnjs --destination wwwroot/lib/jquery
 
 ---
 
-## ?? Comparison with .NET Dependencies
+## Comparison with .NET Dependencies
 
 ### Your .NET Packages (After .NET 10 Upgrade)
-- ? **93% at latest versions**
-- ? **Zero vulnerabilities**
-- ? **All critical packages updated**
+- **93% at latest versions**
+- **Zero vulnerabilities**
+- **All critical packages updated**
 
 ### Your npm Packages (Current)
-- ?? **2 known vulnerabilities** (transitive, dev-only)
-- ? **Direct dependencies secure** (Bootstrap, jQuery)
-- ?? **Requires one-time update**
+- **2 known vulnerabilities** (transitive, dev-only)
+- **Direct dependencies secure** (Bootstrap, jQuery)
+- **Requires one-time update**
 
 ---
 
-## ?? Decision Matrix
+## Decision Matrix
 
 | Action | Effort | Impact | Priority |
 |--------|--------|--------|----------|
-| **Run `npm audit fix`** | 5 min | High | ?? **DO THIS** |
-| Test build process | 5 min | High | ?? **DO THIS** |
-| Commit and push | 2 min | High | ?? **DO THIS** |
-| Configure Dependabot auto-updates | 10 min | Medium | ?? Recommended |
-| Add security audit to CI/CD | 15 min | Medium | ?? Recommended |
-| Consider LibMan alternative | 30 min | Low | ?? Optional |
+| **Run `npm audit fix`** | 5 min | High | **DO THIS** |
+| Test build process | 5 min | High | **DO THIS** |
+| Commit and push | 2 min | High | **DO THIS** |
+| Configure Dependabot auto-updates | 10 min | Medium | Recommended |
+| Add security audit to CI/CD | 15 min | Medium | Recommended |
+| Consider LibMan alternative | 30 min | Low | Optional |
 
 ---
 
-## ? Quick Fix Commands
+## Quick Fix Commands
 
 **Copy/paste these commands to fix immediately:**
 
@@ -440,7 +440,7 @@ gh pr create --title "Fix npm security vulnerabilities" --body "Fixes Dependabot
 
 ---
 
-## ?? Summary
+## Summary
 
 ### Current State
 - **Risk Level**: ?? Low to Medium (development-only vulnerabilities)
@@ -455,18 +455,18 @@ gh pr create --title "Fix npm security vulnerabilities" --body "Fixes Dependabot
 - **Risk**: Very low
 
 ### Expected Outcome
-- ? All Dependabot alerts resolved
-- ? 100% clean security audit
-- ? No functional changes
-- ? Continued .NET 10 excellence
+- All Dependabot alerts resolved
+- 100% clean security audit
+- No functional changes
+- Continued .NET 10 excellence
 
 ---
 
-**Your .NET 10 upgrade remains excellent** - these npm vulnerabilities are separate and easily fixed! ??
+**Your .NET 10 upgrade remains excellent** - these npm vulnerabilities are separate and easily fixed!
 
 ---
 
-**Generated**: 2025-12-23  
-**Repository**: https://github.com/markhazleton/RequestSpark  
+**Generated**: 2025-12-23 
+**Repository**: https://github.com/markhazleton/RequestSpark 
 **Dependabot**: https://github.com/markhazleton/RequestSpark/security/dependabot
 
