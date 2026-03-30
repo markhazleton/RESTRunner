@@ -1,0 +1,529 @@
+@model RequestSpark.Web.Models.ExecutionHistory
+@{
+    ViewData["Title"] = "Execution Results";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Execution Results</h1>
+        <div>
+            @if (!string.IsNullOrEmpty(Model.ResultsFilePath))
+            {
+                <a href="/api/execution/@Model.Id/download" class="btn btn-success">
+                    ?? Download CSV
+                </a>
+            }
+            <a href="/Execution" class="btn btn-outline-secondary">Back to History</a>
+        </div>
+    </div>
+
+    <!-- Execution Summary -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Execution Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Configuration</h6>
+                            <p>
+                                <strong>@Model.ConfigurationName</strong><br>
+                                <small class="text-muted">ID: @Model.ConfigurationId</small>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Status</h6>
+                            <p>
+                                @switch (Model.Status)
+                                {
+                                    case ExecutionStatus.Completed:
+                                        <span class="badge bg-success fs-6">? Completed</span>
+                                        break;
+                                    case ExecutionStatus.Failed:
+                                        <span class="badge bg-danger fs-6">? Failed</span>
+                                        break;
+                                    case ExecutionStatus.Cancelled:
+                                        <span class="badge bg-warning fs-6">?? Cancelled</span>
+                                        break;
+                                    default:
+                                        <span class="badge bg-secondary fs-6">@Model.Status</span>
+                                        break;
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <h6>Start Time</h6>
+                            <p>@Model.StartTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>End Time</h6>
+                            <p>
+                                @if (Model.EndTime.HasValue)
+                                {
+                                    @Model.EndTime.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Duration</h6>
+                            <p>
+                                @if (Model.Duration.HasValue)
+                                {
+                                    var duration = Model.Duration.Value;
+                                    if (duration.TotalHours >= 1)
+                                    {
+                                        @duration.ToString(@"hh\:mm\:ss")
+                                    }
+                                    else if (duration.TotalMinutes >= 1)
+                                    {
+                                        @duration.ToString(@"mm\:ss")
+                                    }
+                                    else
+                                    {
+                                        @($"{duration.TotalSeconds:F1}s")
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <h6>Executed By</h6>
+                            <p>@Model.ExecutedBy</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Definition Source</h6>
+                            @if (Model.SourceType != RequestSpark.Web.Models.ApiDefinitionType.None && !string.IsNullOrWhiteSpace(Model.SourceName))
+                            {
+                                <p>
+                                    <span class="badge bg-info me-2">@Model.SourceType</span>
+                                    @Model.SourceName
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Manual configuration</p>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                        @if (Model.Tags.Any())
+                        {
+                            <h6>Tags</h6>
+                            <p>
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <span class="badge bg-secondary me-1">@tag</span>
+                                }
+                            </p>
+                        }
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger mt-3" role="alert">
+                            <h6>Error</h6>
+                            <p class="mb-0">@Model.ErrorMessage</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats Card -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Quick Stats</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Statistics != null)
+                    {
+                        <div class="text-center mb-3">
+                            <div class="h2 text-primary">@Model.Statistics.TotalRequests</div>
+                            <small class="text-muted">Total Requests</small>
+                        </div>
+                        <hr>
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="h3 text-success">@Model.Statistics.SuccessfulRequests</div>
+                                <small class="text-muted">Successful</small>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="h3 text-danger">@Model.Statistics.FailedRequests</div>
+                                <small class="text-muted">Failed</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <div class="h3">@Model.Statistics.SuccessRate.ToString("F1")%</div>
+                            <small class="text-muted">Success Rate</small>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center text-muted">No statistics available</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Statistics != null)
+    {
+        <!-- Performance Metrics -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Performance Metrics</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.AverageResponseTime.ToString("F1")</div>
+                        <small class="text-muted">Average (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.MinResponseTime</div>
+                        <small class="text-muted">Min (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.MaxResponseTime</div>
+                        <small class="text-muted">Max (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.GetResponseTimePercentile(50)</div>
+                        <small class="text-muted">P50 (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.GetResponseTimePercentile(95)</div>
+                        <small class="text-muted">P95 (ms)</small>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="h4">@Model.Statistics.GetResponseTimePercentile(99)</div>
+                        <small class="text-muted">P99 (ms)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Requests by HTTP Method -->
+        @if (Model.Statistics.RequestsByMethod.Any())
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Requests by HTTP Method <small class="text-muted fw-normal">(click a row to drill down)</small></h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var method in Model.Statistics.RequestsByMethod.OrderByDescending(x => x.Value))
+                                {
+                                    var percentage = (method.Value / (double)Model.Statistics.TotalRequests) * 100;
+                                    <tr class="drilldown-row" role="button"
+                                        data-filter-type="verb" data-filter-value="@method.Key"
+                                        data-filter-label="Method: @method.Key" style="cursor:pointer">
+                                        <td><span class="badge bg-info">@method.Key</span></td>
+                                        <td>@method.Value</td>
+                                        <td>
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar" role="progressbar"
+                                                     style="width: @percentage.ToString("F1")%">
+                                                    @percentage.ToString("F1")%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Requests by Status Code -->
+        @if (Model.Statistics.RequestsByStatusCode.Any())
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Requests by Status Code <small class="text-muted fw-normal">(click a row to drill down)</small></h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Status Code</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var status in Model.Statistics.RequestsByStatusCode.OrderBy(x => x.Key))
+                                {
+                                    var percentage = (status.Value / (double)Model.Statistics.TotalRequests) * 100;
+                                    var badgeClass = status.Key.StartsWith("2") ? "bg-success" :
+                                                    status.Key.StartsWith("4") ? "bg-warning" :
+                                                    status.Key.StartsWith("5") ? "bg-danger" : "bg-secondary";
+                                    <tr class="drilldown-row" role="button"
+                                        data-filter-type="statusCode" data-filter-value="@status.Key"
+                                        data-filter-label="Status: @status.Key" style="cursor:pointer">
+                                        <td><span class="badge @badgeClass">@status.Key</span></td>
+                                        <td>@status.Value</td>
+                                        <td>
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar @(badgeClass.Replace("bg-", "bg-opacity-75 bg-"))"
+                                                     role="progressbar"
+                                                     style="width: @percentage.ToString("F1")%">
+                                                    @percentage.ToString("F1")%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Requests by Instance -->
+        @if (Model.Statistics.RequestsByInstance.Any())
+        {
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Requests by Instance <small class="text-muted fw-normal">(click a row to drill down)</small></h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Instance</th>
+                                    <th>Count</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var instance in Model.Statistics.RequestsByInstance.OrderByDescending(x => x.Value))
+                                {
+                                    var percentage = (instance.Value / (double)Model.Statistics.TotalRequests) * 100;
+                                    <tr class="drilldown-row" role="button"
+                                        data-filter-type="instance" data-filter-value="@instance.Key"
+                                        data-filter-label="Instance: @instance.Key" style="cursor:pointer">
+                                        <td>@instance.Key</td>
+                                        <td>@instance.Value</td>
+                                        <td>
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-primary" role="progressbar"
+                                                     style="width: @percentage.ToString("F1")%">
+                                                    @percentage.ToString("F1")%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <h5 class="text-muted">No statistics available for this execution</h5>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Drill-down detail modal -->
+<div class="modal fade" id="drilldownModal" tabindex="-1" aria-labelledby="drilldownModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="drilldownModalLabel">Request Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div id="ddLoading" class="text-center py-4">
+                    <div class="spinner-border" role="status"></div>
+                    <p class="mt-2 text-muted">Loading rows…</p>
+                </div>
+                <div id="ddError" class="alert alert-danger m-3 d-none"></div>
+                <div id="ddContent" class="d-none">
+                    <div class="d-flex align-items-center gap-3 px-3 pt-3 pb-2 border-bottom">
+                        <span class="text-muted small" id="ddRowCount"></span>
+                        <input type="text" class="form-control form-control-sm w-auto ms-auto"
+                               id="ddSearch" placeholder="Filter rows…" style="min-width:200px">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0" id="ddTable">
+                            <thead class="table-light sticky-top">
+                                <tr>
+                                    <th class="sortable" data-col="verb" style="cursor:pointer">Verb <span class="sort-icon">↕</span></th>
+                                    <th class="sortable" data-col="instance" style="cursor:pointer">Instance <span class="sort-icon">↕</span></th>
+                                    <th class="sortable" data-col="request" style="cursor:pointer">Request <span class="sort-icon">↕</span></th>
+                                    <th class="sortable" data-col="resultCode" style="cursor:pointer">Status <span class="sort-icon">↕</span></th>
+                                    <th class="sortable" data-col="duration" style="cursor:pointer">Duration (ms) <span class="sort-icon">↓</span></th>
+                                    <th class="sortable" data-col="userName" style="cursor:pointer">User <span class="sort-icon">↕</span></th>
+                                    <th class="sortable" data-col="lastRunDate" style="cursor:pointer">Date <span class="sort-icon">↕</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="ddTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span class="text-muted small me-auto" id="ddVisibleCount"></span>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    const executionId = '@Model.Id';
+    const modal = new bootstrap.Modal(document.getElementById('drilldownModal'));
+    let allRows = [];
+    let sortCol = 'duration';
+    let sortAsc = false;
+
+    // Status code → Bootstrap badge class
+    function badgeFor(code) {
+        if (!code) return 'bg-secondary';
+        if (code.startsWith('2')) return 'bg-success';
+        if (code.startsWith('4')) return 'bg-warning text-dark';
+        if (code.startsWith('5')) return 'bg-danger';
+        return 'bg-secondary';
+    }
+
+    function renderRows(rows) {
+        const tbody = document.getElementById('ddTbody');
+        const search = document.getElementById('ddSearch').value.toLowerCase();
+        const filtered = search
+            ? rows.filter(r =>
+                [r.verb, r.instance, r.request, r.resultCode, r.userName, r.statusDescription]
+                    .some(v => (v || '').toLowerCase().includes(search)))
+            : rows;
+
+        tbody.innerHTML = filtered.map(r => `
+            <tr class="${r.success ? '' : 'table-warning'}">
+                <td><span class="badge bg-info">${r.verb}</span></td>
+                <td>${r.instance}</td>
+                <td><code class="small">${r.request}</code></td>
+                <td><span class="badge ${badgeFor(r.resultCode)}">${r.resultCode}</span>
+                    <small class="text-muted ms-1">${r.statusDescription || ''}</small></td>
+                <td class="text-end fw-bold">${r.duration}</td>
+                <td>${r.userName}</td>
+                <td class="text-muted small">${r.lastRunDate}</td>
+            </tr>`).join('');
+
+        document.getElementById('ddVisibleCount').textContent =
+            `Showing ${filtered.length} of ${rows.length} rows`;
+    }
+
+    function sortRows(rows) {
+        return [...rows].sort((a, b) => {
+            let av = a[sortCol], bv = b[sortCol];
+            if (sortCol === 'duration') { av = Number(av); bv = Number(bv); }
+            else { av = String(av).toLowerCase(); bv = String(bv).toLowerCase(); }
+            if (av < bv) return sortAsc ? -1 : 1;
+            if (av > bv) return sortAsc ? 1 : -1;
+            return 0;
+        });
+    }
+
+    function updateSortIcons() {
+        document.querySelectorAll('#ddTable th.sortable').forEach(th => {
+            const icon = th.querySelector('.sort-icon');
+            if (th.dataset.col === sortCol) icon.textContent = sortAsc ? '↑' : '↓';
+            else icon.textContent = '↕';
+        });
+    }
+
+    async function openDrilldown(filterType, filterValue, filterLabel) {
+        document.getElementById('drilldownModalLabel').textContent = `Request Detail — ${filterLabel}`;
+        document.getElementById('ddLoading').classList.remove('d-none');
+        document.getElementById('ddError').classList.add('d-none');
+        document.getElementById('ddContent').classList.add('d-none');
+        document.getElementById('ddSearch').value = '';
+        modal.show();
+
+        try {
+            const params = new URLSearchParams({ [filterType]: filterValue });
+            const resp = await fetch(`/api/execution/${executionId}/results/rows?${params}`);
+            if (!resp.ok) throw new Error(`Server returned ${resp.status}`);
+            allRows = await resp.json();
+
+            document.getElementById('ddRowCount').textContent = `${allRows.length} rows`;
+            sortCol = 'duration'; sortAsc = false;
+            updateSortIcons();
+            renderRows(sortRows(allRows));
+
+            document.getElementById('ddLoading').classList.add('d-none');
+            document.getElementById('ddContent').classList.remove('d-none');
+        } catch (err) {
+            document.getElementById('ddLoading').classList.add('d-none');
+            const errEl = document.getElementById('ddError');
+            errEl.textContent = `Failed to load rows: ${err.message}`;
+            errEl.classList.remove('d-none');
+        }
+    }
+
+    // Click on any drilldown-row
+    document.addEventListener('click', e => {
+        const row = e.target.closest('.drilldown-row');
+        if (!row) return;
+        openDrilldown(row.dataset.filterType, row.dataset.filterValue, row.dataset.filterLabel);
+    });
+
+    // Column sort
+    document.querySelectorAll('#ddTable th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            if (sortCol === th.dataset.col) sortAsc = !sortAsc;
+            else { sortCol = th.dataset.col; sortAsc = sortCol !== 'duration'; }
+            updateSortIcons();
+            renderRows(sortRows(allRows));
+        });
+    });
+
+    // Search/filter
+    document.getElementById('ddSearch').addEventListener('input', () => renderRows(sortRows(allRows)));
+})();
+</script>
+}
+

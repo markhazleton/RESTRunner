@@ -1,0 +1,33 @@
+{
+  "id": "e78b9751-5f89-4dbb-ad14-bfcc879e6252",
+  "title": "UI Sample Spark API",
+  "description": "UI Sample Spark API",
+  "version": "v10",
+  "specFormat": "OpenAPI 3.0.4",
+  "fileName": "swagger.json",
+  "filePath": "C:\\GitHub\\MarkHazleton\\RequestSpark\\RequestSpark.Web\\Data\\openapi\\e78b9751-5f89-4dbb-ad14-bfcc879e6252_spec.json",
+  "fileSize": 13940,
+  "defaultBaseUrl": "https://samplecrud.markhazleton.com/",
+  "availableServers": [],
+  "endpointCount": 10,
+  "httpMethods": [
+    "GET",
+    "PUT",
+    "DELETE",
+    "POST"
+  ],
+  "apiTags": [
+    "DepartmentApi",
+    "EmployeeApi",
+    "Sitemap",
+    "Status"
+  ],
+  "userTags": [
+    "UISampleSpark"
+  ],
+  "securitySchemes": [],
+  "uploadedAt": "2026-03-15T20:41:15.8641784Z",
+  "uploadedBy": "System",
+  "isActive": true,
+  "contentHash": "opsQjjWqYcPmdP9o5Lw7cwMnLLvcUM7dQTvzHMUT4pI="
+}

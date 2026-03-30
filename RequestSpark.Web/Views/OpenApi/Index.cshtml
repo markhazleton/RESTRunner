@@ -1,0 +1,355 @@
+@model List<RequestSpark.Web.Models.OpenApiSpec>
+@{
+    ViewData["Title"] = "OpenAPI Specifications";
+}
+
+<div class="container-fluid">
+
+    <!-- ── Page header ──────────────────────────────────────────────────── -->
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <div>
+            <h1 class="h2 mb-1">OpenAPI Specifications</h1>
+            <p class="text-muted mb-0">Import, manage, and interactively test APIs described by the OpenAPI standard</p>
+        </div>
+        <a href="/OpenApi/Upload" class="btn btn-primary">+ Import Specification</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- ── What is OpenAPI? (collapsible) ───────────────────────────────── -->
+    <div class="card border-primary mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center"
+             style="cursor:pointer" data-bs-toggle="collapse" data-bs-target="#openapi-explainer">
+            <span class="fw-semibold text-primary">What is the OpenAPI Standard?</span>
+            <span class="text-muted small">Click to expand / collapse</span>
+        </div>
+        <div class="collapse show" id="openapi-explainer">
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <h6 class="fw-bold">The OpenAPI Specification (OAS)</h6>
+                        <p class="mb-2">
+                            OpenAPI is an open standard (originally called <strong>Swagger</strong>) that defines a machine-readable
+                            format for describing RESTful APIs. An OpenAPI document is a JSON or YAML file that completely
+                            describes an API &mdash; its endpoints, input parameters, request bodies, response shapes, authentication
+                            requirements, and more &mdash; without requiring access to source code or a running server.
+                        </p>
+                        <p class="mb-2">
+                            Think of it as a <strong>contract between an API provider and its consumers</strong>. When a team
+                            publishes an OpenAPI spec, developers can immediately understand how to call the API, what to send,
+                            and what to expect back, regardless of the language or framework used to build it.
+                        </p>
+                        <p class="mb-0 text-muted small">
+                            Maintained by the <a href="https://www.openapis.org/" target="_blank" rel="noopener">OpenAPI Initiative</a>,
+                            a Linux Foundation project. Current version is <strong>3.1</strong>.
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <h6 class="fw-bold">Key Concepts at a Glance</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered mb-0 small">
+                                <thead class="table-light">
+                                    <tr><th>Concept</th><th>What it means</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><code>info</code></td><td>Title, version, and description of the API</td></tr>
+                                    <tr><td><code>servers</code></td><td>Base URL(s) where the API is hosted</td></tr>
+                                    <tr><td><code>paths</code></td><td>All available routes, e.g. <code>/users/{id}</code></td></tr>
+                                    <tr><td><code>operations</code></td><td>HTTP methods on each path (GET, POST, PUT&hellip;)</td></tr>
+                                    <tr><td><code>parameters</code></td><td>Query strings, path variables, headers, cookies</td></tr>
+                                    <tr><td><code>requestBody</code></td><td>JSON (or other) payload sent with POST/PUT/PATCH</td></tr>
+                                    <tr><td><code>responses</code></td><td>Possible status codes and their response shapes</td></tr>
+                                    <tr><td><code>components</code></td><td>Reusable schemas, security schemes, examples</td></tr>
+                                    <tr><td><code>tags</code></td><td>Logical groups for organising related endpoints</td></tr>
+                                    <tr><td><code>security</code></td><td>Authentication requirements (Bearer, API key&hellip;)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-3">
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded h-100">
+                            <h6 class="fw-bold text-success mb-1">OpenAPI 3.x <span class="badge bg-success ms-1" style="font-size:.65rem">Current</span></h6>
+                            <p class="small mb-1">Released 2017. Uses a <code>servers</code> array for one or more base URLs. Separates
+                            request body from parameters. Supports rich component reuse via <code>$ref</code>.
+                            OpenAPI 3.1 (2021) adds full JSON Schema alignment and webhook support.</p>
+                            <div class="text-muted" style="font-size:.7rem">Root property: <code>"openapi": "3.0.3"</code></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded h-100">
+                            <h6 class="fw-bold text-info mb-1">Swagger 2.0 <span class="badge bg-secondary ms-1" style="font-size:.65rem">Legacy</span></h6>
+                            <p class="small mb-1">The original Swagger format (2014). Still widely used. Base URL is assembled from
+                            <code>host</code>, <code>basePath</code>, and <code>schemes</code> fields. Body parameters live
+                            alongside query/path parameters rather than a dedicated <code>requestBody</code>.</p>
+                            <div class="text-muted" style="font-size:.7rem">Root property: <code>"swagger": "2.0"</code></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 border rounded h-100">
+                            <h6 class="fw-bold mb-1">Why it matters</h6>
+                            <ul class="small mb-0">
+                                <li>Generate client SDKs in any language automatically</li>
+                                <li>Power interactive documentation (Swagger UI, Redoc)</li>
+                                <li>Drive contract testing and API governance</li>
+                                <li>Enable API gateways to validate requests &amp; responses</li>
+                                <li>Provide a single source of truth across teams</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Empty state ───────────────────────────────────────────────────── -->
+    @if (!Model.Any())
+    {
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card h-100">
+                    <div class="card-header fw-semibold">Get Started in 3 Steps</div>
+                    <div class="card-body">
+                        <div class="d-flex gap-3 mb-4">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0"
+                                 style="width:40px;height:40px;font-weight:700">1</div>
+                            <div>
+                                <h6 class="mb-1">Obtain your OpenAPI specification file</h6>
+                                <p class="text-muted small mb-0">
+                                    Most modern APIs publish their spec automatically.
+                                    Look for a <code>/swagger.json</code>, <code>/openapi.json</code>, or <code>/api-docs</code>
+                                    endpoint on your API server. ASP.NET Core apps expose theirs at
+                                    <code>/swagger/v1/swagger.json</code> when Swagger is enabled.
+                                    You can also export from Postman (Collection &rarr; Export &rarr; OpenAPI 3.0)
+                                    or hand-write one using any text editor.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 mb-4">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0"
+                                 style="width:40px;height:40px;font-weight:700">2</div>
+                            <div>
+                                <h6 class="mb-1">Import the spec into RequestSpark</h6>
+                                <p class="text-muted small mb-0">
+                                    Click <strong>Import Specification</strong> above, drag your JSON file onto the upload zone,
+                                    and RequestSpark will automatically parse the spec &mdash; discovering endpoints, tags, servers,
+                                    parameters, and security schemes. You can override the base URL before saving.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 mb-0">
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0"
+                                 style="width:40px;height:40px;font-weight:700">3</div>
+                            <div>
+                                <h6 class="mb-1">Test your API interactively</h6>
+                                <p class="text-muted small mb-0">
+                                    Open the <strong>Test Runner</strong> for your spec. Browse endpoints grouped by tag, fill in
+                                    parameters (path variables, query strings, headers), configure authentication, and send live
+                                    HTTP requests &mdash; all from the browser. Responses are displayed with JSON syntax highlighting,
+                                    status-code colour coding, and response-time metrics.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="/OpenApi/Upload" class="btn btn-primary">Import Your First Specification</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card mb-3">
+                    <div class="card-header fw-semibold">Minimal OpenAPI 3.0 Example</div>
+                    <div class="card-body p-0">
+                        <pre class="p-3 mb-0 small" style="font-size:.75rem;background:var(--bs-tertiary-bg)"><code>{
+  <span style="color:#9cdcfe">"openapi"</span>: <span style="color:#ce9178">"3.0.3"</span>,
+  <span style="color:#9cdcfe">"info"</span>: {
+    <span style="color:#9cdcfe">"title"</span>: <span style="color:#ce9178">"Petstore API"</span>,
+    <span style="color:#9cdcfe">"version"</span>: <span style="color:#ce9178">"1.0.0"</span>
+  },
+  <span style="color:#9cdcfe">"servers"</span>: [
+    { <span style="color:#9cdcfe">"url"</span>: <span style="color:#ce9178">"https://api.petstore.com/v1"</span> }
+  ],
+  <span style="color:#9cdcfe">"paths"</span>: {
+    <span style="color:#9cdcfe">"/pets"</span>: {
+      <span style="color:#9cdcfe">"get"</span>: {
+        <span style="color:#9cdcfe">"summary"</span>: <span style="color:#ce9178">"List all pets"</span>,
+        <span style="color:#9cdcfe">"tags"</span>: [<span style="color:#ce9178">"Pets"</span>],
+        <span style="color:#9cdcfe">"responses"</span>: {
+          <span style="color:#9cdcfe">"200"</span>: { <span style="color:#9cdcfe">"description"</span>: <span style="color:#ce9178">"OK"</span> }
+        }
+      }
+    },
+    <span style="color:#9cdcfe">"/pets/{petId}"</span>: {
+      <span style="color:#9cdcfe">"get"</span>: {
+        <span style="color:#9cdcfe">"summary"</span>: <span style="color:#ce9178">"Get a pet by ID"</span>,
+        <span style="color:#9cdcfe">"tags"</span>: [<span style="color:#ce9178">"Pets"</span>],
+        <span style="color:#9cdcfe">"parameters"</span>: [{
+          <span style="color:#9cdcfe">"name"</span>: <span style="color:#ce9178">"petId"</span>,
+          <span style="color:#9cdcfe">"in"</span>: <span style="color:#ce9178">"path"</span>,
+          <span style="color:#9cdcfe">"required"</span>: <span style="color:#569cd6">true</span>,
+          <span style="color:#9cdcfe">"schema"</span>: { <span style="color:#9cdcfe">"type"</span>: <span style="color:#ce9178">"integer"</span> }
+        }],
+        <span style="color:#9cdcfe">"responses"</span>: {
+          <span style="color:#9cdcfe">"200"</span>: { <span style="color:#9cdcfe">"description"</span>: <span style="color:#ce9178">"OK"</span> },
+          <span style="color:#9cdcfe">"404"</span>: { <span style="color:#9cdcfe">"description"</span>: <span style="color:#ce9178">"Not found"</span> }
+        }
+      }
+    }
+  }
+}</code></pre>
+                    </div>
+                </div>
+                <div class="card border-info">
+                    <div class="card-body small">
+                        <strong class="d-block mb-1">Public OpenAPI specs to try</strong>
+                        <ul class="mb-0 text-muted">
+                            <li>Petstore (official sample) &mdash; <code>petstore3.swagger.io</code></li>
+                            <li>GitHub REST API &mdash; <code>github.com/github/rest-api-description</code></li>
+                            <li>NASA APIs &mdash; <code>api.nasa.gov</code></li>
+                            <li>Any ASP.NET Core app with Swagger enabled</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- ── Stats bar ──────────────────────────────────────────────── -->
+        <div class="row g-3 mb-4">
+            <div class="col-sm-3">
+                <div class="card border-0 bg-primary text-white text-center py-3">
+                    <div class="h3 mb-0">@Model.Count</div>
+                    <small>Specifications</small>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card border-0 bg-success text-white text-center py-3">
+                    <div class="h3 mb-0">@Model.Sum(s => s.EndpointCount)</div>
+                    <small>Total Endpoints</small>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card border-0 bg-info text-white text-center py-3">
+                    <div class="h3 mb-0">@Model.Count(s => s.IsActive)</div>
+                    <small>Active</small>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card border-0 bg-secondary text-white text-center py-3">
+                    <div class="h3 mb-0">@Model.SelectMany(s => s.HttpMethods).Distinct().Count()</div>
+                    <small>HTTP Methods Used</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Spec cards ─────────────────────────────────────────────── -->
+        <div class="row g-3">
+            @foreach (var spec in Model)
+            {
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card h-100 @(spec.IsActive ? "" : "border-secondary opacity-75")">
+                        <div class="card-header d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="mb-0">@spec.Title</h6>
+                                <small class="text-muted">API version @spec.Version</small>
+                            </div>
+                            <div class="d-flex gap-1 flex-wrap justify-content-end">
+                                <span class="badge @(spec.IsActive ? "bg-success" : "bg-secondary")">@(spec.IsActive ? "Active" : "Inactive")</span>
+                                <span class="badge bg-light text-dark border" title="Specification format">@spec.SpecFormat</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @if (!string.IsNullOrEmpty(spec.Description))
+                            {
+                                <p class="text-muted small mb-2">
+                                    @(spec.Description.Length > 120 ? spec.Description[..120] + "…" : spec.Description)
+                                </p>
+                            }
+
+                            <div class="row text-center mb-3 border rounded py-2">
+                                <div class="col-4" title="Number of operations (method + path combinations) in the spec">
+                                    <div class="fw-bold text-primary">@spec.EndpointCount</div>
+                                    <small class="text-muted">Endpoints</small>
+                                </div>
+                                <div class="col-4 border-start border-end" title="Logical tag groups organising the endpoints">
+                                    <div class="fw-bold text-success">@spec.ApiTags.Count</div>
+                                    <small class="text-muted">Tag Groups</small>
+                                </div>
+                                <div class="col-4" title="Security schemes declared in the spec (Bearer, API Key, etc.)">
+                                    <div class="fw-bold text-info">@spec.SecuritySchemes.Count</div>
+                                    <small class="text-muted">Auth Schemes</small>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                @foreach (var m in spec.HttpMethods.OrderBy(x => x))
+                                {
+                                    <span class="badge me-1 @MethodBadge(m)" title="@MethodDesc(m)">@m</span>
+                                }
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(spec.DefaultBaseUrl))
+                            {
+                                <div class="text-truncate" title="Default base URL for testing">
+                                    <small class="text-muted"><code>@spec.DefaultBaseUrl</code></small>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex gap-1 flex-wrap">
+                                <a href="/OpenApi/Test/@spec.Id" class="btn btn-primary btn-sm">Test</a>
+                                <a href="/OpenApi/Details/@spec.Id" class="btn btn-outline-secondary btn-sm">Details</a>
+                                <a href="/OpenApi/Edit/@spec.Id" class="btn btn-outline-secondary btn-sm">Edit</a>
+                                <a href="/OpenApi/Download/@spec.Id" class="btn btn-outline-secondary btn-sm">Download</a>
+                                <a href="/OpenApi/Delete/@spec.Id" class="btn btn-outline-danger btn-sm ms-auto">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@functions {
+    string MethodBadge(string method) => method.ToUpper() switch
+    {
+        "GET" => "bg-success",
+        "POST" => "bg-primary",
+        "PUT" => "bg-warning text-dark",
+        "PATCH" => "bg-info text-dark",
+        "DELETE" => "bg-danger",
+        _ => "bg-secondary"
+    };
+
+    string MethodDesc(string method) => method.ToUpper() switch
+    {
+        "GET" => "GET — Read / retrieve a resource",
+        "POST" => "POST — Create a new resource",
+        "PUT" => "PUT — Replace a resource entirely",
+        "PATCH" => "PATCH — Partially update a resource",
+        "DELETE" => "DELETE — Remove a resource",
+        "HEAD" => "HEAD — Retrieve headers only, no body",
+        "OPTIONS" => "OPTIONS — Query supported HTTP methods",
+        _ => method
+    };
+}
+

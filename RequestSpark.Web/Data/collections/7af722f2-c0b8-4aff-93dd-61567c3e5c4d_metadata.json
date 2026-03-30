@@ -1,0 +1,21 @@
+{
+  "id": "7af722f2-c0b8-4aff-93dd-61567c3e5c4d",
+  "name": "websparkportal--v1",
+  "fileName": "websparkportal--v1.json",
+  "filePath": "C:\\GitHub\\MarkHazleton\\RequestSpark\\RequestSpark.Web\\Data\\collections\\7af722f2-c0b8-4aff-93dd-61567c3e5c4d_collection.json",
+  "description": "WebSpark API",
+  "postmanId": null,
+  "schemaVersion": null,
+  "requestCount": 0,
+  "uploadedAt": "2026-03-15T19:02:35.2495957Z",
+  "uploadedBy": "System",
+  "tags": [
+    "api",
+    "webspark"
+  ],
+  "fileSize": 42977,
+  "isActive": true,
+  "contentHash": "ME3XIggy8cGIbC2HLk1KcxperMZ67h32qwy/dBvFRyo=",
+  "environmentVariables": [],
+  "httpMethods": []
+}

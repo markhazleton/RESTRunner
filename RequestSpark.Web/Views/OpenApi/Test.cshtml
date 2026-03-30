@@ -1,0 +1,799 @@
+@model RequestSpark.Web.Models.ViewModels.OpenApiDetailsViewModel
+@{
+    ViewData["Title"] = "Test — " + Model.Spec.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* ─── Layout ─────────────────────────────────────────── */
+    #test-layout { display: flex; height: calc(100vh - 120px); gap: 0; overflow: hidden; }
+
+    /* ─── Sidebar ─────────────────────────────────────────── */
+    #sidebar { width: 300px; min-width: 220px; max-width: 380px; display: flex; flex-direction: column;
+               border-right: 1px solid var(--bs-border-color); overflow: hidden; }
+    #sidebar-header { padding: .75rem; border-bottom: 1px solid var(--bs-border-color); flex-shrink: 0; }
+    #endpoint-list { flex: 1; overflow-y: auto; }
+    .tag-group-header { padding: .4rem .75rem; font-size: .75rem; font-weight: 700; text-transform: uppercase;
+                        letter-spacing: .06em; color: var(--bs-secondary-color);
+                        background: var(--bs-tertiary-bg); border-bottom: 1px solid var(--bs-border-color); cursor: pointer; }
+    .tag-group-header:hover { background: var(--bs-secondary-bg); }
+    .endpoint-item { display: flex; align-items: center; gap: .4rem; padding: .45rem .75rem;
+                     cursor: pointer; border-bottom: 1px solid var(--bs-border-color);
+                     transition: background .15s; }
+    .endpoint-item:hover { background: var(--bs-secondary-bg); }
+    .endpoint-item.active { background: rgba(13,110,253,.1); border-left: 3px solid #0d6efd; }
+    .endpoint-item .ep-path { font-family: monospace; font-size: .78rem; flex: 1; overflow: hidden;
+                              text-overflow: ellipsis; white-space: nowrap; }
+    .ep-deprecated { opacity: .5; text-decoration: line-through; }
+
+    /* ─── Method badges ──────────────────────────────────── */
+    .badge-method { display: inline-block; min-width: 52px; text-align: center;
+                    padding: .18em .45em; border-radius: .25rem; font-size: .7rem;
+                    font-weight: 700; font-family: monospace; text-transform: uppercase; }
+    .m-GET    { background:#198754; color:#fff; }
+    .m-POST   { background:#0d6efd; color:#fff; }
+    .m-PUT    { background:#ffc107; color:#000; }
+    .m-PATCH  { background:#0dcaf0; color:#000; }
+    .m-DELETE { background:#dc3545; color:#fff; }
+    .m-HEAD   { background:#6c757d; color:#fff; }
+    .m-OPTIONS{ background:#6c757d; color:#fff; }
+
+    /* ─── Main panel ─────────────────────────────────────── */
+    #main-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    #main-header { padding: 1rem; border-bottom: 1px solid var(--bs-border-color); flex-shrink: 0; }
+    #main-body { flex: 1; overflow-y: auto; padding: 1rem; }
+
+    /* ─── Response panel ─────────────────────────────────── */
+    #response-panel { border-top: 1px solid var(--bs-border-color); flex-shrink: 0; }
+    #response-panel.collapsed { max-height: 40px; }
+    #response-toggle { cursor: pointer; user-select: none; }
+    .status-badge { font-size: 1rem; font-weight: 700; padding: .3rem .7rem; border-radius: .4rem; }
+    .status-2xx { background: #d1e7dd; color: #0a3622; }
+    .status-3xx { background: #cfe2ff; color: #084298; }
+    .status-4xx { background: #fff3cd; color: #664d03; }
+    .status-5xx, .status-err { background: #f8d7da; color: #842029; }
+    pre#response-body { max-height: 350px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+                        background: var(--bs-tertiary-bg); border-radius: .4rem; padding: .75rem;
+                        font-size: .8rem; }
+
+    /* ─── Param table ────────────────────────────────────── */
+    .param-row label { font-size: .82rem; font-weight: 600; }
+    .param-row .param-loc { font-size: .7rem; }
+    .param-required { color: var(--bs-danger); }
+
+    /* ─── Auth bar ──────────────────────────────────────── */
+    #auth-bar { background: var(--bs-tertiary-bg); border-radius: .5rem; padding: .75rem 1rem; }
+
+    /* ─── Empty state ────────────────────────────────────── */
+    #empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center;
+                   height: 100%; color: var(--bs-secondary-color); }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+        <h5 class="mb-0">@Model.Spec.Title <small class="text-muted fw-normal">/ Interactive Test Runner</small></h5>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-outline-info btn-sm" data-bs-toggle="collapse" data-bs-target="#runner-guide">
+            ? How to use
+        </button>
+        <a href="/OpenApi/Details/@Model.Spec.Id" class="btn btn-outline-secondary btn-sm">Details</a>
+        <a href="/OpenApi" class="btn btn-outline-secondary btn-sm">All Specs</a>
+    </div>
+</div>
+
+<!-- ── How-to guide (collapsible) ──────────────────────────────────────────── -->
+<div class="collapse mb-2" id="runner-guide">
+    <div class="card border-info">
+        <div class="card-body py-3">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-info mb-2">1 — Configure the environment</h6>
+                    <p class="small mb-2">
+                        Set the <strong>Base URL</strong> to the server you want to test against.
+                        This is the root address to which all endpoint paths will be appended.
+                        For example, setting <code>https://api.example.com</code> and selecting
+                        <code>GET /users</code> will call <code>https://api.example.com/users</code>.
+                    </p>
+                    <p class="small mb-0">
+                        If the spec declares multiple servers (production, staging, sandbox) you can
+                        paste any of them here. Your setting is remembered while you stay on the page.
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-info mb-2">2 — Select an endpoint &amp; fill parameters</h6>
+                    <p class="small mb-2">
+                        Click any endpoint in the left panel. The form on the right will show all parameters
+                        declared in the spec for that operation:
+                    </p>
+                    <ul class="small mb-0">
+                        <li><strong>path</strong> — replaces the <code>{placeholder}</code> in the URL</li>
+                        <li><strong>query</strong> — appended as <code>?key=value</code></li>
+                        <li><strong>header</strong> — sent as an HTTP request header</li>
+                        <li>Parameters marked <span class="text-danger">*</span> are <strong>required</strong></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold text-info mb-2">3 — Auth, Send &amp; inspect the response</h6>
+                    <p class="small mb-2">
+                        Choose your authentication method from the <strong>Auth</strong> dropdown.
+                        Credentials are saved per-spec in your browser's local storage so you don't
+                        have to re-enter them each time.
+                    </p>
+                    <p class="small mb-1">
+                        Click <strong>Send</strong>. The request is made server-side by RequestSpark
+                        (not directly from your browser) so there are no CORS restrictions.
+                    </p>
+                    <p class="small mb-0">
+                        The <strong>Response</strong> panel shows the HTTP status code, latency,
+                        response headers, and a syntax-highlighted JSON body.
+                    </p>
+                </div>
+            </div>
+
+            <hr class="my-2">
+
+            <div class="row g-3 small text-muted">
+                <div class="col-md-3">
+                    <strong class="d-block text-body mb-1">Auth — Bearer Token</strong>
+                    A JSON Web Token (JWT) or opaque token sent in the <code>Authorization: Bearer &lt;token&gt;</code>
+                    header. The most common modern API auth method.
+                </div>
+                <div class="col-md-3">
+                    <strong class="d-block text-body mb-1">Auth — API Key</strong>
+                    A shared secret string passed in a custom header (e.g. <code>X-API-Key</code>)
+                    or as a query parameter. Simpler than OAuth; common in public APIs.
+                </div>
+                <div class="col-md-3">
+                    <strong class="d-block text-body mb-1">Auth — Basic Auth</strong>
+                    Username and password encoded as Base64 in the <code>Authorization: Basic &lt;encoded&gt;</code>
+                    header. Straightforward but must be used over HTTPS only.
+                </div>
+                <div class="col-md-3">
+                    <strong class="d-block text-body mb-1">HTTP Status Codes</strong>
+                    <span class="badge bg-success">2xx</span> Success &nbsp;
+                    <span class="badge bg-info text-dark">3xx</span> Redirect &nbsp;
+                    <span class="badge bg-warning text-dark">4xx</span> Client error &nbsp;
+                    <span class="badge bg-danger">5xx</span> Server error
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="test-layout">
+    <!-- ─── SIDEBAR ─────────────────────────────────────────────────────── -->
+    <div id="sidebar">
+        <div id="sidebar-header">
+            <input type="text" id="ep-search" class="form-control form-control-sm" placeholder="Search endpoints…">
+            <div class="d-flex gap-1 mt-2 flex-wrap" id="method-filters">
+                @foreach (var m in Model.Spec.HttpMethods.OrderBy(x => x))
+                {
+                    <button class="btn btn-sm py-0 px-1 filter-btn active badge-method m-@m"
+                            data-method="@m" title="Toggle @m">@m</button>
+                }
+            </div>
+        </div>
+        <div id="endpoint-list">
+            @foreach (var group in Model.Structure.TagGroups)
+            {
+                <div class="tag-group" data-group="@group.Name">
+                    <div class="tag-group-header" onclick="toggleGroup(this)">
+                        @group.Name <span class="text-muted float-end">@group.Endpoints.Count</span>
+                    </div>
+                    <div class="group-endpoints">
+                        @foreach (var ep in group.Endpoints)
+                        {
+                            <div class="endpoint-item @(ep.IsDeprecated ? "ep-deprecated" : "")"
+                                 data-path="@ep.Path"
+                                 data-method="@ep.Method"
+                                 data-key="@ep.UniqueKey"
+                                 onclick="selectEndpoint(this)">
+                                <span class="badge-method m-@ep.Method">@ep.Method</span>
+                                <span class="ep-path" title="@ep.Path">@ep.Path</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- ─── MAIN PANEL ──────────────────────────────────────────────────── -->
+    <div id="main-panel">
+        <!-- Header: URL bar + Execute -->
+        <div id="main-header">
+            <!-- Auth + base URL row -->
+            <div id="auth-bar" class="mb-2">
+                <div class="row g-2 align-items-end">
+                    <div class="col-sm-4">
+                        <label class="form-label mb-1 small fw-semibold">Base URL</label>
+                        <input type="text" id="base-url" class="form-control form-control-sm font-monospace"
+                               value="@Model.Spec.DefaultBaseUrl"
+                               placeholder="https://api.example.com">
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="form-label mb-1 small fw-semibold">
+                            Authentication
+                            <span id="auth-hint" class="text-muted fw-normal" style="font-size:.7rem"></span>
+                        </label>
+                        <select id="auth-type" class="form-select form-select-sm" onchange="updateAuthUI()">
+                            <option value="none"    data-hint="">None — open / public endpoint</option>
+                            <option value="bearer"  data-hint="— JWT or token in Authorization header">Bearer Token</option>
+                            <option value="apikey"  data-hint="— shared key in a header or query param">API Key</option>
+                            <option value="basic"   data-hint="— Base64 username:password (HTTPS only)">Basic Auth</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-5" id="auth-fields">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Endpoint path bar -->
+            <div class="d-flex align-items-center gap-2" id="url-bar">
+                <span id="method-display" class="badge-method m-GET fs-6 py-2 px-3">GET</span>
+                <input type="text" id="path-display" class="form-control font-monospace"
+                       placeholder="← Select an endpoint from the list"
+                       readonly style="background:var(--bs-tertiary-bg)">
+                <button class="btn btn-primary px-4" id="execute-btn" onclick="executeRequest()" disabled>
+                    Send
+                </button>
+            </div>
+            <div id="full-url-preview" class="small text-muted mt-1 font-monospace ms-1"></div>
+        </div>
+
+        <!-- Body: parameters + request body + response -->
+        <div id="main-body">
+            <div id="empty-state">
+                <div style="font-size:4rem">{ }</div>
+                <p class="mt-2 fw-semibold">Select an endpoint from the left panel to begin testing</p>
+                <div class="text-start mt-3" style="max-width:460px">
+                    <p class="small text-muted mb-2">
+                        <strong>Endpoints</strong> are the individual operations your API exposes.
+                        Each is a combination of an <strong>HTTP method</strong> (GET, POST, PUT&hellip;)
+                        and a <strong>path</strong> (e.g. <code>/users/{id}</code>).
+                        The path can contain curly-brace placeholders called <em>path parameters</em>
+                        that you fill in before sending the request.
+                    </p>
+                    <p class="small text-muted mb-2">
+                        Endpoints are grouped into <strong>tags</strong> in the left panel &mdash;
+                        click a tag header to expand or collapse its group.
+                        Use the search box and the method toggle buttons to quickly find what you need.
+                    </p>
+                    <p class="small text-muted mb-0">
+                        Not sure where to start? Click <strong>? How to use</strong> in the top-right
+                        for a step-by-step walkthrough.
+                    </p>
+                </div>
+            </div>
+
+            <div id="endpoint-form" class="d-none">
+                <!-- Summary -->
+                <div class="mb-3" id="ep-summary-block">
+                    <h6 id="ep-summary" class="mb-0"></h6>
+                    <small class="text-muted" id="ep-description"></small>
+                    <div id="ep-deprecated-badge" class="d-none mt-1">
+                        <span class="badge bg-secondary">deprecated</span>
+                    </div>
+                </div>
+
+                <!-- Parameters -->
+                <div id="params-section" class="d-none mb-4">
+                    <div class="d-flex align-items-baseline gap-2 border-bottom pb-1 mb-3">
+                        <h6 class="mb-0">Parameters</h6>
+                        <small class="text-muted">
+                            <span class="text-danger fw-semibold">*</span> required &nbsp;·&nbsp;
+                            <code>path</code> replaces <code>{placeholder}</code> in the URL &nbsp;·&nbsp;
+                            <code>query</code> appended as <code>?key=value</code> &nbsp;·&nbsp;
+                            <code>header</code> sent as HTTP header
+                        </small>
+                    </div>
+                    <div id="params-container"></div>
+                </div>
+
+                <!-- Headers -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 border-bottom pb-1 flex-grow-1 me-2">Custom Headers</h6>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="addHeaderRow()">+ Add</button>
+                    </div>
+                    <div id="headers-container"></div>
+                </div>
+
+                <!-- Request body -->
+                <div id="body-section" class="d-none mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0">Request Body</h6>
+                        <div class="d-flex gap-1">
+                            <span id="body-content-type" class="badge bg-light text-dark border"></span>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="loadBodyExample()" id="load-example-btn">Load Example</button>
+                        </div>
+                    </div>
+                    <div id="body-schema-hint" class="small text-muted mb-1"></div>
+                    <textarea id="request-body" class="form-control font-monospace"
+                              rows="8" placeholder='{ "key": "value" }'
+                              oninput="updateUrlPreview()"></textarea>
+                </div>
+            </div>
+
+            <!-- Response -->
+            <div id="response-section" class="d-none">
+                <div id="response-panel" class="mt-2 border rounded">
+                    <div class="d-flex justify-content-between align-items-center p-2 border-bottom" id="response-toggle" onclick="toggleResponse()">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="fw-semibold small">Response</span>
+                            <span class="status-badge" id="status-badge"></span>
+                            <span class="text-muted small" id="response-time"></span>
+                            <a class="small text-muted text-decoration-none" id="request-url-link" target="_blank" title="Open URL in new tab"></a>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary py-0" onclick="copyResponse(event)">Copy</button>
+                            <span class="small text-muted" id="panel-toggle-icon">&#9650;</span>
+                        </div>
+                    </div>
+                    <div id="response-body-wrapper">
+                        <ul class="nav nav-tabs nav-sm px-2 pt-2" id="resp-tabs">
+                            <li class="nav-item"><a class="nav-link active" data-target="resp-body" onclick="switchRespTab(this,'resp-body')">Body</a></li>
+                            <li class="nav-item"><a class="nav-link" data-target="resp-headers" onclick="switchRespTab(this,'resp-headers')">Headers</a></li>
+                        </ul>
+                        <div id="resp-body-pane" class="p-2">
+                            <pre id="response-body" class="mb-0"></pre>
+                        </div>
+                        <div id="resp-headers-pane" class="p-2 d-none">
+                            <table class="table table-sm table-bordered mb-0 small font-monospace">
+                                <tbody id="response-headers-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ─── State ────────────────────────────────────────────────────────────────────
+const SPEC_ID = '@Model.Spec.Id';
+let currentEndpoint = null;
+let endpointData = {};   // keyed by UniqueKey = "METHOD:path"
+let responseCollapsed = false;
+
+// ─── Load endpoint data from embedded structure ───────────────────────────────
+(function buildEndpointData() {
+    @{
+        var endpointsJs = System.Text.Json.JsonSerializer.Serialize(
+            Model.Structure.AllEndpoints.Select(e => new {
+                path = e.Path,
+                method = e.Method,
+                operationId = e.OperationId,
+                summary = e.Summary,
+                description = e.Description,
+                isDeprecated = e.IsDeprecated,
+                tags = e.Tags,
+                parameters = e.Parameters.Select(p => new {
+                    name = p.Name,
+                    @in = p.In,
+                    required = p.Required,
+                    type = p.Type,
+                    format = p.Format,
+                    description = p.Description,
+                    defaultValue = p.DefaultValue,
+                    example = p.Example,
+                    enumValues = p.EnumValues
+                }),
+                requestBody = e.RequestBody == null ? null : new {
+                    description = e.RequestBody.Description,
+                    required = e.RequestBody.Required,
+                    contentType = e.RequestBody.ContentType,
+                    exampleJson = e.RequestBody.ExampleJson,
+                    schemaJson = e.RequestBody.SchemaJson
+                },
+                responses = e.Responses,
+                uniqueKey = e.UniqueKey,
+                hasBody = e.HasBody
+            }),
+            new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }
+        );
+    }
+    const list = @Html.Raw(endpointsJs);
+    list.forEach(ep => { endpointData[ep.uniqueKey] = ep; });
+})();
+
+// ─── Sidebar search + filter ───────────────────────────────────────────────────
+document.getElementById('ep-search').addEventListener('input', filterEndpoints);
+document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', function () {
+    this.classList.toggle('active');
+    this.style.opacity = this.classList.contains('active') ? '1' : '0.35';
+    filterEndpoints();
+}));
+
+function filterEndpoints() {
+    const q = document.getElementById('ep-search').value.toLowerCase();
+    const activeMethods = new Set([...document.querySelectorAll('.filter-btn.active')].map(b => b.dataset.method));
+    document.querySelectorAll('.endpoint-item').forEach(item => {
+        const path = item.dataset.path.toLowerCase();
+        const method = item.dataset.method;
+        const vis = (!q || path.includes(q)) && activeMethods.has(method);
+        item.style.display = vis ? '' : 'none';
+    });
+    document.querySelectorAll('.tag-group').forEach(group => {
+        const any = [...group.querySelectorAll('.endpoint-item')].some(i => i.style.display !== 'none');
+        group.style.display = any ? '' : 'none';
+    });
+}
+
+function toggleGroup(header) {
+    const body = header.nextElementSibling;
+    body.style.display = body.style.display === 'none' ? '' : 'none';
+}
+
+// ─── Endpoint selection ────────────────────────────────────────────────────────
+function selectEndpoint(el) {
+    document.querySelectorAll('.endpoint-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+
+    const key = el.dataset.key;
+    currentEndpoint = endpointData[key];
+    if (!currentEndpoint) return;
+
+    document.getElementById('method-display').textContent = currentEndpoint.method;
+    document.getElementById('method-display').className = `badge-method m-${currentEndpoint.method} fs-6 py-2 px-3`;
+    document.getElementById('path-display').value = currentEndpoint.path;
+    document.getElementById('execute-btn').disabled = false;
+
+    document.getElementById('empty-state').classList.add('d-none');
+    document.getElementById('endpoint-form').classList.remove('d-none');
+    document.getElementById('response-section').classList.add('d-none');
+
+    // Summary
+    document.getElementById('ep-summary').textContent = currentEndpoint.summary || currentEndpoint.path;
+    document.getElementById('ep-description').textContent = currentEndpoint.description || '';
+    document.getElementById('ep-deprecated-badge').classList.toggle('d-none', !currentEndpoint.isDeprecated);
+
+    renderParams(currentEndpoint.parameters);
+    renderBody(currentEndpoint);
+    updateUrlPreview();
+}
+
+// ─── Parameter rendering ───────────────────────────────────────────────────────
+function renderParams(params) {
+    const section = document.getElementById('params-section');
+    const container = document.getElementById('params-container');
+    container.innerHTML = '';
+
+    if (!params || params.length === 0) { section.classList.add('d-none'); return; }
+    section.classList.remove('d-none');
+
+    // Group by location
+    const groups = { path: [], query: [], header: [], cookie: [] };
+    params.forEach(p => { (groups[p.in] = groups[p.in] || []).push(p); });
+
+    ['path', 'query', 'header', 'cookie'].forEach(loc => {
+        const ps = groups[loc];
+        if (!ps || ps.length === 0) return;
+
+        const groupHtml = `<div class="mb-3"><div class="small text-uppercase text-muted fw-semibold mb-1">${loc} parameters</div>
+            ${ps.map(p => paramRow(p, loc)).join('')}</div>`;
+        container.insertAdjacentHTML('beforeend', groupHtml);
+    });
+
+    container.querySelectorAll('input,select').forEach(el => el.addEventListener('input', updateUrlPreview));
+}
+
+function paramRow(p, loc) {
+    const id = `param_${loc}_${p.name}`;
+    const req = p.required ? '<span class="param-required ms-1" title="Required">*</span>' : '';
+    const hint = p.description ? `<div class="form-text">${esc(p.description)}${p.enumValues?.length ? ' — values: ' + p.enumValues.map(esc).join(', ') : ''}</div>` : '';
+
+    let input;
+    if (p.enumValues && p.enumValues.length > 0) {
+        const opts = p.enumValues.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+        input = `<select id="${id}" class="form-select form-select-sm param-input"
+                    data-param-name="${esc(p.name)}" data-param-in="${loc}">
+                    <option value="">-- select --</option>${opts}</select>`;
+    } else {
+        input = `<input type="text" id="${id}" class="form-control form-control-sm param-input font-monospace"
+                    data-param-name="${esc(p.name)}" data-param-in="${loc}"
+                    placeholder="${p.example || p.defaultValue || p.type || ''}"
+                    value="${esc(p.defaultValue || '')}">`;
+    }
+
+    return `<div class="row align-items-center mb-2 param-row">
+        <div class="col-sm-4">
+            <label class="form-label mb-0" for="${id}">${esc(p.name)}${req}</label>
+            <div class="param-loc text-muted">${loc} · ${p.type}${p.format ? ' (' + p.format + ')' : ''}</div>
+        </div>
+        <div class="col-sm-8">${input}${hint}</div>
+    </div>`;
+}
+
+// ─── Request body ──────────────────────────────────────────────────────────────
+function renderBody(ep) {
+    const section = document.getElementById('body-section');
+    const textarea = document.getElementById('request-body');
+    const ctBadge = document.getElementById('body-content-type');
+    const schemaHint = document.getElementById('body-schema-hint');
+
+    if (!ep.hasBody || !ep.requestBody) { section.classList.add('d-none'); return; }
+    section.classList.remove('d-none');
+
+    ctBadge.textContent = ep.requestBody.contentType || 'application/json';
+    textarea.value = ep.requestBody.exampleJson || '';
+    schemaHint.textContent = ep.requestBody.description ? '📋 ' + ep.requestBody.description : '';
+
+    document.getElementById('load-example-btn').dataset.exampleJson = ep.requestBody.exampleJson || '';
+}
+
+function loadBodyExample() {
+    const val = document.getElementById('load-example-btn').dataset.exampleJson;
+    if (val) { document.getElementById('request-body').value = val; updateUrlPreview(); }
+}
+
+// ─── Headers table ─────────────────────────────────────────────────────────────
+function addHeaderRow(name = '', value = '') {
+    const cont = document.getElementById('headers-container');
+    const div = document.createElement('div');
+    div.className = 'd-flex gap-1 mb-1 header-row';
+    div.innerHTML = `<input type="text" class="form-control form-control-sm font-monospace header-name" placeholder="Header-Name" value="${esc(name)}">
+        <input type="text" class="form-control form-control-sm font-monospace header-value" placeholder="value" value="${esc(value)}">
+        <button class="btn btn-outline-secondary btn-sm" onclick="this.parentElement.remove()">&#x2715;</button>`;
+    cont.appendChild(div);
+}
+
+// ─── URL preview ───────────────────────────────────────────────────────────────
+function updateUrlPreview() {
+    if (!currentEndpoint) return;
+    const base = document.getElementById('base-url').value.trim().replace(/\/$/, '');
+    let path = currentEndpoint.path;
+
+    // Substitute path params
+    document.querySelectorAll('.param-input[data-param-in="path"]').forEach(el => {
+        if (el.value) path = path.replace(`{${el.dataset.paramName}}`, encodeURIComponent(el.value));
+    });
+
+    // Build query string
+    const queryParts = [];
+    document.querySelectorAll('.param-input[data-param-in="query"]').forEach(el => {
+        if (el.value) queryParts.push(`${el.dataset.paramName}=${encodeURIComponent(el.value)}`);
+    });
+
+    const qs = queryParts.length ? '?' + queryParts.join('&') : '';
+    const full = `${base}${path}${qs}`;
+    const el = document.getElementById('full-url-preview');
+    el.textContent = full;
+    el.title = full;
+}
+document.getElementById('base-url').addEventListener('input', updateUrlPreview);
+
+// ─── Auth UI ───────────────────────────────────────────────────────────────────
+function updateAuthUI() {
+    const type = document.getElementById('auth-type').value;
+    const container = document.getElementById('auth-fields');
+    const sel = document.getElementById('auth-type');
+    const hint = document.getElementById('auth-hint');
+    if (hint && sel.options[sel.selectedIndex]) {
+        hint.textContent = sel.options[sel.selectedIndex].dataset.hint || '';
+    }
+
+    const saved = JSON.parse(localStorage.getItem('oa_auth_' + SPEC_ID) || '{}');
+
+    switch (type) {
+        case 'bearer':
+            container.innerHTML = `<label class="form-label mb-1 small fw-semibold">Bearer Token</label>
+                <input type="text" id="auth-bearer" class="form-control form-control-sm font-monospace"
+                    placeholder="eyJ..." value="${esc(saved.bearer || '')}">`;
+            document.getElementById('auth-bearer').addEventListener('input', saveAuth);
+            break;
+        case 'apikey':
+            container.innerHTML = `<div class="row g-1">
+                <div class="col-5"><input type="text" id="auth-apikey-header" class="form-control form-control-sm"
+                    placeholder="Header name" value="${esc(saved.apikeyHeader || 'X-API-Key')}"></div>
+                <div class="col-7"><input type="text" id="auth-apikey-val" class="form-control form-control-sm font-monospace"
+                    placeholder="key value" value="${esc(saved.apikeyVal || '')}"></div></div>`;
+            container.querySelectorAll('input').forEach(i => i.addEventListener('input', saveAuth));
+            break;
+        case 'basic':
+            container.innerHTML = `<div class="row g-1">
+                <div class="col-5"><input type="text" id="auth-basic-user" class="form-control form-control-sm"
+                    placeholder="username" value="${esc(saved.basicUser || '')}"></div>
+                <div class="col-7"><input type="password" id="auth-basic-pass" class="form-control form-control-sm"
+                    placeholder="password" value="${esc(saved.basicPass || '')}"></div></div>`;
+            container.querySelectorAll('input').forEach(i => i.addEventListener('input', saveAuth));
+            break;
+        default:
+            container.innerHTML = '';
+    }
+}
+
+function saveAuth() {
+    const type = document.getElementById('auth-type').value;
+    const data = {};
+    if (type === 'bearer') data.bearer = document.getElementById('auth-bearer')?.value || '';
+    if (type === 'apikey') {
+        data.apikeyHeader = document.getElementById('auth-apikey-header')?.value || '';
+        data.apikeyVal = document.getElementById('auth-apikey-val')?.value || '';
+    }
+    if (type === 'basic') {
+        data.basicUser = document.getElementById('auth-basic-user')?.value || '';
+        data.basicPass = document.getElementById('auth-basic-pass')?.value || '';
+    }
+    localStorage.setItem('oa_auth_' + SPEC_ID, JSON.stringify(data));
+}
+
+// Restore auth from localStorage
+(function restoreAuth() {
+    const saved = JSON.parse(localStorage.getItem('oa_auth_' + SPEC_ID) || '{}');
+    if (saved.bearer) { document.getElementById('auth-type').value = 'bearer'; updateAuthUI(); }
+    else if (saved.apikeyVal) { document.getElementById('auth-type').value = 'apikey'; updateAuthUI(); }
+    else if (saved.basicUser) { document.getElementById('auth-type').value = 'basic'; updateAuthUI(); }
+})();
+
+// ─── Execute ───────────────────────────────────────────────────────────────────
+async function executeRequest() {
+    if (!currentEndpoint) return;
+
+    const btn = document.getElementById('execute-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Sending…';
+
+    const base = document.getElementById('base-url').value.trim();
+    const authType = document.getElementById('auth-type').value;
+    const saved = JSON.parse(localStorage.getItem('oa_auth_' + SPEC_ID) || '{}');
+
+    // Collect path params
+    const pathParams = {};
+    document.querySelectorAll('.param-input[data-param-in="path"]').forEach(el => {
+        if (el.value) pathParams[el.dataset.paramName] = el.value;
+    });
+
+    // Collect query params
+    const queryParams = {};
+    document.querySelectorAll('.param-input[data-param-in="query"]').forEach(el => {
+        if (el.value) queryParams[el.dataset.paramName] = el.value;
+    });
+
+    // Collect header params from param section
+    const headers = {};
+    document.querySelectorAll('.param-input[data-param-in="header"]').forEach(el => {
+        if (el.value) headers[el.dataset.paramName] = el.value;
+    });
+
+    // Custom header rows
+    document.querySelectorAll('.header-row').forEach(row => {
+        const k = row.querySelector('.header-name').value.trim();
+        const v = row.querySelector('.header-value').value.trim();
+        if (k && v) headers[k] = v;
+    });
+
+    const body = document.getElementById('request-body')?.value || null;
+
+    const payload = {
+        baseUrl: base,
+        path: currentEndpoint.path,
+        method: currentEndpoint.method,
+        pathParams,
+        queryParams,
+        headers,
+        body: body && body.trim() ? body.trim() : null,
+        authType,
+        bearerToken: saved.bearer || null,
+        apiKeyHeader: saved.apikeyHeader || null,
+        apiKeyValue: saved.apikeyVal || null,
+        basicUsername: saved.basicUser || null,
+        basicPassword: saved.basicPass || null
+    };
+
+    try {
+        const resp = await fetch(`/api/openapi/${SPEC_ID}/execute`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const result = await resp.json();
+        renderResponse(result);
+    } catch (err) {
+        renderResponse({ success: false, statusCode: 0, statusText: 'Network Error', errorMessage: err.message, responseTimeMs: 0, requestUrl: base + currentEndpoint.path });
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Send';
+    }
+}
+
+// ─── Response rendering ────────────────────────────────────────────────────────
+function renderResponse(result) {
+    document.getElementById('response-section').classList.remove('d-none');
+    responseCollapsed = false;
+    document.getElementById('response-body-wrapper').style.display = '';
+    document.getElementById('panel-toggle-icon').innerHTML = '&#9650;';
+
+    const badge = document.getElementById('status-badge');
+    const code = result.statusCode;
+    badge.textContent = code ? `${code} ${result.statusText}` : result.statusText;
+    badge.className = 'status-badge ' + (
+        code >= 200 && code < 300 ? 'status-2xx' :
+        code >= 300 && code < 400 ? 'status-3xx' :
+        code >= 400 && code < 500 ? 'status-4xx' :
+        code >= 500 ? 'status-5xx' : 'status-err'
+    );
+
+    document.getElementById('response-time').textContent = result.responseTimeMs ? `${result.responseTimeMs} ms` : '';
+
+    const urlLink = document.getElementById('request-url-link');
+    urlLink.textContent = truncate(result.requestUrl, 60);
+    urlLink.href = result.requestUrl;
+    urlLink.title = result.requestUrl;
+
+    // Body
+    const bodyEl = document.getElementById('response-body');
+    let bodyContent = result.errorMessage || result.responseBody || '';
+    if (bodyContent) {
+        try {
+            bodyContent = JSON.stringify(JSON.parse(bodyContent), null, 2);
+        } catch (_) {}
+    }
+    bodyEl.textContent = bodyContent || '(empty)';
+    coloriseJson(bodyEl);
+
+    // Headers
+    const headersTable = document.getElementById('response-headers-table');
+    headersTable.innerHTML = '';
+    if (result.responseHeaders) {
+        Object.entries(result.responseHeaders).forEach(([k, v]) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td class="text-nowrap pe-3 fw-semibold">${esc(k)}</td><td class="text-break">${esc(v)}</td>`;
+            headersTable.appendChild(tr);
+        });
+    }
+
+    // Scroll response into view
+    document.getElementById('response-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function toggleResponse() {
+    responseCollapsed = !responseCollapsed;
+    document.getElementById('response-body-wrapper').style.display = responseCollapsed ? 'none' : '';
+    document.getElementById('panel-toggle-icon').innerHTML = responseCollapsed ? '&#9660;' : '&#9650;';
+}
+
+function switchRespTab(el, target) {
+    document.querySelectorAll('#resp-tabs .nav-link').forEach(l => l.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('resp-body-pane').classList.toggle('d-none', target !== 'resp-body');
+    document.getElementById('resp-headers-pane').classList.toggle('d-none', target !== 'resp-headers');
+}
+
+function copyResponse(e) {
+    e.stopPropagation();
+    const text = document.getElementById('response-body').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = e.target;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 1500);
+    });
+}
+
+// ─── Helpers ───────────────────────────────────────────────────────────────────
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function truncate(s, n) { return s && s.length > n ? s.substring(0, n) + '…' : (s || ''); }
+
+function coloriseJson(el) {
+    const text = el.textContent;
+    try {
+        JSON.parse(text); // only highlight valid JSON
+        el.innerHTML = text.replace(
+            /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+\.?\d*([eE][+\-]?\d+)?)/g,
+            function (match) {
+                let cls = 'color:#ce9178'; // string
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) cls = 'color:#9cdcfe'; // key
+                } else if (/true|false/.test(match)) cls = 'color:#569cd6';
+                else if (/null/.test(match)) cls = 'color:#569cd6';
+                else cls = 'color:#b5cea8'; // number
+                return `<span style="${cls}">${match}</span>`;
+            }
+        );
+    } catch (_) {}
+}
+</script>
+
