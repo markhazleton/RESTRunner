@@ -13,7 +13,7 @@
 
 **⚠️ CRITICAL**: No setup or implementation work can begin until this phase is complete.
 
-- [ ] T001 Verify constitution alignment for layering, testing impact, logging impact, documentation impact, and input-validation impact in `.documentation/specs/001-rebrand-requestspark/plan.md`, `.documentation/specs/001-rebrand-requestspark/spec.md`, and `.documentation/specs/001-rebrand-requestspark/tasks.md`
+- [ ] T001 Manually verify that the principles outlined in `.documentation/memory/constitution.md` are upheld by the artifacts: `.documentation/specs/001-rebrand-requestspark/plan.md`, `.documentation/specs/001-rebrand-requestspark/spec.md`, and `.documentation/specs/001-rebrand-requestspark/tasks.md`
 
 ---
 

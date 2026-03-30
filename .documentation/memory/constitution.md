@@ -69,7 +69,7 @@ shows partial adoption rather than universal enforcement.
 
 ## Engineering Standards
 
-- File-backed JSON storage under RESTRunner.Web/Data is the default persistence
+- File-backed JSON storage under RequestSpark.Web/Data is the default persistence
 	model unless a plan explicitly introduces another store.
 - Shared execution statistics MUST remain thread-safe and continue using safe
 	concurrency primitives such as Interlocked, ConcurrentDictionary, and

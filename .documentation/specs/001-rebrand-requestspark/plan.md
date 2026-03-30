@@ -12,7 +12,7 @@ Rebrand the full first-party RESTRunner solution to RequestSpark with a clean, i
 ## Technical Context
 
 **Language/Version**: C# on .NET 10.0; npm-managed web assets; PowerShell automation  
-**Primary Dependencies**: ASP.NET Core MVC and minimal APIs, MSTest v4, Swashbuckle.AspNetCore, Newtonsoft.Json, WebSpark.Bootswatch, WebSpark.HttpClientUtility, FileHelpers  
+**Primary Dependencies**: ASP.NET Core MVC and minimal APIs, MSTest v4, Swashbuckle.AspNetCore, Newtonsoft.Json, WebSpark.Bootswatch, WebSpark.HttpClientUtility  
 **Storage**: File-backed JSON under `RESTRunner.Web/Data` plus CSV export artifacts from the console runner  
 **Testing**: `dotnet test` across MSTest projects; `npm run build` for `RESTRunner.Web` is unconditionally required because T018 always modifies `package.json`; lingering-reference search must use case-insensitive matching (e.g., PowerShell `-match` or `grep -i`) to catch `RestRunner` and similar mixed-case variants  
 **Target Platform**: Cross-platform .NET console and ASP.NET Core web app; local development currently assumes Windows paths in some console output  
