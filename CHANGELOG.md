@@ -16,4 +16,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Removed
 
-- All first-party references to the former RESTRunner brand name except where preserved for historical context or external repository identity (pending GitHub repo rename T025).
+- All first-party references to the former RESTRunner brand name.
+- GitHub repository renamed from `RESTRunner` to `RequestSpark`; README badges and clone URLs updated (T025).

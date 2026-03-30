@@ -101,7 +101,7 @@
 
 - [X] T023 [P] Normalize remaining first-party comments, constants, and sample labels in `RequestSpark.Domain/Constants/DomainConstants.cs` (including renaming the `SessionIdPrefix` constant value from `"RequestSpark"` to `"RequestSpark"` and updating any XML doc comments that still reference the old brand), `RequestSpark.Domain/**/*.cs`, and `RequestSpark.Web/**/*.cs`
 - [X] T024 [P] Prepare the post-merge GitHub repository rename checklist and badge/link updates in `README.md`
-- [ ] T025 Execute the final manual GitHub repository rename to `RequestSpark` after merge, then reconcile badge, release, and repository URLs in `README.md` and any active `.github/` documentation that still references the former repository path
+- [X] T025 Execute the final manual GitHub repository rename to `RequestSpark` after merge, then reconcile badge, release, and repository URLs in `README.md` and any active `.github/` documentation that still references the former repository path
 - [X] T026 Run the manual verification flow from `.documentation/specs/001-rebrand-requestspark/quickstart.md` and fix any last branding mismatches in affected files
 - [X] T027 [P] Update `.documentation/memory/constitution.md` to replace all first-party project name references (`RequestSpark.Domain`, `RequestSpark.Web`, `RequestSpark.PostmanImport`, `RequestSpark`, `RequestSpark.Domain.Tests`, `RequestSpark.Web.Tests`) with their `RequestSpark.*` equivalents; also update the file-backed storage path note from `RequestSpark.Web/Data` to `RequestSpark.Web/Data`
 
