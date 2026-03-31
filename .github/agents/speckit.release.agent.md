@@ -373,6 +373,12 @@ Confirm these three sources agree on {NEXT_VERSION}:
 
 If any are out of sync, fix before tagging.
 
+#### D. Manual workflow dispatch version (recommended)
+
+When running **Create Release** via `workflow_dispatch`, set `release_version` to
+`{NEXT_VERSION}` (or `v{NEXT_VERSION}`) so the workflow publishes the intended tag
+instead of auto-incrementing from the latest existing tag.
+
 ### 10. Clean Slate Preparation
 
 After archival (skip if DRY_RUN):
@@ -473,25 +479,25 @@ To execute this release:
    git commit -m "docs: release v{NEXT_VERSION}"
    ```
 
-4. Tag release:
+1. Tag release:
 
    ```bash
    git tag -a v{NEXT_VERSION} -m "Release v{NEXT_VERSION}"
    ```
 
-5. Push to remote:
+2. Push to remote:
 
    ```bash
    git push origin main --tags
    ```
 
-6. Create GitHub Release (optional):
+3. Create GitHub Release (optional):
 
    ```bash
    gh release create v{NEXT_VERSION} --notes-file .documentation/releases/v{NEXT_VERSION}/release-notes.md
    ```
 
-7. Consumer projects will receive the new version stamp the next time they run:
+4. Consumer projects will receive the new version stamp the next time they run:
 
    ```bash
    specify upgrade

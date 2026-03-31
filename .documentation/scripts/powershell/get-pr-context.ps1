@@ -1,4 +1,5 @@
 #!/usr/bin/env pwsh
+#requires -Version 7.0
 # Extract PR context for review
 #
 # This script fetches Pull Request information from GitHub and provides it

@@ -1,4 +1,5 @@
 #!/usr/bin/env pwsh
+#requires -Version 7.0
 # Archive context gathering script
 # Scans .documentation/ for archive candidates (never reads .archive/)
 # Outputs inventory for the AI to review and act on
@@ -55,9 +56,9 @@ $drafts           = Get-RelativeMdFiles '.documentation/drafts'
 $sessionDocs      = Get-RelativeMdFiles '.documentation/copilot'
 $implPlans        = @()
 if (Test-Path $docDir) {
-    $implPlans = Get-ChildItem -Path $docDir -MaxDepth 1 -Filter '*-implementation-plan.md' -ErrorAction SilentlyContinue |
+    $implPlans = Get-ChildItem -Path $docDir -Depth 1 -Filter '*-implementation-plan.md' -ErrorAction SilentlyContinue |
         ForEach-Object { $_.FullName.Substring($repoRoot.Length + 1).Replace('\', '/') }
-    $implPlans += Get-ChildItem -Path $docDir -MaxDepth 1 -Filter '*-plan.md' -ErrorAction SilentlyContinue |
+    $implPlans += Get-ChildItem -Path $docDir -Depth 1 -Filter '*-plan.md' -ErrorAction SilentlyContinue |
         Where-Object { $_.Name -notmatch '^Guide' } |
         ForEach-Object { $_.FullName.Substring($repoRoot.Length + 1).Replace('\', '/') }
 }
@@ -68,7 +69,7 @@ $prReviews        = Get-RelativeMdFiles '.documentation/specs/pr-review'
 # Current top-level .documentation/*.md (exclude already-caught plan files)
 $currentDocs = @()
 if (Test-Path $docDir) {
-    $currentDocs = Get-ChildItem -Path $docDir -MaxDepth 1 -Filter '*.md' -ErrorAction SilentlyContinue |
+    $currentDocs = Get-ChildItem -Path $docDir -Depth 1 -Filter '*.md' -ErrorAction SilentlyContinue |
         Where-Object { $_.Name -notmatch '-implementation-plan\.md$' -and $_.Name -notmatch '-plan\.md$' } |
         ForEach-Object { $_.FullName.Substring($repoRoot.Length + 1).Replace('\', '/') } |
         Sort-Object

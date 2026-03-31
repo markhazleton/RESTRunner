@@ -65,11 +65,11 @@ function Get-DocTaxon {
     )
 
     $normalizedPath = $RelativePath -replace '\\', '/'
-    $deprecatedPattern = '\[PROJECT_NAME\]|\[PRINCIPLE_[A-Z0-9_]+\]|\[SECTION_[A-Z0-9_]+\]|\[GOVERNANCE_RULES\]|\[CONSTITUTION_VERSION\]|\[RATIFICATION_DATE\]|\[LAST_AMENDED_DATE\]'
+    $deprecatedPattern = 'pydantic_agent|AGENT_REGISTRY|REPO_MODE_AGENTS|data_field|function_name|display_card_id'
 
     if (
         $normalizedPath -match '^docs/' -or
-        ($normalizedPath -match '^\.documentation/' -and $normalizedPath -match '\.(md|txt)$' -and $Content -match $deprecatedPattern)
+        ($normalizedPath -match '^\.documentation/' -and $Content -match $deprecatedPattern)
     ) {
         return 'STALE_REFERENCE'
     }
@@ -137,7 +137,7 @@ function Get-DocScoreBreakdown {
         $freshness -= 5
     }
 
-    if ($RelativePath -match '\.(md|txt)$' -and $Content -match '\[PROJECT_NAME\]|\[PRINCIPLE_[A-Z0-9_]+\]|\[SECTION_[A-Z0-9_]+\]|\[GOVERNANCE_RULES\]|\[CONSTITUTION_VERSION\]|\[RATIFICATION_DATE\]|\[LAST_AMENDED_DATE\]') {
+    if ($Content -match 'pydantic_agent|AGENT_REGISTRY|REPO_MODE_AGENTS|data_field|function_name|display_card_id') {
         $authority -= 8
         $freshness -= 6
     }
@@ -452,7 +452,7 @@ if ($Scope -in @('full', 'docs', 'scan', 'changelog')) {
                 # Check if referenced in any .md file
                 $isReferenced = $false
                 $fileName = $file.Name
-                Get-ChildItem $docDir -Recurse -Filter '*.md' -ErrorAction SilentlyContinue | ForEach-Object {
+                Get-ChildItem $docRoot.path -Recurse -Filter '*.md' -ErrorAction SilentlyContinue | ForEach-Object {
                     if (-not $isReferenced) {
                         $mdContent = Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue
                         if ($mdContent -and $mdContent -match [regex]::Escape($fileName)) {

@@ -1,4 +1,5 @@
 #!/usr/bin/env pwsh
+#requires -Version 7.0
 <#
 .SYNOPSIS
     Sync Spec Kit Spark with upstream github.com/github/spec-kit repository

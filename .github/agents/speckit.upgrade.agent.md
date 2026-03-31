@@ -2,6 +2,8 @@
 description: Check the installed Spec Kit Spark version, identify stale framework files, and guide a safe upgrade to the latest release
 ---
 
+<!-- markdownlint-disable MD040 -->
+
 ## User Input
 
 ```text
@@ -43,6 +45,7 @@ Check for `.documentation/SPECKIT_VERSION`:
 ```
 
 Expected format (three lines):
+
 ```
 <version>
 installed: <YYYY-MM-DD>
@@ -50,11 +53,13 @@ agent: <agent-key>
 ```
 
 **If the file is missing:**
+
 - Report: `SPECKIT_VERSION not found — version unknown`
 - The project was installed before v1.2.4 or the stamp was not written
 - Proceed to Step 2 to determine what version is actually present
 
 **If the file exists**, extract:
+
 - `INSTALLED_VERSION` — e.g., `1.1.0`
 - `INSTALL_DATE` — e.g., `2026-02-08`
 - `INSTALLED_AGENT` — e.g., `copilot`
@@ -62,6 +67,7 @@ agent: <agent-key>
 ### 2. Detect Latest Available Version
 
 Read `CHANGELOG.md` at the repo root (or `.documentation/CHANGELOG.md`):
+
 - Find the most recent `## [X.Y.Z]` heading
 - That is `LATEST_VERSION`
 
@@ -91,6 +97,7 @@ Separate framework-owned files (overwritten on upgrade) from user-owned files (n
 touched). Use this classification:
 
 #### Framework-owned (safe to overwrite)
+
 These come from the Spec Kit Spark release package and should match the latest version:
 
 - `.documentation/scripts/bash/*.sh`
@@ -111,6 +118,7 @@ These come from the Spec Kit Spark release package and should match the latest v
   - *(and equivalents for other supported agents)*
 
 #### User-owned (NEVER overwritten)
+
 These are written by the project team and must be preserved:
 
 - `.documentation/specs/` — all feature specifications, plans, and tasks
@@ -143,6 +151,7 @@ Even when the version matches, check that all expected framework files are prese
 List any that are **missing** from the expected locations.
 
 Missing framework files should be reported as:
+
 ```
 MISSING: .documentation/scripts/powershell/setup-plan.ps1
 MISSING: .github/agents/speckit.specify.agent.md
@@ -165,6 +174,7 @@ cp .documentation/memory/constitution.md \
 ```
 
 Or instruct the user to run:
+
 ```bash
 specify upgrade --backup
 ```
@@ -174,16 +184,19 @@ specify upgrade --backup
 Prefer `specify upgrade` (v1.1.0+). Fall back to `specify init --here --force --ai <INSTALLED_AGENT>` if needed.
 
 **Check for CLI availability:**
+
 ```bash
 specify version
 ```
 
 If available, run:
+
 ```bash
 specify upgrade --ai <INSTALLED_AGENT>
 ```
 
 If not installed, provide the install command:
+
 ```bash
 uv tool install specify-cli --force \
   --from git+https://github.com/MarkHazleton/spec-kit.git
@@ -224,7 +237,8 @@ Post-Upgrade Verification
 
 ### 9. Output Final Summary
 
-#### Upgrade performed:
+#### Upgrade performed
+
 ```
 Spec Kit Spark Upgrade Summary
   Previous Version : <INSTALLED_VERSION>
@@ -240,7 +254,8 @@ Next steps:
   3. git add -A && git commit -m "chore: upgrade spec-kit-spark to vX.Y.Z"
 ```
 
-#### Already up to date:
+#### Already up to date
+
 ```
 Spec Kit Spark is up to date.
   Version : <INSTALLED_VERSION>
@@ -248,7 +263,8 @@ Spec Kit Spark is up to date.
   Date    : <INSTALL_DATE>
 ```
 
-#### Dry run:
+#### Dry run
+
 ```
 Dry Run — No changes made.
 
@@ -267,6 +283,7 @@ To apply:
 ### User Data is Sacred
 
 Never modify or delete:
+
 - `.documentation/specs/` and all contents
 - `constitution.md`
 - `.documentation/copilot/`

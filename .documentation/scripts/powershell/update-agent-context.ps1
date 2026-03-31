@@ -62,6 +62,7 @@ $Q_FILE        = Join-Path $REPO_ROOT 'AGENTS.md'
 $BOB_FILE      = Join-Path $REPO_ROOT 'AGENTS.md'
 
 $TEMPLATE_FILE = Join-Path $REPO_ROOT '.documentation/templates/agent-file-template.md'
+$LEGACY_TEMPLATE_FILE = Join-Path $REPO_ROOT 'templates/agent-file-template.md'
 
 # Parsed plan data placeholders
 $script:NEW_LANG = ''
@@ -114,9 +115,15 @@ function Validate-Environment {
         exit 1
     }
     if (-not (Test-Path $TEMPLATE_FILE)) {
-        Write-Err "Template file not found at $TEMPLATE_FILE"
-        Write-Info 'Run specify init to scaffold .documentation/templates, or add agent-file-template.md there.'
-        exit 1
+        if (Test-Path $LEGACY_TEMPLATE_FILE) {
+            Write-WarningMsg "Primary template not found at $TEMPLATE_FILE; using legacy template at $LEGACY_TEMPLATE_FILE"
+            $script:TEMPLATE_FILE = $LEGACY_TEMPLATE_FILE
+        } else {
+            Write-Err "Template file not found at $TEMPLATE_FILE"
+            Write-Info "Legacy fallback also not found at $LEGACY_TEMPLATE_FILE"
+            Write-Info 'Run specify init to scaffold .documentation/templates, or add agent-file-template.md there.'
+            exit 1
+        }
     }
 }
 

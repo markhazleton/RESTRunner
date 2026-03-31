@@ -1,4 +1,5 @@
 #!/usr/bin/env pwsh
+#requires -Version 7.0
 <#
 .SYNOPSIS
     Gathers codebase data for site-audit as JSON for LLM context efficiency.

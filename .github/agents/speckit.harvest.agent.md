@@ -23,7 +23,7 @@ Harvest valuable knowledge from completed specs, stale documentation, and in-pro
 
 This command is a **knowledge-preserving cleanup** workflow:
 
-1. Preserve durable knowledge in living documents such as `CHANGELOG.md`, `/.documentation/guides/`, and `/.github/copilot-instructions.md`
+1. Preserve durable knowledge in living documents such as `CHANGELOG.md`, `/.documentation/Guide.md`, and `/.github/copilot-instructions.md`
 2. Rewrite source code comments that reference completed specs, plans, or tasks into self-contained explanations
 3. Move stale artifacts into `/.archive/` while preserving directory structure
 4. Produce a harvest report at `/.documentation/copilot/harvest-YYYY-MM-DD.md`

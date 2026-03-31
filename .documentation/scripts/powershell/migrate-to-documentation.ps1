@@ -24,9 +24,14 @@ $script:WarningsCount = 0
 function Write-ColorOutput {
     param(
         [string]$Message,
-        [string]$Color = "White"
+        [string]$Color = "White",
+        [switch]$NoNewline
     )
-    Write-Host $Message -ForegroundColor $Color
+    if ($NoNewline) {
+        Write-Host $Message -ForegroundColor $Color -NoNewline
+    } else {
+        Write-Host $Message -ForegroundColor $Color
+    }
 }
 
 function Print-Status {
