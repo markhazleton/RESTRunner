@@ -484,7 +484,7 @@ namespace RequestSpark.Web.Controllers
                     new()
                     {
                         UserName = "testuser",
-                        Password = "changeme",
+                        Password = RequestSpark.Domain.Constants.DomainConstants.PlaceholderPassword,
                         Properties = new Dictionary<string, string>
                         {
                             { "email", "test@example.com" },

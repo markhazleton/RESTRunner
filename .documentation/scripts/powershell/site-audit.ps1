@@ -407,6 +407,7 @@ function Get-PatternDetection {
     )
     
     $todoPattern = '(?i)(TODO|FIXME|HACK|XXX|BUG)[\s:]+(.+)$'
+    $safePlaceholderPattern = '(?i)(REPLACE_ME|PLACEHOLDER|EXAMPLE|SAMPLE|DUMMY|TEST_ONLY)'
     
     $fileLimit = 100  # Limit files to scan for performance
     $scannedCount = 0
@@ -429,6 +430,10 @@ function Get-PatternDetection {
             if ($Scope -in @('full', 'constitution')) {
                 foreach ($sp in $secretPatterns) {
                     if ($line -match $sp.pattern) {
+                        if ($line -match $safePlaceholderPattern) {
+                            break
+                        }
+
                         $patterns.security.hardcoded_secrets += @{
                             file = $relPath
                             line = $lineNum

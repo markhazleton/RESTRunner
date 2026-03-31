@@ -16,7 +16,7 @@ public class CompareUser_ExtensionsTests
         var compareUser = new CompareUser
         {
             UserName = "TestUserName",
-            Password = "TestPassword",
+            Password = RequestSpark.Domain.Constants.DomainConstants.PlaceholderPassword,
             Properties = new Dictionary<string, string>
             {
                 { "TestKey", "TestValue" }
@@ -43,7 +43,7 @@ public class CompareUser_ExtensionsTests
         var compareUser = new CompareUser
         {
             UserName = "TestUserName",
-            Password = "TestPassword",
+            Password = RequestSpark.Domain.Constants.DomainConstants.PlaceholderPassword,
             Properties = new Dictionary<string, string>
             {
                 { "TestKey", "TestValue" }

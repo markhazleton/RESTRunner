@@ -25,9 +25,9 @@ public class CompareUserTests
     [TestMethod]
     public void CompareUser_SetPassword_StoresValue()
     {
-        var user = new CompareUser { Password = "changeme" };
+        var user = new CompareUser { Password = RequestSpark.Domain.Constants.DomainConstants.PlaceholderPassword };
 
-        Assert.AreEqual("changeme", user.Password);
+        Assert.AreEqual(RequestSpark.Domain.Constants.DomainConstants.PlaceholderPassword, user.Password);
     }
 
     [TestMethod]

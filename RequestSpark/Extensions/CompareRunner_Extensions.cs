@@ -27,7 +27,7 @@ public static class CompareRunner_Extensions
         var user = new CompareUser()
         {
             UserName = "markhazleton",
-            Password = "changeme"
+            Password = RequestSpark.Domain.Constants.DomainConstants.PlaceholderPassword
         };
         user.Properties.Add("username", user.UserName);
         user.Properties.Add("user_firstname", "Mark");

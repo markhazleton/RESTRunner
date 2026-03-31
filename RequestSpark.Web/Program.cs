@@ -112,6 +112,7 @@ builder.Services.AddScoped<IConfigurationService, FileConfigurationService>();
 builder.Services.AddScoped<ICollectionService, FileCollectionService>();
 builder.Services.AddScoped<IOpenApiService, FileOpenApiService>();
 builder.Services.AddScoped<IApiDefinitionMappingService, ApiDefinitionMappingService>();
+builder.Services.AddSingleton<IExecutionHistoryStore, ExecutionHistoryStore>();
 builder.Services.AddSingleton<IExecutionService, RealExecutionService>();
 builder.Services.AddScoped<SampleCRUDService>(); // <-- Add SampleCRUDService registration
 
@@ -141,7 +142,7 @@ builder.Services.AddScoped<CompareRunner>(serviceProvider =>
         new()
         {
             UserName = "default",
-            Password = "changeme"
+            Password = RequestSpark.Domain.Constants.DomainConstants.PlaceholderPassword
         }
     };
 
@@ -435,7 +436,7 @@ static async Task InitializeSampleDataAsync(IServiceProvider serviceProvider)
                         new()
                         {
                             UserName = "testuser",
-                            Password = "changeme",
+                            Password = RequestSpark.Domain.Constants.DomainConstants.PlaceholderPassword,
                             Properties = new Dictionary<string, string>
                             {
                                 { "email", "test@example.com" },
@@ -446,7 +447,7 @@ static async Task InitializeSampleDataAsync(IServiceProvider serviceProvider)
                         new()
                         {
                             UserName = "admin",
-                            Password = "changeme",
+                            Password = RequestSpark.Domain.Constants.DomainConstants.PlaceholderPassword,
                             Properties = new Dictionary<string, string>
                             {
                                 { "email", "admin@example.com" },

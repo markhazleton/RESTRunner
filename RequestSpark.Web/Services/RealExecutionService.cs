@@ -16,26 +16,22 @@ public class RealExecutionService : IExecutionService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IFileStorageService _fileStorageService;
+    private readonly IExecutionHistoryStore _executionHistoryStore;
     private readonly IHubContext<ExecutionHub> _hubContext;
     private readonly ILogger<RealExecutionService> _logger;
-    private readonly ILoggerFactory _loggerFactory;
     private readonly ConcurrentDictionary<string, TestExecution> _runningExecutions = new();
-    private readonly ConcurrentDictionary<string, ExecutionHistory> _executionHistory = new();
 
     public RealExecutionService(
         IServiceScopeFactory scopeFactory,
         IHttpClientFactory httpClientFactory,
-        IFileStorageService fileStorageService,
+        IExecutionHistoryStore executionHistoryStore,
         IHubContext<ExecutionHub> hubContext,
-        ILoggerFactory loggerFactory,
         ILogger<RealExecutionService> logger)
     {
         _scopeFactory = scopeFactory;
         _httpClientFactory = httpClientFactory;
-        _fileStorageService = fileStorageService;
+        _executionHistoryStore = executionHistoryStore;
         _hubContext = hubContext;
-        _loggerFactory = loggerFactory;
         _logger = logger;
     }
 
@@ -203,22 +199,7 @@ public class RealExecutionService : IExecutionService
         {
             if (history != null)
             {
-                _executionHistory.TryAdd(history.Id, history);
-
-                try
-                {
-                    var historyFileName = $"history_{history.Id}.json";
-                    var historyJson = System.Text.Json.JsonSerializer.Serialize(history, new System.Text.Json.JsonSerializerOptions
-                    {
-                        WriteIndented = true
-                    });
-                    var historyFilePath = await _fileStorageService.SaveLogAsync(historyFileName, historyJson);
-                    history.LogFilePath = historyFilePath;
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to persist execution history {ExecutionId}", history.Id);
-                }
+                await _executionHistoryStore.SaveAsync(history);
             }
 
             _runningExecutions.TryRemove(execution.Id, out _);
@@ -483,131 +464,27 @@ public class RealExecutionService : IExecutionService
 
     public Task<List<ExecutionHistory>> GetExecutionHistoryAsync(int pageSize = 50, int pageNumber = 1, string? configurationId = null)
     {
-        var query = _executionHistory.Values.AsEnumerable();
-
-        if (!string.IsNullOrEmpty(configurationId))
-        {
-            query = query.Where(e => e.ConfigurationId == configurationId);
-        }
-
-        var result = query
-            .OrderByDescending(e => e.StartTime)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
-
-        return Task.FromResult(result);
+        return _executionHistoryStore.GetPageAsync(pageSize, pageNumber, configurationId);
     }
 
-    public async Task<ExecutionHistory?> GetExecutionHistoryAsync(string executionId)
+    public Task<ExecutionHistory?> GetExecutionHistoryAsync(string executionId)
     {
-        if (_executionHistory.TryGetValue(executionId, out var history))
-            return history;
-
-        var historyFilePath = Path.Combine(
-            _fileStorageService.GetDirectoryPath("logs"),
-            $"history_{executionId}.json");
-
-        var content = await _fileStorageService.ReadFileAsync(historyFilePath);
-        if (content == null) return null;
-
-        try
-        {
-            history = System.Text.Json.JsonSerializer.Deserialize<ExecutionHistory>(
-                content,
-                new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
-
-            if (history != null)
-                _executionHistory.TryAdd(executionId, history);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Failed to deserialize history file for execution {ExecutionId}", executionId);
-        }
-
-        return history;
+        return _executionHistoryStore.GetAsync(executionId);
     }
 
     public Task<bool> DeleteExecutionHistoryAsync(string executionId)
     {
-        if (_executionHistory.TryRemove(executionId, out var execution))
-        {
-            _logger.LogInformation("Deleted execution history {ExecutionId}", executionId);
-
-            try
-            {
-                if (!string.IsNullOrEmpty(execution.ResultsFilePath) && File.Exists(execution.ResultsFilePath))
-                {
-                    File.Delete(execution.ResultsFilePath);
-                }
-                if (!string.IsNullOrEmpty(execution.LogFilePath) && File.Exists(execution.LogFilePath))
-                {
-                    File.Delete(execution.LogFilePath);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to delete execution files for {ExecutionId}", executionId);
-            }
-
-            return Task.FromResult(true);
-        }
-        return Task.FromResult(false);
+        return _executionHistoryStore.DeleteAsync(executionId);
     }
 
     public Task<List<ExecutionHistory>> GetRecentExecutionsAsync(int count = 10)
     {
-        var recentExecutions = _executionHistory.Values
-            .OrderByDescending(e => e.StartTime)
-            .Take(count)
-            .ToList();
-        return Task.FromResult(recentExecutions);
+        return _executionHistoryStore.GetRecentAsync(count);
     }
 
     public Task<ExecutionStatistics> GetAggregatedStatisticsAsync(DateTime startDate, DateTime endDate, string? configurationId = null)
     {
-        var executions = _executionHistory.Values.Where(e =>
-            e.StartTime >= startDate &&
-            e.StartTime <= endDate &&
-            (configurationId == null || e.ConfigurationId == configurationId) &&
-            e.Statistics != null);
-
-        if (!executions.Any())
-        {
-            return Task.FromResult(new ExecutionStatistics());
-        }
-
-        var stats = new ExecutionStatistics
-        {
-            StartTime = startDate,
-            EndTime = endDate
-        };
-
-        foreach (var execution in executions)
-        {
-            if (execution.Statistics != null)
-            {
-                for (int i = 0; i < execution.Statistics.TotalRequests; i++)
-                {
-                    stats.IncrementTotalRequests();
-                }
-                for (int i = 0; i < execution.Statistics.SuccessfulRequests; i++)
-                {
-                    stats.IncrementSuccessfulRequests();
-                }
-                for (int i = 0; i < execution.Statistics.FailedRequests; i++)
-                {
-                    stats.IncrementFailedRequests();
-                }
-
-                stats.AddResponseTime(execution.Statistics.MinResponseTime);
-                stats.AddResponseTime(execution.Statistics.MaxResponseTime);
-                stats.AddResponseTime((long)execution.Statistics.AverageResponseTime);
-            }
-        }
-
-        stats.FinalizeStatistics();
-        return Task.FromResult(stats);
+        return _executionHistoryStore.GetAggregatedStatisticsAsync(startDate, endDate, configurationId);
     }
 
     public async Task<string?> ExportExecutionResultsAsync(string executionId, string format = "csv")

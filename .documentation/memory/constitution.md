@@ -67,6 +67,24 @@ shows partial adoption rather than universal enforcement.
 - Oversized files SHOULD be decomposed when a change naturally exposes a clean
 	extraction point.
 
+### VI. Secure Configuration And Secret Hygiene
+RequestSpark MUST keep secrets, credentials, and security-sensitive defaults out
+of executable source code. Runtime configuration that requires passwords,
+tokens, or connection secrets MUST come from environment variables, user input,
+secret stores, or clearly non-secret placeholder values that cannot be mistaken
+for deployable credentials. Sample data and developer scaffolding MUST make the
+unsafe state obvious and MUST not normalize shipping hardcoded secrets.
+
+- Executable code MUST NOT embed real or plausible deployable secrets.
+- Runtime credential inputs MUST come from configuration providers, secret
+	stores, or explicit user-provided values.
+- Sample or seeded values MUST use unmistakable non-secret placeholders and
+	document how operators replace them safely.
+- Reviews and audits SHOULD flag any new hardcoded secret-like literals outside
+	isolated tests.
+- Security-sensitive configuration paths SHOULD fail fast when required secrets
+	are absent instead of silently falling back to defaults.
+
 ## Engineering Standards
 
 - File-backed JSON storage under RequestSpark.Web/Data is the default persistence
@@ -116,5 +134,4 @@ Compliance review expectations:
 - Temporary exceptions MUST be documented in the relevant plan or pull request
 	with the simpler alternative that was rejected.
 
-**Version**: 1.0.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-25
-
+**Version**: 1.1.0 | **Ratified**: 2026-03-15 | **Last Amended**: 2026-03-30

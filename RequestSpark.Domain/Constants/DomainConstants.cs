@@ -6,6 +6,11 @@ namespace RequestSpark.Domain.Constants;
 public static class DomainConstants
 {
     /// <summary>
+    /// Explicit non-secret placeholder used for sample credential fields.
+    /// </summary>
+    public const string PlaceholderPassword = "REPLACE_ME_PASSWORD";
+
+    /// <summary>
     /// Default session ID prefix
     /// </summary>
     public const string SessionIdPrefix = "RequestSpark";
